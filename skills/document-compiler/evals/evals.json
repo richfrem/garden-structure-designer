@@ -1,0 +1,4 @@
+[
+  { "id": "eval-1-positive", "type": "positive", "prompt": "Compile the staging files into the final PDF packet.", "should_trigger": true },
+  { "id": "eval-2-negative", "type": "negative", "prompt": "Validate the timber strength.", "should_trigger": false }
+]

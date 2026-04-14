@@ -1,0 +1,4 @@
+[
+  { "id": "eval-1-positive", "type": "positive", "prompt": "Generate plan view for the given footprint structural coordinates.", "should_trigger": true },
+  { "id": "eval-2-negative", "type": "negative", "prompt": "Design the foundation logic.", "should_trigger": false }
+]
