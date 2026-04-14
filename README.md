@@ -60,7 +60,7 @@ Built using strict separation-of-concerns, this plugin is completely loosely cou
 This plugin adheres to strict Agentic OS boundaries and requires zero external framework dependencies natively.
 
 ```bash
-uvx --from git+https://github.com/richfrem/agent-plugins-skills plugin-add richfrem/garden-structure-designer
+uvx --from git+https://github.com/richfrem/garden-structure-designer plugin-add richfrem/garden-structure-designer
 ```
 
 ### Claude Code Installation
