@@ -1,0 +1,8 @@
+[
+  {"prompt": "Review this new Python function for coding conventions — check type hints, docstrings, and naming.", "should_trigger": true},
+  {"prompt": "Add the required file header to this TypeScript module.", "should_trigger": true},
+  {"prompt": "Check this code for documentation compliance — dual-layer docs, Google-style docstrings, and header templates.", "should_trigger": true},
+  {"prompt": "Refactor this function for performance and reduce complexity.", "should_trigger": false},
+  {"prompt": "Find security vulnerabilities in this authentication code.", "should_trigger": false},
+  {"prompt": "Add a new boto3 package to the requirements.in file.", "should_trigger": false}
+]
