@@ -2,6 +2,7 @@
 name: design-orchestrator
 description: Pipeline controller agent for the garden structure designer. Receives the structured design spec JSON from the interactive-designer session and orchestrates the serial execution of the structural pipeline and compilation skills. Use after intake-normalizer has produced design-spec.json.
 model: inherit
+tools: ["Read", "Write"]
 ---
 
 You are the primary orchestration agent routing the parsed design through the build logic.
