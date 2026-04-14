@@ -60,5 +60,20 @@ Built using strict separation-of-concerns, this plugin is completely loosely cou
 This plugin adheres to strict Agentic OS boundaries and requires zero external framework dependencies natively.
 
 ```bash
-uvx --from git+https://github.com/richfrem/agent-plugins-skills plugin-add https://github.com/richfrem/garden-structure-designer
+uvx --from git+https://github.com/richfrem/agent-plugins-skills plugin-add richfrem/garden-structure-designer
+```
+
+### Claude Code Installation
+
+If you are using Claude Code directly, you can install via the plugin marketplace:
+
+```bash
+# Add this repository to your known marketplaces
+/plugin marketplace add richfrem/agent-plugins-skills
+
+# Open the interactive TUI to browse, discover, and install plugins
+/plugin
+
+# Or install the specific plugin directly
+/plugin install garden-structure-designer
 ```
