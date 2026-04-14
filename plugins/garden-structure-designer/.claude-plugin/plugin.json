@@ -2,5 +2,7 @@
   "name": "garden-structure-designer",
   "version": "1.0.0",
   "description": "Modular plugin for generating professional-grade PDF construction packages for garden structures.",
-  "author": "Richard Fremmerlid"
+  "author": {
+    "name": "Richard Fremmerlid"
+  }
 }

@@ -8,11 +8,6 @@
       "name": "garden-structure-designer",
       "source": "./plugins/garden-structure-designer",
       "description": "Modular plugin for generating professional-grade PDF construction packages for garden structures."
-    },
-    {
-      "name": "agentic-os-core",
-      "source": "./.agents",
-      "description": "Core Agentic OS workflows and skills for persistent memory, evaluation loops, and plugin analysis."
     }
   ]
 }
