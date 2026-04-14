@@ -69,7 +69,7 @@ If you are using Claude Code directly, you can install via the plugin marketplac
 
 ```bash
 # Add this repository to your known marketplaces
-/plugin marketplace add richfrem/agent-plugins-skills
+/plugin marketplace add richfrem/garden-structure-designer
 
 # Open the interactive TUI to browse, discover, and install plugins
 /plugin
