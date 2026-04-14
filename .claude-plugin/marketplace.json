@@ -1,13 +1,15 @@
 {
   "name": "garden-structure-designer",
+  "description": "Plugin marketplace for the garden-structure-designer — a multi-agent pipeline that converts user descriptions into structural PDF construction packages.",
   "owner": {
     "name": "richfrem"
   },
   "plugins": [
     {
       "name": "garden-structure-designer",
+      "description": "Modular plugin for generating professional-grade PDF construction packages for garden structures.",
       "source": "./plugins/garden-structure-designer",
-      "description": "Modular plugin for generating professional-grade PDF construction packages for garden structures."
+      "strict": true
     }
   ]
 }
