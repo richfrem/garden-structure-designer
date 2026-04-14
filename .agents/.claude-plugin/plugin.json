@@ -1,0 +1,6 @@
+{
+  "name": "agentic-os-core",
+  "version": "1.0.0",
+  "description": "Core Agentic OS workflows and skills for persistent memory, evaluation loops, and plugin analysis.",
+  "author": "richfrem"
+}

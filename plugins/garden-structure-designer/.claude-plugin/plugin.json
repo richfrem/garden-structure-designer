@@ -2,20 +2,5 @@
   "name": "garden-structure-designer",
   "version": "1.0.0",
   "description": "Modular plugin for generating professional-grade PDF construction packages for garden structures.",
-  "author": "Richard Fremmerlid",
-  "skills": [
-    "intake-normalizer",
-    "structural-engine",
-    "building-code-validator",
-    "joinery-designer",
-    "bracing-system-designer",
-    "drawing-generator",
-    "document-compiler"
-  ],
-  "sub-agents": [
-    "interactive-designer",
-    "design-orchestrator",
-    "validation-agent"
-  ],
-  "commands": []
+  "author": "Richard Fremmerlid"
 }
