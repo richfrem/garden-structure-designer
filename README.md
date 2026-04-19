@@ -28,10 +28,10 @@ Generalized AI struggles to design structures reliably because the required arch
 The ultimate deliverable is a comprehensive **Architectural & Structural Construction Packet (PDF)** matching professional timber-framing standards.
 
 **Output features include:**
-- **Orthographic Projections:** Clear top-down plan views and side elevation views.
+- **Architectural Visualizations:** 4 distinct visual outputs for aesthetic client approval: Plan View, Elevation View, Perspective View (human-vision depth scaling), and Isometric View (axis-parallel mapping without vanishing points).
+- **Shop Blueprints:** A devoted technical cut-sheet generator that produces hyper-detailed, heavily dimensioned CAD-style layouts loaded with exact cut-lengths, arrows, and pitch angles strictly for the carpenter.
 - **Detailed Assembly:** Linear, easy-to-follow step-by-step assembly workflows.
-- **Cut-Lists:** Precise timber schedules, exact board dimensions, and required hardware/fastener inventories.
-- **Joinery Diagrams:** Exploded or detailed maps for connections, post plans, and knee-bracing logic.
+- **Cut-Lists & Inventories:** Precise timber schedules, joinery maps, and required hardware/fastener quantities.
 
 *(Example outputs match the structural depth and clarity of professional 30x24 Timber Frame Cabin blueprints, ensuring a builder can start cutting wood immediately).*
 
@@ -51,7 +51,9 @@ Built using strict separation-of-concerns, this plugin is completely loosely cou
 - `building-code-validator`: Maps regions to building code physics constraints.
 - `structural-engine`: Computes timber span mathematics.
 - `joinery-designer` & `bracing-system-designer`: Assigns appropriate structural connections.
-- `drawing-generator` & `document-compiler`: Emits visual SVG/PNG representations inside a formatted Markdown/PDF document.
+- `drawing-generator`: Emits clean, presentation-ready architectural diagrams (Plan, Elevation, Perspective, Isometric).
+- `shop-blueprint-generator`: Generates hyper-detailed, mathematically annotated cut-sheets with dimensional arrows specifically for the fabrication team.
+- `document-compiler`: Aggregates the structural math, the visual renders, and the shop blueprints into a single formatted Markdown/PDF packet.
 
 ---
 

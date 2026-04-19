@@ -14,4 +14,5 @@ You are the primary orchestration agent routing the parsed design through the bu
 3. Call `structural-engine` to build the physical dimensions → writes `context/staging/structural-model.json`.
 4. Call `joinery-designer` and `bracing-system-designer` sequentially.
 5. Invoke `validation-agent` to check logic.
-6. Trigger the `drawing-generator` then the `document-compiler` to finalize the PDF outputs.
+6. Trigger the `drawing-generator` for architectural visualization, followed by the `shop-blueprint-generator` for heavily dimensioned carpenter cuts.
+7. Invoke the `document-compiler` to finalize the PDF outputs aggregating all the visuals and blueprints.
