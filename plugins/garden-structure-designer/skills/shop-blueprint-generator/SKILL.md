@@ -1,7 +1,7 @@
 ---
 name: shop-blueprint-generator
 description: Generates heavily dimensioned, technical orthographic blueprints intended strictly for carpenters and fabricators. Outputs highly detailed line-drawings packed with dimensional arrows, bolt-hole spacing coordinates, exact cut lengths, and pitch angles.
-allowed-tools: Read, Write, generate_image
+allowed-tools: Read, Write
 ---
 
 ## Expected Inputs
@@ -13,7 +13,7 @@ Acts as the technical draftsman. Unlike `drawing-generator` which outputs clean 
 It should produce output files like:
 - `outputs/blueprint-plan.svg`
 - `outputs/blueprint-elevation.svg`
-- `outputs/blueprint-isometric.png` (You MUST use the `generate_image` tool to produce a highly detailed, black-and-white CAD-style line drawing with dimensional arrows, span measurements, and technical text callouts pointing to the structural components. Prompt it for an 'architectural CAD line drawing blueprint'.)
+- `outputs/blueprint-isometric.svg` (for a mathematically accurate dimensioned parallel 3D wireframe. DO NOT use AI image generation for this because generative models frequently hallucinate arbitrary geometry like octagons instead of hexagons. You MUST hardcode a strict isometric mathematically projected SVG path that natively adheres to the exact post count.)
 - `outputs/blueprint-component-isolation.svg` (for specific joinery cuts, e.g. birdsmouth offsets, bracket hole placement).
 
 **CRITICAL SVG FORMATTING RULE:**
