@@ -1,15 +1,22 @@
 {
-  "name": "garden-structure-designer",
-  "description": "Plugin marketplace for the garden-structure-designer — a multi-agent pipeline that converts user descriptions into structural PDF construction packages.",
+  "name": "garden-structure-designer-marketplace",
+  "description": "Plugin marketplace for the garden-structure-designer — a multi-agent pipeline that converts plain-English descriptions of garden structures (pergolas, gazebos, pavilions) into professional-grade, structurally validated PDF construction packages.",
   "owner": {
-    "name": "richfrem"
+    "name": "Richard Fremmerlid",
+    "email": "connect.richfrem@gmail.com"
   },
   "plugins": [
     {
       "name": "garden-structure-designer",
-      "description": "Modular plugin for generating professional-grade PDF construction packages for garden structures.",
+      "description": "Multi-agent design pipeline producing professional PDF construction packages for garden structures. v1.1 includes geometry_engine.py hardening, dual-channel SVG validation, drift correction, builder-docs-generator, and ADR-compliant plugin structure.",
       "source": "./plugins/garden-structure-designer",
-      "strict": true
+      "strict": true,
+      "version": "1.1.0",
+      "tags": ["construction", "structural", "garden", "pergola", "gazebo", "blueprints"],
+      "requires": {
+        "python": ">=3.8",
+        "gemini-cli": ">=0.38.2"
+      }
     }
   ]
 }

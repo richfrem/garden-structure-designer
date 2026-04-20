@@ -1,27 +1,66 @@
 ---
 name: shop-blueprint-generator
-description: Generates heavily dimensioned, technical orthographic blueprints intended strictly for carpenters and fabricators. Outputs highly detailed line-drawings packed with dimensional arrows, bolt-hole spacing coordinates, exact cut lengths, and pitch angles.
-allowed-tools: Read, Write
+description: Generates heavily dimensioned, technical orthographic blueprints intended strictly for carpenters and fabricators. Outputs highly detailed line-drawings packed with dimensional arrows, bolt-hole spacing coordinates, exact cut lengths, and pitch angles. All angles are READ from geometry-calculations.json — NEVER derived mentally.
+allowed-tools: Read, Write, Bash
 ---
 
 ## Expected Inputs
-`context/staging/structural-model.json`
-`context/staging/joinery-model.json`
+- `context/staging/structural-model.json`
+- `context/staging/geometry-calculations.json` (produced by geometry_engine.py)
+- `context/staging/joinery-model.json`
+
+## Pre-Flight: Run Geometry Engine If Not Present
+```bash
+python3 scripts/geometry_engine.py \
+    context/staging/structural-model.json
+```
+
+## CRITICAL: Source of Truth for All Angles and Dimensions
+
+**You are FORBIDDEN from computing any angle or dimension internally.**
+
+Read all fabrication values from `context/staging/geometry-calculations.json`:
+
+| Blueprint Field         | JSON Path                                    |
+|:------------------------|:---------------------------------------------|
+| Miter (saw swing)       | `compound_cut.miter_deg`                     |
+| Blade Bevel             | `compound_cut.bevel_deg`                     |
+| Pitch angle             | `compound_cut.pitch_angle_deg`               |
+| Rafter length (total)   | `rafter.total_with_overhang_in`              |
+| Roof rise               | `roof_rise.rise_in`                          |
+| Total building height   | `total_height.total_height_ft`               |
+| SVG coordinates         | `svg_coordinates.*`                          |
+
+**The most common hallucination:** Using the pitch angle (e.g. 18.43°) as the compound miter setting. The miter angle for a hexagonal hip rafter at 4:12 pitch is **28.71°**, not 18.43°. The geometry engine calculates this correctly — use it.
+
+## SVG XML Hard Rules (mandatory — same as drawing-generator)
+
+1. Comments: `<!-- ... -->` only. **No `--` inside comment bodies.**
+2. Text nodes: escape `&` → `&amp;`, `"` → `&quot;`, `<` → `&lt;`, `>` → `&gt;`
+3. **Validate every SVG before writing:**
+   ```bash
+   python3 -c "import xml.etree.ElementTree as ET; ET.parse('outputs/blueprint-shop.svg'); print('XML OK')"
+   ```
+4. Then run the full validator:
+   ```bash
+   python3 scripts/svg_validator.py \
+       outputs/<sheet>.svg context/staging/structural-model.json
+   ```
 
 ## Behavior
-Acts as the technical draftsman. Unlike `drawing-generator` which outputs clean architectural visualizations, this skill strictly generates messy, detail-heavy SVG blueprints.
-It should produce output files like:
-- `outputs/blueprint-plan.svg`
-- `outputs/blueprint-elevation.svg`
-- `outputs/blueprint-isometric.svg` (for a mathematically accurate dimensioned parallel 3D wireframe. DO NOT use AI image generation for this because generative models frequently hallucinate arbitrary geometry like octagons instead of hexagons. You MUST hardcode a strict isometric mathematically projected SVG path that natively adheres to the exact post count.)
-- `outputs/blueprint-component-isolation.svg` (for specific joinery cuts, e.g. birdsmouth offsets, bracket hole placement).
 
-**CRITICAL SVG FORMATTING RULE:**
-Because these are strictly XML documents, if you include text nodes (like `DWG: EL-1 (FRONT ELEVATION & PITCH)` or `5'-0"`), you MUST escape all restricted characters:
-- Ampersands (`&`) became `&amp;`
-- Double quotes (`"`) inside text become `&quot;`
-- Single quotes (`'`) inside text become `&apos;`
-- Less/Greater than (`<` / `>`) become `&lt;` / `&gt;`
-Failing to escape these will immediately break the SVG markdown parser.
+Produce output files:
+- `outputs/blueprint-plan.svg` — Footprint with post coordinates, beam ring, diagonal.
+- `outputs/blueprint-elevation.svg` — Dimensioned elevation with all critical labels.
+- `outputs/blueprint-isometric.svg` — Mathematically projected parallel wireframe. **NO AI image generation.** Use exact SVG polygon paths derived from the coordinate map.
+- `outputs/blueprint-component-isolation.svg` — Isolated detail for compound cut geometry (rafter top/bottom, bird's mouth, hub bolt placement).
 
-Always include key dimensions, lengths of wood, exact angles, and clearly marked dimensional arrows on each diagram. Do not worry about visual clutter—prioritize absolute fabrication clarity over aesthetic beauty.
+## Cut List Rules
+
+When generating the cut list table:
+- Copy `miter_deg` and `bevel_deg` verbatim from `geometry-calculations.json`.
+- Format as: `Miter: XX.X° / Bevel: X.X°`
+- Include a note: `⚠ Test cut on scrap before cutting all [N] pieces.`
+- Never include a "Derived by" note — all values come from the geometry engine.
+
+Always prioritize fabrication clarity over visual aesthetics. Dense dimensions, bold callout arrows, and explicit warnings are preferred.

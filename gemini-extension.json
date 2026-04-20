@@ -1,0 +1,6 @@
+{
+  "name": "garden-structure-designer",
+  "version": "1.1.0",
+  "description": "Multi-agent design pipeline that converts plain-English descriptions of garden structures (pergolas, gazebos, pavilions) into professional-grade, structurally validated PDF construction packages. Includes geometry hardening, dual-channel SVG validation, and builder document generation.",
+  "contextFileName": "GEMINI.md"
+}
