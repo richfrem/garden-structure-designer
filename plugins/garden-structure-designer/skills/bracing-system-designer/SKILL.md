@@ -11,3 +11,15 @@ allowed-tools: Read, Write
 1. Evaluate structural sheer loads to assign appropriate corner knee braces (e.g., 36" 4x4 pieces).
 2. Detail the joinery for braces (peg/mortise or lag screws).
 3. Update `context/staging/structural-model.json` with brace coordinates and cut lengths.
+
+## Gotchas
+
+- **Short posts cannot accommodate standard knee braces.** A 45° knee brace needs the post to be ≥ 6ft tall to achieve a meaningful panel depth (≥ 3ft). Posts shorter than 5ft require horizontal blocking or a different lateral strategy — do not force the standard pattern.
+- **Brace cut lengths are compound angles.** The angle where the brace meets the post-beam intersection is trigonometrically derived. Never estimate brace length or angle manually — pass brace geometry to `geometry_engine.py` if a cut angle function is available, or derive from the post height / panel geometry mathematically and document the formula.
+- **Writing to structural-model.json invalidates the drawing manifest checksum.** Any cached SVG derived from the pre-brace structural model is now stale. Set a `bracing_added: true` flag in structural-model.json to signal drawing-generator to regenerate all sheets.
+- **Brace joinery must also be written to joinery-model.json.** The cut specs go in structural-model.json but the connection hardware (lag specs, peg diameter) must be appended to joinery-model.json for the lumber-purchase-list to capture.
+
+## Smoke Test
+
+1. **Standard tall-post hex:** Given structural-model.json with 8ft posts: outputs brace_coordinates in structural-model.json, bracing_added=true, brace hardware appended to joinery-model.json. ✓
+2. **Short post scenario:** Given posts ≤ 4.5ft: skill documents the height constraint in the output and substitutes horizontal blocking, with a note in structural-model.json. ✓

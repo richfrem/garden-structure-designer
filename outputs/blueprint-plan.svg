@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1100" width="1100" height="1100">
+<!-- SHOP BLUEPRINT: PLAN VIEW — Dimensioned top-down with construction annotations -->
+<!-- SOURCE: geometry-calculations.json | scale=42px/ft | miter=28.71 | bevel=9.10 | pitch=4:12 -->
+<!-- TOPOLOGY_SKIP: Shop plan focuses on post layout, dimensions, and bolt-hole patterns -->
+<rect width="1100" height="1100" fill="white"/>
+
+<!-- Blueprint grid background -->
+<defs>
+  <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+    <path d="M 42 0 L 0 0 0 42" fill="none" stroke="#dbe8f5" stroke-width="0.5"/>
+  </pattern>
+  <marker id="arrowR" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#1a3a6a"/>
+  </marker>
+  <marker id="arrowL" markerWidth="8" markerHeight="8" refX="1" refY="3" orient="auto-start-reverse">
+    <path d="M8,0 L8,6 L0,3 z" fill="#1a3a6a"/>
+  </marker>
+</defs>
+<rect width="1100" height="1100" fill="url(#grid)"/>
+<rect x="15" y="15" width="1070" height="1070" fill="none" stroke="#1a3a6a" stroke-width="2.5"/>
+<rect x="30" y="30" width="1040" height="1040" fill="none" stroke="#1a3a6a" stroke-width="1"/>
+
+<!-- Title block -->
+<rect x="30" y="970" width="1040" height="100" fill="#e8eef8" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="30" y1="995" x2="1070" y2="995" stroke="#1a3a6a" stroke-width="1"/>
+<line x1="550" y1="995" x2="550" y2="1070" stroke="#1a3a6a" stroke-width="1"/>
+<text x="300" y="988" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a3a6a">SHOP BLUEPRINT — PLAN VIEW</text>
+<text x="300" y="1012" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">10ft HEXAGONAL CEDAR GAZEBO | Saanich, BC</text>
+<text x="300" y="1028" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Post spacing: 5'-0" C-C | All dims in feet-inches</text>
+<text x="300" y="1044" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Scale: 3/4" = 1'-0"  |  DWG NO: SB-01</text>
+<text x="300" y="1060" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Date: 2026-04-25  |  Rev: 0</text>
+<text x="810" y="1015" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a3a6a">COMPOUND CUT DATA</text>
+<text x="810" y="1033" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Hip rafter seat cut: Miter 28.7°  Bevel 9.10°</text>
+<text x="810" y="1049" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Roof pitch: 4:12  |  Pitch angle: 18.43°</text>
+<text x="810" y="1065" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Test cuts on scrap before final lumber</text>
+
+<!-- Concrete pier circles (dashed) -->
+<circle cx="540" cy="280" r="30" fill="none" stroke="#4a7aaa" stroke-width="1.5" stroke-dasharray="6,4"/>
+<circle cx="722" cy="385" r="30" fill="none" stroke="#4a7aaa" stroke-width="1.5" stroke-dasharray="6,4"/>
+<circle cx="722" cy="595" r="30" fill="none" stroke="#4a7aaa" stroke-width="1.5" stroke-dasharray="6,4"/>
+<circle cx="540" cy="700" r="30" fill="none" stroke="#4a7aaa" stroke-width="1.5" stroke-dasharray="6,4"/>
+<circle cx="358" cy="595" r="30" fill="none" stroke="#4a7aaa" stroke-width="1.5" stroke-dasharray="6,4"/>
+<circle cx="358" cy="385" r="30" fill="none" stroke="#4a7aaa" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+<!-- Post squares (6×6; 6in at scale = 21px) — fill matches topology colour -->
+<rect x="529" y="269" width="22" height="22" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+<rect x="711" y="374" width="22" height="22" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+<rect x="711" y="584" width="22" height="22" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+<rect x="529" y="689" width="22" height="22" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+<rect x="347" y="584" width="22" height="22" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+<rect x="347" y="374" width="22" height="22" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+
+<!-- Post labels -->
+<text x="540" y="262" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a">P1</text>
+<text x="741" y="372" font-family="monospace" font-size="11" text-anchor="start" fill="#1a3a6a">P2</text>
+<text x="741" y="590" font-family="monospace" font-size="11" text-anchor="start" fill="#1a3a6a">P3</text>
+<text x="540" y="720" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a">P4</text>
+<text x="332" y="595" font-family="monospace" font-size="11" text-anchor="end" fill="#1a3a6a">P5</text>
+<text x="332" y="376" font-family="monospace" font-size="11" text-anchor="end" fill="#1a3a6a">P6</text>
+
+<!-- Beam ring polygon -->
+<polygon points="540,280 722,385 722,595 540,700 358,595 358,385"
+         fill="none" stroke="#1a3a6a" stroke-width="2.5"/>
+
+<!-- Rafter centre lines (dashed) -->
+<line x1="540" y1="280" x2="540" y2="490" stroke="#4a7aaa" stroke-width="1" stroke-dasharray="8,4"/>
+<line x1="722" y1="385" x2="540" y2="490" stroke="#4a7aaa" stroke-width="1" stroke-dasharray="8,4"/>
+<line x1="722" y1="595" x2="540" y2="490" stroke="#4a7aaa" stroke-width="1" stroke-dasharray="8,4"/>
+<line x1="540" y1="700" x2="540" y2="490" stroke="#4a7aaa" stroke-width="1" stroke-dasharray="8,4"/>
+<line x1="358" y1="595" x2="540" y2="490" stroke="#4a7aaa" stroke-width="1" stroke-dasharray="8,4"/>
+<line x1="358" y1="385" x2="540" y2="490" stroke="#4a7aaa" stroke-width="1" stroke-dasharray="8,4"/>
+
+<!-- King post hub -->
+<rect x="529" y="479" width="22" height="22" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+<text x="540" y="472" font-family="monospace" font-size="10" text-anchor="middle" fill="#1a3a6a">HUB</text>
+<line x1="530" y1="490" x2="550" y2="490" stroke="#1a3a6a" stroke-width="0.8"/>
+<line x1="540" y1="480" x2="540" y2="500" stroke="#1a3a6a" stroke-width="0.8"/>
+
+<!-- Dimension: Overall diameter N-S -->
+<line x1="540" y1="275" x2="540" y2="215" stroke="#1a3a6a" stroke-width="0.8" stroke-dasharray="2,2"/>
+<line x1="540" y1="705" x2="540" y2="765" stroke="#1a3a6a" stroke-width="0.8" stroke-dasharray="2,2"/>
+<line x1="540" y1="220" x2="540" y2="760" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+<rect x="488" y="480" width="105" height="18" fill="white"/>
+<text x="540" y="493" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a3a6a">10'-0"</text>
+<text x="540" y="510" font-family="monospace" font-size="11" text-anchor="middle" fill="#666">OVERALL DIA.</text>
+
+<!-- Dimension: P1 to P2 chord = 5'-0" -->
+<line x1="540" y1="280" x2="540" y2="190" stroke="#1a3a6a" stroke-width="0.8" stroke-dasharray="2,2"/>
+<line x1="722" y1="385" x2="790" y2="350" stroke="#1a3a6a" stroke-width="0.8" stroke-dasharray="2,2"/>
+<line x1="548" y1="194" x2="786" y2="354" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+<rect x="625" y="252" width="80" height="32" fill="white" stroke="#1a3a6a" stroke-width="0.8"/>
+<text x="665" y="268" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">5'-0"</text>
+<text x="665" y="280" font-family="monospace" font-size="10" text-anchor="middle" fill="#666">POST C-C</text>
+
+<!-- Dimension: horizontal span P6-P2 -->
+<line x1="358" y1="385" x2="358" y2="150" stroke="#1a3a6a" stroke-width="0.8" stroke-dasharray="2,2"/>
+<line x1="722" y1="385" x2="722" y2="150" stroke="#1a3a6a" stroke-width="0.8" stroke-dasharray="2,2"/>
+<line x1="362" y1="155" x2="718" y2="155" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+<rect x="480" y="145" width="120" height="20" fill="white"/>
+<text x="540" y="159" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a3a6a">10'-0" SPAN</text>
+
+<!-- Radius dimension -->
+<line x1="540" y1="490" x2="722" y2="490" stroke="#1a3a6a" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="542" y1="520" x2="720" y2="520" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+<rect x="591" y="510" width="80" height="18" fill="white"/>
+<text x="631" y="523" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">5'-0" R</text>
+
+<!-- Post base detail callout -->
+<rect x="790" y="50" width="250" height="205" fill="#f8f9ff" stroke="#1a3a6a" stroke-width="1.5"/>
+<text x="915" y="70" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a3a6a">POST BASE DETAIL</text>
+<text x="915" y="86" font-family="monospace" font-size="11" text-anchor="middle" fill="#555">6×6 centred on pier</text>
+<rect x="870" y="100" width="90" height="90" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2" fill-opacity="0.4"/>
+<line x1="870" y1="145" x2="960" y2="145" stroke="#1a3a6a" stroke-width="0.8" stroke-dasharray="4,2"/>
+<line x1="915" y1="100" x2="915" y2="190" stroke="#1a3a6a" stroke-width="0.8" stroke-dasharray="4,2"/>
+<circle cx="893" cy="123" r="5" fill="none" stroke="#1a3a6a" stroke-width="1.5"/>
+<circle cx="937" cy="123" r="5" fill="none" stroke="#1a3a6a" stroke-width="1.5"/>
+<circle cx="893" cy="167" r="5" fill="none" stroke="#1a3a6a" stroke-width="1.5"/>
+<circle cx="937" cy="167" r="5" fill="none" stroke="#1a3a6a" stroke-width="1.5"/>
+<text x="915" y="210" font-family="monospace" font-size="10" text-anchor="middle" fill="#1a3a6a">4×5/8" J-bolt, 8" embed</text>
+<text x="915" y="225" font-family="monospace" font-size="10" text-anchor="middle" fill="#1a3a6a">2" grout pad below post</text>
+<text x="915" y="240" font-family="monospace" font-size="10" text-anchor="middle" fill="#555">Min 12" dia. caisson, 24" deep</text>
+<line x1="790" y1="145" x2="733" y2="385" stroke="#4a7aaa" stroke-width="1" stroke-dasharray="4,3"/>
+
+<!-- Notes row -->
+<text x="540" y="845" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Internal hex angle: 120° | Post plumb tolerance: 1/8" per 8'-0" height</text>
+<text x="540" y="862" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">All 6 posts: 6×6 S4S or rough-sawn cedar | Cut length: 8'-4" | Qty: 6</text>
+<text x="540" y="879" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Beam bolts: 2× 1/2" through-bolts per connection | Washers both sides</text>
+<text x="540" y="896" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">P1 = TRUE NORTH post (establish layout string from P1 first)</text>
+
+<!-- North arrow -->
+<g transform="translate(540, 928)">
+  <circle cx="0" cy="0" r="22" fill="white" stroke="#1a3a6a" stroke-width="1.5"/>
+  <polygon points="0,-18 5,8 0,4 -5,8" fill="#1a3a6a"/>
+  <polygon points="0,-18 5,8 0,4 -5,8" fill="white" transform="rotate(180)"/>
+  <text x="0" y="-6" font-family="monospace" font-size="10" text-anchor="middle" fill="white">N</text>
+</g>
+</svg>

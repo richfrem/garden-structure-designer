@@ -58,3 +58,37 @@ Using the raw pitch angle as the miter setting is the most common hallucination.
 ```
 
 Set `"_locked": true` once this file has passed validation. Locked files must not be modified without resetting the lock and re-running the geometry engine.
+
+## Gotchas
+
+- **Pitch angle ≠ miter angle.** For a hexagonal hip rafter at 4:12 pitch, the pitch angle is 18.43° but the compound miter is 28.71°. Using the pitch angle directly produces cuts that won't close at the hub. The geometry engine prevents this — never bypass it.
+- **Post cut length ≠ finished post height.** The geometry engine computes `cutLength_ft` accounting for the post base standoff. If you substitute the desired above-grade height directly, every post will stand too tall.
+- **`warnings` array is a hard stop.** A non-empty `warnings` array from geometry_engine.py means a height or geometry constraint is violated. Do not forward a file with warnings to drawing-generator under any circumstances.
+- **Locking is one-way without a reset.** Once `_locked: true` is written, any upstream skill (bracing-system-designer updating coordinates, for example) must explicitly reset the lock before writing and re-run the geometry engine before re-locking.
+- **Geometry engine must be invoked as a subprocess.** The structural engine is explicitly forbidden from computing compound angles, rafter lengths, or SVG coordinates internally — even as a cross-check. All math must flow through `geometry_engine.py`.
+
+## Smoke Test
+
+1. **Standard hexagon:** Given hex-6, 4:12 pitch, 14ft outer span with no height constraint: `geometry-calculations.json` exists, `warnings = []`, `miter_deg ≈ 28.71`, `bevel_deg ≈ 9.10`, `structural-model.json._locked = true`. ✓
+2. **Height violation detection:** Given an 8ft post with a strict 10ft total height limit that the roof rise would breach: geometry engine populates `warnings` with a height constraint message, structural engine halts and does not lock the model. ✓
+3. **Lock integrity:** Re-invoking structural engine on an already-locked model without a prior lock reset: skill halts and reports the locked state rather than overwriting. ✓
+
+## Completion: HANDOFF_BLOCK
+
+On successful completion emit this block so the design-orchestrator can gate Stage 2:
+
+```json
+{
+  "stage": "structural-engine",
+  "status": "COMPLETE",
+  "outputs": [
+    "context/staging/structural-model.json",
+    "context/staging/geometry-calculations.json"
+  ],
+  "locked": true,
+  "warnings_count": 0,
+  "next_stage": "joinery-designer"
+}
+```
+
+If any warning or lock failure occurred, set `"status": "FAIL"` and populate `"failure_reason"` before returning to the orchestrator.

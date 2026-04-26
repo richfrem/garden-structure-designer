@@ -1,0 +1,11 @@
+{
+  "skill": "builder-docs-generator",
+  "eval_cases": [
+    {"id": "E001", "input": "Generate the lumber purchase list, budget estimate, and assembly guide for the builder.", "should_trigger": true, "notes": "Core trigger: builder procurement documents"},
+    {"id": "E002", "input": "Create a phase-by-phase site assembly sequence for the hexagonal pergola.", "should_trigger": true, "notes": "Assembly guide generation"},
+    {"id": "E003", "input": "What are the compound miter and bevel saw settings?", "should_trigger": false, "notes": "Saw settings in shop-blueprint — routes to shop-blueprint-generator"},
+    {"id": "E004", "input": "Produce the budget estimate with Vancouver Island BC regional pricing.", "should_trigger": true, "notes": "Regional budget estimate trigger"},
+    {"id": "E005", "input": "Generate the final PDF package.", "should_trigger": false, "notes": "Document compilation — routes to document-compiler"},
+    {"id": "E006", "input": "Make a lumber shopping list with order lengths and hardware schedule.", "should_trigger": true, "notes": "Purchase list generation — explicitly builder-docs territory"}
+  ]
+}

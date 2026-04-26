@@ -64,3 +64,39 @@ When generating the cut list table:
 - Never include a "Derived by" note — all values come from the geometry engine.
 
 Always prioritize fabrication clarity over visual aesthetics. Dense dimensions, bold callout arrows, and explicit warnings are preferred.
+
+## Gotchas
+
+- **Miter angle ≠ pitch angle — the most common failure mode.** For a hexagonal hip rafter at 4:12, pitch_angle=18.43° but miter_deg=28.71°. Any blueprint showing miter ≈ pitch angle will produce cuts that fail at the hub. Copy `miter_deg` verbatim from geometry-calculations.json every time.
+- **"Test cut on scrap" warning is non-negotiable.** It must appear in every cut list that includes compound angles. Omitting it exposes the builder to waste on an expensive timber run.
+- **Isometric is parallel projection, not perspective.** No foreshortening, no vanishing points. Compute SVG polygon paths from the coordinate map. Any visual foreshortening indicates a calculation error.
+- **SB01-cut-list.json must be written as a build artifact.** builder-docs-generator reads board-foot totals from this file to generate the budget estimate. If the JSON is not written, the downstream builder documents will be incomplete.
+- **Component isolation sheet must show the bird's-mouth cut geometry.** This is the most referenced detail at the job site. Missing or vague bird's-mouth dimensions are the leading cause of builder callbacks.
+
+## Smoke Test
+
+1. **Angle accuracy gate:** Given geometry-calculations.json with miter_deg=28.71: all blueprint text labels show miter=28.71° exactly; no sheet shows miter≈18.43°. ✓
+2. **SB01-cut-list.json presence:** After skill completes: `outputs/shop-blueprint/SB01-cut-list.json` exists with board-foot totals populated. ✓
+3. **Validator gate:** All four output SVGs pass `svg_validator.py` before skill signals completion. ✓
+
+## Completion: HANDOFF_BLOCK
+
+On successful completion emit this block so the design-orchestrator can gate Stage 4 (Blueprint QA):
+
+```json
+{
+  "stage": "shop-blueprint-generator",
+  "status": "COMPLETE",
+  "outputs": [
+    "outputs/blueprint-plan.svg",
+    "outputs/blueprint-elevation.svg",
+    "outputs/blueprint-isometric.svg",
+    "outputs/blueprint-component-isolation.svg",
+    "outputs/shop-blueprint/SB01-cut-list.json"
+  ],
+  "sheets_validated": 4,
+  "next_stage": "validation-agent (Stage 5 Blueprint QA)"
+}
+```
+
+If any sheet fails validation or SB01-cut-list.json was not written, set `"status": "FAIL"` and list the blocking issues.

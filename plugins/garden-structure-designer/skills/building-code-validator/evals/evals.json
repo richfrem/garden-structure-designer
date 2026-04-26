@@ -1,0 +1,11 @@
+{
+  "skill": "building-code-validator",
+  "eval_cases": [
+    {"id": "E001", "input": "Look up the snow and wind load requirements for Saanich, BC and write building-code.json.", "should_trigger": true, "notes": "Core trigger: jurisdiction lookup"},
+    {"id": "E002", "input": "What psf snow loads apply to the Kelowna BC interior region?", "should_trigger": true, "notes": "Regional code lookup"},
+    {"id": "E003", "input": "Validate the post spans against the BC Building Code for structural safety.", "should_trigger": false, "notes": "Structural physics check — routes to validation-agent or structural-engine"},
+    {"id": "E004", "input": "Map design-spec.json jurisdiction to a building code profile and output building-code.json.", "should_trigger": true, "notes": "Explicit invocation"},
+    {"id": "E005", "input": "Compute what rafter dimensions we need given 40psf snow load.", "should_trigger": false, "notes": "Structural sizing — routes to structural-engine"},
+    {"id": "E006", "input": "Does this project need a building permit in Saanich BC?", "should_trigger": false, "notes": "Permit advisory question — out of scope for this skill"}
+  ]
+}

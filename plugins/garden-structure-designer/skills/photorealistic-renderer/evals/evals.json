@@ -1,0 +1,41 @@
+{
+  "skill": "photorealistic-renderer",
+  "evals": [
+    {
+      "input": "render the gazebo",
+      "should_trigger": true
+    },
+    {
+      "input": "create a photorealistic image of the structure",
+      "should_trigger": true
+    },
+    {
+      "input": "generate a render prompt",
+      "should_trigger": true
+    },
+    {
+      "input": "show me what this will look like in real life",
+      "should_trigger": true
+    },
+    {
+      "input": "visualize the structure",
+      "should_trigger": true
+    },
+    {
+      "input": "I want to see a photo of the finished gazebo",
+      "should_trigger": true
+    },
+    {
+      "input": "make a blueprint drawing",
+      "should_trigger": false
+    },
+    {
+      "input": "generate the plan view SVG",
+      "should_trigger": false
+    },
+    {
+      "input": "compile the PDF",
+      "should_trigger": false
+    }
+  ]
+}

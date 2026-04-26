@@ -1,0 +1,54 @@
+{
+  "skill": "intake-normalizer",
+  "description": "Routing evals: should_trigger=true when the agent should invoke intake-normalizer to convert conversational input into design-spec.json",
+  "eval_cases": [
+    {
+      "id": "E001",
+      "input": "I just finished talking to the user about their pergola. I have a conversation transcript. Now I need to extract dimensions and save them as JSON.",
+      "should_trigger": true,
+      "notes": "Classic trigger: transcript exists, need structured JSON output"
+    },
+    {
+      "id": "E002",
+      "input": "The user said they want a 12-foot hexagonal gazebo in Kelowna BC with a 4:12 pitch. Normalize this into the staging spec.",
+      "should_trigger": true,
+      "notes": "Explicit mention of normalizing into staging spec"
+    },
+    {
+      "id": "E003",
+      "input": "Parse the design conversation and write design-spec.json to context/staging/",
+      "should_trigger": true,
+      "notes": "Direct invocation language"
+    },
+    {
+      "id": "E004",
+      "input": "We need to check if the post spans are safe given the snow load in Kelowna.",
+      "should_trigger": false,
+      "notes": "Structural validation, not intake normalization — should route to structural-engine"
+    },
+    {
+      "id": "E005",
+      "input": "Validate the structural model against BC building code requirements.",
+      "should_trigger": false,
+      "notes": "Building code validation — routes to building-code-validator"
+    },
+    {
+      "id": "E006",
+      "input": "The user said their site is in Richmond BC near the coast. What building code do we use?",
+      "should_trigger": false,
+      "notes": "Jurisdiction lookup only — routes to building-code-validator, not intake-normalizer"
+    },
+    {
+      "id": "E007",
+      "input": "I have a design transcript with the user's requirements. Convert it to a validated design-spec.json with NEEDS_CLARIFICATION flags for missing fields.",
+      "should_trigger": true,
+      "notes": "Explicit intake-normalizer use case with clarification flags"
+    },
+    {
+      "id": "E008",
+      "input": "Build a hexagonal gazebo for me.",
+      "should_trigger": false,
+      "notes": "User intent to design — routes to interactive-designer first, not intake-normalizer directly"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "project": {
+    "structure_type": "Pergola",
+    "shape": "Hexagon"
+  },
+  "dimensions": {
+    "height_total_ft": 10.5,
+    "max_diagonal_ft": 10.0
+  },
+  "materials": {
+    "post_size": "6x6"
+  },
+  "site": {
+    "location": "Saanich, BC",
+    "canonical_location_id": "BC_SAANICH"
+  },
+  "style": {
+    "joinery_preference": "Traditional mortise and tenon",
+    "hardware": "Minimal to none, traditional all-wood joinery",
+    "post_bases": "Concrete pier blocks with standoffs"
+  }
+}

@@ -64,8 +64,39 @@ Produce four distinct drawings:
 
 ## Dirty/Clean State
 
-Each generated SVG filename must be registered in `output/document-compiler/manifest.json` with:
+Each generated SVG filename must be registered in `outputs/document-compiler/manifest.json` with:
 ```json
 { "file": "...", "sourceChecksum": "<sha256 of structural-model.json>" }
 ```
 On re-run, skip any sheet whose `sourceChecksum` still matches the current file hash.
+
+## Gotchas
+
+- **Double-hyphen inside SVG XML comments breaks all parsers.** Even a single `--` inside a comment body causes `xml.etree.ElementTree.parse()` to throw; the sheet is rejected by the validator. Check every comment before writing.
+- **`grade_y=640` is not a constant.** The grade baseline Y coordinate is scale-dependent. Always read `svg_coordinates.grade_y` from geometry-calculations.json. Hardcoding 640 will misalign all vertical coordinates when scale changes.
+- **Checksum skip does not account for joinery/bracing changes.** If bracing-system-designer ran after the last drawing pass (and set `bracing_added: true` in structural-model.json) but did not change the model's structural dimensions, the hash will appear unchanged. Always check `bracing_added` flag and force-regenerate affected sheets.
+- **Perspective view is NOT AI-generated.** Perspective SVGs must be built from SVG polygon paths computed from the coordinate map. Any AI image generation is forbidden and will fail the validation gate.
+- **Four distinct sheets are required.** Plan, Elevation, Perspective, and Isometric must all be generated and individually validated before the stage is considered complete. A missing sheet is a blocking failure.
+
+## Smoke Test
+
+1. **Standard four-sheet generation:** Given a validated structural-model.json with geometry-calculations.json present: all four sheets generated, `svg_validator.py` exits 0 for each, manifest.json updated with current checksums. ✓
+2. **Idempotent re-run:** Re-run with unchanged structural-model hash and no `bracing_added` flag: all sheets skipped (logged as "up to date"), manifest unchanged. ✓
+3. **Validator rejection triggers halt:** A sheet with a double-hyphen comment body: `svg_validator.py` returns non-zero, skill halts and reports the specific XML error. ✓
+
+## Completion: HANDOFF_BLOCK
+
+On successful completion emit this block so the design-orchestrator can gate Stage 4:
+
+```json
+{
+  "stage": "drawing-generator",
+  "status": "COMPLETE",
+  "sheets_generated": ["plan", "elevation", "perspective", "isometric"],
+  "sheets_validated": 4,
+  "manifest_updated": true,
+  "next_stage": "shop-blueprint-generator"
+}
+```
+
+If any sheet fails validation, set `"status": "FAIL"`, list the failed sheets in `"validation_failures"`, and return to the orchestrator.

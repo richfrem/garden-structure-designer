@@ -8,7 +8,7 @@ allowed-tools: Read, Write
 - `context/staging/structural-model.json`
 - `context/staging/geometry-calculations.json`
 - `context/staging/design-spec.json`
-- `output/shop-blueprint/SB01-cut-list.json` (for board-foot totals)
+- `outputs/shop-blueprint/SB01-cut-list.json` (for board-foot totals)
 
 ## Outputs
 
@@ -38,3 +38,37 @@ Phase-by-phase site construction sequence:
 - QC checkpoint per phase (plumb, pitch, clearance verification steps).
 
 Use the compound cut values from `geometry-calculations.json` in any assembly note that references saw settings.
+
+## Gotchas
+
+- **Order length ≠ cut length.** Add a minimum 1ft per piece as waste allowance; add more when multiple cuts come from a single board (e.g. rafters require one cut per piece at the bird's-mouth). Using cut length as order length results in a shortage on-site.
+- **Regional pricing defaults to Vancouver Island, BC.** If `design-spec.json` jurisdiction indicates a different region, override the regional pricing header and note the mismatch explicitly. Never silently apply Vancouver Island rates to an Ontario or Alberta build.
+- **SB01-cut-list.json must exist before this skill runs.** Board-foot totals for the budget estimate come from this file. If it is missing, halt and return an error directing the orchestrator to re-run shop-blueprint-generator.
+- **Assembly-guide saw settings must reference geometry-calculations.json values.** Any assembly step that mentions saw settings (miter, bevel) must quote the values verbatim from geometry-calculations.json — not from memory, not approximated.
+- **Labor and tax exclusions are mandatory disclosures.** Both must appear as explicit line items in budget-estimate.md. Omitting either makes the estimate appear lower than reality and misleads the client.
+
+## Smoke Test
+
+1. **Prerequisite check:** Given a run with no `outputs/shop-blueprint/SB01-cut-list.json`: skill halts immediately with a diagnostic message rather than producing an incomplete estimate. ✓
+2. **Order-length inflation:** Given a hex-6 with rafter cut length = 7.5ft: lumber-purchase-list specifies order length ≥ 9ft (standard stock) per piece, not 7.5ft. ✓
+3. **Assembly-guide angle accuracy:** Assembly-guide.md saw settings section reads miter and bevel from geometry-calculations.json, matching the blueprint values exactly. ✓
+
+## Completion: HANDOFF_BLOCK
+
+On successful completion emit this block so the design-orchestrator can gate Stage 7 (compilation):
+
+```json
+{
+  "stage": "builder-docs-generator",
+  "status": "COMPLETE",
+  "outputs": [
+    "outputs/lumber-purchase-list.md",
+    "outputs/budget-estimate.md",
+    "outputs/assembly-guide.md"
+  ],
+  "regional_pricing": "<jurisdiction from design-spec>",
+  "next_stage": "document-compiler"
+}
+```
+
+If SB01-cut-list.json was missing or any output file was not written, set `"status": "FAIL"` and specify the blocking reason.

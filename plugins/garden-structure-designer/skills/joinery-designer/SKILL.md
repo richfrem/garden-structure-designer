@@ -13,3 +13,34 @@ User preference for joinery (mechanical fasteners vs traditional timber framing)
 2. If traditional timber framing chosen: assign half-laps, mortise and tenons, or housing depths.
 3. If mechanical chosen: assign specific bolt patterns and Simpson Strong-Tie brackets.
 4. Output specifics to `context/staging/joinery-model.json`.
+
+## Gotchas
+
+- **Mortise-and-tenon requires minimum beam depth.** Traditional joinery is only valid when the beam actual depth is ≥ 7.25" (nominal 6×8). For smaller beams, default to mechanical hardware and note the constraint in joinery-model.json.
+- **Bolt count scales with span.** The minimum two-bolt pattern (2 × 1/2" through-bolts per connection) is valid for spans ≤ 10ft. Spans > 10ft require three bolts minimum. Do not apply the two-bolt default universally.
+- **Do NOT lock joinery-model.json.** The bracing-system-designer writes brace joinery into this file; locking it prematurely blocks that step.
+- **User preference must be captured before this skill runs.** If joinery-type preference is missing from the transcript, the skill must prompt the orchestrator for clarification rather than defaulting silently.
+- **Hardware schedule must reference specific product numbers.** Vague references like "Simpson bracket" are not sufficient — include the full product code (e.g. `BC6`) to make the lumber-purchase-list actionable.
+
+## Smoke Test
+
+1. **Traditional preference, qualifying beam:** Given structural-model.json with 6×8 beams and user preference for timber framing: outputs joinery-model.json with mortise-and-tenon entries, no error. ✓
+2. **Mechanical preference, standard span:** Given structural-model.json with span=10ft and preference=mechanical: outputs bolt pattern with 2 bolts per connection, named Simpson product codes. ✓
+3. **Long span mechanical:** Given span=12ft and preference=mechanical: outputs 3-bolt pattern per connection. ✓
+
+## Completion: HANDOFF_BLOCK
+
+On successful completion emit this block so the design-orchestrator can gate Stage 2:
+
+```json
+{
+  "stage": "joinery-designer",
+  "status": "COMPLETE",
+  "outputs": ["context/staging/joinery-model.json"],
+  "joinery_type": "<mechanical|timber>",
+  "locked": false,
+  "next_stage": "bracing-system-designer"
+}
+```
+
+If preference was missing and a clarification is needed, set `"status": "NEEDS_CLARIFICATION"` and specify the missing field.

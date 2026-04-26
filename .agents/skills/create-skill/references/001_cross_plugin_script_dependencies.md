@@ -4,7 +4,7 @@
 Accepted
 
 ## Context
-Within the `agent-plugins-skills` monorepo, a single Plugin often needs logic that another Plugin has already implemented. Historically this was solved by directly executing another plugin's python scripts via relative paths or deep symlinks -- for example, `tool-inventory` running `python ../../rlm-factory/scripts/distiller.py`.
+Within the `agent-plugins-skills` monorepo, a single Plugin often needs logic that another Plugin has already implemented. Historically this was solved by directly executing another plugin's python scripts via relative paths or deep symlinks -- for example, `vector-db` running `python ../../rlm-factory/scripts/distiller.py`.
 
 This tight coupling violates separation of concerns and breaks plugin encapsulation. It causes fragile dependencies (e.g., if a directory structure changes, the symlink breaks), makes it impossible to cleanly export or replicate a single plugin in isolation, and causes generic logic analyzers to throw false positives when scanning plugin directories.
 
@@ -24,7 +24,7 @@ Instead of Plugin A physically executing Plugin B's python scripts via `subproce
 Implementation Rules:
 1. **No Cross-Plugin Symlinks**: A plugin's `scripts/` directory must only contain scripts or symlinks that resolve *inside* that specific plugin's boundary.
 2. **No Relative Python Executions**: `SKILL.md` workflows and internal python files must not execute `python ../../other-plugin/scripts/foo.py`.
-3. **Decoupled Instructions**: If `tool-inventory` requires an RLM functionality (like cache clearing), it must prompt/instruct the Agent: *"Please trigger the `rlm-curator` skill to clear the cache."*
+3. **Decoupled Instructions**: If `vector-db` requires an RLM functionality (like cache clearing), it must prompt/instruct the Agent: *"Please trigger the `rlm-curator` skill to clear the cache."*
 
 ## Consequences
 **Positive:**

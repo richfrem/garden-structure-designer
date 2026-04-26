@@ -74,7 +74,7 @@ hardcoded credentials, missing required fields), flag them prominently in the fi
 
 Run the deterministic inventory script first:
 ```bash
-python3 "scripts/inventory_plugin.py" --path <plugin-dir> --format json
+python "scripts/inventory_plugin.py" --path <plugin-dir> --format json
 ```
 
 If the script is unavailable, manually enumerate:
@@ -209,7 +209,7 @@ Generate a structured markdown report. For single plugins, output inline. For co
 **Iteration Directory Isolation**: All analysis reports must be saved into explicitly versioned and isolated outputs (e.g. `analysis-reports/target-run-1/`) to prevent destructive overrides on re-runs.
 **Asynchronous Benchmark Metric Capture**: Once the audit run completes, immediately log the resulting `total_tokens` and `duration_ms` to a `timing.json` file to calculate the cost of the deep-dive analysis.
 
-Always end with **Virtuous Cycle Recommendations**: specific, actionable improvements for `agent-plugin-analyzer` (this plugin), `agent-scaffolders`, and `agent-skill-open-specifications` based on patterns discovered.
+Always end with **Virtuous Cycle Recommendations**: specific, actionable improvements for `agent-scaffolders` (this plugin), `agent-scaffolders`, and `agent-scaffolders` based on patterns discovered.
 
 ## References
 

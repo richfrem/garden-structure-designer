@@ -58,5 +58,5 @@ Run the targeted analysis pipeline on a single Agent Skill. This allows for focu
    > **Security scanning is enabled by default.** Credential detection, network call detection,
    > and environment variable checks run on all script files unless `--no-security` is passed.
 3. **Pattern Matching**: Checks against `references/pattern-catalog.md` and detects anti-patterns.
-4. **Knowledge Synthesis**: `synthesize-learnings` is invoked to map discovered patterns back to our core `agent-scaffolders` and `agent-skill-open-specifications`.
+4. **Knowledge Synthesis**: `synthesize-learnings` is invoked to map discovered patterns back to our core `agent-scaffolders` and `agent-scaffolders`.
 5. **Output**: Renders the analysis inline, highlighting the novel techniques implemented in the isolated skill.

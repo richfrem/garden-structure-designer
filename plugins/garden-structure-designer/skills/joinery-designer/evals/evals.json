@@ -1,0 +1,11 @@
+{
+  "skill": "joinery-designer",
+  "eval_cases": [
+    {"id": "E001", "input": "Design the post-to-beam and rafter-to-hub connections using traditional timber framing joinery.", "should_trigger": true, "notes": "Core trigger: joinery design"},
+    {"id": "E002", "input": "Assign Simpson Strong-Tie hardware to all connections and write joinery-model.json.", "should_trigger": true, "notes": "Mechanical joinery explicit path"},
+    {"id": "E003", "input": "Generate the elevation SVG showing post heights and beam spans.", "should_trigger": false, "notes": "Drawing task — routes to drawing-generator"},
+    {"id": "E004", "input": "User wants mortise and tenon joinery. Output the connection details for the structural model.", "should_trigger": true, "notes": "Traditional joinery preference"},
+    {"id": "E005", "input": "Calculate the bracing load to determine whether knee braces are needed.", "should_trigger": false, "notes": "Lateral stability analysis — routes to bracing-system-designer"},
+    {"id": "E006", "input": "What bolt spacing do I need for a 12ft beam span?", "should_trigger": true, "notes": "Hardware specification for mechanical joinery"}
+  ]
+}

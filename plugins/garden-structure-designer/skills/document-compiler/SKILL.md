@@ -11,4 +11,37 @@ Technical cut-sheets from `shop-blueprint-generator` (Dimensioned orthographics 
 
 ## Core Responsibilities
 1. Construct the document adhering to the PDF Layout requirements (architectural diagrams and 3D visual layouts first, then the detailed technical shop blueprints, followed by timber cut-list tables and fastener tables).
-2. Generate intermediate format (e.g. Markdown or LaTeX) and execute external tool if necessary to produce the final .pdf binary in `outputs/`.
+2. Write the intermediate Markdown to `outputs/design-package.md` using standard `![alt](path)` image references pointing to the actual SVG/PNG files in `outputs/`.
+3. **Embed all assets before PDF conversion** — run `embed_svgs.py` to inline every SVG and PNG as raw HTML so the PDF contains the visuals, not broken links:
+   ```bash
+   python3 plugins/garden-structure-designer/scripts/embed_svgs.py \
+       outputs/design-package.md \
+       outputs/design-package-embedded.md
+   ```
+4. Convert the embedded Markdown to PDF:
+   ```bash
+   npx -y md-to-pdf outputs/design-package-embedded.md
+   # produces outputs/design-package-embedded.pdf
+   ```
+5. Rename to final output:
+   ```bash
+   mv outputs/design-package-embedded.pdf outputs/design-package.pdf
+   ```
+
+## Gotchas
+
+- **Always embed before converting.** Passing the raw Markdown with `![](path.svg)` references to `npx md-to-pdf` produces a PDF with broken image placeholders — the PDF renderer cannot read local SVG files by path. `embed_svgs.py` must run first to inline all assets.
+- **`embed_svgs.py` warns on missing assets** — any `WARNING: asset not found` line in its stderr means a drawing is absent. Treat this as a blocking failure; do not proceed to `npx md-to-pdf`.
+- **`npx -y md-to-pdf` may fail on headless environments** (no display, missing Chrome). If the command exits non-zero, write `outputs/PDF_GENERATION_FAILED.md` with the error message. The `outputs/design-package-embedded.md` file is always written regardless, so the user has a fallback they can open in a browser and print to PDF.
+- **Layout order is a hard requirement:** architectural diagrams first, shop blueprints second, cut-list/fastener tables last. Any reordering makes the package non-compliant with the Option A Architectural Layout constraint.
+- **Verify the manifest before compiling.** Read `outputs/document-compiler/manifest.json` and confirm all listed sheets are present and their checksums match the current files. A stale manifest means some drawings may be outdated — halt and report which sheets need regenerating.
+- **All builder documents must be present.** budget-estimate.md, lumber-purchase-list.md, and assembly-guide.md must exist and be non-empty before compilation begins. A missing builder document is a blocking failure.
+- **PDF binary must be confirmed to exist.** After running the PDF tool, verify the output file exists with `os.path.exists()` before signaling stage completion. Tool exit-0 alone is not sufficient.
+
+## Smoke Test
+
+1. **Full happy path:** Given all staging files and drawings present: `embed_svgs.py` runs clean (no warnings), PDF written to `outputs/design-package.pdf`, compilation manifest updated, stage signals complete. ✓
+2. **Embedded SVGs in PDF:** Open `outputs/design-package-embedded.md` in a browser — all 8 drawings (4 architectural + 4 shop blueprint) render as visible diagrams, not broken image icons. ✓
+3. **PDF tool failure graceful degradation:** Force `npx md-to-pdf` to fail: `outputs/PDF_GENERATION_FAILED.md` is created, `outputs/design-package-embedded.md` fallback is written with all SVGs inlined, skill does not crash. ✓
+4. **Stale manifest detection:** Remove one SVG after compiler reads manifest: compiler halts and reports the missing sheet by name. ✓
+5. **Missing asset detection:** Point embed_svgs.py at a Markdown referencing a non-existent SVG: WARNING is printed to stderr, compiler halts before invoking npx. ✓

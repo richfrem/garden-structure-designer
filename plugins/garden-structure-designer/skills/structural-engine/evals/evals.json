@@ -1,0 +1,12 @@
+{
+  "skill": "structural-engine",
+  "eval_cases": [
+    {"id": "E001", "input": "Run the structural calculations for the hexagonal pergola. Compute post, beam, and rafter sizes.", "should_trigger": true, "notes": "Core trigger: structural sizing from design-spec.json"},
+    {"id": "E002", "input": "Calculate safe post and beam dimensions based on BC snow and wind loads from building-code.json.", "should_trigger": true, "notes": "Load-driven structural sizing"},
+    {"id": "E003", "input": "Run geometry_engine.py and write structural-model.json.", "should_trigger": true, "notes": "Explicit invocation"},
+    {"id": "E004", "input": "Generate the plan view SVG for the hexagonal pergola.", "should_trigger": false, "notes": "Drawing generation — routes to drawing-generator"},
+    {"id": "E005", "input": "What building code loads apply to Saanich BC?", "should_trigger": false, "notes": "Code lookup — routes to building-code-validator"},
+    {"id": "E006", "input": "Compute compound miter and bevel angles for the hexagonal hip rafters.", "should_trigger": true, "notes": "Compound angle computation is owned by structural-engine via geometry_engine.py"},
+    {"id": "E007", "input": "What joinery type should I use for post-to-beam connections?", "should_trigger": false, "notes": "Joinery decision — routes to joinery-designer"}
+  ]
+}

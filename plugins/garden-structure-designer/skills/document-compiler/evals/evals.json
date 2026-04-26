@@ -1,4 +1,12 @@
-[
-  { "id": "eval-1-positive", "type": "positive", "prompt": "Compile the staging files into the final PDF packet.", "should_trigger": true },
-  { "id": "eval-2-negative", "type": "negative", "prompt": "Validate the timber strength.", "should_trigger": false }
-]
+{
+  "skill": "document-compiler",
+  "eval_cases": [
+    {"id": "E001", "input": "Assemble all drawings and builder documents into a final PDF package.", "should_trigger": true, "notes": "Core trigger: final PDF compilation"},
+    {"id": "E002", "input": "Compile the Markdown document and run md-to-pdf to produce the output PDF.", "should_trigger": true, "notes": "Explicit compilation invocation"},
+    {"id": "E003", "input": "Generate the elevation drawing SVG.", "should_trigger": false, "notes": "Drawing generation — routes to drawing-generator"},
+    {"id": "E004", "input": "Package all the generated outputs into a single document in outputs/.", "should_trigger": true, "notes": "Output aggregation is document-compiler job"},
+    {"id": "E005", "input": "Produce the lumber purchase list.", "should_trigger": false, "notes": "Builder docs — routes to builder-docs-generator"},
+    {"id": "E006", "input": "Check that all drawing sheets are present before compiling, then produce the PDF.", "should_trigger": true, "notes": "Pre-compilation manifest check + compile"}
+  ]
+}
+

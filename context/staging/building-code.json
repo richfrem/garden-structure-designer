@@ -1,0 +1,8 @@
+{
+  "location": "Saanich, BC",
+  "snow_load_psf": 40,
+  "wind_load_psf": 25,
+  "seismic_category": "C",
+  "frost_depth_inches": 18,
+  "notes": "Coastal wind load considerations, moderate snow load. Open pergola structure has reduced snow accumulation but solid timber elements require adequate lateral bracing (knee braces)."
+}

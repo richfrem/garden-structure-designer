@@ -1,0 +1,22 @@
+{
+  "post_to_beam": {
+    "type": "Housed tenon with wooden peg",
+    "details": "2 inch tenon width, 1 inch oak pegs"
+  },
+  "beam_to_beam": {
+    "type": "Scarf joint at post top or half-lap",
+    "details": "Housed half-lap joint over posts"
+  },
+  "knee_brace_to_post_beam": {
+    "type": "Mortise and tenon",
+    "details": "1.5 inch tenon, pegged with 3/4 inch dowel"
+  },
+  "rafter_to_hub": {
+    "type": "Housed mortise and tenon",
+    "details": "Rafters tenoned into central hexagonal king post hub"
+  },
+  "post_to_base": {
+    "type": "Hidden knife plate or Simpson Strong-Tie post base",
+    "details": "Anchored to concrete pier block to keep timber off ground moisture"
+  }
+}

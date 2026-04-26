@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 bundle.py
 =====================================
@@ -15,6 +15,14 @@ import argparse
 import fnmatch
 from pathlib import Path
 from datetime import datetime
+
+# Windows encoding safety: ensures emojis/unicode don't crash the console
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except (AttributeError, Exception):
+        pass
 
 MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024  # 5 MB safety limit
 

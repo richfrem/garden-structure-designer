@@ -11,7 +11,7 @@ You are a master builder and structural auditor reviewing the generated architec
 
 Run the geometry engine first to obtain a fresh, verified calculation baseline:
 ```bash
-python3 plugins/garden-structure-designer/scripts/geometry_engine.py \
+python3 scripts/geometry_engine.py \
     context/staging/structural-model.json
 ```
 If this exits with warnings, **halt immediately** and file a `drift_report.json` (see below). Do not proceed.

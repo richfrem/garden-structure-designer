@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<!-- SHOP BLUEPRINT: ELEVATION VIEW — Compound cut annotations, member dims, hardware callouts -->
+<!-- SOURCE: geometry-calculations.json | scale=42px/ft | miter=28.71 | bevel=9.10 | pitch=4:12 -->
+<!-- COORDINATE MAP: grade_y=700, post_top_y=350, beam_top_y=325, hub_apex_y=245 -->
+<!-- TOPOLOGY_SKIP: 2D front elevation — only front 2 posts visible by design -->
+<rect width="1200" height="900" fill="white"/>
+
+<defs>
+  <pattern id="blueprintGrid" width="42" height="42" patternUnits="userSpaceOnUse">
+    <path d="M 42 0 L 0 0 0 42" fill="none" stroke="#dbe8f5" stroke-width="0.5"/>
+  </pattern>
+  <marker id="aR" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#1a3a6a"/>
+  </marker>
+  <marker id="aL" markerWidth="8" markerHeight="8" refX="1" refY="3" orient="auto-start-reverse">
+    <path d="M8,0 L8,6 L0,3 z" fill="#1a3a6a"/>
+  </marker>
+</defs>
+<rect width="1200" height="900" fill="url(#blueprintGrid)"/>
+<rect x="15" y="15" width="1170" height="870" fill="none" stroke="#1a3a6a" stroke-width="2.5"/>
+<rect x="30" y="30" width="1140" height="840" fill="none" stroke="#1a3a6a" stroke-width="1"/>
+
+<!-- Title block -->
+<rect x="30" y="790" width="1140" height="80" fill="#e8eef8" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="30" y1="808" x2="1170" y2="808" stroke="#1a3a6a" stroke-width="1"/>
+<line x1="600" y1="808" x2="600" y2="870" stroke="#1a3a6a" stroke-width="1"/>
+<text x="315" y="803" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a3a6a">SHOP BLUEPRINT — ELEVATION VIEW</text>
+<text x="315" y="822" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">10ft HEX CEDAR GAZEBO | Saanich BC | DWG NO: SB-02</text>
+<text x="315" y="838" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Scale: 3/4"=1'-0" | Post cut: 8'-4" | Total ht: 10'-7"</text>
+<text x="315" y="854" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Date: 2026-04-25 | Rev: 0</text>
+<text x="885" y="822" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a3a6a">COMPOUND CUT — HIP RAFTER SEAT</text>
+<text x="885" y="838" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Miter: 28.7°  |  Bevel: 9.10°  |  Pitch: 4:12</text>
+<text x="885" y="854" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Rafter structural length: 5'-4" | With overhang: 6'-4"</text>
+<text x="885" y="870" font-family="monospace" font-size="11" text-anchor="middle" fill="#c00">VERIFY: test seat cut on scrap 4×6 before cutting stock</text>
+
+<!-- Ground line + hatching -->
+<line x1="80" y1="700" x2="1120" y2="700" stroke="#1a3a6a" stroke-width="3"/>
+<text x="600" y="720" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a">FINISH GRADE</text>
+<!-- Ground hatching -->
+<line x1="80" y1="700" x2="80" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="120" y1="700" x2="110" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="200" y1="700" x2="185" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="300" y1="700" x2="280" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="400" y1="700" x2="380" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="500" y1="700" x2="480" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="600" y1="700" x2="580" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="700" y1="700" x2="680" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="800" y1="700" x2="780" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="900" y1="700" x2="880" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="1000" y1="700" x2="980" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="1080" y1="700" x2="1060" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+<line x1="1120" y1="700" x2="1105" y2="730" stroke="#1a3a6a" stroke-width="1.5"/>
+
+<!-- Concrete pier blocks (section view) -->
+<!-- Left pier -->
+<rect x="290" y="700" width="70" height="30" fill="#d0d0c8" stroke="#1a3a6a" stroke-width="2"/>
+<line x1="290" y1="712" x2="360" y2="712" stroke="#1a3a6a" stroke-width="0.8"/>
+<!-- Right pier -->
+<rect x="790" y="700" width="70" height="30" fill="#d0d0c8" stroke="#1a3a6a" stroke-width="2"/>
+<line x1="790" y1="712" x2="860" y2="712" stroke="#1a3a6a" stroke-width="0.8"/>
+
+<!-- Left post (6×6 = 21px wide at scale) -->
+<rect x="315" y="350" width="21" height="350" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+<!-- cedar grain -->
+<line x1="320" y1="360" x2="320" y2="698" stroke="#a08050" stroke-width="0.7" opacity="0.5"/>
+<line x1="326" y1="360" x2="326" y2="698" stroke="#a08050" stroke-width="0.7" opacity="0.5"/>
+<line x1="332" y1="360" x2="332" y2="698" stroke="#a08050" stroke-width="0.7" opacity="0.5"/>
+
+<!-- Right post -->
+<rect x="815" y="350" width="21" height="350" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+<line x1="820" y1="360" x2="820" y2="698" stroke="#a08050" stroke-width="0.7" opacity="0.5"/>
+<line x1="826" y1="360" x2="826" y2="698" stroke="#a08050" stroke-width="0.7" opacity="0.5"/>
+<line x1="832" y1="360" x2="832" y2="698" stroke="#a08050" stroke-width="0.7" opacity="0.5"/>
+
+<!-- Centre ghost post (dashed) -->
+<rect x="575" y="390" width="16" height="310" fill="none" stroke="#4a7aaa" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+<!-- 4×8 beam header: 30px deep (7.25" at scale ~30px) -->
+<rect x="315" y="325" width="522" height="25" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
+<!-- beam grain lines -->
+<line x1="360" y1="325" x2="360" y2="350" stroke="#a08050" stroke-width="0.8" opacity="0.5"/>
+<line x1="420" y1="325" x2="420" y2="350" stroke="#a08050" stroke-width="0.8" opacity="0.5"/>
+<line x1="480" y1="325" x2="480" y2="350" stroke="#a08050" stroke-width="0.8" opacity="0.5"/>
+<line x1="540" y1="325" x2="540" y2="350" stroke="#a08050" stroke-width="0.8" opacity="0.5"/>
+<line x1="600" y1="325" x2="600" y2="350" stroke="#a08050" stroke-width="0.8" opacity="0.5"/>
+<line x1="660" y1="325" x2="660" y2="350" stroke="#a08050" stroke-width="0.8" opacity="0.5"/>
+<line x1="720" y1="325" x2="720" y2="350" stroke="#a08050" stroke-width="0.8" opacity="0.5"/>
+<line x1="780" y1="325" x2="780" y2="350" stroke="#a08050" stroke-width="0.8" opacity="0.5"/>
+
+<!-- Knee braces (both sides) -->
+<!-- Left post left brace -->
+<line x1="315" y1="490" x2="248" y2="325" stroke="#8B5A2B" stroke-width="6" stroke-linecap="round"/>
+<!-- Left post right brace -->
+<line x1="336" y1="490" x2="395" y2="325" stroke="#8B5A2B" stroke-width="6" stroke-linecap="round"/>
+<!-- Right post left brace -->
+<line x1="815" y1="490" x2="756" y2="325" stroke="#8B5A2B" stroke-width="6" stroke-linecap="round"/>
+<!-- Right post right brace -->
+<line x1="836" y1="490" x2="903" y2="325" stroke="#8B5A2B" stroke-width="6" stroke-linecap="round"/>
+
+<!-- Brace angle annotation -->
+<text x="230" y="400" font-family="monospace" font-size="11" fill="#8B5A2B" transform="rotate(-62,230,400)">45°</text>
+<text x="870" y="380" font-family="monospace" font-size="11" fill="#8B5A2B" transform="rotate(62,870,380)">45°</text>
+
+<!-- Hip rafters (with overhang tail) -->
+<!-- Left rafter from beam top to apex, plus tail -->
+<line x1="248" y1="310" x2="576" y2="245" stroke="#1a3a6a" stroke-width="7" stroke-linecap="round"/>
+<!-- Right rafter -->
+<line x1="903" y1="310" x2="576" y2="245" stroke="#1a3a6a" stroke-width="7" stroke-linecap="round"/>
+<!-- Rafter tail extensions -->
+<line x1="248" y1="310" x2="188" y2="322" stroke="#1a3a6a" stroke-width="7" stroke-linecap="round"/>
+<line x1="903" y1="310" x2="963" y2="322" stroke="#1a3a6a" stroke-width="7" stroke-linecap="round"/>
+
+<!-- King post hub box at apex -->
+<rect x="562" y="232" width="28" height="28" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2.5"/>
+<text x="576" y="228" font-family="monospace" font-size="10" text-anchor="middle" fill="#1a3a6a">6×6</text>
+
+<!-- Purlin ring at rafter midpoint -->
+<line x1="340" y1="283" x2="810" y2="283" stroke="#4a7aaa" stroke-width="2.5" stroke-dasharray="4,3"/>
+<text x="576" y="276" font-family="monospace" font-size="10" text-anchor="middle" fill="#4a7aaa">PURLIN RING</text>
+
+<!-- ============================================ -->
+<!--  DIMENSION STRINGS                           -->
+<!-- ============================================ -->
+
+<!-- Total height: 10'-7" = 445px at 42px/ft -->
+<line x1="1060" y1="700" x2="1060" y2="245" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#aL)" marker-end="url(#aR)"/>
+<text x="1090" y="480" font-family="monospace" font-size="12" fill="#1a3a6a" transform="rotate(90,1090,480)">10'-7" TOTAL HT.</text>
+
+<!-- Post cut height: 8'-4" = 350px -->
+<line x1="1030" y1="700" x2="1030" y2="350" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#aL)" marker-end="url(#aR)"/>
+<rect x="1035" y="518" width="80" height="20" fill="white"/>
+<text x="1075" y="532" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">8'-4" POST</text>
+
+<!-- Beam depth: 7-1/4" = 25px -->
+<line x1="1000" y1="325" x2="1000" y2="350" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#aL)" marker-end="url(#aR)"/>
+<text x="1005" y="340" font-family="monospace" font-size="10" fill="#1a3a6a">7-1/4" BM</text>
+
+<!-- Roof rise: 20" = 70px -->
+<line x1="80" y1="325" x2="80" y2="245" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#aL)" marker-end="url(#aR)"/>
+<text x="40" y="288" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a" transform="rotate(-90,40,288)">20" RISE</text>
+
+<!-- Post C-C span: 10'-0" = 420px -->
+<line x1="325" y1="760" x2="825" y2="760" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#aL)" marker-end="url(#aR)"/>
+<rect x="520" y="750" width="110" height="20" fill="white"/>
+<text x="575" y="764" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">10'-0" C-C</text>
+
+<!-- Overhang: 12" = 42px -->
+<line x1="248" y1="312" x2="190" y2="325" stroke="#aaa" stroke-width="0.5" stroke-dasharray="2,2"/>
+<line x1="315" y1="312" x2="190" y2="325" stroke="#aaa" stroke-width="0.5" stroke-dasharray="2,2"/>
+<line x1="192" y1="315" x2="313" y2="315" stroke="#1a3a6a" stroke-width="1" marker-start="url(#aL)" marker-end="url(#aR)"/>
+<rect x="218" y="304" width="70" height="16" fill="white"/>
+<text x="253" y="315" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a">12" OH</text>
+
+<!-- Clear height under beam (8'-4" minus beam = 8'-4" clear) -->
+<line x1="140" y1="700" x2="140" y2="350" stroke="#1a3a6a" stroke-width="1" stroke-dasharray="4,2" marker-start="url(#aL)" marker-end="url(#aR)"/>
+<text x="100" y="530" font-family="monospace" font-size="11" fill="#1a3a6a" transform="rotate(-90,100,530)">8'-4" CLEAR</text>
+
+<!-- Compound cut detail balloon -->
+<rect x="870" y="50" width="295" height="190" fill="#fff8e8" stroke="#8B5A2B" stroke-width="2"/>
+<text x="1018" y="70" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a3a6a">HIP RAFTER SEAT CUT DETAIL</text>
+<line x1="870" y1="80" x2="1165" y2="80" stroke="#8B5A2B" stroke-width="0.8"/>
+<!-- rafter cross-section symbol (simplified 4×6 section) -->
+<rect x="910" y="95" width="40" height="60" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2" fill-opacity="0.5"/>
+<!-- seat cut line -->
+<line x1="910" y1="125" x2="935" y2="95" stroke="#c00" stroke-width="2"/>
+<!-- bevel cut line -->
+<line x1="950" y1="120" x2="935" y2="95" stroke="#00a" stroke-width="2"/>
+<text x="958" y="108" font-family="monospace" font-size="11" fill="#1a3a6a">TOP VIEW: 4×6 RAFTER</text>
+<text x="870" y="175" font-family="monospace" font-size="12" fill="#1a3a6a">  Miter angle (plan): 28.7°</text>
+<text x="870" y="193" font-family="monospace" font-size="12" fill="#1a3a6a">  Bevel angle (profile): 9.10°</text>
+<text x="870" y="211" font-family="monospace" font-size="12" fill="#1a3a6a">  Saw blade: tilt bevel, rotate miter</text>
+<text x="870" y="229" font-family="monospace" font-size="11" fill="#c00">  Use digital angle gauge for bevel setup</text>
+<line x1="870" y1="117" x2="576" y2="245" stroke="#8B5A2B" stroke-width="1" stroke-dasharray="4,3"/>
+
+<!-- Member labels -->
+<text x="260" y="550" font-family="monospace" font-size="11" fill="#1a3a6a" transform="rotate(-90,260,550)">6×6 POST</text>
+<text x="540" y="320" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a">4×8 BEAM (typ. 6 places)</text>
+<text x="185" y="365" font-family="monospace" font-size="11" fill="#8B5A2B">4×4 BRACE</text>
+<text x="165" y="285" font-family="monospace" font-size="11" fill="#1a3a6a">4×6 RAFTER</text>
+<text x="576" y="240" font-family="monospace" font-size="10" text-anchor="middle" fill="#1a3a6a">HUB</text>
+</svg>

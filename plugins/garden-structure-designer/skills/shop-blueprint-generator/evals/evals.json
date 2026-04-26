@@ -1,0 +1,11 @@
+{
+  "skill": "shop-blueprint-generator",
+  "eval_cases": [
+    {"id": "E001", "input": "Generate heavily dimensioned carpenter shop blueprints with compound cut angles.", "should_trigger": true, "notes": "Core trigger: fabrication shop drawings"},
+    {"id": "E002", "input": "Produce the SB01 cut list JSON with board-foot totals for the builder.", "should_trigger": true, "notes": "Cut list artifact generation"},
+    {"id": "E003", "input": "Create the elevation and plan view architectural drawings.", "should_trigger": false, "notes": "Architectural drawings — routes to drawing-generator"},
+    {"id": "E004", "input": "What miter and bevel settings do I set on the saw for the hip rafters?", "should_trigger": true, "notes": "Saw setting lookup is embedded in shop blueprint output"},
+    {"id": "E005", "input": "Produce the component isolation detail showing the bird's-mouth cut and rafter tenon.", "should_trigger": true, "notes": "Component isolation sheet is a shop-blueprint-generator output"},
+    {"id": "E006", "input": "Generate the budget estimate and lumber purchase list.", "should_trigger": false, "notes": "Builder procurement docs — routes to builder-docs-generator"}
+  ]
+}

@@ -1,4 +1,12 @@
-[
-  { "id": "eval-1-positive", "type": "positive", "prompt": "Generate plan view for the given footprint structural coordinates.", "should_trigger": true },
-  { "id": "eval-2-negative", "type": "negative", "prompt": "Design the foundation logic.", "should_trigger": false }
-]
+{
+  "skill": "drawing-generator",
+  "eval_cases": [
+    {"id": "E001", "input": "Generate the four orthographic/perspective SVG drawings for the hexagonal pergola.", "should_trigger": true, "notes": "Core trigger: architectural drawing generation"},
+    {"id": "E002", "input": "Create plan view, elevation view, perspective, and isometric SVG files from geometry-calculations.json.", "should_trigger": true, "notes": "Explicit four-sheet generation"},
+    {"id": "E003", "input": "Generate the shop blueprint cut sheets with dimensional arrows and compound angles.", "should_trigger": false, "notes": "Shop drawings — routes to shop-blueprint-generator"},
+    {"id": "E004", "input": "Render the SVG drawings and validate them with svg_validator.py.", "should_trigger": true, "notes": "Drawing + validation workflow"},
+    {"id": "E005", "input": "Calculate the compound miter angle for the hex rafters.", "should_trigger": false, "notes": "Geometry math — routes to structural-engine / geometry_engine.py"},
+    {"id": "E006", "input": "Update the drawing manifest with new checksums after the structural model changed.", "should_trigger": true, "notes": "Manifest update is drawing-generator responsibility"}
+  ]
+}
+

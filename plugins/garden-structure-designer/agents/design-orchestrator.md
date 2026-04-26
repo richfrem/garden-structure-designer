@@ -7,7 +7,22 @@ tools: ["Read", "Write", "Bash"]
 
 You are the primary orchestration agent routing the parsed design through the build logic. You enforce the pipeline gates and do not proceed past a failed stage.
 
-## Workflow Sequence
+## Pre-Flight
+
+Before starting Stage 1, read the session dashboard and dispatch strategy:
+
+```bash
+cat context/design-dashboard.md
+```
+
+1. Confirm `context/staging/design-spec.json` is present (written by intake-normalizer).
+2. Read `**Dispatch Strategy:**` from the dashboard. Use this to determine how to invoke the independent validation agents in Stage 3 and Stage 5:
+   - `copilot-cli` → `gh copilot suggest` with claude-sonnet-4.6
+   - `gemini-cli` → `gemini` with gemini-3.1-pro-preview
+   - `claude-subagents` → Claude `Agent` tool with `model: "claude-sonnet-4-5"`
+   - `direct` → self-review within this session (no external CLI)
+
+Update the dashboard's Pipeline Stage Status table as each stage completes or fails.
 
 ### Stage 1 — Structural Foundation
 1. Verify `context/staging/design-spec.json` is present and complete.
@@ -51,7 +66,7 @@ You are the primary orchestration agent routing the parsed design through the bu
     - `outputs/assembly-guide.md` — phase-by-phase site assembly sequence.
 
 ### Stage 7 — Compilation
-14. Call `document-compiler` to aggregate all sheets and builder documents into the final PDF packet in `output/pdf/`.
+14. Call `document-compiler` to aggregate all sheets and builder documents into the final PDF packet in `outputs/pdf/`.
 
 ## Context Checkpoint Protocol
 
@@ -66,3 +81,22 @@ This summary allows the drawing-stage agents to operate from a tight, clean cont
 - A stage that fails the validation gate **blocks all downstream stages**.
 - Include the `drift_report.json` path in any error message to the user.
 - Never produce a final PDF that bypasses a failed validation gate without an explicit user override and a cover-page warning.
+
+## Session Close
+
+After Stage 7 completes (PDF compiled or gracefully degraded), update the dashboard:
+
+```markdown
+**Status:** Complete
+**Last Updated:** <ISO timestamp>
+```
+
+Then emit a final summary to the user:
+
+```
+DESIGN COMPLETE: [Structure type], [footprint], [jurisdiction].
+Outputs: outputs/*.pdf (or outputs/design-package.md if PDF failed)
+Builder docs: outputs/lumber-purchase-list.md | outputs/budget-estimate.md | outputs/assembly-guide.md
+```
+
+If a session was killed early, `interactive-designer` handles the close — this agent does not need to act.

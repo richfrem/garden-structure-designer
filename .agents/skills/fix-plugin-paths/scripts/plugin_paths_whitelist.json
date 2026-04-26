@@ -26,7 +26,7 @@
     "plugins/scripts/",
     "plugins/plugin-name",
     "plugins/formatter",
-    "plugins/agent-plugin-analyzer",
+    "plugins/agent-scaffolders",
     "plugins/agent-agentic-os",
     "plugins/copilot-cli",
     "plugins/spec-kitty-plugin",
