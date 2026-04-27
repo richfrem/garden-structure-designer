@@ -42,10 +42,10 @@ Open SVG files in any modern browser for full zoom and inspection.
 
 | Drawing | File | Status |
 |---------|------|--------|
-| Plan view (top down) | [drawing-plan-view.svg](drawing-plan-view.svg) | ✅ VALIDATED |
-| Front elevation | [drawing-elevation-view.svg](drawing-elevation-view.svg) | ✅ VALIDATED |
-| Isometric projection | [drawing-isometric-view.svg](drawing-isometric-view.svg) | ✅ VALIDATED |
-| Perspective view | [drawing-perspective-view.svg](drawing-perspective-view.svg) | ✅ VALIDATED |
+| Plan view (top down) | <img src="drawing-plan-view.svg" width="400" /> | ✅ VALIDATED |
+| Front elevation | <img src="drawing-elevation-view.svg" width="400" /> | ✅ VALIDATED |
+| Isometric projection | <img src="drawing-isometric-view.svg" width="400" /> | ✅ VALIDATED |
+| Perspective view | <img src="drawing-perspective-view.svg" width="400" /> | ✅ VALIDATED |
 
 ---
 
@@ -55,10 +55,10 @@ Dimensioned construction drawings with title blocks for shop use.
 
 | Sheet | File | Contents |
 |-------|------|----------|
-| SB-01 Plan | [blueprint-plan.svg](blueprint-plan.svg) | Plan with post layout, dimensions, post-base callout |
-| SB-02 Elevation | [blueprint-elevation.svg](blueprint-elevation.svg) | Elevation with compound-cut detail balloon |
-| SB-03 Isometric | [blueprint-isometric.svg](blueprint-isometric.svg) | Assembly isometric with sequence numbers 1–7 |
-| SB-04 Details | [blueprint-component-isolation.svg](blueprint-component-isolation.svg) | 4 joinery details: seat cut, tenon, post-beam, caisson |
+| SB-01 Plan | <img src="blueprint-plan.svg" width="400" /> | Plan with post layout, dimensions, post-base callout |
+| SB-02 Elevation | <img src="blueprint-elevation.svg" width="400" /> | Elevation with compound-cut detail balloon |
+| SB-03 Isometric | <img src="blueprint-isometric.svg" width="400" /> | Assembly isometric with sequence numbers 1–7 |
+| SB-04 Details | <img src="blueprint-component-isolation.svg" width="400" /> | 4 joinery details: seat cut, tenon, post-beam, caisson |
 
 ---
 
@@ -168,4 +168,54 @@ Locked model: `context/staging/structural-model.json` (`_locked: true`)
   "rafter_overhang_ft": 1.0
 }
 ```
+
+---
+
+<div style="page-break-after: always;"></div>
+
+## 11. Full-Page Rendered Drawings
+
+### Architectural Drawings
+
+**Plan View**
+![Plan View](drawing-plan-view.svg)
+
+<div style="page-break-after: always;"></div>
+
+**Front Elevation**
+![Elevation View](drawing-elevation-view.svg)
+
+<div style="page-break-after: always;"></div>
+
+**Isometric Projection**
+![Isometric View](drawing-isometric-view.svg)
+
+<div style="page-break-after: always;"></div>
+
+**Perspective View**
+![Perspective View](drawing-perspective-view.svg)
+
+---
+
+<div style="page-break-after: always;"></div>
+
+### Shop Blueprints
+
+**SB-01 Plan**
+![Blueprint Plan](blueprint-plan.svg)
+
+<div style="page-break-after: always;"></div>
+
+**SB-02 Elevation**
+![Blueprint Elevation](blueprint-elevation.svg)
+
+<div style="page-break-after: always;"></div>
+
+**SB-03 Isometric**
+![Blueprint Isometric](blueprint-isometric.svg)
+
+<div style="page-break-after: always;"></div>
+
+**SB-04 Details**
+![Blueprint Component Isolation](blueprint-component-isolation.svg)
 

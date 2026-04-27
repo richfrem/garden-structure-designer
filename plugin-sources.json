@@ -1,7 +1,7 @@
 {
   "sources": [
     {
-      "source": "richfrem/agent-plugins-skills",
+      "source": "/Users/richardfremmerlid/Projects/agent-plugins-skills/plugins",
       "plugins": [
         "agent-agentic-os",
         "agent-loops",
@@ -13,7 +13,8 @@
         "dependency-management",
         "exploration-cycle-plugin",
         "gemini-cli",
-        "link-checker"
+        "link-checker",
+        "task-manager"
       ]
     }
   ]
