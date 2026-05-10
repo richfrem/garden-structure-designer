@@ -57,26 +57,37 @@ If the generated drawings are mostly blank, tiny, childish, symbolic, or placeho
 
 Do not allow `PASS` merely because XML validation passes.
 
-## Required Commands
+## Authoritative Command
 
-At minimum run:
+Run this single command — it enumerates all SVGs, runs both validators, writes all three report files, and exits non-zero if `may_claim_success` is false:
 
 ```bash
-for f in outputs/*.svg; do
-  python3 plugins/garden-structure-designer/scripts/svg_validator.py \
-    "$f" \
-    plugins/garden-structure-designer/context/staging/structural-model.json
-done
+python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
+  --svg-dir outputs \
+  --model plugins/garden-structure-designer/context/staging/structural-model.json \
+  --report-dir plugins/garden-structure-designer/context/staging \
+  --md-dir outputs
 ```
 
-If implemented:
+This writes:
+- `context/staging/drawing-content-report.json` — per-sheet content detail
+- `context/staging/drawing-red-team-report.json` — gate verdict + `may_claim_success`
+- `outputs/drawing-red-team-report.md` — human-readable summary
+
+## Diagnostic Commands (optional supplemental detail)
+
+Individual validator runs for debugging a specific sheet:
 
 ```bash
-for f in outputs/*.svg; do
-  python3 plugins/garden-structure-designer/scripts/drawing_content_validator.py \
-    "$f" \
-    plugins/garden-structure-designer/context/staging/structural-model.json
-done
+python3 plugins/garden-structure-designer/scripts/svg_validator.py \
+  outputs/<sheet>.svg \
+  plugins/garden-structure-designer/context/staging/structural-model.json
+
+python3 plugins/garden-structure-designer/scripts/drawing_content_validator.py \
+  outputs/<sheet>.svg \
+  plugins/garden-structure-designer/context/staging/structural-model.json \
+  --json-output plugins/garden-structure-designer/context/staging/drawing-content-report.json \
+  --append
 ```
 
 Then perform adversarial review using the `drawing-red-team-agent` rubric.
