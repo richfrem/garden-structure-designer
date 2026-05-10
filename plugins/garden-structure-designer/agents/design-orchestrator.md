@@ -84,20 +84,29 @@ The red-team reviewer must inspect all generated SVG files for:
 - component isolation panel completeness;
 - placeholder-garbage failure modes (rows of rectangles, blank canvases, tiny top-left clusters).
 
-Required commands:
+Authoritative gate command:
 
 ```bash
-for f in outputs/*.svg; do
-  python3 plugins/garden-structure-designer/scripts/drawing_content_validator.py \
-    "$f" \
-    plugins/garden-structure-designer/context/staging/structural-model.json
-done
+python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
+  --svg-dir outputs \
+  --model plugins/garden-structure-designer/context/staging/structural-model.json \
+  --report-dir plugins/garden-structure-designer/context/staging \
+  --md-dir outputs
 ```
+
+This single command:
+- Checks required deterministic staging artifacts are present.
+- Runs `svg_validator.py` and `drawing_content_validator.py` per sheet.
+- Writes `context/staging/drawing-content-report.json` (per-sheet detail).
+- Writes `context/staging/drawing-red-team-report.json` (gate verdict).
+- Writes `outputs/drawing-red-team-report.md` (human-readable summary).
+- Exits 1 and sets `may_claim_success: false` if any sheet fails.
 
 Required outputs:
 
 ```text
 context/staging/drawing-red-team-report.json
+context/staging/drawing-content-report.json
 outputs/drawing-red-team-report.md
 ```
 
@@ -105,7 +114,7 @@ The orchestrator must read `drawing-red-team-report.json`.
 
 If `may_claim_success` is `false`, the package status must be `PARTIAL`, `BLOCKED`, or `DRAFT ONLY`.
 
-The orchestrator must **not** emit `PASS`, `READY`, or `DESIGN COMPLETE` unless the adversarial drawing review passes.
+The orchestrator must **not** emit `PASS`, `READY`, or `DESIGN COMPLETE` unless `may_claim_success` is `true`.
 
 This gate exists because XML-valid SVGs can still be visually useless. Passing `svg_validator.py` alone is not sufficient.
 

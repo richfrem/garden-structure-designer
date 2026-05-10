@@ -70,3 +70,26 @@ All generated SVGs MUST embed `data-role` and `data-id` attributes on structural
 python3 scripts/render_drawings.py context/staging/structural-model.json
 ```
 
+## 🚨 Drawing Red-Team Gate — Embedded Enforcement
+
+**This skill MUST NOT claim its own SVG outputs are complete or successful.**
+
+After generating all SVGs, this skill's responsibility ends. It must NOT:
+- Set any package status to `PASS`, `READY`, or `DESIGN COMPLETE`.
+- Assert that drawings are "builder-meaningful" or "complete."
+- Skip or shortcut the Stage 5.75 gate.
+
+The adversarial drawing gate is **mandatory and independent**:
+
+```bash
+python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
+  --svg-dir outputs \
+  --model plugins/garden-structure-designer/context/staging/structural-model.json \
+  --report-dir plugins/garden-structure-designer/context/staging \
+  --md-dir outputs
+```
+
+If `context/staging/drawing-red-team-report.json` does not exist or has `may_claim_success: false`,
+the package status is **BLOCKED** and this skill has NOT successfully completed the pipeline.
+
+Passing `svg_validator.py` alone is **not** sufficient for pipeline completion.
