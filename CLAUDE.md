@@ -108,3 +108,25 @@ The ultimate goal is generating a professional-grade structural construction PDF
 - **Agents** live in `plugins/<plugin-name>/agents/<name>/AGENT.md` with YAML frontmatter (`name`, `description`, `allowed-tools`).
 - **Skills** live in `plugins/<plugin-name>/skills/<name>/SKILL.md` with the same frontmatter pattern.
 - Skills use `create-skill`, `create-sub-agent`, and `create-plugin` meta-skills for consistent authoring.
+
+---
+
+## Deterministic Package Completion Standard (v1.3.1)
+
+A garden-structure-designer task is **not complete** merely because Markdown files, render prompts, or photorealistic images were updated.
+
+The authoritative construction package consists of validated deterministic artifacts:
+```
+context/staging/design-spec.json          context/staging/structural-model.json
+context/staging/geometry-calculations.json
+outputs/*.svg                              outputs/shop-blueprint/SB01-cut-list.json
+outputs/quality-dashboard.md              outputs/run-insights.json
+```
+
+All geometry, dimensions, angles, cut lengths, and validation claims must trace back to JSON/SVG artifacts generated or validated by scripts. Photorealistic images are presentation references only.
+
+Before claiming success, agents must report:
+- deterministic artifacts regenerated or revalidated;
+- validators run and their exit results;
+- remaining warnings;
+- status: **PASS**, **PARTIAL**, **BLOCKED**, or **DRAFT ONLY**.

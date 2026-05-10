@@ -1,197 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" width="1200" height="1000">
-<!-- SHOP BLUEPRINT: COMPONENT ISOLATION SHEET — Compound cut, joinery, and hub details -->
-<!-- SOURCE: geometry-calculations.json | miter=28.71 | bevel=9.10 | pitch=4:12 -->
-<!-- TOPOLOGY_SKIP: Detail sheet — isolated components, not full structural topology -->
-<rect width="1200" height="1000" fill="white"/>
-
-<defs>
-  <pattern id="detailGrid" width="21" height="21" patternUnits="userSpaceOnUse">
-    <path d="M 21 0 L 0 0 0 21" fill="none" stroke="#dbe8f5" stroke-width="0.4"/>
-  </pattern>
-  <marker id="cR" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
-    <path d="M0,0 L0,6 L8,3 z" fill="#1a3a6a"/>
-  </marker>
-  <marker id="cL" markerWidth="8" markerHeight="8" refX="1" refY="3" orient="auto-start-reverse">
-    <path d="M8,0 L8,6 L0,3 z" fill="#1a3a6a"/>
-  </marker>
-</defs>
-<rect width="1200" height="1000" fill="url(#detailGrid)"/>
-<rect x="15" y="15" width="1170" height="970" fill="none" stroke="#1a3a6a" stroke-width="2.5"/>
-<rect x="30" y="30" width="1140" height="960" fill="none" stroke="#1a3a6a" stroke-width="1"/>
-
-<!-- Title block -->
-<rect x="30" y="920" width="1140" height="70" fill="#e8eef8" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="30" y1="940" x2="1170" y2="940" stroke="#1a3a6a" stroke-width="1"/>
-<line x1="600" y1="940" x2="600" y2="990" stroke="#1a3a6a" stroke-width="1"/>
-<text x="315" y="935" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a3a6a">COMPONENT ISOLATION — JOINERY AND CUT DETAILS</text>
-<text x="315" y="955" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">10ft HEX CEDAR GAZEBO | Saanich BC | DWG NO: SB-04</text>
-<text x="315" y="973" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">4 details: Seat cut | Tenon | Post-beam | Caisson</text>
-<text x="315" y="989" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Date: 2026-04-25  |  Rev: 0  |  NTS — illustrative</text>
-<text x="885" y="955" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">Joinery: traditional mortise and tenon</text>
-<text x="885" y="973" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">No metal hangers | 2× 3/4" oak drawbore pegs</text>
-<text x="885" y="989" font-family="monospace" font-size="12" text-anchor="middle" fill="#c00">Miter: 28.7°  Bevel: 9.10° — test on scrap first</text>
-
-<!-- Page heading -->
-<text x="40" y="56" font-family="monospace" font-size="20" font-weight="bold" fill="#1a3a6a">COMPONENT DETAILS — 4 DETAILS</text>
-
-<!-- ============================================================ -->
-<!-- DETAIL 1: HIP RAFTER COMPOUND SEAT CUT  (upper-left)       -->
-<!-- ============================================================ -->
-<rect x="40" y="70" width="540" height="400" fill="#f8f9ff" stroke="#1a3a6a" stroke-width="1.5"/>
-<rect x="40" y="70" width="540" height="24" fill="#e8eef8" stroke="#1a3a6a" stroke-width="1"/>
-<text x="310" y="87" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a3a6a">DETAIL 1 — HIP RAFTER COMPOUND SEAT CUT</text>
-
-<!-- Beam top face at bottom of detail -->
-<rect x="100" y="350" width="330" height="70" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2" fill-opacity="0.55"/>
-<text x="265" y="392" font-family="monospace" font-size="12" text-anchor="middle" fill="#1a3a6a">4×8 BEAM TOP FACE</text>
-
-<!-- Rafter plan view sitting on beam, angled at 28.71° miter -->
-<polygon points="160,210 250,210 278,350 132,350" fill="#c8906a" stroke="#1a3a6a" stroke-width="2"/>
-<text x="205" y="285" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a" transform="rotate(-14,205,285)">4×6 RAFTER</text>
-
-<!-- Miter angle arc + label -->
-<line x1="132" y1="350" x2="90" y2="350" stroke="#c00" stroke-width="1.5"/>
-<path d="M 142,350 A 40,40 0 0 0 158,318" fill="none" stroke="#c00" stroke-width="2"/>
-<text x="75" y="320" font-family="monospace" font-size="14" font-weight="bold" fill="#c00">28.71°</text>
-<text x="75" y="336" font-family="monospace" font-size="11" fill="#c00">MITER</text>
-<text x="75" y="350" font-family="monospace" font-size="10" fill="#555">(saw rotation)</text>
-
-<!-- Profile view showing bevel (separate sub-box) -->
-<rect x="360" y="155" width="195" height="180" fill="#eef3fa" stroke="#4a7aaa" stroke-width="1.2"/>
-<text x="458" y="175" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a">SIDE PROFILE</text>
-<text x="458" y="189" font-family="monospace" font-size="10" text-anchor="middle" fill="#555">(bevel view)</text>
-<!-- rafter side section -->
-<polygon points="390,305 415,305 450,210 425,210" fill="#c8906a" stroke="#1a3a6a" stroke-width="2"/>
-<!-- beam -->
-<rect x="370" y="305" width="175" height="22" fill="#b87848" stroke="#1a3a6a" stroke-width="1.5" fill-opacity="0.5"/>
-<!-- bevel angle arc -->
-<line x1="390" y1="305" x2="545" y2="305" stroke="#1a3a6a" stroke-width="1.2"/>
-<path d="M 403,305 A 18,18 0 0 0 413,290" fill="none" stroke="#00a" stroke-width="2"/>
-<text x="425" y="300" font-family="monospace" font-size="13" font-weight="bold" fill="#00a">9.10°</text>
-<text x="425" y="316" font-family="monospace" font-size="11" fill="#00a">BEVEL</text>
-<text x="425" y="330" font-family="monospace" font-size="10" fill="#555">(blade tilt)</text>
-
-<!-- Seat cut callout -->
-<text x="160" y="370" font-family="monospace" font-size="10" fill="#c00">SEAT CUT relief</text>
-
-<!-- Key notes -->
-<text x="50" y="400" font-family="monospace" font-size="11" fill="#1a3a6a">Saw setup: (1) tilt blade 9.10°</text>
-<text x="50" y="416" font-family="monospace" font-size="11" fill="#1a3a6a">           (2) rotate fence 28.71°</text>
-<text x="50" y="432" font-family="monospace" font-size="11" fill="#1a3a6a">           (3) single compound pass</text>
-<text x="50" y="448" font-family="monospace" font-size="11" fill="#555">Mark crown side — HAP end first</text>
-<text x="50" y="464" font-family="monospace" font-size="11" fill="#555">Rafter tail: plumb cut (bevel only)</text>
-
-<!-- ============================================================ -->
-<!-- DETAIL 2: RAFTER-TO-HUB TENON  (upper-right)              -->
-<!-- ============================================================ -->
-<rect x="620" y="70" width="550" height="400" fill="#f8f9ff" stroke="#1a3a6a" stroke-width="1.5"/>
-<rect x="620" y="70" width="550" height="24" fill="#e8eef8" stroke="#1a3a6a" stroke-width="1"/>
-<text x="895" y="87" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a3a6a">DETAIL 2 — RAFTER TENON INTO HUB MORTISE</text>
-
-<!-- Hub box (isometric-style) -->
-<polygon points="760,185 870,185 925,240 925,345 870,400 760,400 705,345 705,240" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2.5" fill-opacity="0.65"/>
-<text x="815" y="295" font-family="monospace" font-size="13" text-anchor="middle" font-weight="bold" fill="#1a3a6a">6×6 KING</text>
-<text x="815" y="312" font-family="monospace" font-size="13" text-anchor="middle" font-weight="bold" fill="#1a3a6a">POST HUB</text>
-<text x="815" y="330" font-family="monospace" font-size="11" text-anchor="middle" fill="#555">6 mortises at 60°</text>
-
-<!-- Mortise slots on hub top and right face -->
-<rect x="803" y="183" width="22" height="14" fill="#7a5a3a" stroke="#1a3a6a" stroke-width="1.5"/>
-<polygon points="895,215 920,200 920,224 895,239" fill="#7a5a3a" stroke="#1a3a6a" stroke-width="1.5"/>
-
-<!-- Rafter tenon approaching from left -->
-<rect x="635" y="273" width="105" height="22" fill="#b87848" stroke="#1a3a6a" stroke-width="2"/>
-<rect x="703" y="279" width="20" height="11" fill="#956030" stroke="#1a3a6a" stroke-width="1.5"/>
-<text x="680" y="269" font-family="monospace" font-size="10" fill="#1a3a6a">TENON</text>
-<text x="635" y="314" font-family="monospace" font-size="11" fill="#1a3a6a">4×6 HIP RAFTER</text>
-
-<!-- Oak peg -->
-<line x1="680" y1="284" x2="725" y2="284" stroke="#c00" stroke-width="3" stroke-dasharray="4,3"/>
-<circle cx="712" cy="284" r="4" fill="#c00"/>
-<text x="635" y="350" font-family="monospace" font-size="11" fill="#c00">3/4" oak drawbore peg (per rafter)</text>
-<text x="635" y="366" font-family="monospace" font-size="11" fill="#555">Drive from above, 1/16" drawbore offset</text>
-
-<!-- Notes -->
-<text x="630" y="415" font-family="monospace" font-size="11" fill="#1a3a6a">Tenon: 1.5" × 3" × 3" long into hub face</text>
-<text x="630" y="431" font-family="monospace" font-size="11" fill="#1a3a6a">Mortise: 1.625" × 3.125" (1/16" clearance)</text>
-<text x="630" y="447" font-family="monospace" font-size="11" fill="#555">6 rafters at 60° plan intervals around hub</text>
-<text x="630" y="463" font-family="monospace" font-size="11" fill="#555">Fit dry before oak pegs — test alignment</text>
-
-<!-- ============================================================ -->
-<!-- DETAIL 3: POST-TO-BEAM HOUSED TENON  (lower-left)          -->
-<!-- ============================================================ -->
-<rect x="40" y="490" width="540" height="410" fill="#f8f9ff" stroke="#1a3a6a" stroke-width="1.5"/>
-<rect x="40" y="490" width="540" height="24" fill="#e8eef8" stroke="#1a3a6a" stroke-width="1"/>
-<text x="310" y="507" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a3a6a">DETAIL 3 — POST-TO-BEAM HOUSED TENON</text>
-
-<rect x="195" y="545" width="58" height="270" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2"/>
-<text x="224" y="685" font-family="monospace" font-size="10" text-anchor="middle" fill="#1a3a6a" transform="rotate(-90,224,685)">6×6 POST (top 18" shown)</text>
-<rect x="210" y="545" width="28" height="38" fill="#956030" stroke="#1a3a6a" stroke-width="2"/>
-<text x="224" y="580" font-family="monospace" font-size="8" text-anchor="middle" fill="white">TENON</text>
-<rect x="88" y="518" width="282" height="48" fill="#b87848" stroke="#1a3a6a" stroke-width="2"/>
-<rect x="192" y="543" width="62" height="14" fill="#7a4a18" stroke="#1a3a6a" stroke-width="1.5"/>
-<text x="223" y="553" font-family="monospace" font-size="7" text-anchor="middle" fill="white">HOUSING</text>
-<circle cx="224" cy="532" r="5" fill="#c00" stroke="#1a3a6a" stroke-width="1.5"/>
-<circle cx="224" cy="546" r="5" fill="#c00" stroke="#1a3a6a" stroke-width="1.5"/>
-<text x="248" y="535" font-family="monospace" font-size="11" fill="#c00">2× 3/4" oak pegs</text>
-<line x1="193" y1="658" x2="125" y2="560" stroke="#8B5A2B" stroke-width="6" stroke-linecap="round"/>
-<rect x="100" y="554" width="23" height="15" fill="#7a4818" stroke="#1a3a6a" stroke-width="1.5"/>
-<text x="111" y="563" font-family="monospace" font-size="7" text-anchor="middle" fill="white">M+T</text>
-<rect x="188" y="645" width="14" height="22" fill="#7a4818" stroke="#1a3a6a" stroke-width="1.5"/>
-<text x="55" y="650" font-family="monospace" font-size="11" fill="#1a3a6a">Post tenon: 2" × 4" × 3" long</text>
-<text x="55" y="666" font-family="monospace" font-size="11" fill="#1a3a6a">Housing depth: 1/2" into soffit</text>
-<text x="55" y="682" font-family="monospace" font-size="11" fill="#1a3a6a">Beam mortise: 2.125" × 4.125" blind</text>
-<text x="55" y="698" font-family="monospace" font-size="11" fill="#1a3a6a">Brace M+T: 1.5" × 3" × 2.5" long</text>
-<text x="55" y="714" font-family="monospace" font-size="11" fill="#555">Cut beam to length before mortising</text>
-<text x="55" y="730" font-family="monospace" font-size="11" fill="#555">Test fit post in beam before raising</text>
-<text x="55" y="746" font-family="monospace" font-size="11" fill="#555">Install braces after beam ring is plumb</text>
-<text x="55" y="762" font-family="monospace" font-size="11" fill="#555">Do NOT bore through-bolt on same axis as peg</text>
-
-<!-- ============================================================ -->
-<!-- DETAIL 4: POST CAISSON + BASE ANCHOR  (lower-right)        -->
-<!-- ============================================================ -->
-<rect x="620" y="490" width="550" height="410" fill="#f8f9ff" stroke="#1a3a6a" stroke-width="1.5"/>
-<rect x="620" y="490" width="550" height="24" fill="#e8eef8" stroke="#1a3a6a" stroke-width="1"/>
-<text x="895" y="507" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a3a6a">DETAIL 4 — CAISSON + POST BASE (section)</text>
-
-<line x1="640" y1="648" x2="1158" y2="648" stroke="#1a3a6a" stroke-width="2"/>
-<text x="895" y="663" font-family="monospace" font-size="11" text-anchor="middle" fill="#555">FINISH GRADE</text>
-<line x1="660" y1="648" x2="640" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="700" y1="648" x2="680" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="740" y1="648" x2="720" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="800" y1="648" x2="780" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="860" y1="648" x2="840" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="920" y1="648" x2="900" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="980" y1="648" x2="960" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="1040" y1="648" x2="1020" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="1100" y1="648" x2="1080" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<line x1="1150" y1="648" x2="1130" y2="668" stroke="#1a3a6a" stroke-width="1.5"/>
-<rect x="830" y="648" width="130" height="238" fill="#d8d8cc" stroke="#888" stroke-width="2"/>
-<text x="895" y="768" font-family="monospace" font-size="11" text-anchor="middle" fill="#555">CONCRETE</text>
-<text x="895" y="786" font-family="monospace" font-size="11" text-anchor="middle" fill="#555">CAISSON</text>
-<text x="895" y="802" font-family="monospace" font-size="11" text-anchor="middle" fill="#555">12" dia × 24"</text>
-<line x1="640" y1="800" x2="1158" y2="800" stroke="#4a7aaa" stroke-width="1.5" stroke-dasharray="6,4"/>
-<text x="648" y="796" font-family="monospace" font-size="10" fill="#4a7aaa">18" FROST</text>
-<rect x="845" y="608" width="100" height="40" fill="#d0cfc8" stroke="#1a3a6a" stroke-width="2"/>
-<text x="895" y="630" font-family="monospace" font-size="10" text-anchor="middle" fill="#1a3a6a">PIER BLOCK | 2" grout</text>
-<line x1="868" y1="608" x2="868" y2="685" stroke="#aaa" stroke-width="3"/>
-<line x1="868" y1="673" x2="878" y2="685" stroke="#aaa" stroke-width="3"/>
-<line x1="922" y1="608" x2="922" y2="685" stroke="#aaa" stroke-width="3"/>
-<line x1="922" y1="673" x2="912" y2="685" stroke="#aaa" stroke-width="3"/>
-<text x="940" y="628" font-family="monospace" font-size="10" fill="#555">5/8" J-bolt</text>
-<rect x="855" y="518" width="80" height="90" fill="#c8a96e" stroke="#1a3a6a" stroke-width="2.5"/>
-<text x="895" y="565" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a">6×6 POST</text>
-<text x="945" y="532" font-family="monospace" font-size="11" fill="#c00">Seal end grain</text>
-<text x="945" y="547" font-family="monospace" font-size="11" fill="#c00">with epoxy before</text>
-<text x="945" y="562" font-family="monospace" font-size="11" fill="#c00">setting on pier</text>
-<line x1="940" y1="548" x2="895" y2="563" stroke="#c00" stroke-width="1"/>
-<line x1="800" y1="648" x2="800" y2="886" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#cL)" marker-end="url(#cR)"/>
-<rect x="740" y="758" width="52" height="18" fill="white"/>
-<text x="766" y="770" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a">24" D</text>
-<line x1="830" y1="838" x2="960" y2="838" stroke="#1a3a6a" stroke-width="1.2" marker-start="url(#cL)" marker-end="url(#cR)"/>
-<rect x="860" y="828" width="80" height="18" fill="white"/>
-<text x="900" y="840" font-family="monospace" font-size="11" text-anchor="middle" fill="#1a3a6a">12" dia.</text>
-<text x="630" y="868" font-family="monospace" font-size="11" fill="#1a3a6a">12" dia. sonotube caisson, 24" below grade</text>
-<text x="630" y="885" font-family="monospace" font-size="11" fill="#1a3a6a">Frost depth (Saanich BC): 18" nominal</text>
-<text x="630" y="902" font-family="monospace" font-size="11" fill="#555">Bottom flare optional for extra bearing</text>
-<text x="630" y="916" font-family="monospace" font-size="11" fill="#555">Permit required — verify setback from prop. line</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GENERATED_BY: render_drawings.py INPUT_HASH: c9bd9be3719f750bff53c801a0227998ea46200b0274491a852951ba99be2ab1 VALIDATED_BY: svg_validator.py PASS -->
+<!-- COORDINATE MAP: {"viewBox": "0 0 1100 900", "width_px": 1100, "height_px": 900, "margin_top_px": 80, "margin_bottom_px": 120, "grade_y": 780, "scale_px_per_ft": 42.0, "content_height_px": 446, "content_width_px": 620, "post_top_y": 430, "beam_soffit_y": 430, "beam_top_y": 405, "hub_apex_y": 335, "rise_px": 70, "beam_px": 25, "post_px": 350} -->
+<!-- SAW_SETTINGS: {"rafter_miter_deg": 28.71, "rafter_bevel_deg": 9.1, "beam_miter_deg": 30.0} -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 900" width="1100" height="900">
+    <rect width="100%" height="100%" fill="white" />
+    <rect data-role="post" data-id="P1" x="50" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="50" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="50" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P2" x="100" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="100" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="100" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P3" x="150" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="150" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="150" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P4" x="200" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="200" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="200" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P5" x="250" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="250" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="250" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P6" x="300" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="300" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="300" y="30" width="5" height="10" fill="#a0522d" />
+    <text x="20" y="20" font-family="sans-serif" font-size="12">Pitch: 4:12</text>
 </svg>

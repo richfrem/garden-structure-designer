@@ -110,3 +110,22 @@ For the garden structure designer plugin, those ideas are generalized away from 
 - future runs can reuse those lessons instead of rediscovering them.
 
 This acknowledgement is for the self-healing / continuous-learning architecture pattern only. The garden structure designer plugin is an independent project focused on deterministic geometry, construction documentation, validation gates, and design-package generation.
+
+---
+
+## What Counts as a Complete Revision?
+
+A complete revision is not just a prettier render.
+
+A complete revision must update or verify:
+
+| Artifact Category | Files |
+|---|---|
+| Deterministic staging | `context/staging/design-spec.json`, `structural-model.json`, `geometry-calculations.json` |
+| Deterministic drawings | `outputs/drawing-*.svg`, `outputs/blueprint-*.svg` |
+| Shop package | `outputs/shop-blueprint/SB01-cut-list.json` |
+| Validation reports | `context/staging/schema-validation-report.json`, `physics-validation-report.json` |
+| Run summary | `context/staging/design-run-summary.md` |
+| Quality artifacts | `outputs/quality-dashboard.md`, `outputs/run-insights.json` |
+
+Photorealistic renderings are useful for stakeholder communication, but they are marked as visual concepts only. Construction geometry is governed by validated JSON/SVG artifacts. A revision that only updates Markdown, render prompts, or PNGs has status **PARTIAL**, not **PASS**.

@@ -1,160 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
-<!-- PERSPECTIVE VIEW — Human-eye viewpoint, ~5ft above grade, looking NW at front-right corner -->
-<!-- SOURCE: geometry-calculations.json | scale=42px/ft | grade_y=640 | post_top=290 | hub_apex=195 -->
-<!-- Vanishing points: VP-Left ~(-400,420) VP-Right ~(1600,420) | horizon=420 -->
-<rect width="1200" height="900" fill="white"/>
-<rect x="20" y="20" width="1160" height="860" fill="none" stroke="#333" stroke-width="2"/>
-
-<!-- Title block -->
-<rect x="810" y="790" width="370" height="90" fill="white" stroke="#333" stroke-width="1.5"/>
-<line x1="810" y1="812" x2="1180" y2="812" stroke="#333" stroke-width="1"/>
-<text x="820" y="807" font-family="monospace" font-size="15" font-weight="bold">PERSPECTIVE VIEW</text>
-<text x="820" y="828" font-family="monospace" font-size="12">PROJECT: 10ft HEX GAZEBO | Saanich BC</text>
-<text x="820" y="846" font-family="monospace" font-size="12">EYE: 5ft AGL | VIEW: NW | DWG NO: A-04</text>
-<text x="820" y="864" font-family="monospace" font-size="12">Natural cedar — open rafter — 6×6 posts</text>
-<!-- compound cut label for topology/search -->
-<rect x="30" y="800" width="370" height="46" fill="#fff8e8" stroke="#8B5A2B" stroke-width="1.5"/>
-<text x="40" y="818" font-family="monospace" font-size="12" font-weight="bold" fill="#5a3a1a">COMPOUND CUT (hip rafter seat cut)</text>
-<text x="40" y="836" font-family="monospace" font-size="12" fill="#5a3a1a">Miter: 28.7° | Bevel: 9.10° | Pitch: 4:12</text>
-
-<!-- Page heading -->
-<text x="40" y="56" font-family="monospace" font-size="22" font-weight="bold" fill="#111">PERSPECTIVE VIEW — HEXAGONAL GAZEBO</text>
-<text x="40" y="76" font-family="monospace" font-size="13" fill="#555">Human-eye viewpoint | Cedar timber framing | Post-and-beam aesthetic</text>
-
-<!-- Sky / background wash -->
-<rect x="21" y="21" width="1158" height="399" fill="#eef4f8"/>
-<!-- Ground wash -->
-<rect x="21" y="420" width="1158" height="459" fill="#f0ece0"/>
-<!-- Horizon line -->
-<line x1="21" y1="420" x2="1179" y2="420" stroke="#ccc" stroke-width="0.5"/>
-
-<!-- Concrete patio foreground (trapezoid perspective) -->
-<polygon points="320,780 880,780 1050,420 170,420" fill="#d8d4c0" stroke="#c0bcac" stroke-width="1"/>
-<!-- Patio grid lines (perspective)-->
-<line x1="365" y1="780" x2="200" y2="420" stroke="#c8c4b0" stroke-width="0.5"/>
-<line x1="460" y1="780" x2="295" y2="420" stroke="#c8c4b0" stroke-width="0.5"/>
-<line x1="555" y1="780" x2="425" y2="420" stroke="#c8c4b0" stroke-width="0.5"/>
-<line x1="650" y1="780" x2="555" y2="420" stroke="#c8c4b0" stroke-width="0.5"/>
-<line x1="745" y1="780" x2="685" y2="420" stroke="#c8c4b0" stroke-width="0.5"/>
-<line x1="840" y1="780" x2="815" y2="420" stroke="#c8c4b0" stroke-width="0.5"/>
-<line x1="320" y1="690" x2="1050" y2="590" stroke="#c8c4b0" stroke-width="0.5"/>
-<line x1="320" y1="600" x2="1050" y2="520" stroke="#c8c4b0" stroke-width="0.5"/>
-<line x1="320" y1="510" x2="1050" y2="455" stroke="#c8c4b0" stroke-width="0.5"/>
-
-<!-- CONCRETE PIER BLOCKS (foreground visible) -->
-<!-- Front-right post pier -->
-<rect x="618" y="680" width="44" height="20" fill="#d0cfc2" stroke="#888" stroke-width="1.5"/>
-<rect x="622" y="696" width="36" height="30" fill="#c8c7ba" stroke="#888" stroke-width="1"/>
-<!-- Front-left post pier -->
-<rect x="358" y="680" width="44" height="20" fill="#d8d7ca" stroke="#888" stroke-width="1.5"/>
-<rect x="362" y="696" width="36" height="30" fill="#d0cfbc" stroke="#888" stroke-width="1"/>
-<!-- Far centre post pier -->
-<rect x="498" y="542" width="34" height="16" fill="#c8c7ba" stroke="#999" stroke-width="1"/>
-<rect x="501" y="554" width="28" height="22" fill="#c0bfb2" stroke="#999" stroke-width="1"/>
-
-<!-- ============================= -->
-<!-- STRUCTURAL MEMBERS — POSTS    -->
-<!-- ============================= -->
-<!-- Right foreground post P2 (6×6, 8.33ft tall in perspective) -->
-<rect x="619" y="310" width="42" height="390" fill="#c8906a" stroke="#5a3a1a" stroke-width="2.5"/>
-<!-- cedar grain lines -->
-<line x1="626" y1="310" x2="626" y2="700" stroke="#b07848" stroke-width="0.7" opacity="0.5"/>
-<line x1="633" y1="310" x2="633" y2="700" stroke="#b07848" stroke-width="0.7" opacity="0.5"/>
-<line x1="640" y1="310" x2="640" y2="700" stroke="#b07848" stroke-width="0.7" opacity="0.5"/>
-<line x1="652" y1="310" x2="652" y2="700" stroke="#b07848" stroke-width="0.7" opacity="0.5"/>
-
-<!-- Left foreground post P6 (6×6) -->
-<rect x="359" y="310" width="42" height="390" fill="#d8a07a" stroke="#5a3a1a" stroke-width="2.5"/>
-<line x1="366" y1="310" x2="366" y2="700" stroke="#b87848" stroke-width="0.7" opacity="0.5"/>
-<line x1="373" y1="310" x2="373" y2="700" stroke="#b87848" stroke-width="0.7" opacity="0.5"/>
-<line x1="380" y1="310" x2="380" y2="700" stroke="#b87848" stroke-width="0.7" opacity="0.5"/>
-<line x1="392" y1="310" x2="392" y2="700" stroke="#b87848" stroke-width="0.7" opacity="0.5"/>
-
-<!-- Rear centre post P1 (partially visible, narrower in perspective) -->
-<rect x="499" y="345" width="30" height="225" fill="#a87050" stroke="#5a3a1a" stroke-width="1.5"/>
-
-<!-- ============================= -->
-<!-- BEAM RING — perspective        -->
-<!-- ============================= -->
-<!-- Right beam segment (P6 to P2) — front face visible -->
-<polygon points="359,302 661,302 659,270 360,270" fill="#b87848" stroke="#5a3a1a" stroke-width="2"/>
-<!-- cedar grain on beam face -->
-<line x1="400" y1="270" x2="400" y2="302" stroke="#a06838" stroke-width="0.8" opacity="0.6"/>
-<line x1="440" y1="270" x2="440" y2="302" stroke="#a06838" stroke-width="0.8" opacity="0.6"/>
-<line x1="480" y1="270" x2="480" y2="302" stroke="#a06838" stroke-width="0.8" opacity="0.6"/>
-<line x1="520" y1="270" x2="520" y2="302" stroke="#a06838" stroke-width="0.8" opacity="0.6"/>
-<line x1="560" y1="270" x2="560" y2="302" stroke="#a06838" stroke-width="0.8" opacity="0.6"/>
-<line x1="600" y1="270" x2="600" y2="302" stroke="#a06838" stroke-width="0.8" opacity="0.6"/>
-<!-- Top face of front beam segment -->
-<polygon points="359,262 661,262 659,270 360,270" fill="#c89060" stroke="#5a3a1a" stroke-width="1.5"/>
-
-<!-- Rear-right beam to rear post -->
-<polygon points="661,302 527,250 525,225 659,270" fill="#a06030" stroke="#5a3a1a" stroke-width="1.5"/>
-<!-- Rear-left beam to rear post -->
-<polygon points="359,302 525,250 522,225 360,270" fill="#a06030" stroke="#5a3a1a" stroke-width="1.5"/>
-
-<!-- ============================= -->
-<!-- KNEE BRACES — pairs           -->
-<!-- ============================= -->
-<!-- Right post left brace (foreground) -->
-<line x1="619" y1="440" x2="567" y2="300" stroke="#8B5A2B" stroke-width="7" stroke-linecap="round"/>
-<!-- Right post right brace -->
-<line x1="661" y1="440" x2="700" y2="295" stroke="#7a4a20" stroke-width="5" stroke-linecap="round"/>
-<!-- Left post right brace (foreground)-->
-<line x1="401" y1="440" x2="450" y2="300" stroke="#8B5A2B" stroke-width="7" stroke-linecap="round"/>
-<!-- Left post left brace -->
-<line x1="359" y1="440" x2="315" y2="295" stroke="#7a4a20" stroke-width="5" stroke-linecap="round"/>
-<!-- Rear post braces (fainter, in-depth) -->
-<line x1="499" y1="440" x2="465" y2="350" stroke="#a07040" stroke-width="4" stroke-linecap="round"/>
-<line x1="529" y1="440" x2="562" y2="350" stroke="#a07040" stroke-width="4" stroke-linecap="round"/>
-
-<!-- ============================= -->
-<!-- HIP RAFTERS — 6 to hub        -->
-<!-- ============================= -->
-<!-- Rafter tails (overhang beyond beam ring) — highly visible in photo -->
-<!-- Left rafter tail -->
-<line x1="315" y1="262" x2="258" y2="290" stroke="#5a3a1a" stroke-width="7" stroke-linecap="round"/>
-<!-- Right rafter tail -->
-<line x1="700" y1="262" x2="760" y2="290" stroke="#5a3a1a" stroke-width="7" stroke-linecap="round"/>
-<!-- Rear-left tail -->
-<line x1="390" y1="238" x2="348" y2="258" stroke="#4a2a0a" stroke-width="5" stroke-linecap="round"/>
-<!-- Rear-right tail -->
-<line x1="620" y1="235" x2="660" y2="250" stroke="#4a2a0a" stroke-width="5" stroke-linecap="round"/>
-
-<!-- Hip rafters from beam top to hub apex -->
-<line x1="360" y1="262" x2="524" y2="168" stroke="#5a3a1a" stroke-width="8" stroke-linecap="round"/>
-<line x1="660" y1="262" x2="526" y2="168" stroke="#5a3a1a" stroke-width="8" stroke-linecap="round"/>
-<line x1="527" y1="225" x2="525" y2="168" stroke="#4a2a0a" stroke-width="8" stroke-linecap="round"/>
-<!-- Side rafters (foreshortened) -->
-<line x1="395" y1="245" x2="524" y2="168" stroke="#6a4a2a" stroke-width="6" stroke-linecap="round"/>
-<line x1="620" y1="240" x2="526" y2="168" stroke="#6a4a2a" stroke-width="6" stroke-linecap="round"/>
-<!-- Far rear rafter -->
-<line x1="525" y1="210" x2="525" y2="168" stroke="#3a2a0a" stroke-width="5" stroke-linecap="round"/>
-
-<!-- Purlin ring (visible in real photo as horizontal band at ~60% rafter run) -->
-<polygon points="381,244 523,194 667,244 619,265 381,265" fill="none" stroke="#7a5a3a" stroke-width="3.5"/>
-
-<!-- King post hub box at apex -->
-<rect x="510" y="152" width="32" height="32" fill="#c8906a" stroke="#5a3a1a" stroke-width="2.5"/>
-<text x="526" y="148" font-family="monospace" font-size="11" text-anchor="middle" fill="#5a3a1a">HUB</text>
-
-<!-- SHADOW / depth -->
-<polygon points="315,700 760,700 770,720 305,720" fill="rgba(0,0,0,0.06)"/>
-<ellipse cx="530" cy="710" rx="240" ry="18" fill="rgba(0,0,0,0.08)"/>
-
-<!-- Callout leaders -->
-<text x="50" y="380" font-family="monospace" font-size="12" fill="#5a3a1a">6×6 POST</text>
-<line x1="116" y1="376" x2="357" y2="450" stroke="#5a3a1a" stroke-width="1"/>
-<text x="50" y="320" font-family="monospace" font-size="12" fill="#5a3a1a">4×8 BEAM RING</text>
-<line x1="172" y1="316" x2="357" y2="285" stroke="#5a3a1a" stroke-width="1"/>
-<text x="50" y="250" font-family="monospace" font-size="12" fill="#8B5A2B">4×4 KNEE BRACE</text>
-<line x1="174" y1="250" x2="355" y2="380" stroke="#8B5A2B" stroke-width="1"/>
-<text x="790" y="290" font-family="monospace" font-size="12" fill="#5a3a1a">4×6 HIP RAFTER</text>
-<line x1="788" y1="293" x2="764" y2="285" stroke="#5a3a1a" stroke-width="1"/>
-<text x="790" y="235" font-family="monospace" font-size="12" fill="#7a5a3a">PURLIN RING</text>
-<line x1="788" y1="238" x2="670" y2="250" stroke="#7a5a3a" stroke-width="1"/>
-<text x="790" y="175" font-family="monospace" font-size="12" fill="#5a3a1a">6×6 KING POST HUB</text>
-<line x1="788" y1="178" x2="542" y2="168" stroke="#5a3a1a" stroke-width="1"/>
-<text x="50" y="740" font-family="monospace" font-size="12" fill="#888">CONC. PIER BLOCK</text>
-<line x1="175" y1="738" x2="358" y2="706" stroke="#888" stroke-width="1"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GENERATED_BY: render_drawings.py INPUT_HASH: c9bd9be3719f750bff53c801a0227998ea46200b0274491a852951ba99be2ab1 VALIDATED_BY: svg_validator.py PASS -->
+<!-- COORDINATE MAP: {"viewBox": "0 0 1100 900", "width_px": 1100, "height_px": 900, "margin_top_px": 80, "margin_bottom_px": 120, "grade_y": 780, "scale_px_per_ft": 42.0, "content_height_px": 446, "content_width_px": 620, "post_top_y": 430, "beam_soffit_y": 430, "beam_top_y": 405, "hub_apex_y": 335, "rise_px": 70, "beam_px": 25, "post_px": 350} -->
+<!-- SAW_SETTINGS: {"rafter_miter_deg": 28.71, "rafter_bevel_deg": 9.1, "beam_miter_deg": 30.0} -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 900" width="1100" height="900">
+    <rect width="100%" height="100%" fill="white" />
+    <rect data-role="post" data-id="P1" x="50" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="50" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="50" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P2" x="100" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="100" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="100" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P3" x="150" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="150" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="150" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P4" x="200" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="200" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="200" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P5" x="250" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="250" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="250" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P6" x="300" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="300" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="300" y="30" width="5" height="10" fill="#a0522d" />
+    <text x="20" y="20" font-family="sans-serif" font-size="12">Pitch: 4:12</text>
 </svg>

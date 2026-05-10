@@ -26,12 +26,33 @@ Read all fabrication values from `context/staging/geometry-calculations.json`:
 | Miter (saw swing)       | `compound_cut.miter_deg`                     |
 | Blade Bevel             | `compound_cut.bevel_deg`                     |
 | Pitch angle             | `compound_cut.pitch_angle_deg`               |
+| **Beam ring flat miter**| **`beam_ring.beam_miter_deg`**               |
 | Rafter length (total)   | `rafter.total_with_overhang_in`              |
 | Roof rise               | `roof_rise.rise_in`                          |
 | Total building height   | `total_height.total_height_ft`               |
 | SVG coordinates         | `svg_coordinates.*`                          |
 
+**Critical angle distinction — the most common drift failure:**
+- `beam_ring.beam_miter_deg` = flat cut across beam end (30.00° for hex/4:12) — used for ring beam crosscuts only.
+- `compound_cut.miter_deg` = compound saw swing for hip rafters (28.71° for hex/4:12) — NOT the same value.
+- Never use the rafter miter as the beam miter or vice versa.
+
 **The most common hallucination:** Using the pitch angle (e.g. 18.43°) as the compound miter setting. The miter angle for a hexagonal hip rafter at 4:12 pitch is **28.71°**, not 18.43°. The geometry engine calculates this correctly — use it.
+
+## Shop Blueprint Determinism Rule
+
+Shop blueprints are fabrication artifacts, not concept art.
+
+For every revision, all blueprint dimensions, angles, and saw settings MUST be sourced from:
+```
+context/staging/geometry-calculations.json
+context/staging/structural-model.json
+outputs/shop-blueprint/SB01-cut-list.json
+```
+
+Do **not** infer, estimate, or copy angles from images, render prompts, or visual references.
+
+If blueprint values differ from `geometry-calculations.json`, **stop and create a drift report** rather than publishing the output. Every blueprint must include a test-cut warning for compound cuts.
 
 ## SVG XML Hard Rules (mandatory — same as drawing-generator)
 

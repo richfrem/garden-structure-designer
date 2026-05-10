@@ -101,6 +101,55 @@ CHECKPOINT: structural-model locked. Posts=6×6@8.33ft, pitch=4:12, miter=28.71�
 ```
 This summary allows the drawing-stage agents to operate from a tight, clean context without re-deriving the engineering math.
 
+## Revision Mode — Deterministic Output Gate
+
+When the user asks to **revise, improve, update, or restyle** existing `outputs/`, this is a **deterministic package revision**, not a presentation-only update.
+
+A revision is NOT complete unless the agent either regenerates or explicitly revalidates this artifact set:
+
+```
+outputs/drawing-plan-view.svg          outputs/blueprint-plan.svg
+outputs/drawing-elevation-view.svg     outputs/blueprint-elevation.svg
+outputs/drawing-isometric-view.svg     outputs/blueprint-isometric.svg
+outputs/drawing-perspective-view.svg   outputs/blueprint-component-isolation.svg
+outputs/shop-blueprint/SB01-cut-list.json
+outputs/quality-dashboard.md           outputs/run-insights.json
+context/staging/design-run-summary.md
+context/staging/schema-validation-report.json
+context/staging/physics-validation-report.json
+```
+
+Markdown files, render prompts, and PNG concept images are **secondary presentation artifacts**. They are never sufficient proof that the package has been revised.
+
+- **Aesthetic-only change:** preserve locked structural model; re-run/revalidate drawings against existing geometry.
+- **Geometry change** (post count, span, pitch, height, members, bracing, cut lengths): route through the structural pipeline; regenerate `geometry-calculations.json` via `geometry_engine.py`. **Never hand-edit deterministic geometry artifacts.**
+
+Before reporting success, always run:
+
+```bash
+python3 plugins/garden-structure-designer/scripts/schema_validator.py \
+  context/staging plugins/garden-structure-designer/schemas \
+  --strict --json-output context/staging/schema-validation-report.json
+
+python3 plugins/garden-structure-designer/scripts/structural_physics_validator.py \
+  context/staging/structural-model.json
+
+python3 plugins/garden-structure-designer/scripts/render_drawings.py \
+  context/staging/structural-model.json
+
+python3 plugins/garden-structure-designer/scripts/generate_quality_dashboard.py
+```
+
+The final response MUST include: files changed · structural parameters preserved vs changed · commands run · validator results · remaining warnings · status: **PASS / PARTIAL / BLOCKED / DRAFT ONLY**.
+
+**Status taxonomy:**
+- `PASS` — all deterministic artifacts regenerated/revalidated, validators passed, dashboard updated.
+- `PARTIAL` — presentation files updated but deterministic SVG/JSON artifacts not fully regenerated or validated.
+- `BLOCKED` — a validator failed, required artifact is missing, or repair loop halted.
+- `DRAFT ONLY` — user explicitly requested output despite incomplete validation; stamp every output as not for construction.
+
+Do not claim the package is complete unless the deterministic validation artifacts exist and are current.
+
 ## Failure Handling
 
 - A stage that fails the validation gate **blocks all downstream stages**.

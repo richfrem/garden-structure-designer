@@ -90,6 +90,25 @@ If `gemini-cli` is unavailable (non-zero exit, 429 capacity exhausted, not insta
 4. If overridden, stamp every output with:
 `⚠ DRAFT — INDEPENDENT QA NOT COMPLETED — NOT FOR CONSTRUCTION`
 
+## Revision Completion Gate
+
+For revision runs, confirm the revised package includes **current** deterministic artifacts before emitting any status:
+
+1. Required SVG outputs exist in `outputs/` and each passes `svg_validator.py`.
+2. `context/staging/schema-validation-report.json` exists and reflects the current run.
+3. `context/staging/physics-validation-report.json` exists and is current.
+4. `context/staging/design-run-summary.md` exists and reflects current geometry.
+5. `outputs/quality-dashboard.md` and `outputs/run-insights.json` exist.
+6. Any PNG renders in `outputs/` are labelled **"Visual concept only — construction geometry is governed by validated JSON/SVG artifacts."**
+7. Markdown builder docs do not assert dimensions that are unsupported by deterministic staging artifacts.
+
+If only Markdown files, render prompts, or PNG images changed, emit:
+```
+PARTIAL — presentation artifacts updated, deterministic package not regenerated or revalidated.
+```
+
+Do **not** emit `READY` unless deterministic SVG/JSON validation passes.
+
 ## Pass Criteria
 
 Emit `READY` only when ALL of the following are true:

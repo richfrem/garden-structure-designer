@@ -29,7 +29,7 @@ System parity constraint:
 PLAN GEOMETRY (EXPLICIT CONSTRUCTION LOGIC)
 
 Shape: regular hexagon
-Size: 10 feet point-to-point diameter
+Size: 9'3" span (approx 10 feet point-to-point diameter)
 Posts positioned on a perfect circumscribed circle
 Post spacing: exactly 60° increments
 
@@ -37,22 +37,23 @@ Post spacing: exactly 60° increments
 STRUCTURAL FRAME
 
 Posts
-- 6x6 western red cedar
+- 6x6 warm cedar timber
 - Quantity: EXACTLY 6
-- Height: 8.33 ft to beam soffit
-- Mounted on concrete pier blocks with standoff bases
+- Height: 8'6" to beam soffit
+- Mounted on visible concrete footing pads
 - Perfect vertical alignment
 
-Primary Beam Ring
+Heavy Primary Beam Ring
 - 6 segments (one between each pair of posts)
-- Material: 4x8 cedar
+- Material: heavy 4x8 cedar timber
 - Each segment connects post-to-post only
 - Joints: precise compound miter (~28.71°)
 - Forms a closed 6-sided ring — no extra segments
 
 Roof Structure (OPEN FRAME — NO ROOFING)
-- 6 hip rafters (4x6 cedar)
+- 6 exposed hip rafters (4x6 cedar)
 - One rafter per post
+- Decorative rafter tails extending past the heavy beam ring
 - Rafters converge into a central 6x6 king post hub
 - Pitch: 4:12
 - Rafters define 6 roof planes ONLY
@@ -63,32 +64,32 @@ Purlin Ring
 - Follows hexagonal symmetry — no added segmentation beyond 6-sided logic
 
 Knee Bracing
-- 12 total braces
+- 12 total diagonal knee braces
 - 2 per post
 - Material: 4x4 cedar
-- Curved profile, ~45° angle
+- Curved or chamfered profile, ~45° angle
 - Symmetrical and evenly distributed
 
 Joinery
 - Traditional mortise-and-tenon
-- No metal hardware visible anywhere
+- Visible joinery / connector detailing at post-to-beam and brace intersections
+- No modern metal hardware visible anywhere
 
 
 MATERIAL + FINISH
 
-Wood: western red cedar
+Wood: warm cedar timber appearance
 Finish: transparent amber oil
 Visible grain, tonal variation, subtle tool marks
-Realistic, professional-grade timber frame appearance
+Realistic, professional-grade timber frame presentation
 
 
 SCENE + ENVIRONMENT
 
-Photorealistic setting in a Pacific Northwest coastal garden (Vancouver Island, BC):
-- Ferns, moss, rhododendrons
-- Mature coastal Douglas fir trees
-- Soft overcast daylight
-- Slight atmospheric moisture
+Photorealistic setting in a backyard garden/patio presentation style:
+- Elegant, warm backyard patio hardscaping
+- Ferns, moss, and structured garden planters
+- Soft overcast daylight highlighting the warm cedar tones
 - Natural diffuse shadows
 
 
@@ -120,9 +121,9 @@ FINAL VALIDATION CHECK (MANDATORY)
 
 The generated image is ONLY correct if:
 - The perimeter is a true hexagon (6 edges)
-- There are exactly 6 posts
-- There are exactly 6 rafters meeting at center
-- There are exactly 12 knee braces
+- There are exactly 6 posts on concrete footing pads
+- There are exactly 6 exposed rafters with decorative tails
+- There are exactly 12 diagonal knee braces
 - The structure is symmetrical and physically believable
 
 If any of these conditions fail, the image is incorrect.
