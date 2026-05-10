@@ -40,7 +40,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.resolve()))
 from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
 
-import sys
+
 
 def get_standard_length(cut_length: float) -> int:
     """Round up to the nearest standard lumber stock length (even numbers)."""

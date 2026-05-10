@@ -96,9 +96,10 @@ If you are using Claude Code directly, you can install via the plugin marketplac
 
 ## Acknowledgements
 
-This project’s self-healing and continuous-improvement model was inspired in part by the architectural patterns demonstrated in [`browser-use/browser-harness`](https://github.com/browser-use/browser-harness).
+This project draws architectural inspiration from two external projects:
 
-In particular, this plugin adapts the general idea of a small protected core surrounded by agent-editable learning surfaces: reusable skills, helper logic, captured failure patterns, and run-specific improvements. The `browser-harness` project describes a model where the agent can write missing helper code during execution and where the harness “improves itself every run,” with reusable domain skills and an editable agent workspace. [1](https://github.com/browser-use/browser-harness)
+1. **[`NousResearch/hermes-agent`](https://github.com/nousresearch/hermes-agent)**: Inspired the v1.3 architectural plumbing, including central registries, deliberate capability exposure, self-improvement review, lesson curation, context/run summaries, error classification, and traceable workflows.
+2. **[`browser-use/browser-harness`](https://github.com/browser-use/browser-harness)**: Inspired the concept of a small protected deterministic core surrounded by agent-editable learning surfaces, reusable skills, helper logic, and run-specific improvements. [1](https://github.com/browser-use/browser-harness)
 
 For the garden structure designer plugin, those ideas are generalized away from browser automation and applied to construction-document generation:
 
