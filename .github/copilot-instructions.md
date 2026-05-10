@@ -31,13 +31,14 @@ The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs 
 3. **`design-orchestrator`** → runs sequentially through fail-closed stages:
    - **Stage 0 (Self-Healing)**: Reads `learning-registry.json` to inject lessons into prompts via `load_applicable_lessons.py`.
    - **Stage 1 (Code & Constraints)**: `building-code-validator` maps region to wind/snow constraints.
-   - **Stage 2 (Deterministic Engineering)**: `structural-engine` runs `geometry_engine.py` (not an LLM guess) to compute explicit dimensions, spans, and pitches.
+   - **Stage 2 (Deterministic Engineering)**: `structural-engine` runs `geometry_engine.py` to compute explicit dimensions, spans, and pitches.
    - **Stage 3 (Connections)**: `joinery-designer` & `bracing-system-designer` create the load-path connections.
-   - **Stage 4 (Draft Validation)**: Schema and physics validation using `schema_validator.py` and `structural_physics_validator.py`.
-   - **Stage 5 (Cross-Artifact)**: `cross_artifact_validator.py` ensures blueprint vs. model consistency.
-   - **Stage 5.75 (Drawing Red-Team Gate)**: `adversarial-drawing-reviewer` / `run_drawing_red_team.py` independently validates all SVGs for builder-usefulness. **MANDATORY before PASS.** `may_claim_success: false` blocks the package.
-   - **Stage 6 (Generation)**: `drawing-generator` & `cut_list_engine.py` produce final outputs.
-   - **Stage 7 (Red-Team)**: `validation-agent` blocks execution if `drift_report.json` flags mismatch.
+   - **Stage 4 (Drawing & Blueprint Generation)**: `drawing-generator` & `shop-blueprint-generator` produce all 8 SVG sheets. `cut_list_engine.py` writes `SB01-cut-list.json`.
+   - **Stage 5 (Blueprint QA Gate)**: `validation-agent` checks XML, geometry, dimensions, and schema/physics artifacts.
+   - **Stage 5.5 (Cross-Artifact Reconciliation)**: `cross_artifact_validator.py` ensures blueprint vs. model consistency.
+   - **Stage 5.75 (Drawing Red-Team Gate)**: `run_drawing_red_team.py` independently validates all SVGs for builder-usefulness. **MANDATORY before PASS.** `may_claim_success: false` blocks the package.
+   - **Stage 6 (Builder Documents)**: `builder-docs-generator` produces cut lists, assembly guide, and estimates.
+   - **Stage 7 (Package Consistency)**: `package_consistency_validator.py` and `assembly_guide_validator.py` enforce final parity.
    - **Stage 8 (Repair)**: Repeated failures scaffold PyTest regressions via `failure_to_test.py`.
 
 > **Note:** The stage list above is a high-level summary. `design-orchestrator.md` is the authoritative source of stage definitions and gate logic.

@@ -66,6 +66,14 @@ REQUIRED_SHEETS = [
     "drawing-perspective-view.svg",
 ]
 
+# Deterministic staging artifacts that must exist before the gate can approve
+REQUIRED_STAGING_ARTIFACTS = [
+    "plugins/garden-structure-designer/context/staging/structural-model.json",
+    "plugins/garden-structure-designer/context/staging/geometry-calculations.json",
+    "plugins/garden-structure-designer/context/staging/schema-validation-report.json",
+    "plugins/garden-structure-designer/context/staging/physics-validation-report.json",
+]
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -225,6 +233,31 @@ def run_review(
     red_team_report_path = os.path.join(report_dir, "drawing-red-team-report.json")
     md_report_path = os.path.join(md_dir, "drawing-red-team-report.md")
 
+    # --- Pre-flight: check required deterministic staging artifacts ---
+    missing_artifacts = [
+        a for a in REQUIRED_STAGING_ARTIFACTS if not os.path.exists(a)
+    ]
+    if missing_artifacts:
+        report = {
+            "schema": "garden-structure-designer/drawing-red-team-report/1.0",
+            "generated": datetime.now(timezone.utc).isoformat(),
+            "status": "BLOCKED",
+            "reviewer": REVIEWER,
+            "summary": (
+                f"BLOCKED: {len(missing_artifacts)} required staging artifact(s) missing. "
+                "Run the full structural pipeline before the drawing red-team gate."
+            ),
+            "files": [],
+            "overall_required_fixes": [
+                f"Missing: {a}" for a in missing_artifacts
+            ],
+            "may_claim_success": False,
+        }
+        _write_json_report(report, red_team_report_path)
+        _write_md_report(report, md_report_path)
+        print(f"  BLOCKED: missing staging artifacts: {missing_artifacts}")
+        return report
+
     # Collect SVG files
     svg_files = sorted(glob.glob(os.path.join(svg_dir, "*.svg")))
     if not svg_files:
@@ -327,8 +360,9 @@ def run_review(
         report["status"] = "PASS"
         report["may_claim_success"] = True
         report["summary"] = (
-            "All SVG sheets passed machine validation and content-quality checks. "
-            "Qualitative adversarial review by drawing-red-team-agent still recommended."
+            "All SVG sheets passed deterministic machine validation and sheet-specific "
+            "content-quality checks. This executable red-team gate approves may_claim_success. "
+            "Optional human or LLM qualitative review may still be performed for additional assurance."
         )
     elif missing_sheets:
         report["status"] = "BLOCKED"

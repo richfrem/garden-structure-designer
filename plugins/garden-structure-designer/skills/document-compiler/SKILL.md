@@ -4,6 +4,29 @@ description: Assembles all outputs into a structured document and formats for PD
 allowed-tools: Read, Write, Bash
 ---
 
+## 🚨 Pre-Flight: Drawing Red-Team Gate Check (MANDATORY)
+
+Before compilation begins, this skill MUST verify:
+
+```bash
+# Check the gate report exists and is approved
+python3 -c "
+import json, sys
+try:
+    r = json.load(open('plugins/garden-structure-designer/context/staging/drawing-red-team-report.json'))
+    if not r.get('may_claim_success'):
+        print('BLOCKED: drawing-red-team-report.json has may_claim_success: false')
+        print('Summary:', r.get('summary',''))
+        sys.exit(1)
+    print('Gate approved — proceeding with compilation.')
+except FileNotFoundError:
+    print('BLOCKED: drawing-red-team-report.json not found. Run Stage 5.75 first.')
+    sys.exit(1)
+"
+```
+
+If this check fails, **do not compile**. Write a blocking message to `outputs/COMPILATION_BLOCKED.md` explaining that the drawing red-team gate must pass first. Do not proceed to `embed_svgs.py` or PDF conversion.
+
 ## Expected Inputs
 All models inside `context/staging/`.
 Visuals from `drawing-generator` (Plan, Elevation, Perspective, Isometric).

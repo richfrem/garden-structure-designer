@@ -419,8 +419,6 @@ def _update_report(
     counts: dict,
 ) -> None:
     sheet_status = "FAIL" if failure_codes else "PASS"
-    if sheet_status == "FAIL":
-        report["status"] = "FAIL"
 
     # Remove any existing entry for this file (idempotent re-runs)
     report["files"] = [f for f in report["files"] if f.get("file") != svg_path]
@@ -434,6 +432,11 @@ def _update_report(
         "semantic_counts": counts.get("semantic_counts", {}),
         "text_label_count": counts.get("text_label_count", 0),
     })
+
+    # Always recompute overall status from all entries — never leave stale state
+    report["status"] = (
+        "FAIL" if any(f.get("status") == "FAIL" for f in report["files"]) else "PASS"
+    )
 
 
 # ---------------------------------------------------------------------------

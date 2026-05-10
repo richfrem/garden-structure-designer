@@ -102,7 +102,7 @@ Always prioritize fabrication clarity over visual aesthetics. Dense dimensions, 
 
 ## Completion: HANDOFF_BLOCK
 
-On successful completion emit this block so the design-orchestrator can gate Stage 4 (Blueprint QA):
+On successful SVG and cut-list generation, emit this block so the design-orchestrator can proceed to Stage 5 (Blueprint QA):
 
 ```json
 {
@@ -116,8 +116,28 @@ On successful completion emit this block so the design-orchestrator can gate Sta
     "outputs/shop-blueprint/SB01-cut-list.json"
   ],
   "sheets_validated": 4,
-  "next_stage": "validation-agent (Stage 5 Blueprint QA)"
+  "next_stage": "validation-agent (Stage 5 Blueprint QA) → Stage 5.75 Drawing Red-Team Gate"
 }
 ```
 
 If any sheet fails validation or SB01-cut-list.json was not written, set `"status": "FAIL"` and list the blocking issues.
+
+## 🚨 Drawing Red-Team Gate — Embedded Enforcement
+
+**This skill MUST NOT claim its own SVG outputs are complete or "builder-meaningful."**
+
+Blueprint generation ends at SVG + cut-list production. The stage is NOT complete until:
+
+1. The adversarial gate has run independently:
+   ```bash
+   python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
+     --svg-dir outputs \
+     --model plugins/garden-structure-designer/context/staging/structural-model.json \
+     --report-dir plugins/garden-structure-designer/context/staging \
+     --md-dir outputs
+   ```
+2. `context/staging/drawing-red-team-report.json` exists with `may_claim_success: true`.
+
+Do NOT set package status to `PASS`, `READY`, or `DESIGN COMPLETE` from within this skill.
+Passing `svg_validator.py` is necessary but not sufficient — the red-team gate is the authoritative final check.
+
