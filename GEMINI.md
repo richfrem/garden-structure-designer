@@ -1,4 +1,4 @@
-# CLAUDE.md
+# GEMINI.md
 
 > AI-native plugin for garden structure design packages.
 
@@ -85,3 +85,19 @@ The ultimate goal is generating a professional-grade structural construction PDF
 - **Agents** live in `plugins/<plugin-name>/agents/<name>/AGENT.md` with YAML frontmatter (`name`, `description`, `allowed-tools`).
 - **Skills** live in `plugins/<plugin-name>/skills/<name>/SKILL.md` with the same frontmatter pattern.
 - Skills use `create-skill`, `create-sub-agent`, and `create-plugin` meta-skills for consistent authoring.
+
+---
+
+## Gemini CLI Tool Mapping
+
+| Claude Code | Gemini CLI equivalent |
+|:------------|:----------------------|
+| `Read`      | `read_file`           |
+| `Write`     | `write_file`          |
+| `Edit`      | `replace_in_file`     |
+| `Bash`      | `run_shell_command`   |
+| `Glob`      | `glob`                |
+| `Grep`      | `grep`                |
+
+Skills in `.agents/skills/` use Claude Code tool names in their SKILL.md files.
+When executing skills via Gemini, translate tool references using the table above.

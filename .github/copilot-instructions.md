@@ -1,6 +1,7 @@
-# CLAUDE.md
+# Copilot Instructions for garden-structure-designer
 
-> AI-native plugin for garden structure design packages.
+> Authoritative rules for all AI agents (Claude Code, Copilot, Gemini) working in this repo.
+> Mirrors CLAUDE.md — keep in sync.
 
 ## Purpose
 This is an **AI-native plugin** called `garden-structure-designer` — a multi-agent design pipeline that converts non-technical user descriptions of garden structures (pergolas, gazebos, pavilions) into professional-grade structural construction PDF packages. It is installed into agentic environments (Claude Cowork, Antigravity, Gemini CLI) via the plugin marketplace system.

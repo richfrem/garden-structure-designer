@@ -1,8 +1,9 @@
 {
   "sources": [
     {
-      "source": "/Users/richardfremmerlid/Projects/agent-plugins-skills/plugins",
+      "source": "richfrem/agent-plugins-skills",
       "plugins": [
+        "adr-manager",
         "agent-agentic-os",
         "agent-loops",
         "agent-scaffolders",
@@ -14,7 +15,14 @@
         "exploration-cycle-plugin",
         "gemini-cli",
         "link-checker",
+        "plugin-manager",
         "task-manager"
+      ]
+    },
+    {
+      "source": "/Users/richardfremmerlid/Projects/garden-structure-designer/plugins",
+      "plugins": [
+        "garden-structure-designer"
       ]
     }
   ]
