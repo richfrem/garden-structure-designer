@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+learning_backup.py
+=====================================
+Purpose:
+    Core logic for learning_backup.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import sys
 import shutil

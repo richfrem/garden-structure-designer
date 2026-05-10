@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+update_design_run_summary.py
+=====================================
+Purpose:
+    Core logic for update_design_run_summary.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import sys
 from pathlib import Path

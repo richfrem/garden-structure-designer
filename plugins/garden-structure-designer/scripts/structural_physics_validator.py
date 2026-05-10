@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+structural_physics_validator.py
+=====================================
+Purpose:
+    Core logic for structural_physics_validator.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import sys
 from pathlib import Path

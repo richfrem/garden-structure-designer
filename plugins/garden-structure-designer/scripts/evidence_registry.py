@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+"""
+evidence_registry.py
+=====================================
+Purpose:
+    Core logic for evidence_registry.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import os
 from pathlib import Path

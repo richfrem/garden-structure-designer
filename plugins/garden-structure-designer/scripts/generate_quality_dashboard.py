@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+generate_quality_dashboard.py
+=====================================
+Purpose:
+    Core logic for generate_quality_dashboard.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import os
 from pathlib import Path

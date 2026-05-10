@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+repair_orchestrator.py
+=====================================
+Purpose:
+    Core logic for repair_orchestrator.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import sys
 import subprocess

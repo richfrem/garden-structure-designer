@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+failure_to_test.py
+=====================================
+Purpose:
+    Core logic for failure_to_test.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import os
 import sys

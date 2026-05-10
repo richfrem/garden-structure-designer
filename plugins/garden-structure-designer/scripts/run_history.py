@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+"""
+run_history.py
+=====================================
+Purpose:
+    Core logic for run_history.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import os
 import hashlib
