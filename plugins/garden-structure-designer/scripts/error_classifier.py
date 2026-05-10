@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+"""
+error_classifier.py
+=====================================
+Purpose:
+    Core logic for error_classifier.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import logging
 from typing import Dict, Any, Optional

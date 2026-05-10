@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+render_drawings.py
+=====================================
+Purpose:
+    Core logic for render_drawings.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import sys
 import subprocess

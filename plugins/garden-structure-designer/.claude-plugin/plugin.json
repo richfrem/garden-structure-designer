@@ -1,16 +1,9 @@
 {
   "name": "garden-structure-designer",
-  "version": "1.2.0",
-  "description": "Modular plugin for generating professional-grade PDF construction packages for garden structures. v1.2 adds deterministic geometry generation, schema validation, package consistency checks, and self-healing learning-registry architecture.",
-  "author": {
-    "name": "Richard Fremmerlid"
-  },
-  "scripts": {
-    "geometry_engine": "plugins/garden-structure-designer/scripts/geometry_engine.py",
-    "svg_validator": "plugins/garden-structure-designer/scripts/svg_validator.py"
-  },
-  "requires": {
-    "python": ">=3.8",
-    "gemini-cli": ">=0.38.2"
-  }
+  "version": "1.3.0",
+  "description": "Multi-agent pipeline that translates garden structure designs into professional PDF engineering documents.",
+  "author": "Rich Fremmerlid",
+  "type": "plugin",
+  "entrypoint": "scripts/plugin_add.py",
+  "tags": ["architecture", "engineering", "structural", "design"]
 }

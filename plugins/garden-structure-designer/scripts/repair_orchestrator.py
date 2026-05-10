@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+repair_orchestrator.py
+=====================================
+Purpose:
+    Core logic for repair_orchestrator.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import sys
 import subprocess
@@ -6,7 +13,7 @@ from pathlib import Path
 
 # Add path_utils
 sys.path.append(str(Path(__file__).parent.resolve()))
-from path_utils import staging_dir, plugin_root, scripts_dir
+from path_utils import staging_dir, plugin_root, scripts_dir, outputs_dir
 from error_classifier import classify_failure
 from run_history import should_halt, record_run
 
@@ -41,7 +48,11 @@ def main():
         "remaining_failures": []
     }
 
-    if not drift_report.get("failed_axes"):
+    axes = drift_report.get("failed_axes", [])
+    if not axes and "failures" in drift_report:
+        axes = [f.get("axis") or f.get("classification") or str(f) for f in drift_report["failures"]]
+        
+    if not axes:
         print("No failures reported.")
         save_json(report, staging_dir() / "repair-report.json")
         sys.exit(0)
@@ -54,7 +65,7 @@ def main():
         is_locked = model.get("_locked", False)
 
     # Try repairs
-    for axis in drift_report.get("failed_axes", []):
+    for axis in axes:
         cls = classify_failure(axis)
         
         if cls["requires_human_review"]:
@@ -95,16 +106,37 @@ def main():
         
         record_run(script_name, cmd_args[1:], result.returncode, cls["classification"])
         
+        # Re-run validator
+        val_status = "PASS" if result.returncode == 0 else "FAIL"
+        if result.returncode == 0:
+            if stage == "drawing-generator":
+                svg_path = outputs_dir() / "drawing-plan-view.svg"
+                val_cmd = [sys.executable, str(scripts_dir() / "svg_validator.py"), str(svg_path), str(model_path)]
+                vr = subprocess.run(val_cmd, capture_output=True, text=True)
+                val_status = "PASS" if vr.returncode == 0 else "FAIL"
+            elif stage == "structural-engine":
+                val_cmd = [sys.executable, str(scripts_dir() / "schema_validator.py")]
+                vr = subprocess.run(val_cmd, capture_output=True, text=True)
+                val_status = "PASS" if vr.returncode == 0 else "FAIL"
+            elif stage == "package":
+                val_cmd = [sys.executable, str(scripts_dir() / "package_consistency_validator.py")]
+                vr = subprocess.run(val_cmd, capture_output=True, text=True)
+                val_status = "PASS" if vr.returncode == 0 else "FAIL"
+            elif stage == "cross-artifact":
+                val_cmd = [sys.executable, str(scripts_dir() / "cross_artifact_validator.py")]
+                vr = subprocess.run(val_cmd, capture_output=True, text=True)
+                val_status = "PASS" if vr.returncode == 0 else "FAIL"
+        
         attempt = {
             "attempt": 1,
             "failure_axis": axis,
             "repair_stage": stage,
             "commands": [action],
-            "validation_status": "PASS" if result.returncode == 0 else "FAIL"
+            "validation_status": val_status
         }
         report["attempts"].append(attempt)
         
-        if result.returncode != 0:
+        if val_status != "PASS":
             report["remaining_failures"].append(axis)
             report["status"] = "FAIL"
 

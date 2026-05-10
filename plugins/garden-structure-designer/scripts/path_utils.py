@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+"""
+path_utils.py
+=====================================
+Purpose:
+    Core logic for path_utils.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 from pathlib import Path
 import os
 

@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+schema_validator.py
+=====================================
+Purpose:
+    Core logic for schema_validator.py functionality within garden-structure-designer pipeline.
+Layer: Execution
+"""
 import json
 import sys
 import jsonschema
