@@ -1,0 +1,14 @@
+{
+  "schema": "garden-structure-designer/learning-registry/1.0",
+  "active_lessons": [
+    {
+      "id": "builder-docs.hex.tripod-first.required",
+      "category": "builder-docs",
+      "classification": "deterministic",
+      "severity": "high",
+      "applies_when": { "planShape": "hexagon", "roofType": "hub-and-hip-rafter" },
+      "lesson_file": "agent-workspace/garden-structure-designer/learned-patterns/builder-docs/hex-tripod-first.md",
+      "validated_by": "assembly_guide_validator.py"
+    }
+  ]
+}

@@ -39,6 +39,23 @@ Phase-by-phase site construction sequence:
 
 Use the compound cut values from `geometry-calculations.json` in any assembly note that references saw settings.
 
+## MANDATORY CONSTRAINT — HEXAGONAL HUB ASSEMBLY
+For any structure with `planShape = hexagon` and a central hub:
+
+The assembly guide MUST include a section titled exactly:
+"Phase 4.3 — Tripod-First Hub and Rafter Hoisting"
+
+The required sequence is:
+1. Install three alternating rafters into the hub on the ground.
+2. Hoist this tripod assembly onto three alternating beam seats.
+3. Temporarily brace the tripod to the beam ring.
+4. Install the remaining three rafters one at a time.
+5. Confirm hub is centred over the layout stake.
+6. Peg only after all six rafters are seated and verified.
+
+This MUST be presented as the PRIMARY method.
+Scaffolding and ground pre-assembly may be mentioned as ALTERNATIVES ONLY.
+
 ## Gotchas
 
 - **Order length ≠ cut length.** Add a minimum 1ft per piece as waste allowance; add more when multiple cuts come from a single board (e.g. rafters require one cut per piece at the bird's-mouth). Using cut length as order length results in a shortage on-site.

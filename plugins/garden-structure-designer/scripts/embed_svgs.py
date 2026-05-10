@@ -1,16 +1,36 @@
 #!/usr/bin/env python3
 """
-embed_svgs.py — Inline SVG and PNG assets into a Markdown file for PDF compilation.
+embed_svgs.py (CLI)
+=====================================
 
-Usage:
-    python3 scripts/embed_svgs.py <input.md> <output.md>
+Purpose:
+    embed_svgs.py — Inline SVG and PNG assets into a Markdown file for PDF compilation.
 
-Transforms:
-    ![alt](path/to/file.svg)  → inline <svg>...</svg> block
-    ![alt](path/to/file.png)  → <img src="data:image/png;base64,...">
+Layer: Execution
 
-The output Markdown/HTML is suitable for npx md-to-pdf which renders inline HTML.
-All paths are resolved relative to the input Markdown file's directory.
+Usage Examples:
+    python embed_svgs.py [args]
+
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
 """
 import sys
 import os

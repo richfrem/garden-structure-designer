@@ -1,0 +1,6 @@
+{
+  "compound_cut": {"repair_stage": "shop-blueprint-generator", "requires": ["geometry-calculations.json"]},
+  "svg_viewbox_overflow": {"repair_stage": "geometry-engine", "requires": ["structural-model.json"]},
+  "assembly_tripod_missing": {"repair_stage": "builder-docs-generator"},
+  "stale_manifest": {"repair_stage": "drawing-generator"}
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "cut-list",
+  "type": "object",
+  "required": [
+    "schema",
+    "items",
+    "total_board_feet",
+    "waste_factor"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string"
+    },
+    "source_hash": {
+      "type": "string"
+    },
+    "total_board_feet": {
+      "type": "number"
+    },
+    "waste_factor": {
+      "type": "number"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "partId",
+          "quantity",
+          "length_ft",
+          "nominal"
+        ],
+        "properties": {
+          "partId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "length_ft": {
+            "type": "number"
+          },
+          "nominal": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

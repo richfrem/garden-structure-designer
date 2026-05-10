@@ -1,0 +1,1 @@
+../../../scripts/package_consistency_validator.py

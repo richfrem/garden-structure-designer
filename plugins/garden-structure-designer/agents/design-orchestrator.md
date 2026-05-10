@@ -24,6 +24,11 @@ cat context/design-dashboard.md
 
 Update the dashboard's Pipeline Stage Status table as each stage completes or fails.
 
+### Stage 0 — Load Active Lessons
+1. Execute `scripts/load_applicable_lessons.py` for each skill category.
+2. Read the filtered lessons from `learning-registry.json`.
+3. Make all active lessons available as hard constraints to downstream skills.
+
 ### Stage 1 — Structural Foundation
 1. Verify `context/staging/design-spec.json` is present and complete.
 2. Call `building-code-validator` → writes `context/staging/building-code.json`.
@@ -35,7 +40,10 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
 
 ### Stage 2 — Joinery & Bracing
 5. Call `joinery-designer` → reads structural model → writes `context/staging/joinery-model.json`.
-6. Call `bracing-system-designer` → writes bracing spec.
+6. Call `bracing-system-designer` → writes brace geometry to `context/staging/bracing-model.json`.
+   - **Re-run `geometry_engine.py`** if bracing affects geometry (pass bracing-model.json as second arg).
+   - Verify `structural-model.json` hash has NOT changed since Stage 1 lock.
+   - Verify `geometry-calculations.json` source_hash still matches `structural-model.json`.
 
 ### Stage 3 — Independent Structural Physics QA
 7. Launch an independent sub-agent via `gemini-cli` using **gemini-3.1-pro-preview**, adopting the `validation-agent` profile, to audit structural physics. This agent:
@@ -59,14 +67,31 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
     - Dimension drift check (SVG labels vs. geometry-calculations.json values).
 12. If validation returns `FAIL`, read `drift_report.json`, re-invoke failing drawing skills, then re-run Stage 5.
 
+### Stage 5.5 — Cross-Artifact Reconciliation
+12b. Run `scripts/cross_artifact_validator.py context/staging outputs`.
+     - Validates paths, SAW_SETTINGS metadata, and ensures that beam miters ≠ rafter miters appropriately across all MD and SVG artifacts.
+
 ### Stage 6 — Builder Documents
 13. Call `builder-docs-generator` (new skill) to produce:
     - `outputs/budget-estimate.md` — sourced from `structural-model.json` BF totals and regional material costs.
     - `outputs/lumber-purchase-list.md` — ordered by member type with standard stock lengths.
     - `outputs/assembly-guide.md` — phase-by-phase site assembly sequence.
 
+### Stage 6.5 — Package Consistency QA
+13b. Run `scripts/package_consistency_validator.py`.
+     - Ensure required SVGs and the JSON cut-list exist before compilation.
+
 ### Stage 7 — Compilation
 14. Call `document-compiler` to aggregate all sheets and builder documents into the final PDF packet in `outputs/pdf/`.
+
+### Stage 8 — Learning Capture and Self-Healing
+15. Read validation reports and the package consistency report.
+16. Review user corrections from the current session.
+17. Identify repeatable lesson candidates.
+18. Write or update `.md` lesson files under `agent-workspace/garden-structure-designer/learned-patterns/`.
+19. Run `scripts/failure_to_test.py context/staging/drift_report.json agent-workspace/garden-structure-designer/generated-tests/` to scaffold tests for new failures.
+20. Update `context/staging/learning-registry.json` with the new lessons.
+21. Generate `outputs/quality-dashboard.md`.
 
 ## Context Checkpoint Protocol
 
