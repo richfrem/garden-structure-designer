@@ -2,6 +2,17 @@
 name: builder-docs-generator
 description: Produces the three builder-facing documents that make the plugin output immediately usable for site procurement and construction: budget-estimate.md, lumber-purchase-list.md, and assembly-guide.md. Invoke as Step 13 of design-orchestrator after blueprints are validated.
 allowed-tools: Read, Write
+metadata:
+  garden_structure_designer:
+    consumes:
+      - context/staging/geometry-calculations.json
+      - context/staging/structural-model.json
+    produces:
+      - context/staging/cut-list.json
+    validators:
+      - plugins/garden-structure-designer/scripts/schema_validator.py
+    repair_axes:
+      - schema_error
 ---
 
 ## Expected Inputs

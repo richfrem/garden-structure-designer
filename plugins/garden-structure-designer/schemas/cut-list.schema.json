@@ -2,40 +2,98 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "cut-list",
   "type": "object",
-  "required": ["schema", "source_hash", "members", "totals"],
+  "required": [
+    "schema",
+    "source_hash",
+    "members",
+    "totals"
+  ],
   "properties": {
-    "schema": { "type": "string" },
-    "source_hash": { "type": "string" },
+    "schema": {
+      "type": "string"
+    },
+    "source_hash": {
+      "type": "string"
+    },
     "members": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "profile", "cut_length_ft", "qty", "order_length_ft",
-                     "bf_total_net", "bf_total_order"],
+        "required": [
+          "id",
+          "name",
+          "profile",
+          "cut_length_ft",
+          "qty",
+          "order_length_ft",
+          "bf_total_net",
+          "bf_total_order"
+        ],
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "profile": { "type": "string" },
-          "width_in": { "type": "number" },
-          "depth_in": { "type": "number" },
-          "cut_length_ft": { "type": "number" },
-          "qty": { "type": "integer" },
-          "order_length_ft": { "type": "integer" },
-          "bf_per_piece_net": { "type": "number" },
-          "bf_per_piece_order": { "type": "number" },
-          "bf_total_net": { "type": "number" },
-          "bf_total_order": { "type": "number" }
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "width_in": {
+            "type": "number"
+          },
+          "depth_in": {
+            "type": "number"
+          },
+          "cut_length_ft": {
+            "type": "number",
+            "minimum": 0
+          },
+          "qty": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "order_length_ft": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "bf_per_piece_net": {
+            "type": "number"
+          },
+          "bf_per_piece_order": {
+            "type": "number"
+          },
+          "bf_total_net": {
+            "type": "number",
+            "minimum": 0
+          },
+          "bf_total_order": {
+            "type": "number"
+          }
         }
       }
     },
     "totals": {
       "type": "object",
-      "required": ["bf_net", "bf_order", "waste_factor", "bf_with_waste"],
+      "required": [
+        "bf_net",
+        "bf_order",
+        "waste_factor",
+        "bf_with_waste"
+      ],
       "properties": {
-        "bf_net": { "type": "number" },
-        "bf_order": { "type": "number" },
-        "waste_factor": { "type": "number" },
-        "bf_with_waste": { "type": "number" }
+        "bf_net": {
+          "type": "number"
+        },
+        "bf_order": {
+          "type": "number"
+        },
+        "waste_factor": {
+          "type": "number"
+        },
+        "bf_with_waste": {
+          "type": "number"
+        }
       }
     }
   }

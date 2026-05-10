@@ -34,10 +34,15 @@ Consumed by:
 """
 import os
 import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.resolve()))
+from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
+
+import sys
 
 def validate_package() -> list[str]:
     errors = []
-    outputs_dir = os.path.join(os.path.dirname(__file__), "..", "..", "outputs")
+    outputs_dir = str(outputs_dir())
     if not os.path.exists(outputs_dir):
         return ["Outputs directory not found"]
         

@@ -2,6 +2,20 @@
 name: drawing-generator
 description: Generates architectural SVG drawings and updates the composite dependency manifest.
 allowed-tools: Read, Write, Bash
+metadata:
+  garden_structure_designer:
+    consumes:
+      - context/staging/structural-model.json
+      - context/staging/geometry-calculations.json
+    produces:
+      - outputs/drawing-plan-view.svg
+      - outputs/drawing-elevation-view.svg
+    validators:
+      - plugins/garden-structure-designer/scripts/svg_validator.py
+    repair_axes:
+      - svg_xml_invalid
+      - svg_topology_mismatch
+      - svg_coordinate_drift
 ---
 
 ## Expected Inputs

@@ -1,0 +1,33 @@
+{
+  "schema": "garden-structure-designer/toolsets/1.0",
+  "toolsets": {
+    "geometry": [
+      "geometry_engine.py",
+      "schema_validator.py"
+    ],
+    "drawings": [
+      "render_drawings.py",
+      "svg_validator.py",
+      "svg_templates.py",
+      "manifest_utils.py"
+    ],
+    "builder-docs": [
+      "cut_list_engine.py",
+      "assembly_guide_validator.py",
+      "cross_artifact_validator.py",
+      "package_consistency_validator.py"
+    ],
+    "validation": [
+      "schema_validator.py",
+      "structural_physics_validator.py",
+      "svg_validator.py",
+      "cross_artifact_validator.py",
+      "package_consistency_validator.py"
+    ],
+    "self-healing": [
+      "load_applicable_lessons.py",
+      "failure_to_test.py",
+      "repair_orchestrator.py"
+    ]
+  }
+}

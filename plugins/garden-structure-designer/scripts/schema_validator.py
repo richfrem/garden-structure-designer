@@ -1,82 +1,87 @@
 #!/usr/bin/env python3
-"""
-schema_validator.py (CLI)
-=====================================
-
-Purpose:
-    schema_validator.py Validates JSON artifacts against schemas.
-
-Layer: Execution
-
-Usage Examples:
-    python schema_validator.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
-
-Key Functions:
-    Refer to module docstring or inner functions.
-
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
-"""
 import json
-import os
 import sys
-import glob
-
 import jsonschema
+from pathlib import Path
+import argparse
 
-def validate_schemas(staging_dir: str, schemas_dir: str) -> list[str]:
-    errors = []
-    
-    json_files = glob.glob(os.path.join(staging_dir, "*.json"))
-    for jf in json_files:
-        filename = os.path.basename(jf)
-        name = filename.replace(".json", "")
-        schema_path = os.path.join(schemas_dir, f"{name}.schema.json")
-        
-        if os.path.exists(schema_path):
-            with open(schema_path) as sf:
-                schema = json.load(sf)
-                
-            with open(jf) as f:
-                try:
-                    data = json.load(f)
-                    try:
-                        jsonschema.validate(instance=data, schema=schema)
-                    except jsonschema.exceptions.ValidationError as e:
-                        errors.append(f"{filename} validation failed: {e.message}")
-                except json.JSONDecodeError:
-                    errors.append(f"{filename}: Invalid JSON format")
-    return errors
+sys.path.append(str(Path(__file__).parent.resolve()))
+from path_utils import staging_dir, schemas_dir
 
-if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python3 schema_validator.py <staging_dir> <schemas_dir>")
-        sys.exit(1)
-        
-    staging = sys.argv[1]
-    schemas = sys.argv[2]
+def load_json(path):
+    with open(path) as f: return json.load(f)
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("target_dir", nargs='?', default=str(staging_dir()))
+    parser.add_argument("schema_dir", nargs='?', default=str(schemas_dir()))
+    parser.add_argument("--strict", action="store_true")
+    parser.add_argument("--json-output", type=str)
+    args = parser.parse_args()
+
+    target_path = Path(args.target_dir)
+    schema_path = Path(args.schema_dir)
     
-    errors = validate_schemas(staging, schemas)
-    if errors:
-        print("SCHEMA VALIDATION FAILED:")
-        for e in errors:
-            print(f"  ✗ {e}")
+    report = {
+        "schema": "garden-structure-designer/schema-validation-report/1.0",
+        "status": "PASS",
+        "files": []
+    }
+    
+    overall_status = "PASS"
+
+    for file in target_path.glob("*.json"):
+        if file.name in ["repair-report.json", "drift_report.json", "learning-registry.json", "script-run-history.jsonl"]:
+            continue
+            
+        schema_file = schema_path / f"{file.stem}.schema.json"
+        if not schema_file.exists():
+            continue
+            
+        data = load_json(file)
+        schema = load_json(schema_file)
+        
+        file_report = {
+            "path": str(file),
+            "schema": str(schema_file),
+            "status": "PASS",
+            "errors": [],
+            "warnings": []
+        }
+        
+        try:
+            jsonschema.validate(data, schema)
+            
+            if args.strict and file.name == "design-spec.json":
+                known_keys = set(schema.get("properties", {}).keys())
+                data_keys = set(data.keys())
+                unknown = data_keys - known_keys
+                if unknown:
+                    file_report["warnings"].append(f"Unknown keys in design-spec: {unknown}")
+                    if overall_status == "PASS": overall_status = "WARNING"
+                    file_report["status"] = "WARNING"
+                    
+        except jsonschema.ValidationError as e:
+            file_report["status"] = "FAIL"
+            file_report["errors"].append(e.message)
+            overall_status = "FAIL"
+            
+        report["files"].append(file_report)
+
+    report["status"] = overall_status
+
+    if args.json_output:
+        with open(args.json_output, "w") as f:
+            json.dump(report, f, indent=2)
+            
+    if overall_status == "FAIL":
+        print("SCHEMA VALIDATION FAILED")
+        for f in report["files"]:
+            if f["errors"]: print(f"  {f['path']}: {f['errors']}")
         sys.exit(1)
     else:
-        print("SCHEMA VALIDATION PASSED ✓")
+        print(f"SCHEMA VALIDATION PASSED ✓ ({overall_status})")
         sys.exit(0)
+
+if __name__ == "__main__":
+    main()
