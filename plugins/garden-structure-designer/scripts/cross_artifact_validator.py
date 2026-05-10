@@ -35,6 +35,11 @@ Consumed by:
 import glob
 import json
 import os
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.resolve()))
+from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
+
 import re
 import sys
 

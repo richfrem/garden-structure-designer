@@ -21,7 +21,7 @@ uvx --from git+https://github.com/richfrem/garden-structure-designer plugin-add 
 
 ## Architecture
 
-### Agent Pipeline Data Flow (v1.2 Deterministic)
+### Agent Pipeline Data Flow (v1.3 Deterministic)
 The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs must conform to rigorous JSON Schemas.
 
 1. **`interactive-designer`** → user interview → calls `intake-normalizer`
@@ -39,7 +39,7 @@ The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs 
 
 ---
 
-## 🛡️ v1.2 Architectural Upgrades
+## 🛡️ v1.3 Architectural Upgrades
 
 ### The Deterministic Kernel
 We have replaced LLM-guessed geometry with strictly deterministic Python engines:

@@ -53,16 +53,19 @@
           ],
           "properties": {
             "quantity": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 3
             },
             "cutLength_ft": {
-              "type": "number"
+              "type": "number",
+              "minimum": 1
             },
             "nominalSize": {
               "type": "string"
             },
             "spanDistance_ft": {
-              "type": "number"
+              "type": "number",
+              "minimum": 0.1
             }
           }
         },
@@ -95,7 +98,8 @@
           ],
           "properties": {
             "quantity": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 3
             },
             "cutLength_ft": {
               "type": "number"
@@ -104,7 +108,9 @@
               "type": "string"
             },
             "miterAngle_deg": {
-              "type": "number"
+              "type": "number",
+              "minimum": 0,
+              "maximum": 90
             }
           }
         }

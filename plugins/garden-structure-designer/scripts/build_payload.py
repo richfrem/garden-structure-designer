@@ -33,6 +33,11 @@ Consumed by:
     design-orchestrator, various skills in the pipeline.
 """
 import os
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.resolve()))
+from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
+
 
 files_to_merge = {
     "SOURCE INTENT (design-spec.json)": "context/staging/design-spec.json",

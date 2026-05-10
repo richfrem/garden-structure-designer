@@ -1,0 +1,49 @@
+{
+  "schema": "garden-structure-designer/actions/1.0",
+  "actions": [
+    {
+      "name": "validate-schemas",
+      "stage": "validation",
+      "script": "scripts/schema_validator.py",
+      "inputs": ["context/staging/*.json", "schemas/*.schema.json"],
+      "outputs": [],
+      "validators": [],
+      "repair_axes": ["schema_error"]
+    },
+    {
+      "name": "compute-geometry",
+      "stage": "structural-foundation",
+      "script": "scripts/geometry_engine.py",
+      "inputs": ["context/staging/structural-model.json"],
+      "outputs": ["context/staging/geometry-calculations.json"],
+      "validators": ["scripts/schema_validator.py"],
+      "repair_axes": ["geometry_warning", "source_hash_mismatch"]
+    },
+    {
+      "name": "render-drawings",
+      "stage": "drawing-generation",
+      "script": "scripts/render_drawings.py",
+      "inputs": [
+        "context/staging/structural-model.json",
+        "context/staging/geometry-calculations.json"
+      ],
+      "outputs": [
+        "outputs/drawing-plan-view.svg",
+        "outputs/drawing-elevation-view.svg",
+        "outputs/drawing-isometric-view.svg",
+        "outputs/drawing-perspective-view.svg",
+        "outputs/blueprint-plan.svg",
+        "outputs/blueprint-elevation.svg",
+        "outputs/blueprint-isometric.svg",
+        "outputs/blueprint-component-isolation.svg"
+      ],
+      "validators": ["scripts/svg_validator.py"],
+      "repair_axes": [
+        "svg_xml_invalid",
+        "svg_topology_mismatch",
+        "svg_coordinate_drift",
+        "svg_viewbox_overflow"
+      ]
+    }
+  ]
+}

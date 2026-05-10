@@ -2,6 +2,17 @@
 name: structural-engine
 description: Generates the structural system based on limits. Computes post placement, beam spans, and rafter geometry. Enforces real-world build constraints by validating spans against safe load paths. Writes geometry-calculations.json via geometry_engine.py — NEVER derives math mentally.
 allowed-tools: Read, Write, Bash
+metadata:
+  garden_structure_designer:
+    consumes:
+      - context/staging/structural-model.json
+    produces:
+      - context/staging/geometry-calculations.json
+    validators:
+      - plugins/garden-structure-designer/scripts/schema_validator.py
+    repair_axes:
+      - geometry_warning
+      - source_hash_mismatch
 ---
 
 ## Expected Inputs
