@@ -59,6 +59,29 @@ The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs 
    - **Stage 6 (Generation)**: `drawing-generator` & `cut_list_engine.py` produce final outputs.
    - **Stage 7 (Red-Team)**: `validation-agent` blocks execution if `drift_report.json` flags mismatch.
    - **Stage 8 (Repair)**: Repeated failures scaffold PyTest regressions via `failure_to_test.py`.
+---
+
+## 🛡️ v1.2 Architectural Upgrades
+
+### Deterministic Kernel
+We have replaced LLM-guessed geometry with a strictly deterministic `geometry_engine.py` written in Python. This core calculates exact roof pitches, miter cuts, and span physics. The AI provides the inputs, but never guesses the math.
+
+### Validation Layers
+| Layer | Script | Purpose |
+|-------|--------|---------|
+| **Schema Validation** | `schema_validator.py` | Enforces strict JSON contracts (required fields, types) |
+| **Physics Validation** | `structural_physics_validator.py` | Validates L/d slenderness, L/240 beam deflection, and soil bearing |
+| **Geometry Integrity**| `svg_validator.py` | Validates SVG output matches `geometry-calculations.json` exactly |
+| **Consistency** | `cross_artifact_validator.py` | Ensures values like total board feet or miters match across documents |
+| **Package** | `package_consistency_validator.py` | Enforces output generation, date parity, and title block parity |
+
+### Self-Healing & Integrity Chain
+- **Fail-Closed Strategy**: No self-review fallbacks. If a file fails a validation gate, the pipeline halts to prevent hallucinatory construction data from reaching the user.
+- **Learning Registry**: Found in `context/staging/learning-registry.json`. Failed runs result in permanent lessons that are injected into future prompts to correct known edge cases.
+- **Regression Scaffold**: `failure_to_test.py` takes novel drift reports and scaffolds `pytest` regressions.
+
+### Reference Values
+Always utilize standardized building code defaults unless directed otherwise (e.g., BC Building Code implies ~40psf snow load).
 
 ---
 

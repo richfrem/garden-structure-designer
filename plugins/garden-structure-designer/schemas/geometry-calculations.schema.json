@@ -4,8 +4,11 @@
   "type": "object",
   "required": [
     "schema",
-    "nodes",
-    "angles"
+    "compound_cut",
+    "beam_ring",
+    "svg_coordinates",
+    "warnings",
+    "source_hash"
   ],
   "properties": {
     "schema": {
@@ -14,11 +17,17 @@
     "source_hash": {
       "type": "string"
     },
-    "nodes": {
+    "compound_cut": {
       "type": "object"
     },
-    "angles": {
+    "beam_ring": {
       "type": "object"
+    },
+    "svg_coordinates": {
+      "type": "object"
+    },
+    "warnings": {
+      "type": "array"
     }
   }
 }

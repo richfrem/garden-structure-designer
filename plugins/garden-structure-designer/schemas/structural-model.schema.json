@@ -27,7 +27,8 @@
       ],
       "properties": {
         "pitch": {
-          "type": "number"
+          "type": "string",
+          "pattern": "^\\d+:\\d+$"
         },
         "style": {
           "type": "string"
@@ -47,7 +48,8 @@
           "required": [
             "quantity",
             "cutLength_ft",
-            "nominalSize"
+            "nominalSize",
+            "spanDistance_ft"
           ],
           "properties": {
             "quantity": {
@@ -58,6 +60,9 @@
             },
             "nominalSize": {
               "type": "string"
+            },
+            "spanDistance_ft": {
+              "type": "number"
             }
           }
         },

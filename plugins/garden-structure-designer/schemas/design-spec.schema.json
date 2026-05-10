@@ -4,9 +4,10 @@
   "type": "object",
   "required": [
     "schema",
-    "style",
-    "footprint_ft",
-    "jurisdiction"
+    "structureType",
+    "planShape",
+    "jurisdiction",
+    "pitch"
   ],
   "properties": {
     "schema": {
@@ -15,23 +16,14 @@
     "source_hash": {
       "type": "string"
     },
-    "style": {
+    "structureType": {
       "type": "string"
     },
-    "footprint_ft": {
-      "type": "object",
-      "required": [
-        "width",
-        "length"
-      ],
-      "properties": {
-        "width": {
-          "type": "number"
-        },
-        "length": {
-          "type": "number"
-        }
-      }
+    "planShape": {
+      "type": "string"
+    },
+    "pitch": {
+      "type": "string"
     },
     "jurisdiction": {
       "type": "string"
