@@ -3,30 +3,38 @@
   "title": "design-spec",
   "type": "object",
   "required": [
-    "schema",
     "structureType",
     "planShape",
-    "jurisdiction",
-    "pitch"
+    "jurisdiction"
   ],
   "properties": {
-    "schema": {
-      "type": "string"
-    },
-    "source_hash": {
-      "type": "string"
-    },
+    "schema": { "type": "string" },
+    "source_hash": { "type": "string" },
     "structureType": {
-      "type": "string"
+      "type": "string",
+      "description": "e.g. pergola, gazebo, pavilion"
     },
     "planShape": {
-      "type": "string"
-    },
-    "pitch": {
-      "type": "string"
+      "type": "string",
+      "description": "e.g. hexagon, square, octagon, rectangular"
     },
     "jurisdiction": {
-      "type": "string"
+      "type": "string",
+      "description": "e.g. BC-Coastal, BC-Interior, Unknown"
+    },
+    "pitch": { "type": "string" },
+    "pitchDefaulted": { "type": "boolean" },
+    "span_ft": { "type": "number" },
+    "heightConstraints": {
+      "type": "object",
+      "properties": {
+        "totalHeightLimit_ft": { "type": "number" }
+      }
+    },
+    "joinery_preference": {
+      "type": "string",
+      "enum": ["mechanical", "timber", "TBD"]
     }
-  }
+  },
+  "additionalProperties": true
 }
