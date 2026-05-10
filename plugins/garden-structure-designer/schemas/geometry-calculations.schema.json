@@ -4,30 +4,92 @@
   "type": "object",
   "required": [
     "schema",
+    "source_hash",
+    "pitch",
+    "sides",
     "compound_cut",
     "beam_ring",
+    "rafter",
+    "roof_rise",
+    "total_height",
     "svg_coordinates",
-    "warnings",
-    "source_hash"
+    "warnings"
   ],
   "properties": {
-    "schema": {
-      "type": "string"
-    },
-    "source_hash": {
-      "type": "string"
-    },
+    "schema": { "type": "string" },
+    "source": { "type": "string" },
+    "source_hash": { "type": "string" },
+    "pitch": { "type": "string", "pattern": "^\\d+:\\d+$" },
+    "sides": { "type": "integer", "minimum": 3 },
     "compound_cut": {
-      "type": "object"
+      "type": "object",
+      "required": ["miter_deg", "bevel_deg", "pitch_angle_deg", "plan_half_angle_deg"],
+      "properties": {
+        "miter_deg": { "type": "number" },
+        "bevel_deg": { "type": "number" },
+        "pitch_angle_deg": { "type": "number" },
+        "plan_half_angle_deg": { "type": "number" }
+      }
     },
     "beam_ring": {
-      "type": "object"
+      "type": "object",
+      "required": ["beam_miter_deg", "interior_angle_deg"],
+      "properties": {
+        "beam_miter_deg": { "type": "number" },
+        "interior_angle_deg": { "type": "number" }
+      }
+    },
+    "rafter": {
+      "type": "object",
+      "required": ["structural_length_ft", "total_with_overhang_ft", "total_with_overhang_in"],
+      "properties": {
+        "structural_length_ft": { "type": "number" },
+        "total_with_overhang_ft": { "type": "number" },
+        "total_with_overhang_in": { "type": "number" }
+      }
+    },
+    "roof_rise": {
+      "type": "object",
+      "required": ["rise_ft", "rise_in"],
+      "properties": {
+        "rise_ft": { "type": "number" },
+        "rise_in": { "type": "number" }
+      }
+    },
+    "total_height": {
+      "type": "object",
+      "required": ["post_ft", "beam_depth_ft", "roof_rise_ft", "total_height_ft", "total_height_in"],
+      "properties": {
+        "post_ft": { "type": "number" },
+        "beam_depth_ft": { "type": "number" },
+        "roof_rise_ft": { "type": "number" },
+        "total_height_ft": { "type": "number" },
+        "total_height_in": { "type": "number" }
+      }
     },
     "svg_coordinates": {
-      "type": "object"
+      "type": "object",
+      "required": ["grade_y", "post_top_y", "beam_top_y", "hub_apex_y", "scale_px_per_ft"],
+      "properties": {
+        "viewBox": { "type": "string" },
+        "width_px": { "type": "integer" },
+        "height_px": { "type": "integer" },
+        "margin_top_px": { "type": "integer" },
+        "margin_bottom_px": { "type": "integer" },
+        "grade_y": { "type": "number" },
+        "scale_px_per_ft": { "type": "number" },
+        "post_top_y": { "type": "number" },
+        "beam_soffit_y": { "type": "number" },
+        "beam_top_y": { "type": "number" },
+        "hub_apex_y": { "type": "number" },
+        "rise_px": { "type": "number" },
+        "beam_px": { "type": "number" },
+        "post_px": { "type": "number" }
+      }
     },
     "warnings": {
-      "type": "array"
+      "type": "array",
+      "items": { "type": "string" }
     }
   }
 }

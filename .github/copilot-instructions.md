@@ -22,27 +22,6 @@ uvx --from git+https://github.com/richfrem/garden-structure-designer plugin-add 
 ---
 
 ## Architecture
-```
-plugins/garden-structure-designer/   # The actual plugin content
-  agents/
-    interactive-designer/            # Entry point: interviews user, triggers intake-normalizer
-    design-orchestrator/             # Pipeline controller: runs the full skill chain
-    validation-agent/                # Red-team reviewer of physics before compilation
-  skills/
-    intake-normalizer/               # Converts conversation → design-spec.json
-    building-code-validator/         # Maps jurisdiction → load constraints JSON
-    structural-engine/               # Computes post/beam/rafter dimensions
-    joinery-designer/                # Assigns connection types (mortise-tenon vs. fasteners)
-    bracing-system-designer/         # Anti-racking knee brace geometry
-    drawing-generator/               # Orthographic SVG/PNG plan & elevation views
-    document-compiler/               # Assembles final PDF construction packet
-  .claude-plugin/plugin.json         # Plugin manifest
-
-.claude-plugin/marketplace.json      # Marketplace index (points to plugin + agentic-os-core)
-exploration/                         # Discovery artifacts (plans, captures, dashboard)
-context/                             # Runtime: events.jsonl + memory/
-skills-lock.json                     # Installed skills manifest
-```
 
 ### Agent Pipeline Data Flow (v1.2 Deterministic)
 The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs must conform to rigorous JSON Schemas.
@@ -59,29 +38,44 @@ The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs 
    - **Stage 6 (Generation)**: `drawing-generator` & `cut_list_engine.py` produce final outputs.
    - **Stage 7 (Red-Team)**: `validation-agent` blocks execution if `drift_report.json` flags mismatch.
    - **Stage 8 (Repair)**: Repeated failures scaffold PyTest regressions via `failure_to_test.py`.
+
 ---
 
 ## 🛡️ v1.2 Architectural Upgrades
 
-### Deterministic Kernel
-We have replaced LLM-guessed geometry with a strictly deterministic `geometry_engine.py` written in Python. This core calculates exact roof pitches, miter cuts, and span physics. The AI provides the inputs, but never guesses the math.
+### The Deterministic Kernel
+We have replaced LLM-guessed geometry with strictly deterministic Python engines:
+- `geometry_engine.py`: Calculates exact roof pitches, miter cuts, span physics. The AI provides inputs, but never guesses the math.
+- `cut_list_engine.py`: Computes exact board foot quantities and waste factors.
+- `render_drawings.py`: Deterministically draws SVG files based strictly on `geometry-calculations.json`.
+- `structural_physics_validator.py`: Provides empirical formulas for safety verification.
 
 ### Validation Layers
-| Layer | Script | Purpose |
-|-------|--------|---------|
-| **Schema Validation** | `schema_validator.py` | Enforces strict JSON contracts (required fields, types) |
-| **Physics Validation** | `structural_physics_validator.py` | Validates L/d slenderness, L/240 beam deflection, and soil bearing |
-| **Geometry Integrity**| `svg_validator.py` | Validates SVG output matches `geometry-calculations.json` exactly |
-| **Consistency** | `cross_artifact_validator.py` | Ensures values like total board feet or miters match across documents |
-| **Package** | `package_consistency_validator.py` | Enforces output generation, date parity, and title block parity |
+| Layer | Script | Purpose | Stage |
+|-------|--------|---------|-------|
+| **Schema Validation** | `schema_validator.py` | Enforces strict JSON contracts (required fields, types) | 4 |
+| **Physics Validation** | `structural_physics_validator.py` | Validates L/d slenderness, L/240 beam deflection, caisson bearing | 4 |
+| **Geometry Integrity**| `svg_validator.py` | Validates SVG output matches `geometry-calculations.json` exactly | 6.5 |
+| **Consistency** | `cross_artifact_validator.py` | Ensures values like total BF or beam miters match across docs | 5 |
+| **Package Consistency**| `package_consistency_validator.py` | Enforces output generation, date parity, and title block parity | 7 |
+| **Assembly Guide** | `assembly_guide_validator.py` | Enforces tripod-first assembly sequences | 7 |
 
-### Self-Healing & Integrity Chain
-- **Fail-Closed Strategy**: No self-review fallbacks. If a file fails a validation gate, the pipeline halts to prevent hallucinatory construction data from reaching the user.
-- **Learning Registry**: Found in `context/staging/learning-registry.json`. Failed runs result in permanent lessons that are injected into future prompts to correct known edge cases.
-- **Regression Scaffold**: `failure_to_test.py` takes novel drift reports and scaffolds `pytest` regressions.
+### Integrity Chain
+- `source_hash` flows through all derived artifacts: `structural-model.json` → `geometry-calculations.json` → `SVG/MD` outputs.
+- A composite dependency manifest ensures that any change correctly bubbles up through the graph via `manifest_utils.py`.
+
+### State Management & Locking
+- **Immutability rules**: The `structural-model.json` is locked after Stage 2. No subsequent skill may mutate it.
+- **Bracing-model separation**: Bracing parameters have been extracted to their own model to prevent contaminating the core structure.
+
+### Self-Healing & Learning
+- **Learning Registry**: Found in `context/staging/learning-registry.json`. Failed runs result in permanent lessons classified by risk.
+- **Failure→Improvement Loop**: Validators surface drift, Stage 8 captures the feedback, and Stage 0 actively injects applicable lessons into the next run.
+- **Regression Scaffold**: `failure_to_test.py` takes novel drift reports and scaffolds pytest regressions automatically.
 
 ### Reference Values
-Always utilize standardized building code defaults unless directed otherwise (e.g., BC Building Code implies ~40psf snow load).
+- Always utilize standardized building code defaults unless directed otherwise.
+- For a Hexagonal layout at a 4:12 pitch, the verified beam ring miter is exactly `30.0°`. Use this regression anchor to verify assumptions.
 
 ---
 
@@ -101,10 +95,13 @@ The ultimate goal is generating a professional-grade structural construction PDF
 
 ---
 
-## Coding Rules
+## Updated Coding Rules
 - **Safety over aesthetics**: Structural physics calculations always override user style preferences.
+- **Semantic SVGs**: Use `data-role` tags on all drawn elements rather than relying solely on stroke colors for topology.
+- **Precision**: Enforce exactly two-decimal angles (`30.00°`) in all artifacts.
+- **Provenance Blocks**: Maintain `<!-- SAW_SETTINGS -->` comment blocks in SVGs for machine verification.
+- **Test-cut warnings**: Always append physical "test-cut" warnings on compound cuts for carpenters.
 - **Jurisdiction-aware**: Always capture user location (e.g., BC Building Code) before any structural computation.
-- **Loose coupling**: Each skill/agent reads its inputs from `context/staging/` and writes its outputs there — no direct agent-to-agent calls except through the orchestrator.
 - **Platform agnostic**: No external framework dependencies; must work across Claude Cowork, Antigravity, Gemini CLI, Copilot CLI.
 
 ---
