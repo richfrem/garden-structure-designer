@@ -18,5 +18,7 @@
   "post_to_base": {
     "type": "Hidden knife plate or Simpson Strong-Tie post base",
     "details": "Anchored to concrete pier block to keep timber off ground moisture"
-  }
+  },
+  "schema": "garden-structure-designer/joinery-model/1.0",
+  "connections": []
 }

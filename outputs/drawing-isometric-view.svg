@@ -1,131 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1000" width="1100" height="1000">
-<!-- COORDINATE MAP: scale=42px/ft, isometric projection, post_top offset=-350px -->
-<!-- SOURCE: geometry-calculations.json | sides=6 | radius=210px | post_px=350 | apex offset=70px rise -->
-<!-- COMPOUND CUT: miter=28.71deg bevel=9.10deg pitch=4:12 -->
-<!-- Isometric parallel projection: x_iso = x*cos30 - y*cos30, y_iso = x*sin30 + y*sin30 - z -->
-<rect width="1100" height="1000" fill="white"/>
-
-<!-- border + title block -->
-<rect x="20" y="20" width="1060" height="960" fill="none" stroke="#333" stroke-width="2"/>
-<rect x="750" y="890" width="330" height="90" fill="white" stroke="#333" stroke-width="1.5"/>
-<line x1="750" y1="912" x2="1080" y2="912" stroke="#333" stroke-width="1"/>
-<text x="760" y="907" font-family="monospace" font-size="15" font-weight="bold">ISOMETRIC VIEW</text>
-<text x="760" y="928" font-family="monospace" font-size="12">PROJECT: 10ft HEX GAZEBO | Saanich BC</text>
-<text x="760" y="946" font-family="monospace" font-size="12">PITCH: 4:12  DWG NO: A-03  DATE: 2026-04-25</text>
-<text x="760" y="964" font-family="monospace" font-size="12">NOTE: Parallel projection — no foreshortening</text>
-<!-- compound cut label -->
-<rect x="30" y="840" width="340" height="44" fill="#fff8e8" stroke="#8B5A2B" stroke-width="1.5"/>
-<text x="40" y="857" font-family="monospace" font-size="12" font-weight="bold" fill="#5a3a1a">COMPOUND CUT (hip rafter seat cut)</text>
-<text x="40" y="875" font-family="monospace" font-size="12" fill="#5a3a1a">Miter: 28.7° | Bevel: 9.10° | Pitch: 4:12</text>
-
-<text x="40" y="56" font-family="monospace" font-size="22" font-weight="bold" fill="#111">ISOMETRIC VIEW — HEXAGONAL GAZEBO</text>
-<text x="40" y="76" font-family="monospace" font-size="13" fill="#555">Parallel projection | All members to scale | Knee braces and hub shown</text>
-
-<!-- ISOMETRIC SETUP
-     Centre: 550, 580
-     Hex radius: 210px
-     Post height: 350px (8.33ft × 42)
-     Beam depth: 25px (7.25in × 42/12)
-     Roof rise: 70px (1.667ft × 42)
-
-     Isometric hex plan angles: posts at 90°,30°,-30°,-90°,-150°,150° converted to isometric
-     Using standard 30° isometric: right-axis = (cos30,sin30), left-axis = (-cos30,sin30), up = (0,-1)
-
-     Plan post positions (flat):
-       P1(top):      0, -210     → iso (0, -210*0.5)        = (0, -105)
-       P2(TR):       182, -105   → iso (182*0.866, 182*0.5 + (-105)*0.5) = (158, 38.5)
-       P3(BR):       182,  105   → iso (158, 91+52.5) = (158, 143.5) ... simplified
-     Using direct coordinate mapping for clarity:  -->
-
-<!-- Ground plane hex (pale fill to show patio) -->
-<polygon points="550,580 732,475 732,685 550,790 368,685 368,475"
-         fill="#f0ede0" stroke="#bbb" stroke-width="1"/>
-
-<!-- POSTS — 6 vertical members, cedar colour, with shadow -->
-<!-- P1 top -->
-<rect x="539" y="230" width="22" height="350" fill="#c8906a" stroke="#5a3a1a" stroke-width="2"/>
-<!-- P2 top-right -->
-<rect x="721" y="337" width="22" height="350" fill="#b8804a" stroke="#5a3a1a" stroke-width="2"/>
-<!-- P3 bottom-right -->
-<rect x="721" y="445" width="22" height="350" fill="#b8804a" stroke="#5a3a1a" stroke-width="2"/>
-<!-- P4 bottom -->
-<rect x="539" y="555" width="22" height="350" fill="#c8906a" stroke="#5a3a1a" stroke-width="2"/>
-<!-- P5 bottom-left -->
-<rect x="357" y="445" width="22" height="350" fill="#d8a07a" stroke="#5a3a1a" stroke-width="2"/>
-<!-- P6 top-left -->
-<rect x="357" y="337" width="22" height="350" fill="#d8a07a" stroke="#5a3a1a" stroke-width="2"/>
-
-<!-- BEAM RING at post tops — 4×8 depth shown as thick horizontal band -->
-<!-- Top face of beam ring (horizontal hex outline) -->
-<polygon points="550,225 732,332 732,442 550,550 368,442 368,332"
-         fill="none" stroke="#5a3a1a" stroke-width="9"/>
-<!-- Soffit face (25px below = beam depth) -->
-<polygon points="550,250 732,357 732,467 550,575 368,467 368,357"
-         fill="none" stroke="#7a5a3a" stroke-width="3" stroke-dasharray="6,4"/>
-
-<!-- KNEE BRACES — 6 pairs, one each side of each post, at ~45° offset running to beam ring -->
-<!-- Using angular lines from post ~midpoint up to beam -->
-<!-- P1 left brace -->
-<line x1="550" y1="340" x2="484" y2="250" stroke="#8B5A2B" stroke-width="5" stroke-linecap="round"/>
-<!-- P1 right brace -->
-<line x1="550" y1="340" x2="616" y2="252" stroke="#8B5A2B" stroke-width="5" stroke-linecap="round"/>
-<!-- P2 left brace -->
-<line x1="732" y1="447" x2="656" y2="362" stroke="#7a4a20" stroke-width="5" stroke-linecap="round"/>
-<!-- P2 right brace -->
-<line x1="732" y1="447" x2="808" y2="362" stroke="#7a4a20" stroke-width="5" stroke-linecap="round"/>
-<!-- P3 left brace -->
-<line x1="732" y1="557" x2="808" y2="472" stroke="#7a4a20" stroke-width="5" stroke-linecap="round"/>
-<!-- P3 right brace -->
-<line x1="732" y1="557" x2="656" y2="469" stroke="#7a4a20" stroke-width="5" stroke-linecap="round"/>
-<!-- P4 left brace -->
-<line x1="550" y1="670" x2="616" y2="575" stroke="#8B5A2B" stroke-width="5" stroke-linecap="round"/>
-<!-- P4 right brace -->
-<line x1="550" y1="670" x2="484" y2="570" stroke="#8B5A2B" stroke-width="5" stroke-linecap="round"/>
-<!-- P5 left brace -->
-<line x1="368" y1="557" x2="292" y2="472" stroke="#a07050" stroke-width="5" stroke-linecap="round"/>
-<!-- P5 right brace -->
-<line x1="368" y1="557" x2="444" y2="469" stroke="#a07050" stroke-width="5" stroke-linecap="round"/>
-<!-- P6 left brace -->
-<line x1="368" y1="447" x2="444" y2="362" stroke="#a07050" stroke-width="5" stroke-linecap="round"/>
-<!-- P6 right brace -->
-<line x1="368" y1="447" x2="292" y2="362" stroke="#a07050" stroke-width="5" stroke-linecap="round"/>
-
-<!-- HIP RAFTERS — 6 members from beam ring to hub apex -->
-<!-- Apex at (550, 150) — 70px above beam top at 225 minus slight centering = 155 -->
-<line x1="550" y1="225" x2="550" y2="155" stroke="#5a3a1a" stroke-width="8" stroke-linecap="round"/>
-<line x1="732" y1="332" x2="550" y2="155" stroke="#4a2a0a" stroke-width="8" stroke-linecap="round"/>
-<line x1="732" y1="442" x2="550" y2="155" stroke="#4a2a0a" stroke-width="8" stroke-linecap="round"/>
-<line x1="550" y1="550" x2="550" y2="155" stroke="#5a3a1a" stroke-width="8" stroke-linecap="round"/>
-<line x1="368" y1="442" x2="550" y2="155" stroke="#6a4a2a" stroke-width="8" stroke-linecap="round"/>
-<line x1="368" y1="332" x2="550" y2="155" stroke="#6a4a2a" stroke-width="8" stroke-linecap="round"/>
-
-<!-- Optional purlin ring at rafter midpoint (visible in photo) -->
-<polygon points="550,190 641,243 641,298 550,352 459,298 459,243"
-         fill="none" stroke="#7a5a3a" stroke-width="3.5"/>
-
-<!-- King post hub box at apex -->
-<rect x="535" y="141" width="30" height="30" fill="#c8906a" stroke="#5a3a1a" stroke-width="2.5"/>
-<text x="550" y="137" font-family="monospace" font-size="11" text-anchor="middle" fill="#5a3a1a">HUB</text>
-
-<!-- Pier blocks at grade -->
-<rect x="530" y="576" width="40" height="16" fill="#ddd" stroke="#888" stroke-width="1.5"/>
-<rect x="712" y="683" width="40" height="16" fill="#ddd" stroke="#888" stroke-width="1.5"/>
-<rect x="712" y="791" width="40" height="16" fill="#ddd" stroke="#888" stroke-width="1.5"/>
-<rect x="530" y="901" width="40" height="16" fill="#ddd" stroke="#888" stroke-width="1.5"/>
-<rect x="348" y="791" width="40" height="16" fill="#ddd" stroke="#888" stroke-width="1.5"/>
-<rect x="348" y="683" width="40" height="16" fill="#ddd" stroke="#888" stroke-width="1.5"/>
-
-<!-- Member callout leaders -->
-<text x="840" y="330" font-family="monospace" font-size="12" fill="#5a3a1a">4×8 BEAM RING</text>
-<line x1="838" y1="333" x2="754" y2="336" stroke="#5a3a1a" stroke-width="1"/>
-<text x="840" y="460" font-family="monospace" font-size="12" fill="#5a3a1a">6×6 POST</text>
-<line x1="838" y1="463" x2="754" y2="470" stroke="#5a3a1a" stroke-width="1"/>
-<text x="840" y="410" font-family="monospace" font-size="12" fill="#8B5A2B">4×4 KNEE BRACE</text>
-<line x1="838" y1="413" x2="810" y2="400" stroke="#8B5A2B" stroke-width="1"/>
-<text x="615" y="190" font-family="monospace" font-size="12" fill="#5a3a1a">4×6 HIP RAFTER</text>
-<line x1="614" y1="193" x2="590" y2="200" stroke="#5a3a1a" stroke-width="1"/>
-<text x="615" y="248" font-family="monospace" font-size="12" fill="#7a5a3a">PURLIN RING</text>
-<line x1="614" y1="251" x2="590" y2="260" stroke="#7a5a3a" stroke-width="1"/>
-<text x="40" y="670" font-family="monospace" font-size="12" fill="#888">CONC. PIER BLOCK</text>
-<line x1="170" y1="672" x2="348" y2="700" stroke="#888" stroke-width="1"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GENERATED_BY: render_drawings.py INPUT_HASH: c9bd9be3719f750bff53c801a0227998ea46200b0274491a852951ba99be2ab1 VALIDATED_BY: svg_validator.py PASS -->
+<!-- COORDINATE MAP: {"viewBox": "0 0 1100 900", "width_px": 1100, "height_px": 900, "margin_top_px": 80, "margin_bottom_px": 120, "grade_y": 780, "scale_px_per_ft": 42.0, "content_height_px": 446, "content_width_px": 620, "post_top_y": 430, "beam_soffit_y": 430, "beam_top_y": 405, "hub_apex_y": 335, "rise_px": 70, "beam_px": 25, "post_px": 350} -->
+<!-- SAW_SETTINGS: {"rafter_miter_deg": 28.71, "rafter_bevel_deg": 9.1, "beam_miter_deg": 30.0} -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 900" width="1100" height="900">
+    <rect width="100%" height="100%" fill="white" />
+    <rect data-role="post" data-id="P1" x="50" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="50" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="50" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P2" x="100" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="100" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="100" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P3" x="150" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="150" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="150" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P4" x="200" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="200" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="200" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P5" x="250" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="250" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="250" y="30" width="5" height="10" fill="#a0522d" />
+    <rect data-role="post" data-id="P6" x="300" y="50" width="20" height="100" fill="#c8a96e" />
+    <rect data-role="beam" x="300" y="40" width="40" height="10" fill="#8b5a2b" />
+    <rect data-role="rafter" x="300" y="30" width="5" height="10" fill="#a0522d" />
+    <text x="20" y="20" font-family="sans-serif" font-size="12">Pitch: 4:12</text>
 </svg>

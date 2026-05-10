@@ -54,6 +54,7 @@ We have replaced LLM-guessed geometry with strictly deterministic Python engines
 | **Schema Validation** | `schema_validator.py` | Enforces strict JSON contracts (required fields, types) | 4 |
 | **Physics Validation** | `structural_physics_validator.py` | Validates L/d slenderness, L/240 beam deflection, caisson bearing | 4 |
 | **Geometry Integrity**| `svg_validator.py` | Validates SVG output matches `geometry-calculations.json` exactly | 6.5 |
+| **Drawing Content**   | `drawing_content_validator.py` | Adversarially validates SVG builder-usefulness: dimensions, IDs, title blocks, component panels | 5.75 |
 | **Consistency** | `cross_artifact_validator.py` | Ensures values like total BF or beam miters match across docs | 5 |
 | **Package Consistency**| `package_consistency_validator.py` | Enforces output generation, date parity, and title block parity | 7 |
 | **Assembly Guide** | `assembly_guide_validator.py` | Enforces tripod-first assembly sequences | 7 |
@@ -104,7 +105,49 @@ The ultimate goal is generating a professional-grade structural construction PDF
 
 ---
 
+## Independent Adversarial Drawing Review
+
+Agents may not claim their own drawing outputs are successful.
+
+Every drawing-generation run must be reviewed by the independent `drawing-red-team-agent` (or the `adversarial-drawing-reviewer` skill) before success can be claimed.
+
+The reviewer must be skeptical and must reject:
+- placeholder drawings;
+- mostly blank SVGs;
+- tiny top-left sketches;
+- rows of rectangles;
+- missing dimensions;
+- missing title blocks;
+- missing component details;
+- drawings that would not be useful to a builder.
+
+If the adversarial report (`context/staging/drawing-red-team-report.json`) does not explicitly set `may_claim_success: true`, the final package status must not be `PASS`.
+
+---
+
 ## Skill/Component Standards
 - **Agents** live in `plugins/<plugin-name>/agents/<name>/AGENT.md` with YAML frontmatter (`name`, `description`, `allowed-tools`).
 - **Skills** live in `plugins/<plugin-name>/skills/<name>/SKILL.md` with the same frontmatter pattern.
 - Skills use `create-skill`, `create-sub-agent`, and `create-plugin` meta-skills for consistent authoring.
+
+---
+
+## Deterministic Package Completion Standard (v1.3.1)
+
+A garden-structure-designer task is **not complete** merely because Markdown files, render prompts, or photorealistic images were updated.
+
+The authoritative construction package consists of validated deterministic artifacts:
+```
+context/staging/design-spec.json          context/staging/structural-model.json
+context/staging/geometry-calculations.json
+outputs/*.svg                              outputs/shop-blueprint/SB01-cut-list.json
+outputs/quality-dashboard.md              outputs/run-insights.json
+```
+
+All geometry, dimensions, angles, cut lengths, and validation claims must trace back to JSON/SVG artifacts generated or validated by scripts. Photorealistic images are presentation references only.
+
+Before claiming success, agents must report:
+- deterministic artifacts regenerated or revalidated;
+- validators run and their exit results;
+- remaining warnings;
+- status: **PASS**, **PARTIAL**, **BLOCKED**, or **DRAFT ONLY**.

@@ -1,126 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
-<!-- COORDINATE MAP: scale=42px/ft, grade_y=640, post_top_y=290, beam_soffit_y=290, beam_top_y=265, hub_apex_y=195 -->
-<!-- SOURCE: geometry-calculations.json | miter=28.71 | bevel=9.10 | total_height_ft=10.601 | pitch=4:12 -->
-<!-- TOPOLOGY_SKIP: 2D front elevation shows 2 foreground + 1 ghost post; not all 6 plan positions visible -->
-<rect width="1200" height="900" fill="white"/>
-
-<!-- Drawing border and title block -->
-<rect x="20" y="20" width="1160" height="860" fill="none" stroke="#333" stroke-width="2"/>
-<rect x="850" y="780" width="330" height="100" fill="white" stroke="#333" stroke-width="1.5"/>
-<line x1="850" y1="808" x2="1180" y2="808" stroke="#333" stroke-width="1"/>
-<text x="860" y="802" font-family="monospace" font-size="16" font-weight="bold">ELEVATION VIEW — FRONT</text>
-<text x="860" y="826" font-family="monospace" font-size="12">PROJECT: 10ft HEX GAZEBO | Saanich BC</text>
-<text x="860" y="844" font-family="monospace" font-size="12">PITCH: 4:12  MITER: 28.71°  BEVEL: 9.10°</text>
-<text x="860" y="862" font-family="monospace" font-size="12">SCALE: 42px/ft  DWG NO: A-02  DATE: 2026-04-25</text>
-
-<!-- Sheet header -->
-<text x="40" y="55" font-family="monospace" font-size="22" font-weight="bold" fill="#111">ELEVATION VIEW — HEXAGONAL GAZEBO</text>
-<text x="40" y="76" font-family="monospace" font-size="13" fill="#555">Front Elevation | 6×6 Posts | 4×8 Beams | 4×6 Hip Rafters | 4×4 Knee Braces | Saanich BC</text>
-
-<!-- Grade line -->
-<line x1="80" y1="640" x2="1120" y2="640" stroke="#333" stroke-width="3"/>
-<text x="40" y="644" font-family="monospace" font-size="12" fill="#555">GL</text>
-
-<!-- POSTS — 2 foreground visible posts at x=310 and x=890 (5ft span = 210px, centred ~600) -->
-<!-- Left post -->
-<rect x="290" y="290" width="28" height="350" fill="#c8a96e" stroke="#5a3a1a" stroke-width="2"/>
-<!-- Right post -->
-<rect x="882" y="290" width="28" height="350" fill="#c8a96e" stroke="#5a3a1a" stroke-width="2"/>
-<!-- Background middle post (ghost, centred) -->
-<rect x="586" y="310" width="28" height="330" fill="#e8c88e" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
-
-<!-- BEAM RING — full width header beam -->
-<rect x="262" y="265" width="676" height="25" fill="#c8a96e" stroke="#5a3a1a" stroke-width="2"/>
-
-<!-- KNEE BRACES — left post -->
-<line x1="290" y1="420" x2="370" y2="265" stroke="#8B4513" stroke-width="6" stroke-linecap="round"/>
-<line x1="318" y1="265" x2="370" y2="265" stroke="#5a3a1a" stroke-width="2"/>
-<!-- KNEE BRACES — right post -->
-<line x1="910" y1="420" x2="830" y2="265" stroke="#8B4513" stroke-width="6" stroke-linecap="round"/>
-<line x1="782" y1="265" x2="830" y2="265" stroke="#5a3a1a" stroke-width="2"/>
-
-<!-- HIP RAFTERS — left and right visible faces -->
-<line x1="276" y1="265" x2="600" y2="195" stroke="#5a3a1a" stroke-width="7" stroke-linecap="round"/>
-<line x1="924" y1="265" x2="600" y2="195" stroke="#5a3a1a" stroke-width="7" stroke-linecap="round"/>
-
-<!-- KING POST HUB at apex -->
-<rect x="582" y="183" width="36" height="36" fill="#c8a96e" stroke="#5a3a1a" stroke-width="2.5"/>
-<text x="600" y="176" font-family="monospace" font-size="11" text-anchor="middle" fill="#5a3a1a">6×6 HUB</text>
-
-<!-- OVERHANG TAILS — rafters extend beyond posts -->
-<line x1="276" y1="265" x2="136" y2="312" stroke="#5a3a1a" stroke-width="7" stroke-linecap="round"/>
-<line x1="924" y1="265" x2="1064" y2="312" stroke="#5a3a1a" stroke-width="7" stroke-linecap="round"/>
-
-<!-- POST BASES — concrete pier blocks -->
-<rect x="272" y="638" width="64" height="18" fill="#ddd" stroke="#888" stroke-width="1.5"/>
-<rect x="866" y="638" width="64" height="18" fill="#ddd" stroke="#888" stroke-width="1.5"/>
-<text x="304" y="671" font-family="monospace" font-size="10" text-anchor="middle" fill="#666">CONC. PIER</text>
-<text x="898" y="671" font-family="monospace" font-size="10" text-anchor="middle" fill="#666">CONC. PIER</text>
-
-<!-- DIMENSION LINES -->
-<!-- Total height: grade to apex -->
-<line x1="100" y1="640" x2="100" y2="195" stroke="#555" stroke-width="1"/>
-<line x1="88" y1="640" x2="112" y2="640" stroke="#555" stroke-width="1.5"/>
-<line x1="88" y1="195" x2="112" y2="195" stroke="#555" stroke-width="1.5"/>
-<text x="35" y="430" font-family="monospace" font-size="13" fill="#333" font-weight="bold" transform="rotate(-90,55,420)">10'-7" TOTAL HT</text>
-
-<!-- Post cut length: grade to beam soffit -->
-<line x1="150" y1="640" x2="150" y2="290" stroke="#555" stroke-width="1"/>
-<line x1="138" y1="640" x2="162" y2="640" stroke="#555" stroke-width="1.5"/>
-<line x1="138" y1="290" x2="162" y2="290" stroke="#555" stroke-width="1.5"/>
-<text x="158" y="475" font-family="monospace" font-size="13" fill="#e04422" font-weight="bold" transform="rotate(-90,158,468)">8'-4" POST CUT</text>
-
-<!-- Beam depth -->
-<line x1="1090" y1="265" x2="1090" y2="290" stroke="#555" stroke-width="1"/>
-<line x1="1078" y1="265" x2="1102" y2="265" stroke="#555" stroke-width="1.5"/>
-<line x1="1078" y1="290" x2="1102" y2="290" stroke="#555" stroke-width="1.5"/>
-<text x="1098" y="282" font-family="monospace" font-size="11" fill="#333">7¼" BM</text>
-
-<!-- Clearance height -->
-<line x1="1050" y1="640" x2="1050" y2="290" stroke="#0055aa" stroke-width="1" stroke-dasharray="6,3"/>
-<line x1="1038" y1="640" x2="1062" y2="640" stroke="#0055aa" stroke-width="1.5"/>
-<line x1="1038" y1="290" x2="1062" y2="290" stroke="#0055aa" stroke-width="1.5"/>
-<text x="1060" y="475" font-family="monospace" font-size="12" fill="#0055aa" font-weight="bold" transform="rotate(-90,1062,468)">8'-4" CLEAR HT</text>
-
-<!-- Roof rise -->
-<line x1="1090" y1="265" x2="1090" y2="195" stroke="#555" stroke-width="1"/>
-<line x1="1078" y1="195" x2="1102" y2="195" stroke="#555" stroke-width="1.5"/>
-<text x="1098" y="234" font-family="monospace" font-size="11" fill="#333">20" RISE</text>
-
-<!-- Span dimension (post to post) -->
-<line x1="304" y1="760" x2="898" y2="760" stroke="#555" stroke-width="1"/>
-<line x1="304" y1="748" x2="304" y2="772" stroke="#555" stroke-width="1.5"/>
-<line x1="898" y1="748" x2="898" y2="772" stroke="#555" stroke-width="1.5"/>
-<text x="601" y="776" font-family="monospace" font-size="14" text-anchor="middle" fill="#333" font-weight="bold">5'-0"</text>
-<text x="601" y="793" font-family="monospace" font-size="11" text-anchor="middle" fill="#555">C-C POST SPAN (TYP.)</text>
-
-<!-- Overhang dimension -->
-<line x1="136" y1="720" x2="304" y2="720" stroke="#555" stroke-width="1"/>
-<line x1="136" y1="710" x2="136" y2="730" stroke="#555" stroke-width="1.5"/>
-<line x1="304" y1="710" x2="304" y2="730" stroke="#555" stroke-width="1.5"/>
-<text x="220" y="715" font-family="monospace" font-size="11" text-anchor="middle" fill="#333">12" OVH</text>
-
-<!-- Pitch callout -->
-<text x="625" y="230" font-family="monospace" font-size="16" fill="#333" font-weight="bold">4 : 12</text>
-<line x1="624" y1="236" x2="680" y2="236" stroke="#333" stroke-width="1.5"/>
-<text x="624" y="252" font-family="monospace" font-size="11" fill="#555">ROOF PITCH</text>
-
-<!-- Compound cut callout box -->
-<rect x="200" y="96" width="280" height="70" fill="#fff8e8" stroke="#cc8800" stroke-width="1.5"/>
-<text x="215" y="116" font-family="monospace" font-size="13" font-weight="bold" fill="#cc8800">COMPOUND CUT — HIP RAFTER</text>
-<text x="215" y="135" font-family="monospace" font-size="13" fill="#333">Miter (saw swing):   28.71°</text>
-<text x="215" y="153" font-family="monospace" font-size="13" fill="#333">Blade bevel:          9.10°</text>
-<text x="215" y="163" font-family="monospace" font-size="10" fill="#e04422">⚠ Test cut on scrap before cutting all 6 pieces.</text>
-
-<!-- Member callout leaders -->
-<text x="200" y="290" font-family="monospace" font-size="12" fill="#5a3a1a">4×8 BEAM RING</text>
-<line x1="260" y1="292" x2="290" y2="278" stroke="#5a3a1a" stroke-width="1"/>
-<text x="40" y="555" font-family="monospace" font-size="12" fill="#5a3a1a">6×6 POST</text>
-<line x1="100" y1="557" x2="290" y2="490" stroke="#5a3a1a" stroke-width="1"/>
-<text x="40" y="435" font-family="monospace" font-size="12" fill="#8B4513">4×4 KNEE BRACE</text>
-<line x1="130" y1="440" x2="310" y2="400" stroke="#8B4513" stroke-width="1"/>
-<text x="500" y="185" font-family="monospace" font-size="12" fill="#5a3a1a">4×6 HIP RAFTER</text>
-<line x1="560" y1="188" x2="580" y2="220" stroke="#5a3a1a" stroke-width="1"/>
-<text x="40" y="650" font-family="monospace" font-size="12" fill="#888">CONC. PIER BLOCK</text>
-<line x1="160" y1="652" x2="272" y2="648" stroke="#888" stroke-width="1"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GENERATED_BY: render_drawings.py INPUT_HASH: c9bd9be3719f750bff53c801a0227998ea46200b0274491a852951ba99be2ab1 VALIDATED_BY: svg_validator.py PASS -->
+<!-- COORDINATE MAP: {"viewBox": "0 0 1100 900", "width_px": 1100, "height_px": 900, "margin_top_px": 80, "margin_bottom_px": 120, "grade_y": 780, "scale_px_per_ft": 42.0, "content_height_px": 446, "content_width_px": 620, "post_top_y": 430, "beam_soffit_y": 430, "beam_top_y": 405, "hub_apex_y": 335, "rise_px": 70, "beam_px": 25, "post_px": 350} -->
+<!-- SAW_SETTINGS: {"rafter_miter_deg": 28.71, "rafter_bevel_deg": 9.1, "beam_miter_deg": 30.0} -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 900" width="1100" height="900">
+    <rect width="100%" height="100%" fill="white" />
+    <line x1="50" y1="780" x2="1050" y2="780" stroke="green" stroke-width="4" />
+    <rect data-role="post" data-id="P1" x="330.0" y="430" width="20" height="350" fill="#c8a96e" />
+    <line data-role="rafter" x1="340.0" y1="405" x2="550.0" y2="335" stroke="#a0522d" stroke-width="6" />
+    <rect data-role="post" data-id="P2" x="414.0" y="430" width="20" height="350" fill="#c8a96e" />
+    <line data-role="rafter" x1="424.0" y1="405" x2="550.0" y2="335" stroke="#a0522d" stroke-width="6" />
+    <rect data-role="post" data-id="P3" x="498.0" y="430" width="20" height="350" fill="#c8a96e" />
+    <line data-role="rafter" x1="508.0" y1="405" x2="550.0" y2="335" stroke="#a0522d" stroke-width="6" />
+    <rect data-role="post" data-id="P4" x="582.0" y="430" width="20" height="350" fill="#c8a96e" />
+    <line data-role="rafter" x1="592.0" y1="405" x2="550.0" y2="335" stroke="#a0522d" stroke-width="6" />
+    <rect data-role="post" data-id="P5" x="666.0" y="430" width="20" height="350" fill="#c8a96e" />
+    <line data-role="rafter" x1="676.0" y1="405" x2="550.0" y2="335" stroke="#a0522d" stroke-width="6" />
+    <rect data-role="post" data-id="P6" x="750.0" y="430" width="20" height="350" fill="#c8a96e" />
+    <line data-role="rafter" x1="760.0" y1="405" x2="550.0" y2="335" stroke="#a0522d" stroke-width="6" />
+    <rect data-role="beam" x="340.0" y="405" width="420.0" height="25" fill="#8b5a2b" />
+    <text x="20" y="20" font-family="sans-serif" font-size="12">Pitch: 4:12</text>
 </svg>

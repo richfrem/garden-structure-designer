@@ -4,7 +4,34 @@ description: Generates a detailed photorealistic image-generation prompt driven 
 allowed-tools: Read, Write, Bash
 ---
 
-## Expected Inputs
+## Photorealistic Render Boundary
+
+Photorealistic PNG/JPG renders are **presentation artifacts only**.
+
+This skill may generate or update:
+```
+outputs/render-prompt.txt
+outputs/*visualization*.png
+outputs/*render*.png
+```
+
+This skill must **NOT** claim the design package is complete, and must **NOT** claim that a PNG validates post count, beam count, rafter count, brace count, span, height, pitch, miter angles, cut lengths, or structural safety.
+
+Every render output must be accompanied by:
+```
+Visual concept only — construction geometry is governed by validated JSON/SVG artifacts.
+```
+
+If a render appears to conflict with deterministic geometry, the render is subordinate to:
+```
+context/staging/structural-model.json
+context/staging/geometry-calculations.json
+outputs/*.svg
+```
+
+After generating a render, hand control back to `design-orchestrator` to confirm deterministic artifacts and quality dashboard status.
+
+
 - `context/staging/structural-model.json` (must be locked: `_locked: true`)
 - `context/staging/geometry-calculations.json`
 - `context/staging/design-spec.json` (optional — enriches prompt with site context)

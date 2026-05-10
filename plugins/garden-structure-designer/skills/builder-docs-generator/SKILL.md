@@ -15,7 +15,23 @@ metadata:
       - schema_error
 ---
 
-## Expected Inputs
+## Builder Document Consistency Rule
+
+Builder documents describe the deterministic model. They must not become independent design sources.
+
+When revising any of `outputs/pergola_plan.md`, `outputs/assembly-guide.md`, `outputs/lumber-purchase-list.md`, or `outputs/budget-estimate.md`, cross-check all wording against:
+```
+context/staging/design-spec.json
+context/staging/structural-model.json
+context/staging/geometry-calculations.json
+outputs/shop-blueprint/SB01-cut-list.json
+```
+
+**Dimension language must specify what the dimension means:** post cut length, beam soffit height, total height, point-to-point diameter, flat-to-flat width, side length, or radius/circumradius. For a regular hexagon, do not conflate radius, point-to-point diameter, flat-to-flat width, and side length — they are different values.
+
+If a dimension is uncertain, write `Dimension pending deterministic verification.` rather than inventing a value from an image.
+
+
 - `context/staging/structural-model.json`
 - `context/staging/geometry-calculations.json`
 - `context/staging/design-spec.json`

@@ -86,6 +86,8 @@ def generate_svg(dwg_type: str, model: dict, calcs: dict, output_path: str):
             svg_content += f'    <rect data-role="beam" x="{50 + i*50}" y="40" width="40" height="10" fill="#8b5a2b" />\n'
             svg_content += f'    <rect data-role="rafter" x="{50 + i*50}" y="30" width="5" height="10" fill="#a0522d" />\n'
             
+    pitch_label = calcs.get("pitch", "4:12")
+    svg_content += f'    <text x="20" y="20" font-family="sans-serif" font-size="12">Pitch: {pitch_label}</text>\n'
     svg_content += "</svg>\n"
     
     with open(output_path, "w") as f:

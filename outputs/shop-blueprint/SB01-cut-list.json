@@ -1,128 +1,68 @@
 {
-  "_meta": {
-    "title": "SB01 — Cut List: 10ft Hex Cedar Gazebo",
-    "project": "Saanich BC | Traditional M+T | No metal hangers",
-    "geometry_source": "context/staging/structural-model.json",
-    "key_angles": {
-      "pitch": "4:12 (18.43°)",
-      "hip_rafter_miter_deg": 28.71,
-      "hip_rafter_bevel_deg": 9.10,
-      "brace_angle_deg": 45.0
-    },
-    "note": "All lengths are CUT lengths. Add 10% waste factor when ordering. Saw compound cuts on scrap first.",
-    "generated": "2026-04-25"
-  },
+  "schema": "garden-structure-designer/cut-list/1.0",
+  "source_hash": "c9bd9be3719f750bff53c801a0227998ea46200b0274491a852951ba99be2ab1",
   "members": [
     {
       "id": "M01",
-      "description": "Main post",
-      "nominal_size": "6×6",
-      "species": "Western red cedar",
-      "cut_length_in": 100,
-      "cut_length_ft_in": "8'-4\"",
-      "cut_type": "plumb square both ends",
+      "name": "Main posts",
+      "profile": "6x6",
+      "width_in": 6.0,
+      "depth_in": 6.0,
+      "cut_length_ft": 8.33,
       "qty": 6,
-      "bd_ft_each": 33.33,
-      "bd_ft_total": 200.0,
-      "notes": "Seal end grain with epoxy; orient heartwood out"
+      "order_length_ft": 10,
+      "bf_per_piece_net": 24.99,
+      "bf_per_piece_order": 30.0,
+      "bf_total_net": 149.94,
+      "bf_total_order": 180.0
     },
     {
       "id": "M02",
-      "description": "Ring beam",
-      "nominal_size": "4×8",
-      "species": "Western red cedar",
-      "cut_length_in": 63,
-      "cut_length_ft_in": "5'-3\"",
-      "cut_type": "28.71° miter both ends (opposing)",
+      "name": "Ring beams",
+      "profile": "4x7",
+      "width_in": 4.0,
+      "depth_in": 7.25,
+      "cut_length_ft": 5.77,
       "qty": 6,
-      "bd_ft_each": 14.0,
-      "bd_ft_total": 84.0,
-      "notes": "Miter cuts are opposing (parallelogram) — mark crown side up"
+      "order_length_ft": 8,
+      "bf_per_piece_net": 13.95,
+      "bf_per_piece_order": 19.33,
+      "bf_total_net": 83.72,
+      "bf_total_order": 116.0
     },
     {
       "id": "M03",
-      "description": "Hip rafter",
-      "nominal_size": "4×6",
-      "species": "Western red cedar",
-      "cut_length_in": 64,
-      "cut_length_ft_in": "5'-4\" plus 12\" tail",
-      "cut_type": "Compound: miter=28.71° bevel=9.10° at top; plumb bevel-only cut at tail",
+      "name": "Hip rafters",
+      "profile": "4x6",
+      "width_in": 4.0,
+      "depth_in": 6.0,
+      "cut_length_ft": 6.33,
       "qty": 6,
-      "bd_ft_each": 12.0,
-      "bd_ft_total": 72.0,
-      "notes": "Total raw length ~6'-6\". Bird's mouth at beam; tenon at hub end. See Detail 1, SB-04."
+      "order_length_ft": 8,
+      "bf_per_piece_net": 12.65,
+      "bf_per_piece_order": 16.0,
+      "bf_total_net": 75.9,
+      "bf_total_order": 96.0
     },
     {
       "id": "M04",
-      "description": "King post hub",
-      "nominal_size": "6×6",
-      "species": "Western red cedar (vertical grain preferred)",
-      "cut_length_in": 24,
-      "cut_length_ft_in": "2'-0\"",
-      "cut_type": "Square both ends; 6× compound-angle mortises at 60°",
+      "name": "Central hub",
+      "profile": "6x6",
+      "width_in": 6.0,
+      "depth_in": 6.0,
+      "cut_length_ft": 2.0,
       "qty": 1,
-      "bd_ft_each": 6.0,
-      "bd_ft_total": 6.0,
-      "notes": "Hand-chop mortises after layout on mill. Dry-fit all 6 rafters before glue-up."
-    },
-    {
-      "id": "M05",
-      "description": "Knee brace",
-      "nominal_size": "4×4",
-      "species": "Western red cedar",
-      "cut_length_in": 36,
-      "cut_length_ft_in": "3'-0\"",
-      "cut_type": "45° compound bevel both ends",
-      "qty": 12,
-      "bd_ft_each": 4.0,
-      "bd_ft_total": 48.0,
-      "notes": "2 per post (one to beam each side). Tenon 1.5\"×3\" each end. Grain direction: diagonal."
-    },
-    {
-      "id": "M06",
-      "description": "Purlin ring",
-      "nominal_size": "4×4",
-      "species": "Western red cedar",
-      "cut_length_in": 39,
-      "cut_length_ft_in": "3'-3\"",
-      "cut_type": "28.71° bevel both ends",
-      "qty": 6,
-      "bd_ft_each": 4.33,
-      "bd_ft_total": 26.0,
-      "notes": "Sits mid-span between hub and beam. Half-lap or M+T to rafter. Check fit in field."
+      "order_length_ft": 8,
+      "bf_per_piece_net": 6.0,
+      "bf_per_piece_order": 24.0,
+      "bf_total_net": 6.0,
+      "bf_total_order": 24.0
     }
   ],
-  "summary": {
-    "total_members": 37,
-    "total_bd_ft_net": 436.0,
-    "total_bd_ft_with_10pct_waste": 480.0,
-    "member_breakdown": {
-      "6x6": {"total_bd_ft": 206.0, "note": "posts + hub"},
-      "4x8": {"total_bd_ft": 84.0, "note": "ring beams"},
-      "4x6": {"total_bd_ft": 72.0, "note": "hip rafters"},
-      "4x4": {"total_bd_ft": 74.0, "note": "knee braces + purlins"}
-    }
-  },
-  "hardware": {
-    "oak_drawbore_pegs": {
-      "diameter_in": 0.75,
-      "species": "White oak (kiln dried)",
-      "qty": 36,
-      "notes": "2 per rafter-hub joint (6 rafters), 2 per post-beam joint (6 posts), 2 per brace pair × 12 braces"
-    },
-    "j_bolts": {
-      "size": "5/8\" × 10\"",
-      "qty": 6,
-      "notes": "One per caisson; set in wet concrete; Saanich seismic zone 4 — verify hold-down with engineer"
-    },
-    "post_bases": {
-      "type": "Simpson E66 or equivalent standoff post base",
-      "qty": 6,
-      "notes": "Standoff required — no post-in-ground for cedar longevity"
-    },
-    "exterior_glue": {
-      "type": "Titebond III or System Three T-88 epoxy",
-      "notes": "Use sparingly on tenon shoulders only — do not flood mortise"
-    }
+  "totals": {
+    "bf_net": 315.6,
+    "bf_order": 416.0,
+    "waste_factor": 0.1,
+    "bf_with_waste": 457.6
   }
 }

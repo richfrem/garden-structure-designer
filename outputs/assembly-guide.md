@@ -1,4 +1,4 @@
-# Assembly Guide — 10 ft Hex Cedar Gazebo
+# Assembly Guide — 9'3" Hex Cedar Pergola
 **Project:** Saanich BC | Traditional mortise & tenon | No metal hangers  
 **Sequence:** 4-phase site build | All compound angles pre-cut in shop
 
@@ -182,7 +182,7 @@ The beam ring is 6 × 4×8 cedar, mitered at 28.71° opposing ends.
 | Cut | Miter | Bevel | At which end |
 |-----|-------|-------|-------------|
 | Hip rafter top (seat) | 28.71° | 9.10° | Hub/top end |
-| Hip rafter tail | 0° | 9.10° | Tail/overhang end |
+| Hip rafter tail (decorative) | 0° | 9.10° | Tail/overhang end |
 | Ring beam both ends | 28.71° | 0° | Both ends (opposing) |
 | Knee brace both ends | 45° | 0° | Both ends |
 | Purlin half-lap | — | 9.10° | Field fit |

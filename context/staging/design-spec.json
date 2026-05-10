@@ -18,5 +18,8 @@
     "joinery_preference": "Traditional mortise and tenon",
     "hardware": "Minimal to none, traditional all-wood joinery",
     "post_bases": "Concrete pier blocks with standoffs"
-  }
+  },
+  "structureType": "Pergola",
+  "planShape": "Hexagon",
+  "jurisdiction": "BC_SAANICH"
 }

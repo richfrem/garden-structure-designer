@@ -1,35 +1,37 @@
-# 10 ft Hex Cedar Gazebo — Master Plan
+# Hexagonal Cedar Timber Pergola — Master Construction Plan
 **Location:** Saanich, BC  
-**Style:** Traditional open-rafter cedar gazebo — mortise & tenon, no metal hangers  
-**Inspiration:** Natural cedar hexagonal gazebo; 6×6 posts on concrete pads, exposed rafter system with king post hub, pronounced curved knee braces  
-**Revision:** 0 | April 2025
+**Style:** Warm cedar timber — open-frame, mortise & tenon, no metal hangers  
+**Visual Intent:** Heavy 6×6 warm cedar posts on visible concrete footing pads; exposed 4×6 hip rafters with decorative tails; heavy 4×8 beam ring; diagonal knee braces; traditional mortise-and-tenon joinery.  
+**Revision:** 1.3.1 | May 2025
 
 ---
 
 ## 1. Project Overview
 
-A full-size 10-foot hexagonal cedar gazebo with a 4:12 pitched hip roof converging at a central king post hub.  
-All joinery is traditional mortise and tenon secured with 3/4" white oak drawbore pegs.  
-No metal post hangers or joist connectors — in the tradition of timber-frame construction.
+A 10'-0" point-to-point hexagonal cedar timber pergola with a fully open 4:12 pitched hip roof converging at a central 6×6 king post hub. Hip rafters extend past the beam ring as decorative tails. The heavy 4×8 beam ring is a visual and structural centrepiece. All lateral stability is provided by 12 diagonal knee braces (2 per post).  
+All joinery is traditional mortise and tenon secured with 3/4" white oak drawbore pegs — no metal post hangers or joist connectors.  
+Posts are mounted on visible concrete caisson pads with E66 standoff bases (no post-in-ground).
 
 ### Key Specifications
 
 | Parameter | Value |
 |-----------|-------|
-| Footprint | 10'-0" point-to-point (5'-0" post radius) |
-| Post spacing | 5'-0" on-centre (60° intervals) |
-| Total height at hub apex | 10'-7" (10.601 ft) |
-| Clearance at beam soffit | 8'-4" (8.33 ft post height) |
-| Beam depth | 7-1/4" (4×8 nominal) |
-| Roof pitch | 4:12 (18.43°) |
-| Hip rafter miter | **28.71°** |
-| Hip rafter bevel | **9.10°** |
-| Rafter overhang | 12" past beam centreline |
+| Footprint | 10'-0" point-to-point diameter (5'-0" circumradius) |
+| Side length | 5'-0" (equal to circumradius for a regular hexagon) |
+| Post spacing | 5'-0" on-centre, 60° intervals |
+| Post cut length | **8'-4"** (8.33 ft) — beam soffit clearance height |
+| Total height at hub apex | **10'-7"** (10.601 ft) |
+| Beam depth | 7-1/4" (4×8 nominal) — heavy visible ring |
+| Roof pitch | 4:12 (18.43° pitch angle) |
+| Hip rafter compound miter (saw swing) | **28.71°** |
+| Hip rafter bevel (blade tilt) | **9.10°** |
+| Beam ring flat miter | **30.00°** (hex geometry anchor) |
+| Decorative rafter tail overhang | 12" past beam centreline |
 | Posts | 6×6 Western Red Cedar |
 | All members | Western Red Cedar |
 | Finish | Penofin Transparent Cedar, 2–3 coats |
-| Foundation | 12" dia. concrete caissons, 24" deep, J-bolt anchors |
-| Location seismic / wind | Saanich BC — coastal wind ~25 psf; check E66 base spec with engineer |
+| Foundation | 12" dia. concrete caissons, 24" deep; E66 standoff post bases |
+| Jurisdiction / wind | Saanich BC — coastal wind ~25 psf; seismic zone 4; verify E66 hold-down with engineer |
 
 ---
 
@@ -70,7 +72,7 @@ Full machine-readable list: [`../output/shop-blueprint/SB01-cut-list.json`](../o
 |----|--------|---------|-----------|-----|-------|
 | M01 | Main posts | 6×6 WRC | 8'-4" | 6 | Square ends; seal end grain |
 | M02 | Ring beam | 4×8 WRC | 5'-3" | 6 | Opposing 28.71° miters |
-| M03 | Hip rafter | 4×6 WRC | 5'-4" + 12" tail | 6 | Compound: 28.71° / 9.10°; bird's mouth at beam |
+| M03 | Hip rafter | 4×6 WRC | 5'-4" + 12" decorative tail | 6 | Compound: 28.71° / 9.10°; bird's mouth at heavy beam |
 | M04 | King post hub | 6×6 WRC | 2'-0" | 1 | 6× mortises at 60° intervals |
 | M05 | Knee brace | 4×4 WRC | 3'-0" | 12 | 45° compound bevel both ends |
 | M06 | Purlin ring | 4×4 WRC | 3'-3" | 6 | Half-lap to rafters mid-span |

@@ -1,6 +1,6 @@
-# Budget Estimate — 10 ft Hex Cedar Gazebo
+# Budget Estimate — Hexagonal Cedar Timber Pergola
 **Project:** Saanich BC | Traditional M+T cedar construction  
-**Date:** April 2025 | All amounts CAD
+**Date:** May 2025 (v1.3.1) | All amounts CAD
 
 ---
 
