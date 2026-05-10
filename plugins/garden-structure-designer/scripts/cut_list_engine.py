@@ -224,10 +224,10 @@ if __name__ == "__main__":
     result = compute_cut_list(model_path, calcs_path, bracing_path)
     
     # Ensure outputs dir exists
-    out_dir = os.path.join(os.path.dirname(model_path), "..", "..", "outputs", "shop-blueprint")
-    os.makedirs(out_dir, exist_ok=True)
+    out_dir = outputs_dir() / "shop-blueprint"
+    out_dir.mkdir(parents=True, exist_ok=True)
     
-    out_file = os.path.join(out_dir, "SB01-cut-list.json")
+    out_file = out_dir / "SB01-cut-list.json"
     with open(out_file, "w") as f:
         json.dump(result, f, indent=2)
         
