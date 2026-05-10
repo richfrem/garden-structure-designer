@@ -35,10 +35,16 @@ def main():
     model = safe_load(stage_dir / "structural-model.json", {})
     evidence = safe_load(stage_dir / "evidence-registry.json", {"evidence": []})
     drift = safe_load(stage_dir / "drift_report.json", {"failed_axes": []})
+    red_team = safe_load(stage_dir / "drawing-red-team-report.json", {})
     
     overall_status = "COMPLETED"
     if repair.get("status") in ["FAIL", "BLOCKED"] or drift.get("failed_axes"):
         overall_status = "BLOCKED / FAILED"
+    red_team_status = red_team.get("status", "MISSING")
+    red_team_may_claim = red_team.get("may_claim_success", False)
+    if red_team_status == "MISSING" or not red_team_may_claim:
+        if overall_status == "COMPLETED":
+            overall_status = "PARTIAL — drawing red-team not approved"
         
     repair_str = "None"
     if repair.get("attempts"):
@@ -56,7 +62,15 @@ def main():
 ## Run Status
 - Overall status: {overall_status}
 - Physics status: {physics.get("status", "UNKNOWN")}
+- Drawing red-team review: {red_team_status}
+- May claim success: {str(red_team_may_claim).lower()}
 - Last updated: Auto-generated
+
+## Drawing Red-Team Status
+- Reviewer: {red_team.get("reviewer", "N/A")}
+- Status: {red_team_status}
+- May claim success: {str(red_team_may_claim).lower()}
+- Summary: {red_team.get("summary", "No red-team report found. Run adversarial-drawing-reviewer before claiming PASS.")}
 
 ## Physics Validations
 {physics_checks}

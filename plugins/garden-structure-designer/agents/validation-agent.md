@@ -109,14 +109,48 @@ PARTIAL — presentation artifacts updated, deterministic package not regenerate
 
 Do **not** emit `READY` unless deterministic SVG/JSON validation passes.
 
+## Independent Drawing Red-Team Requirement
+
+Before emitting `READY`, check whether:
+
+```text
+context/staging/drawing-red-team-report.json
+```
+
+exists.
+
+If it does **not** exist, validation fails with:
+
+```text
+DRAWING_RED_TEAM_MISSING
+```
+
+If it exists and contains:
+
+```json
+"may_claim_success": false
+```
+
+validation fails with:
+
+```text
+DRAWING_RED_TEAM_REJECTED
+```
+
+The validation agent must **not** override the drawing red-team approval.
+
+If normal validators pass but the red-team rejects the drawings, the package is not ready.
+
 ## Pass Criteria
 
 Emit `READY` only when ALL of the following are true:
 1. Geometry engine exits 0 with no warnings.
 2. All SVG XML validation passes (exit 0 from svg_validator.py for each sheet).
-3. Compound angles in all blueprints match geometry-calculations.json within ±0.1°.
-4. Total height ≤ design-spec height limit.
-5. Physics checks pass.
-6. Human has confirmed PNG topology (or no PNG renders exist).
+3. All SVG content validation passes (exit 0 from drawing_content_validator.py for each sheet).
+4. Compound angles in all blueprints match geometry-calculations.json within ±0.1°.
+5. Total height ≤ design-spec height limit.
+6. Physics checks pass.
+7. Human has confirmed PNG topology (or no PNG renders exist).
+8. `context/staging/drawing-red-team-report.json` exists and `may_claim_success` is `true`.
 
 Otherwise emit `FAIL` and the `drift_report.json`.

@@ -56,6 +56,7 @@ We have replaced LLM-guessed geometry with strictly deterministic Python engines
 | **Schema Validation** | `schema_validator.py` | Enforces strict JSON contracts (required fields, types) | 4 |
 | **Physics Validation** | `structural_physics_validator.py` | Validates L/d slenderness, L/240 beam deflection, caisson bearing | 4 |
 | **Geometry Integrity**| `svg_validator.py` | Validates SVG output matches `geometry-calculations.json` exactly | 6.5 |
+| **Drawing Content**   | `drawing_content_validator.py` | Adversarially validates SVG builder-usefulness: dimensions, IDs, title blocks, component panels | 5.75 |
 | **Consistency** | `cross_artifact_validator.py` | Ensures values like total BF or beam miters match across docs | 5 |
 | **Package Consistency**| `package_consistency_validator.py` | Enforces output generation, date parity, and title block parity | 7 |
 | **Assembly Guide** | `assembly_guide_validator.py` | Enforces tripod-first assembly sequences | 7 |
@@ -103,6 +104,26 @@ The ultimate goal is generating a professional-grade structural construction PDF
 - **Test-cut warnings**: Always append physical "test-cut" warnings on compound cuts for carpenters.
 - **Jurisdiction-aware**: Always capture user location (e.g., BC Building Code) before any structural computation.
 - **Platform agnostic**: No external framework dependencies; must work across Claude Cowork, Antigravity, Gemini CLI, Copilot CLI.
+
+---
+
+## Independent Adversarial Drawing Review
+
+Agents may not claim their own drawing outputs are successful.
+
+Every drawing-generation run must be reviewed by the independent `drawing-red-team-agent` (or the `adversarial-drawing-reviewer` skill) before success can be claimed.
+
+The reviewer must be skeptical and must reject:
+- placeholder drawings;
+- mostly blank SVGs;
+- tiny top-left sketches;
+- rows of rectangles;
+- missing dimensions;
+- missing title blocks;
+- missing component details;
+- drawings that would not be useful to a builder.
+
+If the adversarial report (`context/staging/drawing-red-team-report.json`) does not explicitly set `may_claim_success: true`, the final package status must not be `PASS`.
 
 ---
 

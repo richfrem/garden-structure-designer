@@ -71,6 +71,44 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
 12b. Run `scripts/cross_artifact_validator.py context/staging outputs`.
      - Validates paths, SAW_SETTINGS metadata, and ensures that beam miters ≠ rafter miters appropriately across all MD and SVG artifacts.
 
+### Stage 5.75 — Adversarial Drawing Red-Team Gate
+
+After SVG drawing generation and normal SVG validation, the orchestrator MUST invoke the `adversarial-drawing-reviewer` skill or launch the `drawing-red-team-agent`.
+
+The drawing generator is not permitted to certify its own success.
+
+The red-team reviewer must inspect all generated SVG files for:
+- builder usefulness and content completeness;
+- drawing scale, dimensions, labels, and title blocks;
+- semantic data-role element counts;
+- component isolation panel completeness;
+- placeholder-garbage failure modes (rows of rectangles, blank canvases, tiny top-left clusters).
+
+Required commands:
+
+```bash
+for f in outputs/*.svg; do
+  python3 plugins/garden-structure-designer/scripts/drawing_content_validator.py \
+    "$f" \
+    plugins/garden-structure-designer/context/staging/structural-model.json
+done
+```
+
+Required outputs:
+
+```text
+context/staging/drawing-red-team-report.json
+outputs/drawing-red-team-report.md
+```
+
+The orchestrator must read `drawing-red-team-report.json`.
+
+If `may_claim_success` is `false`, the package status must be `PARTIAL`, `BLOCKED`, or `DRAFT ONLY`.
+
+The orchestrator must **not** emit `PASS`, `READY`, or `DESIGN COMPLETE` unless the adversarial drawing review passes.
+
+This gate exists because XML-valid SVGs can still be visually useless. Passing `svg_validator.py` alone is not sufficient.
+
 ### Stage 6 — Builder Documents
 13. Call `builder-docs-generator` (new skill) to produce:
     - `outputs/budget-estimate.md` — sourced from `structural-model.json` BF totals and regional material costs.
@@ -117,6 +155,8 @@ outputs/quality-dashboard.md           outputs/run-insights.json
 context/staging/design-run-summary.md
 context/staging/schema-validation-report.json
 context/staging/physics-validation-report.json
+context/staging/drawing-red-team-report.json
+outputs/drawing-red-team-report.md
 ```
 
 Markdown files, render prompts, and PNG concept images are **secondary presentation artifacts**. They are never sufficient proof that the package has been revised.
@@ -140,7 +180,7 @@ python3 plugins/garden-structure-designer/scripts/render_drawings.py \
 python3 plugins/garden-structure-designer/scripts/generate_quality_dashboard.py
 ```
 
-The final response MUST include: files changed · structural parameters preserved vs changed · commands run · validator results · remaining warnings · status: **PASS / PARTIAL / BLOCKED / DRAFT ONLY**.
+The final response MUST include: files changed · structural parameters preserved vs changed · commands run · validator results · drawing red-team result (`may_claim_success`) · remaining warnings · status: **PASS / PARTIAL / BLOCKED / DRAFT ONLY**.
 
 **Status taxonomy:**
 - `PASS` — all deterministic artifacts regenerated/revalidated, validators passed, dashboard updated.
