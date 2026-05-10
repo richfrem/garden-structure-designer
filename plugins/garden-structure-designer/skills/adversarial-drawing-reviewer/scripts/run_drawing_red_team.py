@@ -1,0 +1,1 @@
+../../../scripts/run_drawing_red_team.py

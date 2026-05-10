@@ -36,6 +36,7 @@ def main():
     evidence = safe_load(stage_dir / "evidence-registry.json", {"evidence": []})
     drift = safe_load(stage_dir / "drift_report.json", {"failed_axes": []})
     red_team = safe_load(stage_dir / "drawing-red-team-report.json", {})
+    content_report = safe_load(stage_dir / "drawing-content-report.json", {})
     
     overall_status = "COMPLETED"
     if repair.get("status") in ["FAIL", "BLOCKED"] or drift.get("failed_axes"):
@@ -45,6 +46,9 @@ def main():
     if red_team_status == "MISSING" or not red_team_may_claim:
         if overall_status == "COMPLETED":
             overall_status = "PARTIAL — drawing red-team not approved"
+    content_status = content_report.get("status", "MISSING")
+    if content_status == "FAIL" and overall_status == "COMPLETED":
+        overall_status = "BLOCKED / FAILED"
         
     repair_str = "None"
     if repair.get("attempts"):
@@ -57,11 +61,24 @@ def main():
     physics_checks = "\n".join([f"- {c['name']}: {c['status']} (Val: {c['value']}, Lim: {c['limit']})" for c in physics.get("checks", [])])
     if not physics_checks: physics_checks = "- No checks executed."
 
+    # Per-sheet content validation summary
+    content_files = content_report.get("files", [])
+    if content_files:
+        content_rows = []
+        for cf in content_files:
+            icon = "✅" if cf.get("status") == "PASS" else "❌"
+            codes = ", ".join(cf.get("failure_codes", [])) or "none"
+            content_rows.append(f"- {icon} `{cf['file']}`: {cf.get('status','?')} — codes: {codes}")
+        content_sheet_str = "\n".join(content_rows)
+    else:
+        content_sheet_str = "- No content-validation report found. Run run_drawing_red_team.py."
+
     content = f"""# Garden Structure Designer Quality Dashboard
 
 ## Run Status
 - Overall status: {overall_status}
 - Physics status: {physics.get("status", "UNKNOWN")}
+- Drawing content validation: {content_status}
 - Drawing red-team review: {red_team_status}
 - May claim success: {str(red_team_may_claim).lower()}
 - Last updated: Auto-generated
@@ -70,7 +87,10 @@ def main():
 - Reviewer: {red_team.get("reviewer", "N/A")}
 - Status: {red_team_status}
 - May claim success: {str(red_team_may_claim).lower()}
-- Summary: {red_team.get("summary", "No red-team report found. Run adversarial-drawing-reviewer before claiming PASS.")}
+- Summary: {red_team.get("summary", "No red-team report found. Run run_drawing_red_team.py before claiming PASS.")}
+
+## Drawing Content Validation (Stage 5.75)
+{content_sheet_str}
 
 ## Physics Validations
 {physics_checks}

@@ -1,0 +1,286 @@
+# Drawing Red-Team Review Report
+
+**Status:** FAIL  
+**May claim success:** false  
+**Reviewer:** run_drawing_red_team.py  
+**Generated:** 2026-05-10T23:21:20.110942+00:00  
+
+> FAIL — 8 of 8 sheet(s) failed content validation. These drawings are not builder-meaningful. Regenerate before claiming PASS.
+
+---
+
+## Per-Sheet Results
+
+### ❌ `outputs/blueprint-component-isolation.svg` — FAIL
+
+**Semantic counts:**
+- `data-role="post"`: 6
+- `data-role="beam"`: 6
+- `data-role="rafter"`: 6
+- `data-role="brace"`: 0
+- `data-role="footing"`: 0
+- `data-role="dimension"`: 0
+- `data-role="component"`: 0
+- `data-role="title-block"`: 0
+- Text labels: 1
+- Total elements: 0
+
+**Failure codes:**
+- `SVG_XML_INVALID`
+- `SVG_CONTENT_TOO_SMALL`
+- `SVG_TOO_FEW_SEMANTIC_ELEMENTS`
+- `SVG_TOO_FEW_TEXT_LABELS`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_DIMENSIONS`
+- `SVG_MISSING_TITLE_BLOCK`
+- `SVG_MISSING_COMPONENT_DETAILS`
+
+**Required fixes:**
+- Fix XML well-formedness errors reported by svg_validator.py.
+- SVG_CONTENT_TOO_SMALL: 19 elements found, need 40 for sheet 'blueprint-component-isolation'.
+- SVG_TOO_FEW_SEMANTIC_ELEMENTS: 18 data-role elements, need 30 for sheet 'blueprint-component-isolation'.
+- SVG_TOO_FEW_TEXT_LABELS: 1 text labels, need 12 for sheet 'blueprint-component-isolation'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="component" not found on sheet 'blueprint-component-isolation'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="brace" not found on sheet 'blueprint-component-isolation'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="dimension" not found on sheet 'blueprint-component-isolation'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="title-block" not found on sheet 'blueprint-component-isolation'.
+- SVG_MISSING_DIMENSIONS: No dimension annotations found.
+- SVG_MISSING_TITLE_BLOCK: No title block found.
+- SVG_MISSING_COMPONENT_DETAILS: 0 component panels found, need 5 (post, beam, rafter, brace, hub).
+
+---
+
+### ❌ `outputs/blueprint-elevation.svg` — FAIL
+
+**Semantic counts:**
+- `data-role="post"`: 6
+- `data-role="beam"`: 1
+- `data-role="rafter"`: 6
+- `data-role="brace"`: 0
+- `data-role="footing"`: 0
+- `data-role="dimension"`: 0
+- `data-role="component"`: 0
+- `data-role="title-block"`: 0
+- Text labels: 1
+- Total elements: 0
+
+**Failure codes:**
+- `SVG_XML_INVALID`
+- `SVG_CONTENT_TOO_SMALL`
+- `SVG_TOO_FEW_SEMANTIC_ELEMENTS`
+- `SVG_TOO_FEW_TEXT_LABELS`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_DIMENSIONS`
+- `SVG_MISSING_TITLE_BLOCK`
+- `SVG_MISSING_BRACES`
+- `SVG_MISSING_FOOTINGS`
+
+**Required fixes:**
+- Fix XML well-formedness errors reported by svg_validator.py.
+- SVG_CONTENT_TOO_SMALL: 15 elements found, need 35 for sheet 'blueprint-elevation'.
+- SVG_TOO_FEW_SEMANTIC_ELEMENTS: 13 data-role elements, need 25 for sheet 'blueprint-elevation'.
+- SVG_TOO_FEW_TEXT_LABELS: 1 text labels, need 10 for sheet 'blueprint-elevation'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="brace" not found on sheet 'blueprint-elevation'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="footing" not found on sheet 'blueprint-elevation'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="dimension" not found on sheet 'blueprint-elevation'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="title-block" not found on sheet 'blueprint-elevation'.
+- SVG_MISSING_DIMENSIONS: No dimension annotations found.
+- SVG_MISSING_TITLE_BLOCK: No title block found.
+- SVG_MISSING_BRACES: No knee brace elements found.
+- SVG_MISSING_FOOTINGS: No footing/caisson elements found.
+
+---
+
+### ❌ `outputs/blueprint-isometric.svg` — FAIL
+
+**Semantic counts:**
+- `data-role="post"`: 6
+- `data-role="beam"`: 6
+- `data-role="rafter"`: 6
+- `data-role="brace"`: 0
+- `data-role="footing"`: 0
+- `data-role="dimension"`: 0
+- `data-role="component"`: 0
+- `data-role="title-block"`: 0
+- Text labels: 1
+- Total elements: 0
+
+**Failure codes:**
+- `SVG_XML_INVALID`
+- `SVG_CONTENT_TOO_SMALL`
+- `SVG_TOO_FEW_SEMANTIC_ELEMENTS`
+- `SVG_TOO_FEW_TEXT_LABELS`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_DIMENSIONS`
+- `SVG_MISSING_TITLE_BLOCK`
+- `SVG_MISSING_BRACES`
+- `SVG_MISSING_FOOTINGS`
+
+**Required fixes:**
+- Fix XML well-formedness errors reported by svg_validator.py.
+- SVG_CONTENT_TOO_SMALL: 19 elements found, need 35 for sheet 'blueprint-isometric'.
+- SVG_TOO_FEW_SEMANTIC_ELEMENTS: 18 data-role elements, need 25 for sheet 'blueprint-isometric'.
+- SVG_TOO_FEW_TEXT_LABELS: 1 text labels, need 8 for sheet 'blueprint-isometric'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="brace" not found on sheet 'blueprint-isometric'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="footing" not found on sheet 'blueprint-isometric'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="title-block" not found on sheet 'blueprint-isometric'.
+- SVG_MISSING_DIMENSIONS: No dimension annotations found.
+- SVG_MISSING_TITLE_BLOCK: No title block found.
+- SVG_MISSING_BRACES: No knee brace elements found.
+- SVG_MISSING_FOOTINGS: No footing/caisson elements found.
+
+---
+
+### ❌ `outputs/blueprint-plan.svg` — FAIL
+
+**Semantic counts:**
+- `data-role="post"`: 6
+- `data-role="beam"`: 6
+- `data-role="rafter"`: 6
+- `data-role="brace"`: 0
+- `data-role="footing"`: 0
+- `data-role="dimension"`: 0
+- `data-role="component"`: 0
+- `data-role="title-block"`: 0
+- Text labels: 1
+- Total elements: 0
+
+**Failure codes:**
+- `SVG_XML_INVALID`
+- `SVG_CONTENT_TOO_SMALL`
+- `SVG_TOO_FEW_SEMANTIC_ELEMENTS`
+- `SVG_TOO_FEW_TEXT_LABELS`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_REQUIRED_ROLE`
+- `SVG_MISSING_DIMENSIONS`
+- `SVG_MISSING_TITLE_BLOCK`
+
+**Required fixes:**
+- Fix XML well-formedness errors reported by svg_validator.py.
+- SVG_CONTENT_TOO_SMALL: 19 elements found, need 30 for sheet 'blueprint-plan'.
+- SVG_TOO_FEW_SEMANTIC_ELEMENTS: 18 data-role elements, need 20 for sheet 'blueprint-plan'.
+- SVG_TOO_FEW_TEXT_LABELS: 1 text labels, need 8 for sheet 'blueprint-plan'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="dimension" not found on sheet 'blueprint-plan'.
+- SVG_MISSING_REQUIRED_ROLE: data-role="title-block" not found on sheet 'blueprint-plan'.
+- SVG_MISSING_DIMENSIONS: No dimension annotations found.
+- SVG_MISSING_TITLE_BLOCK: No title block found.
+
+---
+
+### ❌ `outputs/drawing-elevation-view.svg` — FAIL
+
+**Semantic counts:**
+- `data-role="post"`: 6
+- `data-role="beam"`: 1
+- `data-role="rafter"`: 6
+- `data-role="brace"`: 0
+- `data-role="footing"`: 0
+- `data-role="dimension"`: 0
+- `data-role="component"`: 0
+- `data-role="title-block"`: 0
+- Text labels: 1
+- Total elements: 0
+
+**Failure codes:**
+- `SVG_XML_INVALID`
+- `SVG_CONTENT_TOO_SMALL`
+- `SVG_TOO_FEW_TEXT_LABELS`
+- `SVG_MISSING_BRACES`
+- `SVG_MISSING_FOOTINGS`
+
+**Required fixes:**
+- Fix XML well-formedness errors reported by svg_validator.py.
+- SVG_CONTENT_TOO_SMALL: 15 elements found, need 25 for sheet 'drawing-elevation-view'.
+- SVG_TOO_FEW_TEXT_LABELS: 1 text labels, need 5 for sheet 'drawing-elevation-view'.
+- SVG_MISSING_BRACES: No knee brace elements found.
+- SVG_MISSING_FOOTINGS: No footing/caisson elements found.
+
+---
+
+### ❌ `outputs/drawing-isometric-view.svg` — FAIL
+
+**Semantic counts:**
+- `data-role="post"`: 6
+- `data-role="beam"`: 6
+- `data-role="rafter"`: 6
+- `data-role="brace"`: 0
+- `data-role="footing"`: 0
+- `data-role="dimension"`: 0
+- `data-role="component"`: 0
+- `data-role="title-block"`: 0
+- Text labels: 1
+- Total elements: 0
+
+**Failure codes:**
+- `SVG_XML_INVALID`
+- `SVG_CONTENT_TOO_SMALL`
+- `SVG_TOO_FEW_TEXT_LABELS`
+- `SVG_MISSING_BRACES`
+- `SVG_MISSING_FOOTINGS`
+
+**Required fixes:**
+- Fix XML well-formedness errors reported by svg_validator.py.
+- SVG_CONTENT_TOO_SMALL: 19 elements found, need 25 for sheet 'drawing-isometric-view'.
+- SVG_TOO_FEW_TEXT_LABELS: 1 text labels, need 5 for sheet 'drawing-isometric-view'.
+- SVG_MISSING_BRACES: No knee brace elements found.
+- SVG_MISSING_FOOTINGS: No footing/caisson elements found.
+
+---
+
+### ❌ `outputs/drawing-perspective-view.svg` — FAIL
+
+**Semantic counts:**
+- `data-role="post"`: 6
+- `data-role="beam"`: 6
+- `data-role="rafter"`: 6
+- `data-role="brace"`: 0
+- `data-role="footing"`: 0
+- `data-role="dimension"`: 0
+- `data-role="component"`: 0
+- `data-role="title-block"`: 0
+- Text labels: 1
+- Total elements: 0
+
+**Failure codes:**
+- `SVG_XML_INVALID`
+- `SVG_TOO_FEW_TEXT_LABELS`
+
+**Required fixes:**
+- Fix XML well-formedness errors reported by svg_validator.py.
+- SVG_TOO_FEW_TEXT_LABELS: 1 text labels, need 3 for sheet 'drawing-perspective-view'.
+
+---
+
+### ❌ `outputs/drawing-plan-view.svg` — FAIL
+
+**Semantic counts:**
+- `data-role="post"`: 6
+- `data-role="beam"`: 6
+- `data-role="rafter"`: 6
+- `data-role="brace"`: 0
+- `data-role="footing"`: 0
+- `data-role="dimension"`: 0
+- `data-role="component"`: 0
+- `data-role="title-block"`: 0
+- Text labels: 1
+- Total elements: 0
+
+**Failure codes:**
+- `SVG_XML_INVALID`
+- `SVG_CONTENT_TOO_SMALL`
+- `SVG_TOO_FEW_TEXT_LABELS`
+
+**Required fixes:**
+- Fix XML well-formedness errors reported by svg_validator.py.
+- SVG_CONTENT_TOO_SMALL: 19 elements found, need 20 for sheet 'drawing-plan-view'.
+- SVG_TOO_FEW_TEXT_LABELS: 1 text labels, need 4 for sheet 'drawing-plan-view'.
+
+---

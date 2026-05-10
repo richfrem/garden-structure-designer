@@ -35,9 +35,12 @@ The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs 
    - **Stage 3 (Connections)**: `joinery-designer` & `bracing-system-designer` create the load-path connections.
    - **Stage 4 (Draft Validation)**: Schema and physics validation using `schema_validator.py` and `structural_physics_validator.py`.
    - **Stage 5 (Cross-Artifact)**: `cross_artifact_validator.py` ensures blueprint vs. model consistency.
+   - **Stage 5.75 (Drawing Red-Team Gate)**: `adversarial-drawing-reviewer` / `run_drawing_red_team.py` independently validates all SVGs for builder-usefulness. **MANDATORY before PASS.** `may_claim_success: false` blocks the package.
    - **Stage 6 (Generation)**: `drawing-generator` & `cut_list_engine.py` produce final outputs.
    - **Stage 7 (Red-Team)**: `validation-agent` blocks execution if `drift_report.json` flags mismatch.
    - **Stage 8 (Repair)**: Repeated failures scaffold PyTest regressions via `failure_to_test.py`.
+
+> **Note:** The stage list above is a high-level summary. `design-orchestrator.md` is the authoritative source of stage definitions and gate logic.
 
 ---
 
@@ -57,6 +60,7 @@ We have replaced LLM-guessed geometry with strictly deterministic Python engines
 | **Physics Validation** | `structural_physics_validator.py` | Validates L/d slenderness, L/240 beam deflection, caisson bearing | 4 |
 | **Geometry Integrity**| `svg_validator.py` | Validates SVG output matches `geometry-calculations.json` exactly | 6.5 |
 | **Drawing Content**   | `drawing_content_validator.py` | Adversarially validates SVG builder-usefulness: dimensions, IDs, title blocks, component panels | 5.75 |
+| **Drawing Red-Team**  | `run_drawing_red_team.py` | Executable launcher: runs both validators, writes `drawing-red-team-report.json`, sets `may_claim_success` | 5.75 |
 | **Consistency** | `cross_artifact_validator.py` | Ensures values like total BF or beam miters match across docs | 5 |
 | **Package Consistency**| `package_consistency_validator.py` | Enforces output generation, date parity, and title block parity | 7 |
 | **Assembly Guide** | `assembly_guide_validator.py` | Enforces tripod-first assembly sequences | 7 |
