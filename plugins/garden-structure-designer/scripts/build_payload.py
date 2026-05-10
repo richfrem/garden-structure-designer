@@ -1,3 +1,37 @@
+#!/usr/bin/env python3
+"""
+build_payload.py (CLI)
+=====================================
+
+Purpose:
+    
+
+Layer: Execution
+
+Usage Examples:
+    python build_payload.py [args]
+
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
+"""
 import os
 
 files_to_merge = {

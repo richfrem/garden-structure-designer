@@ -1,7 +1,7 @@
 {
   "name": "garden-structure-designer",
-  "version": "1.1.0",
-  "description": "Modular plugin for generating professional-grade PDF construction packages for garden structures. v1.1 adds geometry_engine.py hardening, dual-channel SVG validation, drift correction, and builder document generation.",
+  "version": "1.2.0",
+  "description": "Modular plugin for generating professional-grade PDF construction packages for garden structures. v1.2 adds deterministic geometry generation, schema validation, package consistency checks, and self-healing learning-registry architecture.",
   "author": {
     "name": "Richard Fremmerlid"
   },

@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "design-spec",
+  "type": "object",
+  "required": [
+    "schema",
+    "style",
+    "footprint_ft",
+    "jurisdiction"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string"
+    },
+    "source_hash": {
+      "type": "string"
+    },
+    "style": {
+      "type": "string"
+    },
+    "footprint_ft": {
+      "type": "object",
+      "required": [
+        "width",
+        "length"
+      ],
+      "properties": {
+        "width": {
+          "type": "number"
+        },
+        "length": {
+          "type": "number"
+        }
+      }
+    },
+    "jurisdiction": {
+      "type": "string"
+    }
+  }
+}

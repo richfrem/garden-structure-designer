@@ -73,13 +73,22 @@ If any check fails, generate `context/staging/drift_report.json`:
 ```
 **Return this report to the `design-orchestrator` with instruction to re-invoke the failing skills before re-running validation.**
 
-## Phase 7: Claude-Native Fallback
+## Phase 7: Fail-Closed Validation (No Fallback)
 
 If `gemini-cli` is unavailable (non-zero exit, 429 capacity exhausted, not installed):
-- Perform this same validation protocol using the current agent context.
-- Set `"reviewer": "claude-self"` in the drift report / validation report.
-- Include a visible note: `⚠ Cross-model validation not performed. Human review recommended before builder release.`
-- The pipeline may continue but the final PDF must include a cover page warning.
+1. Do NOT fall back to same-context self-review.
+2. Write `context/staging/validation-blocked.json`:
+```json
+{
+  "status": "BLOCKED",
+  "reason": "Independent validator unavailable",
+  "required_action": "Install independent validator or provide explicit human override",
+  "may_continue": false
+}
+```
+3. The orchestrator must treat BLOCKED as terminal unless the user explicitly overrides.
+4. If overridden, stamp every output with:
+`⚠ DRAFT — INDEPENDENT QA NOT COMPLETED — NOT FOR CONSTRUCTION`
 
 ## Pass Criteria
 

@@ -1,0 +1,1 @@
+../../../scripts/cross_artifact_validator.py

@@ -2,6 +2,7 @@
 
 > Authoritative rules for all AI agents (Claude Code, Copilot, Gemini) working in this repo.
 > Mirrors CLAUDE.md — keep in sync.
+> AI-native plugin for garden structure design packages.
 
 ## Purpose
 This is an **AI-native plugin** called `garden-structure-designer` — a multi-agent design pipeline that converts non-technical user descriptions of garden structures (pergolas, gazebos, pavilions) into professional-grade structural construction PDF packages. It is installed into agentic environments (Claude Cowork, Antigravity, Gemini CLI) via the plugin marketplace system.
@@ -43,18 +44,21 @@ context/                             # Runtime: events.jsonl + memory/
 skills-lock.json                     # Installed skills manifest
 ```
 
-### Agent Pipeline Data Flow
-The pipeline uses `context/staging/` as the shared data bus between skills:
-1. `interactive-designer` → user interview → calls `intake-normalizer`
-2. `intake-normalizer` → writes `context/staging/design-spec.json`
-3. `design-orchestrator` → reads `design-spec.json`, runs sequentially:
-   - `building-code-validator` → writes `context/staging/building-code.json`
-   - `structural-engine` → reads both JSONs → writes `context/staging/structural-model.json`
-   - `joinery-designer` → reads structural model → writes joinery map
-   - `bracing-system-designer` → writes bracing spec
-   - `validation-agent` → red-team check on physics before output
-   - `drawing-generator` → produces SVG/PNG views
-   - `document-compiler` → assembles final PDF packet
+### Agent Pipeline Data Flow (v1.2 Deterministic)
+The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs must conform to rigorous JSON Schemas.
+
+1. **`interactive-designer`** → user interview → calls `intake-normalizer`
+2. **`intake-normalizer`** → writes `design-spec.json`
+3. **`design-orchestrator`** → runs sequentially through fail-closed stages:
+   - **Stage 0 (Self-Healing)**: Reads `learning-registry.json` to inject lessons into prompts via `load_applicable_lessons.py`.
+   - **Stage 1 (Code & Constraints)**: `building-code-validator` maps region to wind/snow constraints.
+   - **Stage 2 (Deterministic Engineering)**: `structural-engine` runs `geometry_engine.py` (not an LLM guess) to compute explicit dimensions, spans, and pitches.
+   - **Stage 3 (Connections)**: `joinery-designer` & `bracing-system-designer` create the load-path connections.
+   - **Stage 4 (Draft Validation)**: Schema and physics validation using `schema_validator.py` and `structural_physics_validator.py`.
+   - **Stage 5 (Cross-Artifact)**: `cross_artifact_validator.py` ensures blueprint vs. model consistency.
+   - **Stage 6 (Generation)**: `drawing-generator` & `cut_list_engine.py` produce final outputs.
+   - **Stage 7 (Red-Team)**: `validation-agent` blocks execution if `drift_report.json` flags mismatch.
+   - **Stage 8 (Repair)**: Repeated failures scaffold PyTest regressions via `failure_to_test.py`.
 
 ---
 

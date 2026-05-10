@@ -14,12 +14,26 @@ The **Garden Structure Designer** is a modular, AI-native plugin built for advan
 
 ## 🚀 The Guided Discovery Process
 
-Generalized AI struggles to design structures reliably because the required architectural pipeline is too complex for a single prompt. This plugin solves that by encapsulating an entire **Multi-Agent Design Firm**:
+Generalized AI struggles to design physical structures reliably because the required architectural pipeline is too complex for a single prompt, almost always leading to hallucinations in angles, board-feet, and span physics. 
+
+This plugin solves that by migrating away from LLM-guessing toward a **deterministic, artifact-verified engineering pipeline**. It encapsulates an entire **Multi-Agent Design Firm** backed by strict Python execution:
 
 1. **Vision Alignment (`Interactive-Designer`)**: The agent interviews you. You don't need CAD software. Just upload inspiration images and answer simple questions about the size and style.
-2. **Structural Translation (`Structural-Engine & Code-Validator`)**: You provide your jurisdiction (e.g., British Columbia). The engine natively runs your design against local building code constraints, mapping required wind and snow load capacities to safe post/beam thicknesses. *(Safety and physics override aesthetics 100% of the time).*
-3. **Joinery & Bracing**: Choose between traditional mortise-and-tenon timber framing or modern mechanical fasteners (like Simpson Strong-Ties). The system automatically computes the anti-racking brace geometry.
-4. **Professional Handoff**: The orchestration layer compiles your inputs and logic into a final blueprint.
+2. **Deterministic Structural Engineering (`Structural-Engine & Code-Validator`)**: You provide your jurisdiction. The engine queries local building code constraints. The AI does *not* guess the math; instead, it feeds parameters into a locked `geometry_engine.py` script to calculate exact roof pitches, rafter tails, compound cuts, and miter joints deterministically. *(Safety and physics override aesthetics 100% of the time).*
+3. **Joinery & Bracing**: Choose between traditional mortise-and-tenon timber framing or modern mechanical fasteners. The system computes anti-racking brace geometry into an immutable JSON data model.
+4. **Validated Blueprinting (`Shop-Blueprint-Generator` & `Validation-Agent`)**: Before any drawing is finalized, it must pass through strict XML schema gates and coordinate drift checks (`svg_validator.py`) to guarantee that what is drawn perfectly matches the engineering math.
+5. **Professional Compilation**: The orchestration layer enforces cross-artifact consistency (ensuring the cut-list math matches the blueprint arrows) and compiles a final PDF construction packet.
+
+---
+
+## 🛡️ The Self-Healing Architecture
+
+This is not a static prompt chain. The `garden-structure-designer` pipeline features an advanced continuous-improvement infrastructure that actively captures failure modes and automatically repairs itself:
+
+- **Strict Contracts**: All state boundaries (Structural Models, Cut-Lists, Bracing Maps) are heavily enforced via formal JSON Schemas.
+- **Fail-Closed Validation**: If a structural physics check or drawing validation fails, the pipeline halts. Unsafe hallucinated physics cannot slip through.
+- **The Learning Registry**: When the Red-Team `validation-agent` catches a failure, the orchestrator generates a permanent "lesson" in the `agent-workspace/`. On subsequent runs, `load_applicable_lessons.py` explicitly injects these learned constraints into the offending skill's prompt *before* it can fail again.
+- **Automated Regression Testing**: Novel pipeline failures automatically trigger `failure_to_test.py` to scaffold PyTest regression suites, locking down edge cases permanently.
 
 ---
 
@@ -79,3 +93,19 @@ If you are using Claude Code directly, you can install via the plugin marketplac
 # Or install the specific plugin directly
 /plugin install garden-structure-designer
 ```
+
+## Acknowledgements
+
+This project’s self-healing and continuous-improvement model was inspired in part by the architectural patterns demonstrated in [`browser-use/browser-harness`](https://github.com/browser-use/browser-harness).
+
+In particular, this plugin adapts the general idea of a small protected core surrounded by agent-editable learning surfaces: reusable skills, helper logic, captured failure patterns, and run-specific improvements. The `browser-harness` project describes a model where the agent can write missing helper code during execution and where the harness “improves itself every run,” with reusable domain skills and an editable agent workspace. [1](https://github.com/browser-use/browser-harness)
+
+For the garden structure designer plugin, those ideas are generalized away from browser automation and applied to construction-document generation:
+
+- deterministic core calculations remain protected;
+- validation failures become durable lessons;
+- repeatable gotchas become regression tests or validators;
+- learned patterns are externalized into editable skill/reference files;
+- future runs can reuse those lessons instead of rediscovering them.
+
+This acknowledgement is for the self-healing / continuous-learning architecture pattern only. The garden structure designer plugin is an independent project focused on deterministic geometry, construction documentation, validation gates, and design-package generation.

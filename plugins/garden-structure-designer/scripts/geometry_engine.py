@@ -1,24 +1,36 @@
 #!/usr/bin/env python3
 """
-geometry_engine.py
+geometry_engine.py (CLI)
 =====================================
 
 Purpose:
-    Canonical geometry calculator for the garden-structure-designer plugin.
-    Computes all structural math (compound cut angles, rafter lengths, roof rise,
-    SVG pixel coordinates) from a structural-model.json input file.
+    geometry_engine.py =====================================
 
-    This is the **Sole Source of Truth** for all dimensional calculations.
-    Agent skills are forbidden from computing these values mentally.
+Layer: Execution
 
-Layer: Codify
+Usage Examples:
+    python geometry_engine.py [args]
 
-Usage:
-    python3 scripts/geometry_engine.py context/staging/structural-model.json
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
 
 Output:
-    Writes context/staging/geometry-calculations.json and prints JSON to stdout.
-    Exits non-zero if warnings are raised (e.g. height limit breach).
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
 """
 from __future__ import annotations
 
@@ -26,6 +38,7 @@ import json
 import math
 import os
 import sys
+import hashlib
 from typing import Any
 
 # ---------------------------------------------------------------------------
@@ -95,6 +108,24 @@ def compound_cut(pitch_rise: float, pitch_run: float, sides: int) -> dict[str, f
         "bevel_deg": round(_deg(bevel), 2),
         "pitch_angle_deg": round(_deg(pitch_angle), 2),
         "plan_half_angle_deg": round(_deg(plan_half), 2),
+    }
+
+
+def beam_ring_miter(sides: int) -> dict[str, float]:
+    """
+    Compute beam ring plan-angle miter for a regular polygon.
+    This is a FLAT cut (no pitch component). Do not confuse with
+    the hip rafter compound miter which includes pitch.
+
+    For hexagon: interior = 120°, beam_miter = 30.0°
+    For square:  interior = 90°,  beam_miter = 45.0°
+    For octagon: interior = 135°, beam_miter = 22.5°
+    """
+    interior_angle = (sides - 2) * 180.0 / sides
+    beam_miter = (180.0 - interior_angle) / 2.0
+    return {
+        "beam_miter_deg": round(beam_miter, 2),
+        "interior_angle_deg": round(interior_angle, 2),
     }
 
 
@@ -183,6 +214,45 @@ def total_height(
     }
 
 
+def svg_layout(
+    total_height_ft: float,
+    span_ft: float,
+    sides: int,
+    scale_px_per_ft: float = 42.0,
+    margin_top_px: int = 80,
+    margin_bottom_px: int = 120,
+    min_height_px: int = 900,
+    min_width_px: int = 1100,
+) -> dict[str, Any]:
+    """
+    Compute dynamic SVG viewport dimensions and coordinate datums.
+    Replaces the fixed GRADE_Y=640 constant.
+
+    All drawing-generator and shop-blueprint-generator agents MUST read
+    their viewBox and grade_y from this output.
+    """
+    content_height_px = math.ceil(total_height_ft * scale_px_per_ft)
+    height_px = max(min_height_px, content_height_px + margin_top_px + margin_bottom_px)
+    grade_y = height_px - margin_bottom_px
+
+    # For plan views, compute width from polygon diameter
+    diameter_ft = span_ft * 2 if sides > 4 else span_ft
+    content_width_px = math.ceil(diameter_ft * scale_px_per_ft) + 200  # label margins
+    width_px = max(min_width_px, content_width_px + 200)
+
+    return {
+        "viewBox": f"0 0 {width_px} {height_px}",
+        "width_px": width_px,
+        "height_px": height_px,
+        "margin_top_px": margin_top_px,
+        "margin_bottom_px": margin_bottom_px,
+        "grade_y": grade_y,
+        "scale_px_per_ft": scale_px_per_ft,
+        "content_height_px": content_height_px,
+        "content_width_px": content_width_px,
+    }
+
+
 def svg_scale_map(
     structural_model: dict[str, Any],
     scale_px_per_ft: float = SCALE_PX_PER_FT,
@@ -211,22 +281,27 @@ def svg_scale_map(
     pitch_str = roof.get("pitch", DEFAULT_PITCH)
     rise_n, run_n = [int(x) for x in pitch_str.split(":")]
     span_ft = posts.get("spanDistance_ft", DEFAULT_SPAN_FT)
+    sides = posts.get("quantity", DEFAULT_SIDES)
 
     post_px = post_ft * scale_px_per_ft
     beam_px = (beam_in / 12.0) * scale_px_per_ft
     rise_px = span_ft * (rise_n / run_n) * scale_px_per_ft
+    
+    total_ft = post_ft + (beam_in / 12.0) + (span_ft * (rise_n / run_n))
+    layout = svg_layout(total_ft, span_ft, sides, scale_px_per_ft)
+    grade_y = layout["grade_y"]
 
-    return {
-        "scale_px_per_ft": scale_px_per_ft,
-        "grade_y": GRADE_Y,
-        "post_top_y": round(GRADE_Y - post_px),
-        "beam_soffit_y": round(GRADE_Y - post_px),
-        "beam_top_y": round(GRADE_Y - post_px - beam_px),
-        "hub_apex_y": round(GRADE_Y - post_px - beam_px - rise_px),
+    result = {
+        **layout,
+        "post_top_y": round(grade_y - post_px),
+        "beam_soffit_y": round(grade_y - post_px),
+        "beam_top_y": round(grade_y - post_px - beam_px),
+        "hub_apex_y": round(grade_y - post_px - beam_px - rise_px),
         "rise_px": round(rise_px),
         "beam_px": round(beam_px),
         "post_px": round(post_px),
     }
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -244,8 +319,10 @@ def compute(model_path: str) -> dict[str, Any]:
     Returns:
         Complete geometry-calculations dict ready for JSON serialisation.
     """
-    with open(model_path) as f:
-        model = json.load(f)
+    with open(model_path, 'rb') as f:
+        raw_bytes = f.read()
+    model = json.loads(raw_bytes.decode('utf-8'))
+    model_hash = hashlib.sha256(raw_bytes).hexdigest()
 
     # Support both 'members' (canonical) and 'structuralElements' (legacy)
     members = model.get("members") or model.get("structuralElements", {})
@@ -273,11 +350,13 @@ def compute(model_path: str) -> dict[str, Any]:
         "pitch": pitch,
         "sides": sides,
         "compound_cut": cuts,
+        "beam_ring": beam_ring_miter(sides),
         "rafter": rl,
         "roof_rise": rise,
         "total_height": height,
         "svg_coordinates": svg,
         "warnings": [],
+        "source_hash": model_hash,
     }
 
     # Height limit guard — reads from sibling design-spec.json if present

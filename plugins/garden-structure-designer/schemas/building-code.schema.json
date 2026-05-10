@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "building-code",
+  "type": "object",
+  "required": [
+    "schema",
+    "jurisdiction",
+    "snowLoad_psf",
+    "windLoad_mph",
+    "frostDepth_in"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string"
+    },
+    "source_hash": {
+      "type": "string"
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "snowLoad_psf": {
+      "type": "number"
+    },
+    "windLoad_mph": {
+      "type": "number"
+    },
+    "frostDepth_in": {
+      "type": "number"
+    }
+  }
+}

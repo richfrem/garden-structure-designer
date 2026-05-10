@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "structural-model",
+  "type": "object",
+  "required": [
+    "schema",
+    "source_hash",
+    "_locked",
+    "roofStructure",
+    "members"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string"
+    },
+    "source_hash": {
+      "type": "string"
+    },
+    "_locked": {
+      "type": "boolean"
+    },
+    "roofStructure": {
+      "type": "object",
+      "required": [
+        "pitch",
+        "style"
+      ],
+      "properties": {
+        "pitch": {
+          "type": "number"
+        },
+        "style": {
+          "type": "string"
+        }
+      }
+    },
+    "members": {
+      "type": "object",
+      "required": [
+        "posts",
+        "beams",
+        "rafters"
+      ],
+      "properties": {
+        "posts": {
+          "type": "object",
+          "required": [
+            "quantity",
+            "cutLength_ft",
+            "nominalSize"
+          ],
+          "properties": {
+            "quantity": {
+              "type": "integer"
+            },
+            "cutLength_ft": {
+              "type": "number"
+            },
+            "nominalSize": {
+              "type": "string"
+            }
+          }
+        },
+        "beams": {
+          "type": "object",
+          "required": [
+            "quantity",
+            "cutLength_ft",
+            "nominalSize"
+          ],
+          "properties": {
+            "quantity": {
+              "type": "integer"
+            },
+            "cutLength_ft": {
+              "type": "number"
+            },
+            "nominalSize": {
+              "type": "string"
+            }
+          }
+        },
+        "rafters": {
+          "type": "object",
+          "required": [
+            "quantity",
+            "cutLength_ft",
+            "nominalSize",
+            "miterAngle_deg"
+          ],
+          "properties": {
+            "quantity": {
+              "type": "integer"
+            },
+            "cutLength_ft": {
+              "type": "number"
+            },
+            "nominalSize": {
+              "type": "string"
+            },
+            "miterAngle_deg": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  }
+}

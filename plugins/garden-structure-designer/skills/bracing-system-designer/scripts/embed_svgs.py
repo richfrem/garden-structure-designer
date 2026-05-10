@@ -1,0 +1,1 @@
+../../../scripts/embed_svgs.py

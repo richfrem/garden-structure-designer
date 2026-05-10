@@ -1,0 +1,1 @@
+../../../scripts/structural_physics_validator.py
