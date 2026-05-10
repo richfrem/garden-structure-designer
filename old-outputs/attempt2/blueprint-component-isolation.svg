@@ -1,0 +1,24 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fcfcfc" />
+  
+  <g transform="translate(150, 200)">
+    <!-- Isolated Rafter Birdsmouth (4:12 pitch) -->
+    <polygon points="0,0 200,-66 200,-16 0,50" fill="none" stroke="#2980b9" stroke-width="2" />
+    
+    <!-- Birdsmouth Cut detail -->
+    <polyline points="30,10 30,30 50,40" fill="none" stroke="#e74c3c" stroke-width="2"/>
+    
+    <!-- Dimension -->
+    <line x1="30" y1="40" x2="30" y2="60" stroke="#e74c3c" stroke-width="1"/>
+    <line x1="50" y1="50" x2="50" y2="70" stroke="#e74c3c" stroke-width="1"/>
+    <line x1="30" y1="55" x2="50" y2="65" stroke="#e74c3c" stroke-width="1"/>
+    <text x="50" y="80" font-family="monospace" font-size="10" fill="#e74c3c">1.5" SEAT CUT</text>
+
+    <!-- Angle Arrow -->
+    <path d="M 180,-30 A 20 20 0 0 1 180,-60" fill="none" stroke="#e74c3c" stroke-width="1"/>
+    <text x="180" y="-70" font-family="monospace" font-size="10" fill="#e74c3c">18.4 DEG PLUMB CUT (4:12)</text>
+    
+    <!-- Title -->
+    <text x="-90" y="-120" font-family="monospace" font-size="16" font-weight="bold" fill="#2c3e50">DWG: DET-1 (4x6 RAFTER - 4:12 PITCH)</text>
+  </g>
+</svg>

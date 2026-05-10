@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DRAWING D03 - ELEVATION: CORNER VIEW (Looking at one post, two adjacent bays)
+  Hexagonal Pavilion - Saanich, BC
+  Scale: 1 ft = 42 px (1 in = 3.5 px)  |  Sheet: D03  |  Date: 2026-04-19
+  Pitch: 4:12 (18.43 deg) — Total height: 10'-0" grade to apex
+
+  Corner post CL at X=449. Two adjacent bays recede at 30 deg each side.
+  Adjacent post apparent CL: 5 ft * cos(30) = 4.33 ft = 182 px each side.
+  Left adjacent post CL: X=267. Right adjacent: X=631.
+
+  Grade Y=640. Standoff Y=629 (+3 in = 11 px).
+  Post length 8.33 ft = 350 px. Post top Y=279.
+  Clear headroom 7.83 ft = 94 in = 329 px. Beam soffit Y=311.
+  Beam 6x8 depth 25 px. Beam top Y=286.
+  Rafter rise at 4:12 over 5 ft = 20 in = 70 px. Hub apex Y=216.
+  Hub block: Y=205 to Y=247, centred X=449.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="820" viewBox="-50 -50 1000 920"
+     font-family="Arial, Helvetica, sans-serif">
+
+  <rect x="-50" y="-50" width="1000" height="920" fill="#f8f7f4"/>
+  <rect x="-40" y="-40" width="980" height="920" fill="none" stroke="#000" stroke-width="3"/>
+
+  <!-- Title block -->
+  <rect x="-40" y="800" width="980" height="70" fill="#1a2744"/>
+  <text x="450" y="828" text-anchor="middle" fill="white" font-size="20" font-weight="bold">HEXAGONAL PAVILION — ELEVATION: CORNER VIEW</text>
+  <text x="450" y="851" text-anchor="middle" fill="#aac8ff" font-size="14">Saanich, BC  |  Scale: 1 ft = 42 px approx.  |  Sheet D03  |  Date: 2026-04-19</text>
+  <text x="450" y="869" text-anchor="middle" fill="#aac8ff" font-size="12">Pitch 4:12 (18.43 deg) — Total 10'-0" grade to apex. Looking directly at one corner post.</text>
+
+  <defs>
+    <marker id="arrow3" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrow3R" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#c0392b"/>
+    </marker>
+    <pattern id="concreteH2" patternUnits="userSpaceOnUse" width="8" height="8">
+      <path d="M0,8 L8,0" stroke="#999" stroke-width="1"/>
+    </pattern>
+    <pattern id="shingles2" patternUnits="userSpaceOnUse" width="24" height="10">
+      <rect width="24" height="10" fill="#c8a96e"/>
+      <path d="M0,10 L24,10" stroke="#8B6028" stroke-width="0.9"/>
+      <path d="M6,5 L18,5" stroke="#8B6028" stroke-width="0.5" opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Grade line -->
+  <line x1="-40" y1="640" x2="960" y2="640" stroke="#5a4a28" stroke-width="2.5"/>
+  <text x="880" y="655" fill="#5a4a28" font-size="12" font-style="italic">GRADE</text>
+
+  <!-- CAISSONS. Centre post caisson, plus ghost adjacent caissons -->
+  <rect x="419" y="640" width="63" height="84" fill="url(#concreteH2)" stroke="#666" stroke-width="1.2" stroke-dasharray="5,3"/>
+  <rect x="235" y="640" width="50" height="84" fill="url(#concreteH2)" stroke="#777" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+  <rect x="603" y="640" width="50" height="84" fill="url(#concreteH2)" stroke="#777" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+
+  <!-- ABA66Z standoff at corner post -->
+  <rect x="436" y="629" width="28" height="11" fill="#888" stroke="#333" stroke-width="1"/>
+  <text x="418" y="622" fill="#555" font-size="9">ABA66Z (TYP)</text>
+
+  <!-- POSTS. Corner post top Y=279, bottom Y=629. Adjacent posts ghost. -->
+  <rect x="440" y="279" width="19" height="350" fill="#c8a96e" stroke="#7B5C2F" stroke-width="2"/>
+  <rect x="252" y="279" width="16" height="350" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.2" opacity="0.55"/>
+  <rect x="620" y="279" width="16" height="350" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.2" opacity="0.55"/>
+
+  <!-- Post labels -->
+  <text x="449" y="269" text-anchor="middle" fill="#2d1a00" font-size="11" font-weight="bold">P1 (CORNER)</text>
+  <text x="260" y="269" text-anchor="middle" fill="#999" font-size="10">P2 (ADJACENT)</text>
+  <text x="628" y="269" text-anchor="middle" fill="#999" font-size="10">P6 (ADJACENT)</text>
+
+  <!-- RING BEAMS. Soffit Y=311, top Y=286. Foreshortened view. -->
+  <!-- Left beam from corner (X=459) to left adjacent (X=259). Level horizontal. -->
+  <polygon points="259,286 440,286 459,286 459,311 440,311 259,311"
+           fill="#b8935a" stroke="#7B5C2F" stroke-width="1.5" opacity="0.75"/>
+  <!-- Right beam -->
+  <polygon points="459,286 636,286 636,311 459,311"
+           fill="#b8935a" stroke="#7B5C2F" stroke-width="1.5" opacity="0.75"/>
+
+  <!-- CORBELS at corner post, toward left and right beams. Leg=42 px. Soffit Y=311. -->
+  <!-- Left corbel: post bottom at Y=353, beam end at X=398 -->
+  <polygon points="430,353 444,353 398,311 398,297" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.2"/>
+  <!-- Right corbel -->
+  <polygon points="455,353 469,353 501,311 501,297" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.2"/>
+
+  <!-- RAFTERS. Two rafters recede from beam midpoints to hub apex Y=216. -->
+  <!-- Left rafter midpoint beam at X~354, beam top Y=286 -->
+  <polygon points="347,286 361,286 456,216 442,216" fill="#b0844a" stroke="#5A3E1B" stroke-width="1.2" opacity="0.8"/>
+  <!-- Right rafter -->
+  <polygon points="447,216 463,216 556,286 542,286" fill="#b0844a" stroke="#5A3E1B" stroke-width="1.2" opacity="0.8"/>
+
+  <!-- HUB. Block Y=205 to Y=247, centred X=449. -->
+  <rect x="424" y="205" width="50" height="42" rx="3" fill="#8B6914" stroke="#3d2b00" stroke-width="2"/>
+  <text x="449" y="223" text-anchor="middle" fill="white" font-size="10" font-weight="bold">8x8 HUB</text>
+  <text x="449" y="237" text-anchor="middle" fill="white" font-size="9">MIN</text>
+
+  <!-- ROOF SURFACE. Soffit Y=311, apex Y=205. Overhang extends past adjacent post CL by 42 px. -->
+  <!-- Left edge: 267-42=225. Right edge: 631+42=673. -->
+  <polygon points="225,311 449,205 673,311" fill="url(#shingles2)" stroke="#7B4F1E" stroke-width="2"/>
+
+  <!-- Shingle ridge lines -->
+  <g stroke="#6B3F1E" stroke-width="0.7" opacity="0.5">
+    <line x1="240" y1="304" x2="449" y2="207"/>
+    <line x1="280" y1="304" x2="449" y2="207"/>
+    <line x1="320" y1="304" x2="449" y2="207"/>
+    <line x1="360" y1="304" x2="449" y2="207"/>
+    <line x1="400" y1="304" x2="449" y2="207"/>
+    <line x1="440" y1="304" x2="449" y2="207"/>
+    <line x1="658" y1="304" x2="449" y2="207"/>
+    <line x1="618" y1="304" x2="449" y2="207"/>
+    <line x1="578" y1="304" x2="449" y2="207"/>
+    <line x1="538" y1="304" x2="449" y2="207"/>
+    <line x1="498" y1="304" x2="449" y2="207"/>
+    <line x1="458" y1="304" x2="449" y2="207"/>
+  </g>
+
+  <!-- Drip edges -->
+  <line x1="225" y1="311" x2="225" y2="325" stroke="#555" stroke-width="2"/>
+  <line x1="673" y1="311" x2="673" y2="325" stroke="#555" stroke-width="2"/>
+
+  <!-- DIMENSION LINES -->
+
+  <!-- Overall height: grade to apex (10 ft = 420 px) -->
+  <line x1="730" y1="640" x2="730" y2="205" stroke="#c0392b" stroke-width="1.5"
+        marker-start="url(#arrow3R)" marker-end="url(#arrow3)"/>
+  <line x1="474" y1="205" x2="738" y2="205" stroke="#c0392b" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <line x1="474" y1="640" x2="738" y2="640" stroke="#c0392b" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <text x="738" y="425" fill="#c0392b" font-size="14" font-weight="bold">10'-0"</text>
+  <text x="738" y="442" fill="#c0392b" font-size="11">OVERALL HT</text>
+
+  <!-- Clear headroom (7'-10") -->
+  <line x1="50" y1="640" x2="50" y2="311" stroke="#1a6e8f" stroke-width="1.5"
+        marker-start="url(#arrow3R)" marker-end="url(#arrow3)"/>
+  <line x1="40" y1="640" x2="215" y2="640" stroke="#1a6e8f" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <line x1="40" y1="311" x2="215" y2="311" stroke="#1a6e8f" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <text x="15" y="490" fill="#1a6e8f" font-size="12" font-weight="bold" transform="rotate(-90,15,490)">7'-10" CLEAR HEADROOM</text>
+
+  <!-- Post size callout -->
+  <line x1="459" y1="430" x2="560" y2="420" stroke="#333" stroke-width="0.8"/>
+  <text x="562" y="418" fill="#333" font-size="11" font-weight="bold">6x6 RS CEDAR</text>
+  <text x="562" y="432" fill="#333" font-size="11">POST (5.5"x5.5" ACTUAL)</text>
+
+  <!-- Beam callout -->
+  <line x1="550" y1="300" x2="630" y2="288" stroke="#333" stroke-width="0.8"/>
+  <text x="632" y="286" fill="#333" font-size="11" font-weight="bold">6x8 RS CEDAR</text>
+  <text x="632" y="300" fill="#333" font-size="11">RING BEAM</text>
+  <text x="632" y="314" fill="#333" font-size="11">(5.5" x 7.25" ACTUAL)</text>
+
+  <!-- Corbel callout -->
+  <line x1="501" y1="330" x2="590" y2="350" stroke="#333" stroke-width="0.8"/>
+  <text x="592" y="348" fill="#333" font-size="11" font-weight="bold">4x4 CORBEL</text>
+  <text x="592" y="362" fill="#333" font-size="11">45° EACH END</text>
+  <text x="592" y="376" fill="#333" font-size="11">12" LEG (TYP 12)</text>
+
+  <!-- Rafter callout -->
+  <line x1="400" y1="230" x2="310" y2="222" stroke="#333" stroke-width="0.8"/>
+  <text x="130" y="218" fill="#333" font-size="11" font-weight="bold">4x6 RS CEDAR</text>
+  <text x="130" y="232" fill="#333" font-size="11">RAFTER 4:12 PITCH</text>
+  <text x="130" y="246" fill="#333" font-size="11">COMP CUT AT HUB</text>
+
+  <!-- Footing depth -->
+  <line x1="780" y1="640" x2="780" y2="724" stroke="#666" stroke-width="1.2"
+        marker-start="url(#arrow3R)" marker-end="url(#arrow3)"/>
+  <text x="788" y="690" fill="#666" font-size="11">24" DEEP</text>
+
+  <!-- Frost depth line -->
+  <line x1="-40" y1="703" x2="960" y2="703" stroke="#a0522d" stroke-width="1" stroke-dasharray="10,6"/>
+  <text x="810" y="718" fill="#a0522d" font-size="11" font-style="italic">FROST: 18" (450mm)</text>
+
+  <!-- Scale bar -->
+  <g transform="translate(80, 750)">
+    <text x="0" y="-5" fill="#333" font-size="11" font-weight="bold">SCALE: 1 ft = 42 px (approx)</text>
+    <rect x="0" y="0" width="42" height="8" fill="#333"/>
+    <rect x="42" y="0" width="42" height="8" fill="white" stroke="#333"/>
+    <rect x="84" y="0" width="42" height="8" fill="#333"/>
+    <text x="0" y="18" fill="#333" font-size="10">0</text>
+    <text x="38" y="18" fill="#333" font-size="10">2'</text>
+    <text x="80" y="18" fill="#333" font-size="10">4'</text>
+    <text x="122" y="18" fill="#333" font-size="10">6'</text>
+  </g>
+
+</svg>

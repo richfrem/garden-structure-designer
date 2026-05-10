@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "1.0",
+  "generatedBy": "shop-blueprint-generator",
+  "sessionId": "a3776eee82a54e624",
+  "lastUpdated": "2026-04-19",
+  "project": "Hexagonal Pavilion — Saanich, BC",
+  "notes": [
+    "All dimensions in inches unless noted.",
+    "Nominal sizes per North American standard. Actual sizes for rough sawn cedar may vary ±1/8 in from listed actual — verify with supplier.",
+    "Rough sawn cedar: no S4S planing. Leave rough face as received.",
+    "Board feet (BF) calculated using nominal dimensions: BF = (nom_thickness x nom_width x length_ft) / 12.",
+    "Add 15% waste factor to all BF totals when ordering.",
+    "All cut angles for compound cuts require a compound miter saw with positive stops — verify against test cut.",
+    "Order lumber slightly long (add 4-6 in to rafter and post lengths) and trim to final dimension on site."
+  ],
+
+  "cutList": [
+    {
+      "id": "CL-01",
+      "member": "Post",
+      "nominalSize": "6x6",
+      "actualSize_in": "5.5 x 5.5",
+      "material": "Rough Sawn Cedar",
+      "quantity": 6,
+      "cutLength_in": 114,
+      "cutLength_ft_in": "9'-6\"",
+      "cutAngleTopEnd_deg": "Square (90°) — notch milled after installation or on bench",
+      "cutAngleBottomEnd_deg": "Square (90°)",
+      "notchAtTop": {
+        "depth_in": 1.5,
+        "width_in": 7.25,
+        "description": "Full-width bearing notch to seat 6x8 ring beam. Cut with circular saw and chisel, or table saw dado stack."
+      },
+      "boardFeetEach_nominal": 36.0,
+      "boardFeetTotal_nominal": 216.0,
+      "notes": "Post cut length includes 1.5 in for beam bearing notch. Confirm final cut length after setting post base height."
+    },
+    {
+      "id": "CL-02",
+      "member": "Ring Beam",
+      "nominalSize": "6x8",
+      "actualSize_in": "5.5 x 7.25",
+      "material": "Rough Sawn Cedar",
+      "quantity": 6,
+      "cutLength_in": 60,
+      "cutLength_ft_in": "5'-0\"",
+      "cutAngleLeftEnd_deg": "60° miter (matching hexagon interior joint angle at post CL)",
+      "cutAngleRightEnd_deg": "60° miter (matching hexagon interior joint angle at post CL)",
+      "miterSetup": "Set miter saw at 30° (complement of hexagon face angle). Both ends same direction — check before cutting.",
+      "boardFeetEach_nominal": 24.0,
+      "boardFeetTotal_nominal": 144.0,
+      "notes": "Beam ends meet at post CL. 60° included angle at each corner. Allow 1/16 in gap at each joint for expansion. Verify fit dry before final hardware installation."
+    },
+    {
+      "id": "CL-03",
+      "member": "Rafter",
+      "nominalSize": "4x6",
+      "actualSize_in": "3.5 x 5.5",
+      "material": "Rough Sawn Cedar",
+      "quantity": 6,
+      "cutLength_in": 80.5,
+      "cutLength_ft_in": "6'-8 1/2\"",
+      "cutAngleTopEnd": {
+        "type": "Compound Cut",
+        "plumbCut_deg": 26.57,
+        "sideBevel_deg": 23.4,
+        "sawSetup": "Compound miter saw: miter = 26.57°, blade tilt (bevel) = 23.4°. Crown side UP.",
+        "note": "All 6 cuts identical — do NOT reverse bevel. Test on scrap 4x6 before production run."
+      },
+      "cutAngleBottomEnd": {
+        "type": "Bird's Mouth + Plumb Tail Cut",
+        "seatDepth_in": 1.5,
+        "seatWidth_in": 3.5,
+        "plumbCutAtTail_deg": 26.57,
+        "overhangBeyondBeamCL_in": 13.42,
+        "note": "Seat depth = 1.5 in. Plumb cut at tail is vertical. Optional decorative tail profile at builder discretion."
+      },
+      "totalHorizontalRun_in": 72,
+      "totalHorizontalRun_ft_in": "6'-0\" (from beam CL to hub CL + 12 in overhang)",
+      "riseAtHub_in": 30,
+      "riseAtHub_ft_in": "2'-6\"",
+      "boardFeetEach_nominal": 13.4,
+      "boardFeetTotal_nominal": 80.5,
+      "notes": "Order at 7'-0\" to allow for compound cut waste. Mark crown side before laying out cuts."
+    },
+    {
+      "id": "CL-04",
+      "member": "Hub Block",
+      "nominalSize": "8x8 (or built-up 3x 2x8)",
+      "actualSize_in": "7.25 x 7.25 (8x8 stock) or 4.5 x 7.25 (3-ply 2x8)",
+      "material": "Rough Sawn Cedar",
+      "quantity": 1,
+      "cutLength_in": 12,
+      "cutLength_ft_in": "1'-0\" (rough block, finish-milled to hex prism shape)",
+      "cutAngle": "Six flat faces milled at 60° intervals — see D04",
+      "fabricationNote": "Option A: 8x8 turning blank, mill 6 faces. Option B: Laminate 3x 2x8 x 12 in with waterproof glue + 3 in GRK screws, plane 6 faces.",
+      "boardFeetNominal": {
+        "optionA_8x8": 8.0,
+        "optionB_3ply2x8": 9.0
+      },
+      "notes": "Finial or galvanized rain cap added after rafter installation. See D04 for geometry."
+    },
+    {
+      "id": "CL-05",
+      "member": "Corbel Knee Brace",
+      "nominalSize": "4x4",
+      "actualSize_in": "3.5 x 3.5",
+      "material": "Rough Sawn Cedar",
+      "quantity": 12,
+      "cutLength_in": 21,
+      "cutLength_ft_in": "1'-9\"",
+      "cutAngleBothEnds_deg": "45° plumb cut both ends (no side bevel — pure 45° miter)",
+      "legProjection_in": 12,
+      "boardFeetEach_nominal": 2.33,
+      "boardFeetTotal_nominal": 28.0,
+      "notes": "Diagonal length = sqrt(12^2 + 12^2) = 16.97 in. Add cut waste for 45° ends → 21 in cut length. Order 2-ft lengths."
+    },
+    {
+      "id": "CL-06",
+      "member": "Roof Decking — 1x6 T&G Cedar",
+      "nominalSize": "1x6",
+      "actualSize_in": "0.75 x 5.5 (T&G, exposed face ≈ 5.0 in)",
+      "material": "Rough Sawn Cedar T&G (or S4S T&G at builder discretion)",
+      "quantity": "variable — calculated by area",
+      "roofArea_sqft": {
+        "hexagonPlanArea_sqft": 64.95,
+        "roofSlopeFactor": 1.118,
+        "totalRoofArea_sqft": 72.6,
+        "overhangAddition_sqft": 18.0,
+        "totalWithOverhang_sqft": 90.6
+      },
+      "boardFeetRequired_nominal": 90.6,
+      "orderQuantity_bf_with15pctWaste": 105.0,
+      "cutNotes": "Planks run parallel to each ridge rafter from hub outward (wedge-shaped bays). Each bay plank requires tapering — widest at eave, narrowest at hub. Set table saw to rip taper for each bay. Alternatively, use short radial planks and allow butt joints at mid-rafter.",
+      "notes": "T&G cedar, random lengths 6-10 ft. Pre-cut tapered planks for each of 6 pie-wedge bays."
+    },
+    {
+      "id": "CL-07",
+      "member": "Cedar Shingles (roofing)",
+      "spec": "#1 Blue Label Western Red Cedar Shingles, 18 in",
+      "coverageRequired_sqft": 90.6,
+      "exposure_in": 5.5,
+      "bundlesRequired": 10,
+      "notes": "4 bundles = 1 square (100 sq ft). Order 10 bundles = 250 sq ft coverage at 5.5 in exposure (adequate for 6:12 pitch). Hip and ridge caps: use #1 hip-and-ridge shingles, 2 bundles."
+    }
+  ],
+
+  "boardFootSummary": {
+    "posts_6x6": { "bf_nominal": 216.0 },
+    "beams_6x8": { "bf_nominal": 144.0 },
+    "rafters_4x6": { "bf_nominal": 80.5 },
+    "hub_8x8": { "bf_nominal": 8.0 },
+    "corbels_4x4": { "bf_nominal": 28.0 },
+    "decking_1x6": { "bf_nominal": 105.0 },
+    "totalStructuralFraming_bf": 476.5,
+    "totalAllCedar_bf_with15pctWaste": 549.0,
+    "notes": "Structural framing (posts + beams + rafters + hub + corbels) = 476.5 bf nominal. Add 15% waste = ~549 bf to order. Decking ordered separately by board footage. Shingles ordered by bundle."
+  },
+
+  "angleReference": {
+    "hexagonInteriorAngle_deg": 120,
+    "hexagonExteriorAngle_deg": 60,
+    "beamMiterAngle_deg": 30,
+    "roofPitchAngle_deg": 26.57,
+    "rafterCompoundBevel_deg": 23.4,
+    "corbel45Cut_deg": 45,
+    "birdsmouthSeatAngle_deg": 26.57
+  },
+
+  "hardwareSummary": {
+    "reference": "See joinery-spec.json for full hardware schedule",
+    "knifeplatePairs": 6,
+    "halfInchGalvBolts_5in": 48,
+    "halfInchGalvStructuralBolts": 24,
+    "SDSLagScrews_halfx6in": 12,
+    "GRKScrews_3in": 60,
+    "simpsonABA66Z": 6,
+    "simpsonH2_5A": 6,
+    "simpsonBC6": 6,
+    "jBolts_halfx10in": 6,
+    "concreteMix_bags_80lb": 18
+  }
+}

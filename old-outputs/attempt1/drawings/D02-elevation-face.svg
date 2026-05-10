@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DRAWING D02 - ELEVATION: FRONT FACE (FACE A)
+  Hexagonal Pavilion - Saanich, BC
+  Scale: 1:24 approx (1 ft = 42 px)  |  Sheet: D02  |  Date: 2026-04-19
+  Pitch: 4:12 (18.43 deg)  |  Total height grade to apex: 10 ft
+
+  Pixel reference (grade at Y=640):
+    Standoff base (ABA66Z +3 in):  Y = 629
+    Post length 8.33 ft = 100 in = 350 px -> post top Y = 629-350 = 279
+    Clear headroom 7.83 ft = 94 in = 329 px -> beam soffit Y = 640-329 = 311
+    Beam 6x8 depth 7.25 in = 25 px -> beam top Y = 311-25 = 286
+    Rafter rise at 4:12 over 5 ft run = 20 in = 70 px -> hub apex Y = 286-70 = 216
+    Face span 5 ft = 210 px. Post CL: left X=200, right X=410, centre X=305
+    Beam extents with 12 in overhang: X=158 to X=452
+    Roof drip edge (12 in overhang beyond post CL): X=158 to X=452
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="820" viewBox="-50 -50 1000 920"
+     font-family="Arial, Helvetica, sans-serif">
+
+  <rect x="-50" y="-50" width="1000" height="920" fill="#f8f7f4"/>
+  <rect x="-40" y="-40" width="980" height="920" fill="none" stroke="#000" stroke-width="3"/>
+
+  <!-- Title block -->
+  <rect x="-40" y="800" width="980" height="70" fill="#1a2744"/>
+  <text x="450" y="828" text-anchor="middle" fill="white" font-size="20" font-weight="bold">HEXAGONAL PAVILION — ELEVATION: FRONT FACE (FACE A)</text>
+  <text x="450" y="851" text-anchor="middle" fill="#aac8ff" font-size="14">Saanich, BC  |  Scale: 1 ft = 42 px approx.  |  Sheet D02  |  Date: 2026-04-19</text>
+  <text x="450" y="869" text-anchor="middle" fill="#aac8ff" font-size="12">Pitch 4:12 (18.43 deg) — Total height 10'-0" grade to apex. All dims in inches unless noted.</text>
+
+  <defs>
+    <marker id="arrowFwd" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrowRev" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrowGrey" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/>
+    </marker>
+    <marker id="arrowGreyR" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/>
+    </marker>
+    <pattern id="concreteHatch" patternUnits="userSpaceOnUse" width="8" height="8">
+      <path d="M0,8 L8,0" stroke="#999" stroke-width="1"/>
+    </pattern>
+    <pattern id="shingleHatch" patternUnits="userSpaceOnUse" width="20" height="8">
+      <rect width="20" height="8" fill="#c8a96e"/>
+      <path d="M0,8 L20,8" stroke="#8B6028" stroke-width="0.8"/>
+      <path d="M4,4 L16,4" stroke="#8B6028" stroke-width="0.5" opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- GRADE LINE -->
+  <line x1="-40" y1="640" x2="960" y2="640" stroke="#5a4a28" stroke-width="2.5"/>
+  <text x="870" y="655" fill="#5a4a28" font-size="12" font-style="italic">GRADE</text>
+
+  <!-- CAISSONS (buried, dashed). 18 in dia = 63 px, depth 24 in = 84 px -->
+  <rect x="169" y="640" width="63" height="84" fill="url(#concreteHatch)" stroke="#666" stroke-width="1.2" stroke-dasharray="5,3"/>
+  <rect x="379" y="640" width="63" height="84" fill="url(#concreteHatch)" stroke="#666" stroke-width="1.2" stroke-dasharray="5,3"/>
+  <text x="200" y="698" text-anchor="middle" fill="#444" font-size="10">CAISSON</text>
+  <text x="200" y="710" text-anchor="middle" fill="#444" font-size="10">18" DIA x 24" DP</text>
+  <text x="410" y="698" text-anchor="middle" fill="#444" font-size="10">CAISSON</text>
+  <text x="410" y="710" text-anchor="middle" fill="#444" font-size="10">18" DIA x 24" DP</text>
+
+  <!-- ABA66Z standoff base (3 in = 11 px tall) -->
+  <rect x="186" y="629" width="28" height="11" fill="#888" stroke="#333" stroke-width="1"/>
+  <rect x="396" y="629" width="28" height="11" fill="#888" stroke="#333" stroke-width="1"/>
+  <text x="185" y="622" fill="#555" font-size="9">ABA66Z</text>
+  <text x="395" y="622" fill="#555" font-size="9">ABA66Z</text>
+
+  <!-- POSTS (6x6 actual 5.5 in = 19 px wide). Y=279 to Y=629 = 350 px = 8.33 ft -->
+  <rect x="190" y="279" width="19" height="350" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.5"/>
+  <rect x="400" y="279" width="19" height="350" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.5"/>
+  <g stroke="#a07840" stroke-width="0.5" opacity="0.6">
+    <line x1="194" y1="279" x2="194" y2="629"/>
+    <line x1="198" y1="279" x2="198" y2="629"/>
+    <line x1="202" y1="279" x2="202" y2="629"/>
+    <line x1="206" y1="279" x2="206" y2="629"/>
+    <line x1="404" y1="279" x2="404" y2="629"/>
+    <line x1="408" y1="279" x2="408" y2="629"/>
+    <line x1="412" y1="279" x2="412" y2="629"/>
+    <line x1="416" y1="279" x2="416" y2="629"/>
+  </g>
+
+  <!-- RING BEAM (6x8 actual 7.25 in = 25 px deep). Soffit Y=311, top Y=286. X=158 to X=452 -->
+  <rect x="158" y="286" width="294" height="25" fill="#b8935a" stroke="#7B5C2F" stroke-width="1.5"/>
+  <g stroke="#96723e" stroke-width="0.6" opacity="0.5">
+    <line x1="158" y1="293" x2="452" y2="293"/>
+    <line x1="158" y1="300" x2="452" y2="300"/>
+    <line x1="158" y1="307" x2="452" y2="307"/>
+  </g>
+  <text x="305" y="303" text-anchor="middle" fill="#3d2000" font-size="11" font-weight="bold">6x8 RS CEDAR RING BEAM</text>
+
+  <!-- CORBELS at each post (45 deg, 12 in = 42 px leg projection). Soffit Y=311 -->
+  <polygon points="189,353 203,353 241,311 241,297" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.2"/>
+  <polygon points="409,353 421,353 379,311 379,297" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.2"/>
+
+  <!-- RAFTER (4x6 = 14 px wide). Beam top Y=286, hub apex Y=216. Centre X=305 -->
+  <polygon points="298,286 312,286 310,216 300,216" fill="#b0844a" stroke="#5A3E1B" stroke-width="1.2"/>
+  <!-- Adjacent bay rafters as ghost dashed lines -->
+  <line x1="158" y1="286" x2="305" y2="216" stroke="#8B6040" stroke-width="6" stroke-dasharray="8,5" opacity="0.45"/>
+  <line x1="452" y1="286" x2="305" y2="216" stroke="#8B6040" stroke-width="6" stroke-dasharray="8,5" opacity="0.45"/>
+
+  <!-- HUB at apex. Y=205 to Y=247 (42 px tall), centred X=305 -->
+  <rect x="279" y="205" width="52" height="42" rx="3" fill="#8B6914" stroke="#3d2b00" stroke-width="2"/>
+  <text x="305" y="222" text-anchor="middle" fill="white" font-size="10" font-weight="bold">8x8</text>
+  <text x="305" y="236" text-anchor="middle" fill="white" font-size="10">HUB</text>
+
+  <!-- ROOF DECK + SHINGLES. Soffit line at Y=286, apex Y=216 -->
+  <!-- Drip edge extends 42 px past post CL each side: X=158 to X=452 (same as beam) -->
+  <polygon points="116,286 305,206 494,286" fill="url(#shingleHatch)" stroke="#7B4F1E" stroke-width="2"/>
+  <rect x="295" y="204" width="20" height="6" fill="#5A3000" rx="2"/>
+  <!-- Drip edge verticals -->
+  <line x1="116" y1="286" x2="116" y2="298" stroke="#555" stroke-width="2"/>
+  <line x1="494" y1="286" x2="494" y2="298" stroke="#555" stroke-width="2"/>
+  <!-- T&G decking lines on roof surface -->
+  <g stroke="#96723e" stroke-width="0.7" opacity="0.5">
+    <line x1="140" y1="278" x2="305" y2="208"/>
+    <line x1="165" y1="278" x2="305" y2="208"/>
+    <line x1="190" y1="278" x2="305" y2="208"/>
+    <line x1="215" y1="278" x2="305" y2="208"/>
+    <line x1="240" y1="278" x2="305" y2="208"/>
+    <line x1="265" y1="278" x2="305" y2="208"/>
+    <line x1="470" y1="278" x2="305" y2="208"/>
+    <line x1="445" y1="278" x2="305" y2="208"/>
+    <line x1="420" y1="278" x2="305" y2="208"/>
+    <line x1="395" y1="278" x2="305" y2="208"/>
+    <line x1="370" y1="278" x2="305" y2="208"/>
+    <line x1="345" y1="278" x2="305" y2="208"/>
+  </g>
+
+  <!-- DIMENSION LINES -->
+
+  <!-- Overall height: grade to apex (10 ft = 420 px) -->
+  <line x1="545" y1="640" x2="545" y2="216" stroke="#c0392b" stroke-width="1.5"
+        marker-start="url(#arrowRev)" marker-end="url(#arrowFwd)"/>
+  <line x1="421" y1="640" x2="555" y2="640" stroke="#c0392b" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <line x1="305" y1="216" x2="555" y2="216" stroke="#c0392b" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <text x="558" y="428" fill="#c0392b" font-size="14" font-weight="bold">10'-0"</text>
+  <text x="558" y="445" fill="#c0392b" font-size="11">OVERALL HT</text>
+  <text x="558" y="460" fill="#c0392b" font-size="11">(GRADE TO APEX)</text>
+
+  <!-- Clear headroom (7'-10") -->
+  <line x1="88" y1="640" x2="88" y2="311" stroke="#1a6e8f" stroke-width="1.5"
+        marker-start="url(#arrowRev)" marker-end="url(#arrowFwd)"/>
+  <line x1="78" y1="640" x2="185" y2="640" stroke="#1a6e8f" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <line x1="78" y1="311" x2="185" y2="311" stroke="#1a6e8f" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <text x="18" y="490" fill="#1a6e8f" font-size="13" font-weight="bold" transform="rotate(-90,18,490)">7'-10" CLR HEADROOM</text>
+
+  <!-- Post cut length (8'-4") -->
+  <line x1="143" y1="279" x2="143" y2="629" stroke="#555" stroke-width="1.2"
+        marker-start="url(#arrowGreyR)" marker-end="url(#arrowGrey)"/>
+  <line x1="78" y1="279" x2="198" y2="279" stroke="#555" stroke-width="0.6" stroke-dasharray="3,2"/>
+  <line x1="78" y1="629" x2="198" y2="629" stroke="#555" stroke-width="0.6" stroke-dasharray="3,2"/>
+  <text x="98" y="460" fill="#555" font-size="11" transform="rotate(-90,98,460)">8'-4" POST CUT LENGTH</text>
+
+  <!-- Beam depth -->
+  <line x1="460" y1="286" x2="510" y2="286" stroke="#555" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <line x1="460" y1="311" x2="510" y2="311" stroke="#555" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <line x1="505" y1="286" x2="505" y2="311" stroke="#333" stroke-width="1.2"
+        marker-start="url(#arrowGreyR)" marker-end="url(#arrowGrey)"/>
+  <text x="512" y="302" fill="#333" font-size="10">7 1/4"</text>
+  <text x="512" y="315" fill="#333" font-size="10">BEAM</text>
+
+  <!-- Bay width (5 ft = 210 px) -->
+  <line x1="200" y1="750" x2="410" y2="750" stroke="#c0392b" stroke-width="1.5"
+        marker-start="url(#arrowRev)" marker-end="url(#arrowFwd)"/>
+  <line x1="200" y1="640" x2="200" y2="758" stroke="#c0392b" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <line x1="410" y1="640" x2="410" y2="758" stroke="#c0392b" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <text x="305" y="775" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">5'-0" C-C POST SPACING (FACE)</text>
+
+  <!-- Overhang (12 in = 42 px) -->
+  <line x1="158" y1="785" x2="200" y2="785" stroke="#555" stroke-width="1.2"
+        marker-start="url(#arrowGreyR)" marker-end="url(#arrowGrey)"/>
+  <text x="170" y="798" text-anchor="middle" fill="#555" font-size="10">12" OHG</text>
+
+  <!-- Rafter rise (20 in at 4:12) -->
+  <line x1="613" y1="286" x2="613" y2="216" stroke="#555" stroke-width="1.2"
+        marker-start="url(#arrowGreyR)" marker-end="url(#arrowGrey)"/>
+  <line x1="312" y1="216" x2="622" y2="216" stroke="#555" stroke-width="0.6" stroke-dasharray="3,2"/>
+  <line x1="452" y1="286" x2="622" y2="286" stroke="#555" stroke-width="0.6" stroke-dasharray="3,2"/>
+  <text x="620" y="255" fill="#555" font-size="11">20" RISE</text>
+  <text x="620" y="268" fill="#555" font-size="10">(4:12)</text>
+
+  <!-- Pitch annotation -->
+  <line x1="305" y1="216" x2="452" y2="286" stroke="#f39c12" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="415" y="244" fill="#f39c12" font-size="13" font-weight="bold">4:12 PITCH</text>
+  <text x="415" y="258" fill="#f39c12" font-size="11">18.43 deg</text>
+
+  <!-- Caisson depth (24 in) -->
+  <line x1="650" y1="640" x2="650" y2="724" stroke="#666" stroke-width="1.2"
+        marker-start="url(#arrowGreyR)" marker-end="url(#arrowGrey)"/>
+  <text x="658" y="686" fill="#666" font-size="11">24" DEEP</text>
+  <text x="658" y="700" fill="#666" font-size="11">CAISSON</text>
+
+  <!-- Frost depth reference line -->
+  <line x1="0" y1="697" x2="960" y2="697" stroke="#a0522d" stroke-width="1" stroke-dasharray="10,6"/>
+  <text x="810" y="712" fill="#a0522d" font-size="11" font-style="italic">FROST DEPTH: 18" (450 mm)</text>
+
+  <!-- Scale bar -->
+  <g transform="translate(80, 748)">
+    <text x="0" y="-5" fill="#333" font-size="11" font-weight="bold">SCALE: 1 ft = 42 px (1 in = 2 ft approx.)</text>
+    <rect x="0" y="0" width="42" height="8" fill="#333"/>
+    <rect x="42" y="0" width="42" height="8" fill="white" stroke="#333"/>
+    <rect x="84" y="0" width="42" height="8" fill="#333"/>
+    <text x="0" y="18" fill="#333" font-size="10">0</text>
+    <text x="38" y="18" fill="#333" font-size="10">2'</text>
+    <text x="80" y="18" fill="#333" font-size="10">4'</text>
+    <text x="122" y="18" fill="#333" font-size="10">6'</text>
+  </g>
+
+</svg>

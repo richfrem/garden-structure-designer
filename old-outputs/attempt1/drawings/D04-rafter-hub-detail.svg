@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DRAWING D04 — RAFTER COMPOUND CUT DETAIL + HUB GEOMETRY
+  Hexagonal Pavilion — Saanich, BC
+  Scale: 3:1 (3 px per inch, full size detail)  |  Sheet: D04  |  Date: 2026-04-19
+
+  Two details on one sheet:
+    LEFT PANEL (X 0-450):  Rafter compound cut diagram with angle callouts
+    RIGHT PANEL (X 460-900): Hub geometry — hexagonal prism plan and section
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="820" viewBox="-50 -50 1000 920"
+     font-family="Arial, Helvetica, sans-serif">
+
+  <rect x="-50" y="-50" width="1000" height="920" fill="#f8f7f4"/>
+  <rect x="-40" y="-40" width="980" height="920" fill="none" stroke="#000" stroke-width="3"/>
+
+  <!-- Title block -->
+  <rect x="-40" y="800" width="980" height="70" fill="#1a2744"/>
+  <text x="450" y="826" text-anchor="middle" fill="white" font-size="19" font-weight="bold">RAFTER COMPOUND CUT DETAIL + HUB GEOMETRY DETAIL</text>
+  <text x="450" y="848" text-anchor="middle" fill="#aac8ff" font-size="14">Saanich, BC  |  Scale: FULL SIZE (1:1) / 1:4 hub  |  Sheet D04  |  Date: 2026-04-19</text>
+  <text x="450" y="867" text-anchor="middle" fill="#aac8ff" font-size="12">CRITICAL: Set compound miter saw at 28.7° miter + 9.1° bevel. Test on scrap first. All 6 top cuts identical.</text>
+
+  <!-- Panel divider -->
+  <line x1="455" y1="-40" x2="455" y2="800" stroke="#555" stroke-width="1.5" stroke-dasharray="10,6"/>
+  <text x="220" y="-15" text-anchor="middle" fill="#1a2744" font-size="15" font-weight="bold">DETAIL A — RAFTER CUT GEOMETRY</text>
+  <text x="700" y="-15" text-anchor="middle" fill="#1a2744" font-size="15" font-weight="bold">DETAIL B — HUB GEOMETRY</text>
+
+  <!-- ═══════════════════════════════════════════════════════
+       DETAIL A — RAFTER COMPOUND CUT
+       Left panel origin ~ (50, 100)
+       Rafter shown in 3/4 isometric to illustrate compound cut
+       Scale ~ 3 px per inch
+  ═══════════════════════════════════════════════════════ -->
+
+  <!-- Rafter body (4x6 actual 3.5 x 5.5 in, at 3px/in scale = 10.5 x 16.5 px) -->
+  <!-- Show rafter in profile (elevation) with hub face, angles marked -->
+  <!-- Rafter long axis shown angled at 26.57 deg pitch -->
+  <!-- Rafter in cross-section + compound cut diagram -->
+
+  <!-- DIAGRAM 1: PLUMB CUT in elevation (26.57 deg) -->
+  <text x="50" y="90" fill="#1a2744" font-size="13" font-weight="bold">1. PLUMB CUT AT TOP OF RAFTER (ELEVATION VIEW)</text>
+  <text x="50" y="108" fill="#555" font-size="11">Calculated Angles: 28.7° Miter / 9.1° Bevel (for 4:12 hexagon)</text>
+
+  <!-- Rafter body in elevation, angled at 26.57 deg -->
+  <!-- Draw as a parallelogram: 4 in wide (12 px), pitched -->
+  <!-- Bottom left of rafter at (50, 280), length shown = 120 px horizontal run -->
+  <!-- rise = 120 * tan(26.57) = 120 * 0.5 = 60 px -->
+  <g transform="translate(50, 360)">
+    <!-- Rafter body (shaded) -->
+    <polygon points="0,0 120,-60 132,-44 12,16" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.5"/>
+    <!-- Plumb cut face at top (vertical cut at rafter top) -->
+    <!-- Top left of rafter top: (120,-60); rafter is 16px wide (5.5 in);
+         Top right: (120,-60) + perpendicular to slope... simplified for clarity -->
+    <!-- Vertical plumb cut line at top: x=120, from y=-60 to y=-44 -->
+    <line x1="120" y1="-60" x2="132" y2="-44" stroke="#c0392b" stroke-width="2"/>
+    <!-- Angle arc at plumb cut -->
+    <path d="M 108,-54 A 16,16 0 0,1 118,-68" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="92" y="-62" fill="#c0392b" font-size="12" font-weight="bold">28.7°</text>
+    <!-- Horizontal reference line -->
+    <line x1="0" y1="0" x2="145" y2="0" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+    <!-- Vertical reference line -->
+    <line x1="120" y1="-70" x2="120" y2="10" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="-5" y="15" fill="#555" font-size="10">LEVEL</text>
+    <text x="125" y="-72" fill="#555" font-size="10">PLUMB</text>
+    <!-- Label -->
+    <text x="30" y="-25" fill="#3d2000" font-size="11" font-style="italic">4x6 RAFTER</text>
+    <!-- Tail end at bottom right -->
+    <text x="0" y="30" fill="#555" font-size="10">TAIL END (TOWARD BEAM)</text>
+  </g>
+
+  <!-- DIAGRAM 2: SIDE BEVEL (compound) in plan / top view -->
+  <text x="50" y="430" fill="#1a2744" font-size="13" font-weight="bold">2. SIDE BEVEL AT TOP CUT (PLAN VIEW LOOKING DOWN)</text>
+  <text x="50" y="448" fill="#555" font-size="11">Blade bevel = 9.1° — rafter cheek to fit flush on 60° hub face</text>
+
+  <!-- Top view of rafter end showing bevel -->
+  <g transform="translate(80, 560)">
+    <!-- Rafter top view (rectangle = 4 in wide = 40 px, showing top face) -->
+    <rect x="0" y="-60" width="40" height="120" fill="#c8a96e" stroke="#7B5C2F" stroke-width="1.5"/>
+    <!-- Bevel cut shown as angled line across top face -->
+    <!-- Bevel at 23.4 deg: at 40 px wide, offset = 40 * tan(23.4) = 40 * 0.433 = 17 px -->
+    <line x1="0" y1="-60" x2="40" y2="-43" stroke="#1a6e8f" stroke-width="3"/>
+    <!-- Angle arc -->
+    <path d="M 0,-44 A 16,16 0 0,1 14,-58" fill="none" stroke="#1a6e8f" stroke-width="1.5"/>
+    <text x="-2" y="-30" fill="#1a6e8f" font-size="12" font-weight="bold">9.1°</text>
+    <!-- Hub face represented -->
+    <line x1="-30" y1="-77" x2="70" y2="-43" stroke="#8B6914" stroke-width="3"/>
+    <text x="-30" y="-82" fill="#8B6914" font-size="11" font-weight="bold">HUB FACE (60° HEXAGON)</text>
+    <!-- Labels -->
+    <text x="-10" y="75" fill="#555" font-size="10">PLAN VIEW — RAFTER TOP</text>
+    <text x="48" y="-50" fill="#555" font-size="10">FLUSH BEARING</text>
+    <text x="48" y="-38" fill="#555" font-size="10">ON HUB FACE</text>
+  </g>
+
+  <!-- DIAGRAM 3: Saw setup callout box -->
+  <rect x="50" y="640" width="370" height="130" fill="#fff9e6" stroke="#f39c12" stroke-width="2" rx="4"/>
+  <text x="60" y="660" fill="#1a2744" font-size="13" font-weight="bold">SAW SETUP — COMPOUND MITER SAW</text>
+  <text x="60" y="678" fill="#333" font-size="11">Miter angle: 28.7° (for 4:12 hexagon)</text>
+  <text x="60" y="694" fill="#333" font-size="11">Blade bevel: 9.1° (hex face fit)</text>
+  <text x="60" y="710" fill="#333" font-size="11">Feed direction: mark CROWN side up</text>
+  <text x="60" y="726" fill="#333" font-size="11">All 6 rafter top cuts: IDENTICAL — do not reverse bevel</text>
+  <text x="60" y="742" fill="#c0392b" font-size="11" font-weight="bold">Test fit on scrap 4x6 before cutting all 6 pieces.</text>
+  <text x="60" y="758" fill="#333" font-size="11">SDS screws: 2 per rafter, driven into hub after dry fit confirmed.</text>
+
+  <!-- ═══════════════════════════════════════════════════════
+       DETAIL B — HUB GEOMETRY
+       Right panel, origin ~(470, 60)
+  ═══════════════════════════════════════════════════════ -->
+
+  <!-- HUB PLAN VIEW (looking down) -->
+  <text x="470" y="90" fill="#1a2744" font-size="13" font-weight="bold">HUB — PLAN VIEW (LOOKING DOWN)</text>
+  <text x="470" y="108" fill="#555" font-size="11">Regular hexagonal prism, 8x8 base stock (7.25" actual)</text>
+  <text x="470" y="124" fill="#555" font-size="11">Six faces milled/planed to receive compound-cut rafter cheeks</text>
+
+  <!-- Hex plan at centre X=700, Y=280, circumradius=90 px (represents ~8.66 in dia at ~10 px/in) -->
+  <!-- Hex corners at 0,60,120,180,240,300 deg:
+    0   deg: (700+90, 280) = (790, 280)
+    60  deg: (700+45, 280-78) = (745, 202)
+    120 deg: (700-45, 280-78) = (655, 202)
+    180 deg: (700-90, 280) = (610, 280)
+    240 deg: (700-45, 280+78) = (655, 358)
+    300 deg: (700+45, 280+78) = (745, 358)
+  -->
+  <polygon points="790,280 745,202 655,202 610,280 655,358 745,358"
+           fill="#c8a820" fill-opacity="0.3" stroke="#8B6914" stroke-width="3"/>
+
+  <!-- Face width labels -->
+  <!-- Face between 60 and 0 deg: line from (745,202) to (790,280) -->
+  <!-- Face width = 4.33 in, label at midpoint -->
+  <text x="780" y="240" fill="#8B6914" font-size="10" font-weight="bold">4.33"</text>
+  <text x="780" y="252" fill="#8B6914" font-size="10">FACE</text>
+
+  <!-- 60 deg angle markers at each corner -->
+  <g fill="none" stroke="#555" stroke-width="1">
+    <path d="M 780,280 A 20,20 0 0,1 760,255"/>
+    <text x="755" y="278" fill="#555" font-size="10">60°</text>
+  </g>
+
+  <!-- Hub centre dot + CL lines -->
+  <circle cx="700" cy="280" r="4" fill="#c0392b"/>
+  <line x1="610" y1="280" x2="790" y2="280" stroke="#c0392b" stroke-width="0.8" stroke-dasharray="5,3"/>
+  <line x1="700" y1="192" x2="700" y2="368" stroke="#c0392b" stroke-width="0.8" stroke-dasharray="5,3"/>
+
+  <!-- Rafter approach lines from each face -->
+  <g stroke="#5A3E1B" stroke-width="2" stroke-dasharray="6,4" opacity="0.6">
+    <line x1="700" y1="280" x2="700" y2="180"/>
+    <line x1="700" y1="280" x2="778" y2="235"/>
+    <line x1="700" y1="280" x2="778" y2="325"/>
+    <line x1="700" y1="280" x2="700" y2="380"/>
+    <line x1="700" y1="280" x2="622" y2="325"/>
+    <line x1="700" y1="280" x2="622" y2="235"/>
+  </g>
+
+  <!-- Circumscribed dia dimension -->
+  <line x1="610" y1="310" x2="790" y2="310" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#arrow4R)" marker-end="url(#arrow4)"/>
+  <text x="700" y="328" text-anchor="middle" fill="#c0392b" font-size="11" font-weight="bold">8.66" CIRC DIA</text>
+
+  <defs>
+    <marker id="arrow4" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrow4R" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrow5" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#1a6e8f"/>
+    </marker>
+    <marker id="arrow5R" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#1a6e8f"/>
+    </marker>
+  </defs>
+
+  <!-- Inscribed dia dimension -->
+  <line x1="700" y1="192" x2="700" y2="192"/>
+  <line x1="660" y1="215" x2="660" y2="345" stroke="#1a6e8f" stroke-width="1.2"
+        marker-start="url(#arrow5R)" marker-end="url(#arrow5)"/>
+  <text x="625" y="283" fill="#1a6e8f" font-size="10">7.5"</text>
+  <text x="625" y="295" fill="#1a6e8f" font-size="10">INSCR.</text>
+
+  <!-- HUB SECTION VIEW -->
+  <text x="470" y="420" fill="#1a2744" font-size="13" font-weight="bold">HUB — SECTION / ELEVATION VIEW</text>
+  <text x="470" y="438" fill="#555" font-size="11">Min 10 in tall. Lag screws driven from rafter into hub.</text>
+
+  <!-- Hub section box -->
+  <rect x="530" y="460" width="120" height="120" fill="#c8a820" fill-opacity="0.4" stroke="#8B6914" stroke-width="2.5"/>
+  <!-- Angled top (finial base) -->
+  <polygon points="530,460 590,420 650,460" fill="#8B6028" stroke="#3d2b00" stroke-width="1.5"/>
+  <!-- Lag screw locations (2 per rafter face, shown on left and right faces) -->
+  <circle cx="530" cy="490" r="4" fill="#888" stroke="#333" stroke-width="1"/>
+  <circle cx="530" cy="515" r="4" fill="#888" stroke="#333" stroke-width="1"/>
+  <circle cx="650" cy="490" r="4" fill="#888" stroke="#333" stroke-width="1"/>
+  <circle cx="650" cy="515" r="4" fill="#888" stroke="#333" stroke-width="1"/>
+
+  <!-- Lag screw callout -->
+  <line x1="650" y1="502" x2="720" y2="510" stroke="#333" stroke-width="0.8"/>
+  <text x="722" y="508" fill="#333" font-size="11" font-weight="bold">SDS 1/2"x6" LAG</text>
+  <text x="722" y="522" fill="#333" font-size="11">2 PER RAFTER, TYP 6</text>
+  <text x="722" y="536" fill="#333" font-size="11">4.5" MIN PENETRATION</text>
+
+  <!-- Height dimension -->
+  <line x1="500" y1="460" x2="500" y2="580" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#arrow4R)" marker-end="url(#arrow4)"/>
+  <text x="465" y="525" fill="#c0392b" font-size="11">10"</text>
+  <text x="462" y="537" fill="#c0392b" font-size="11">MIN HT</text>
+
+  <!-- Base dimension -->
+  <line x1="530" y1="595" x2="650" y2="595" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#arrow4R)" marker-end="url(#arrow4)"/>
+  <text x="590" y="610" text-anchor="middle" fill="#c0392b" font-size="11">7.25" (8x8 ACTUAL)</text>
+
+  <!-- Built-up note -->
+  <rect x="470" y="625" width="390" height="100" fill="#f0f8ff" stroke="#1a6e8f" stroke-width="1.5" rx="4"/>
+  <text x="480" y="645" fill="#1a2744" font-size="12" font-weight="bold">FABRICATION OPTIONS</text>
+  <text x="480" y="663" fill="#333" font-size="11">Option A: Source 8x8 cedar turning blank, mill hex faces at millwork shop.</text>
+  <text x="480" y="679" fill="#333" font-size="11">Option B: Laminate 3x 2x8 RS cedar. Glue + 3" GRK screws @ 6" o.c.</text>
+  <text x="480" y="695" fill="#333" font-size="11">           Hand-plane or saw 6 flat faces after glue-up cures (48 hr min).</text>
+  <text x="480" y="711" fill="#333" font-size="11">Option C: Steel weld plate spider hub (fabricator quote separately).</text>
+
+</svg>

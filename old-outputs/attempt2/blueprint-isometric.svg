@@ -1,0 +1,45 @@
+<svg width="600" height="500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fcfcfc" />
+  
+  <g stroke="#34495e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Back Hexagon Base lines -->
+    <path d="M 150,400 L 225,335 L 375,335 L 450,400" fill="none" stroke="#bdc3c7" stroke-dasharray="4,4"/>
+    <!-- Back Posts -->
+    <line x1="225" y1="335" x2="225" y2="150" stroke="#bdc3c7" stroke-dasharray="4,4"/>
+    <line x1="375" y1="335" x2="375" y2="150" stroke="#bdc3c7" stroke-dasharray="4,4"/>
+    <!-- Back Roof -->
+    <line x1="300" y1="100" x2="225" y2="150" stroke="#bdc3c7" stroke-dasharray="4,4"/>
+    <line x1="300" y1="100" x2="375" y2="150" stroke="#bdc3c7" stroke-dasharray="4,4"/>
+    <!-- Back Beams -->
+    <path d="M 150,215 L 225,150 L 375,150 L 450,215" fill="none" stroke="#bdc3c7" stroke-dasharray="4,4"/>
+
+    <!-- Front Hexagon Base -->
+    <path d="M 150,400 L 225,465 L 375,465 L 450,400" fill="none" stroke="#7f8c8d" stroke-width="1"/>
+    <!-- Front Posts -->
+    <line x1="150" y1="400" x2="150" y2="215" />
+    <line x1="225" y1="465" x2="225" y2="280" />
+    <line x1="375" y1="465" x2="375" y2="280" />
+    <line x1="450" y1="400" x2="450" y2="215" />
+    <!-- Front Beams -->
+    <path d="M 150,215 L 225,280 L 375,280 L 450,215" fill="none" stroke="#2c3e50" stroke-width="4"/>
+    <line x1="150" y1="215" x2="450" y2="215" stroke="#e74c3c" stroke-width="1" stroke-dasharray="2,2"/>
+    <!-- Front Roof -->
+    <line x1="300" y1="100" x2="150" y2="215" />
+    <line x1="300" y1="100" x2="225" y2="280" />
+    <line x1="300" y1="100" x2="375" y2="280" />
+    <line x1="300" y1="100" x2="450" y2="215" />
+  </g>
+
+  <!-- Demensional Callouts -->
+  <g font-family="monospace" font-size="10" fill="#e74c3c">
+    <line x1="225" y1="480" x2="375" y2="480" stroke="#e74c3c" stroke-width="1"/>
+    <text x="260" y="495">SPAN: 5'-0"</text>
+    <line x1="130" y1="400" x2="130" y2="215" stroke="#e74c3c" stroke-width="1"/>
+    <text x="50" y="300">POST: 8'-4"</text>
+    <text x="320" y="120" fill="#34495e">PITCH: 4:12</text>
+    <text x="240" y="210" fill="#e74c3c">LONG DIAGONAL: 10'-0"</text>
+    <text x="460" y="300" fill="#333">POSTS: 6x6 (QTY: 6)</text>
+    <text x="400" y="150" fill="#333">TOTAL HEIGHT: 10'-0"</text>
+  </g>
+  <text x="20" y="30" font-family="monospace" font-size="16" font-weight="bold" fill="#2c3e50">DWG: ISO-1 (STRUCTURAL - 10FT LIMIT)</text>
+</svg>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SHOP BLUEPRINT SB01 — CUT LIST & ANGLE REFERENCE SHEET
+  Hexagonal Pavilion — Saanich, BC
+  Date: 2026-04-19  |  Session: a3776eee82a54e624
+  For carpenter use in shop and on site.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1400" viewBox="-20 -20 1140 1440"
+     font-family="Arial, Helvetica, sans-serif">
+
+  <rect x="-20" y="-20" width="1140" height="1440" fill="#fafaf6"/>
+  <rect x="-10" y="-10" width="1120" height="1440" fill="none" stroke="#000" stroke-width="3"/>
+
+  <!-- Header -->
+  <rect x="-10" y="-10" width="1120" height="80" fill="#1a2744"/>
+  <text x="550" y="22" text-anchor="middle" fill="white" font-size="24" font-weight="bold">SHOP BLUEPRINT — CUT LIST &amp; ANGLE REFERENCE</text>
+  <text x="550" y="46" text-anchor="middle" fill="#aac8ff" font-size="16">Hexagonal Pavilion | Saanich, BC | BCBC 2018 | Date: 2026-04-19</text>
+  <text x="550" y="64" text-anchor="middle" fill="#aac8ff" font-size="13">All dimensions in INCHES unless noted. Rough sawn cedar throughout. Verify all dimensions before cutting.</text>
+
+  <!-- Column headers for cut list table -->
+  <rect x="10" y="80" width="1080" height="36" fill="#2c3e50"/>
+  <text x="20" y="104" fill="white" font-size="13" font-weight="bold">ID</text>
+  <text x="65" y="104" fill="white" font-size="13" font-weight="bold">MEMBER</text>
+  <text x="220" y="104" fill="white" font-size="13" font-weight="bold">NOMINAL</text>
+  <text x="310" y="104" fill="white" font-size="13" font-weight="bold">ACTUAL (in)</text>
+  <text x="420" y="104" fill="white" font-size="13" font-weight="bold">QTY</text>
+  <text x="460" y="104" fill="white" font-size="13" font-weight="bold">CUT LENGTH</text>
+  <text x="590" y="104" fill="white" font-size="13" font-weight="bold">TOP CUT ANGLE</text>
+  <text x="760" y="104" fill="white" font-size="13" font-weight="bold">BOTTOM CUT</text>
+  <text x="900" y="104" fill="white" font-size="13" font-weight="bold">BF / TOTAL</text>
+
+  <!-- Row 1: Post -->
+  <rect x="10" y="116" width="1080" height="52" fill="#f5f0e8"/>
+  <line x1="10" y1="168" x2="1090" y2="168" stroke="#ccc" stroke-width="1"/>
+  <text x="20" y="135" fill="#1a2744" font-size="12" font-weight="bold">CL-01</text>
+  <text x="65" y="135" fill="#333" font-size="13" font-weight="bold">POST</text>
+  <text x="65" y="152" fill="#666" font-size="11">6x6 RS Cedar</text>
+  <text x="220" y="135" fill="#333" font-size="12">6x6</text>
+  <text x="310" y="135" fill="#333" font-size="12">5.5 x 5.5</text>
+  <text x="420" y="135" fill="#c0392b" font-size="16" font-weight="bold">6</text>
+  <text x="460" y="135" fill="#333" font-size="13" font-weight="bold">8'-4" (100")</text>
+  <text x="590" y="135" fill="#333" font-size="12">Square (90°)</text>
+  <text x="590" y="152" fill="#555" font-size="11">Notch top: 1.5" dp x 7.25" w</text>
+  <text x="760" y="135" fill="#333" font-size="12">Square (90°)</text>
+  <text x="900" y="135" fill="#333" font-size="12">25.0 bf ea</text>
+  <text x="900" y="152" fill="#c0392b" font-size="12" font-weight="bold">150.0 bf</text>
+
+  <!-- Row 2: Ring Beam -->
+  <rect x="10" y="168" width="1080" height="62" fill="#fff"/>
+  <line x1="10" y1="230" x2="1090" y2="230" stroke="#ccc" stroke-width="1"/>
+  <text x="20" y="187" fill="#1a2744" font-size="12" font-weight="bold">CL-02</text>
+  <text x="65" y="187" fill="#333" font-size="13" font-weight="bold">RING BEAM</text>
+  <text x="65" y="204" fill="#666" font-size="11">6x8 RS Cedar</text>
+  <text x="220" y="187" fill="#333" font-size="12">6x8</text>
+  <text x="310" y="187" fill="#333" font-size="12">5.5 x 7.25</text>
+  <text x="420" y="187" fill="#c0392b" font-size="16" font-weight="bold">6</text>
+  <text x="460" y="187" fill="#333" font-size="13" font-weight="bold">5'-0" (60")</text>
+  <text x="590" y="187" fill="#1a6e8f" font-size="13" font-weight="bold">30° MITER</text>
+  <text x="590" y="204" fill="#555" font-size="11">Both ends same direction</text>
+  <text x="590" y="220" fill="#555" font-size="11">(set saw at 30° to CL)</text>
+  <text x="760" y="187" fill="#1a6e8f" font-size="13" font-weight="bold">30° MITER</text>
+  <text x="760" y="204" fill="#555" font-size="11">Hex exterior angle = 60°</text>
+  <text x="760" y="220" fill="#555" font-size="11">Miter saw at 30°</text>
+  <text x="900" y="187" fill="#333" font-size="12">24.0 bf ea</text>
+  <text x="900" y="204" fill="#c0392b" font-size="12" font-weight="bold">144.0 bf</text>
+
+  <!-- Row 3: Rafter -->
+  <rect x="10" y="230" width="1080" height="88" fill="#f5f0e8"/>
+  <line x1="10" y1="318" x2="1090" y2="318" stroke="#ccc" stroke-width="1"/>
+  <text x="20" y="250" fill="#1a2744" font-size="12" font-weight="bold">CL-03</text>
+  <text x="65" y="250" fill="#333" font-size="13" font-weight="bold">RAFTER</text>
+  <text x="65" y="267" fill="#666" font-size="11">4x6 RS Cedar</text>
+  <text x="220" y="250" fill="#333" font-size="12">4x6</text>
+  <text x="310" y="250" fill="#333" font-size="12">3.5 x 5.5</text>
+  <text x="420" y="250" fill="#c0392b" font-size="16" font-weight="bold">6</text>
+  <text x="460" y="250" fill="#333" font-size="13" font-weight="bold">6'-4" (76")</text>
+  <text x="460" y="267" fill="#555" font-size="11">Order 7'-0" stock</text>
+  <text x="590" y="246" fill="#c0392b" font-size="13" font-weight="bold">COMPOUND CUT</text>
+  <text x="590" y="263" fill="#c0392b" font-size="12" font-weight="bold">Miter: 28.7°</text>
+  <text x="590" y="279" fill="#c0392b" font-size="12" font-weight="bold">Bevel: 9.1°</text>
+  <text x="590" y="296" fill="#555" font-size="11">Crown UP. All 6 identical.</text>
+  <text x="590" y="312" fill="#c0392b" font-size="11" font-weight="bold">TEST CUT ON SCRAP FIRST</text>
+  <text x="760" y="246" fill="#333" font-size="12" font-weight="bold">BIRD'S MOUTH</text>
+  <text x="760" y="262" fill="#333" font-size="12">Seat: 1.5" dp x 3.5" w</text>
+  <text x="760" y="278" fill="#333" font-size="12">Plumb cut: 18.43°</text>
+  <text x="760" y="294" fill="#555" font-size="11">+ Tail plumb cut at 18.43°</text>
+  <text x="760" y="310" fill="#555" font-size="11">12" overhang beyond CL</text>
+  <text x="900" y="250" fill="#333" font-size="12">12.7 bf ea</text>
+  <text x="900" y="267" fill="#c0392b" font-size="12" font-weight="bold">76.0 bf</text>
+
+  <!-- Row 4: Hub -->
+  <rect x="10" y="318" width="1080" height="62" fill="#fff"/>
+  <line x1="10" y1="380" x2="1090" y2="380" stroke="#ccc" stroke-width="1"/>
+  <text x="20" y="338" fill="#1a2744" font-size="12" font-weight="bold">CL-04</text>
+  <text x="65" y="338" fill="#333" font-size="13" font-weight="bold">HUB BLOCK</text>
+  <text x="65" y="355" fill="#666" font-size="11">8x8 RS Cedar (or 3-ply 2x8)</text>
+  <text x="220" y="338" fill="#333" font-size="12">8x8</text>
+  <text x="310" y="338" fill="#333" font-size="12">7.25 x 7.25</text>
+  <text x="420" y="338" fill="#c0392b" font-size="16" font-weight="bold">1</text>
+  <text x="460" y="338" fill="#333" font-size="13" font-weight="bold">12" rough block</text>
+  <text x="460" y="355" fill="#555" font-size="11">Mill hex faces on site</text>
+  <text x="590" y="338" fill="#333" font-size="12">6 flat faces @ 60°</text>
+  <text x="590" y="355" fill="#555" font-size="11">Face width: 4.33" ea</text>
+  <text x="590" y="371" fill="#555" font-size="11">See D04 for geometry</text>
+  <text x="760" y="338" fill="#333" font-size="12">Square bottom</text>
+  <text x="760" y="355" fill="#555" font-size="11">Finial or rain cap on top</text>
+  <text x="900" y="338" fill="#333" font-size="12">8.0 bf</text>
+  <text x="900" y="355" fill="#c0392b" font-size="12" font-weight="bold">8.0 bf</text>
+
+  <!-- Row 5: Corbel -->
+  <rect x="10" y="380" width="1080" height="52" fill="#f5f0e8"/>
+  <line x1="10" y1="432" x2="1090" y2="432" stroke="#ccc" stroke-width="1"/>
+  <text x="20" y="400" fill="#1a2744" font-size="12" font-weight="bold">CL-05</text>
+  <text x="65" y="400" fill="#333" font-size="13" font-weight="bold">CORBEL</text>
+  <text x="65" y="417" fill="#666" font-size="11">4x4 RS Cedar</text>
+  <text x="220" y="400" fill="#333" font-size="12">4x4</text>
+  <text x="310" y="400" fill="#333" font-size="12">3.5 x 3.5</text>
+  <text x="420" y="400" fill="#c0392b" font-size="16" font-weight="bold">12</text>
+  <text x="460" y="400" fill="#333" font-size="13" font-weight="bold">21" (1'-9")</text>
+  <text x="460" y="417" fill="#555" font-size="11">Order 2'-0" stock</text>
+  <text x="590" y="400" fill="#333" font-size="12">45° plumb cut</text>
+  <text x="590" y="417" fill="#555" font-size="11">No side bevel required</text>
+  <text x="760" y="400" fill="#333" font-size="12">45° plumb cut</text>
+  <text x="760" y="417" fill="#555" font-size="11">Both ends same angle</text>
+  <text x="900" y="400" fill="#333" font-size="12">2.33 bf ea</text>
+  <text x="900" y="417" fill="#c0392b" font-size="12" font-weight="bold">28.0 bf</text>
+
+  <!-- Row 6: Decking -->
+  <rect x="10" y="432" width="1080" height="52" fill="#fff"/>
+  <line x1="10" y1="484" x2="1090" y2="484" stroke="#ccc" stroke-width="1"/>
+  <text x="20" y="452" fill="#1a2744" font-size="12" font-weight="bold">CL-06</text>
+  <text x="65" y="452" fill="#333" font-size="13" font-weight="bold">ROOF DECKING</text>
+  <text x="65" y="469" fill="#666" font-size="11">1x6 T&amp;G RS Cedar</text>
+  <text x="220" y="452" fill="#333" font-size="12">1x6 T&amp;G</text>
+  <text x="310" y="452" fill="#333" font-size="12">0.75 x 5.5</text>
+  <text x="420" y="452" fill="#333" font-size="12">By BF</text>
+  <text x="460" y="452" fill="#333" font-size="12">Random lengths</text>
+  <text x="460" y="469" fill="#555" font-size="11">6-10 ft, taper rip on site</text>
+  <text x="590" y="452" fill="#555" font-size="12">Taper rip each plank</text>
+  <text x="590" y="469" fill="#555" font-size="11">6 pie-wedge bays</text>
+  <text x="760" y="452" fill="#555" font-size="12">Butt to hub, nail at</text>
+  <text x="760" y="469" fill="#555" font-size="11">each rafter crossing</text>
+  <text x="900" y="452" fill="#333" font-size="12">105 bf w/ waste</text>
+  <text x="900" y="469" fill="#c0392b" font-size="12" font-weight="bold">105.0 bf</text>
+
+  <!-- Row 7: Shingles -->
+  <rect x="10" y="484" width="1080" height="44" fill="#f5f0e8"/>
+  <line x1="10" y1="528" x2="1090" y2="528" stroke="#ccc" stroke-width="1"/>
+  <text x="20" y="504" fill="#1a2744" font-size="12" font-weight="bold">CL-07</text>
+  <text x="65" y="504" fill="#333" font-size="13" font-weight="bold">CEDAR SHINGLES</text>
+  <text x="65" y="519" fill="#666" font-size="11">#1 Blue Label, 18"</text>
+  <text x="220" y="504" fill="#333" font-size="12">#1 18" WRC</text>
+  <text x="310" y="504" fill="#555" font-size="12">—</text>
+  <text x="420" y="504" fill="#c0392b" font-size="13" font-weight="bold">10 bdl</text>
+  <text x="460" y="504" fill="#333" font-size="12">5.5" exposure</text>
+  <text x="590" y="504" fill="#555" font-size="12">Apply per CSSB guidelines</text>
+  <text x="590" y="519" fill="#555" font-size="11">Stagger joints 1.5" min</text>
+  <text x="760" y="504" fill="#555" font-size="12">Hip/ridge caps: 2 bdl</text>
+  <text x="900" y="504" fill="#c0392b" font-size="12" font-weight="bold">12 bdl total</text>
+
+  <!-- TOTALS ROW -->
+  <rect x="10" y="528" width="1080" height="44" fill="#2c3e50"/>
+  <text x="65" y="548" fill="white" font-size="14" font-weight="bold">TOTALS</text>
+  <text x="460" y="548" fill="#f39c12" font-size="13" font-weight="bold">Order long — trim to fit</text>
+  <text x="700" y="548" fill="white" font-size="14" font-weight="bold">STRUCTURAL FRAMING:</text>
+  <text x="900" y="548" fill="#f39c12" font-size="14" font-weight="bold">476.5 bf nominal</text>
+  <text x="65" y="564" fill="#aac8ff" font-size="12">Add 15% waste to all BF totals when placing lumber order.</text>
+  <text x="700" y="564" fill="#aac8ff" font-size="13">WITH 15% WASTE:</text>
+  <text x="900" y="564" fill="#f39c12" font-size="13" font-weight="bold">~549 bf to order</text>
+
+  <!-- ═══════════════════════════ ANGLE REFERENCE ═══════════════════════════ -->
+  <rect x="10" y="588" width="1080" height="36" fill="#8B4513"/>
+  <text x="550" y="612" text-anchor="middle" fill="white" font-size="16" font-weight="bold">ANGLE REFERENCE QUICK CARD — FOR SAW SETUP</text>
+
+  <rect x="10" y="624" width="530" height="280" fill="#fff9e6" stroke="#f39c12" stroke-width="2" rx="4"/>
+  <text x="20" y="648" fill="#1a2744" font-size="14" font-weight="bold">RAFTER — COMPOUND CUT (HUB END)</text>
+  <text x="20" y="668" fill="#333" font-size="13">Tool: Compound Miter Saw</text>
+  <text x="20" y="690" fill="#c0392b" font-size="18" font-weight="bold">Miter Angle:  28.7°</text>
+  <text x="20" y="714" fill="#c0392b" font-size="18" font-weight="bold">Blade Bevel:  9.1°</text>
+  <text x="20" y="738" fill="#333" font-size="13">Crown direction: UP (mark before cutting)</text>
+  <text x="20" y="758" fill="#333" font-size="13">Do NOT flip bevel — all 6 cuts identical</text>
+  <text x="20" y="780" fill="#333" font-size="13">Rafter tail (beam end): plumb cut only at 18.43°</text>
+  <text x="20" y="800" fill="#333" font-size="13">Bird's mouth seat depth: 1-1/2" (do not exceed)</text>
+  <text x="20" y="820" fill="#c0392b" font-size="14" font-weight="bold">*** Test on scrap 4x6 before cutting production ***</text>
+  <text x="20" y="844" fill="#333" font-size="13">SDS lags: 2 per rafter, pre-drill 1/4" pilot into hub</text>
+  <text x="20" y="864" fill="#333" font-size="13">Rafter-to-beam: Simpson H2.5A hurricane tie + bird's mouth</text>
+  <text x="20" y="884" fill="#555" font-size="11">Horizontal run: 72" total (60" to hub + 12" overhang)</text>
+  <text x="20" y="900" fill="#555" font-size="11">Rise to hub: 20" | Total rafter length: 76" (6'-4")</text>
+
+  <rect x="555" y="624" width="535" height="280" fill="#f0f8ff" stroke="#1a6e8f" stroke-width="2" rx="4"/>
+  <text x="565" y="648" fill="#1a2744" font-size="14" font-weight="bold">RING BEAM MITER + CORBEL + FOOTING</text>
+  <text x="565" y="672" fill="#1a6e8f" font-size="16" font-weight="bold">RING BEAM:  30° miter both ends</text>
+  <text x="565" y="692" fill="#333" font-size="13">Hex exterior angle = 60°; miter saw set to 30°</text>
+  <text x="565" y="712" fill="#333" font-size="13">Both ends same miter direction (parallel)</text>
+  <text x="565" y="732" fill="#333" font-size="13">Dry-fit all 6 beams before hardware installation</text>
+  <line x1="555" y1="748" x2="1090" y2="748" stroke="#1a6e8f" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="565" y="768" fill="#1a2744" font-size="14" font-weight="bold">CORBEL (4x4):</text>
+  <text x="565" y="788" fill="#333" font-size="13">Both ends: 45° plumb cut only (no bevel)</text>
+  <text x="565" y="808" fill="#333" font-size="13">Body length: 16.97" diagonal | Cut list: 21"</text>
+  <text x="565" y="828" fill="#333" font-size="13">Bolts: (2) 1/2" x 5" carriage bolts each end</text>
+  <line x1="555" y1="844" x2="1090" y2="844" stroke="#1a6e8f" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="565" y="864" fill="#1a2744" font-size="14" font-weight="bold">FOOTING:</text>
+  <text x="565" y="884" fill="#333" font-size="13">Auger 18" dia x 30"+ deep. Sonotube 24".</text>
+  <text x="565" y="900" fill="#333" font-size="13">25 MPa concrete. J-bolt set wet. ABA66Z base.</text>
+
+  <!-- ═══════════════════════════ HARDWARE SCHEDULE ═══════════════════════════ -->
+  <rect x="10" y="920" width="1080" height="36" fill="#2c3e50"/>
+  <text x="550" y="944" text-anchor="middle" fill="white" font-size="15" font-weight="bold">HARDWARE SCHEDULE — ORDER WITH LUMBER</text>
+
+  <rect x="10" y="956" width="1080" height="250" fill="#fff"/>
+  <!-- Hardware table -->
+  <g font-size="12" fill="#333">
+    <!-- Headers -->
+    <rect x="10" y="956" width="1080" height="28" fill="#4a4a4a"/>
+    <text x="20" y="975" fill="white" font-weight="bold">ITEM</text>
+    <text x="300" y="975" fill="white" font-weight="bold">SPEC</text>
+    <text x="680" y="975" fill="white" font-weight="bold">QTY</text>
+    <text x="800" y="975" fill="white" font-weight="bold">PURPOSE</text>
+
+    <rect x="10" y="984" width="1080" height="28" fill="#f5f0e8"/>
+    <text x="20" y="1003">Simpson ABA66Z</text>
+    <text x="300" y="1003">ZMAX galvanized adjustable standoff post base</text>
+    <text x="680" y="1003" font-weight="bold" fill="#c0392b">6</text>
+    <text x="800" y="1003">Post-to-footing anchor</text>
+
+    <rect x="10" y="1012" width="1080" height="28" fill="#fff"/>
+    <text x="20" y="1031">J-Bolt 1/2" x 10"</text>
+    <text x="300" y="1031">Galvanized J-bolt + nut + washer</text>
+    <text x="680" y="1031" font-weight="bold" fill="#c0392b">6</text>
+    <text x="800" y="1031">Set in concrete caisson</text>
+
+    <rect x="10" y="1040" width="1080" height="28" fill="#f5f0e8"/>
+    <text x="20" y="1059">Simpson BC6 Post Cap</text>
+    <text x="300" y="1059">Black powder coat, post cap for 6x6 post / 6x8 beam</text>
+    <text x="680" y="1059" font-weight="bold" fill="#c0392b">6</text>
+    <text x="800" y="1059">Post-to-beam erection + uplift</text>
+
+    <rect x="10" y="1068" width="1080" height="28" fill="#fff"/>
+    <text x="20" y="1087">Knife Plate — A36 Steel</text>
+    <text x="300" y="1087">3/8" thick, laser cut to template per joinery-spec.json</text>
+    <text x="680" y="1087" font-weight="bold" fill="#c0392b">12</text>
+    <text x="800" y="1087">Post-to-beam moment connection</text>
+
+    <rect x="10" y="1096" width="1080" height="28" fill="#f5f0e8"/>
+    <text x="20" y="1115">1/2" x 5" Galv Carriage Bolt</text>
+    <text x="300" y="1115">+ 2" sq plate washer + nut — ASTM A307 galvanized</text>
+    <text x="680" y="1115" font-weight="bold" fill="#c0392b">48</text>
+    <text x="800" y="1115">Corbel-to-post and corbel-to-beam</text>
+
+    <rect x="10" y="1124" width="1080" height="28" fill="#fff"/>
+    <text x="20" y="1143">1/2" x 5" Galv Struct. Bolt</text>
+    <text x="300" y="1143">+ 2" sq plate washer + nut — galvanized hex head</text>
+    <text x="680" y="1143" font-weight="bold" fill="#c0392b">24</text>
+    <text x="800" y="1143">Knife plate-to-post and knife plate-to-beam</text>
+
+    <rect x="10" y="1152" width="1080" height="28" fill="#f5f0e8"/>
+    <text x="20" y="1171">SDS 1/2" x 6" Structural Screw</text>
+    <text x="300" y="1171">Simpson SDS25600 or equal hex-head structural lag</text>
+    <text x="680" y="1171" font-weight="bold" fill="#c0392b">12</text>
+    <text x="800" y="1171">Rafter-to-hub (2 per rafter)</text>
+
+    <rect x="10" y="1180" width="1080" height="28" fill="#fff"/>
+    <text x="20" y="1199">Simpson H2.5A Hurricane Tie</text>
+    <text x="300" y="1199">Galvanized rafter tie, 10d nails</text>
+    <text x="680" y="1199" font-weight="bold" fill="#c0392b">6</text>
+    <text x="800" y="1199">Rafter-to-beam uplift (1 per rafter)</text>
+
+    <rect x="10" y="1208" width="1080" height="28" fill="#f5f0e8"/>
+    <text x="20" y="1227">GRK R4 3" Structural Screw</text>
+    <text x="300" y="1227">Box of 100 — supplemental connections and hub lamination</text>
+    <text x="680" y="1227" font-weight="bold" fill="#c0392b">60+</text>
+    <text x="800" y="1227">Hub glue-up, misc. connections</text>
+  </g>
+
+  <!-- Footer notes -->
+  <rect x="10" y="1212" width="1080" height="3" fill="#2c3e50"/>
+  <rect x="10" y="1215" width="1080" height="185" fill="#f8f7f4"/>
+  <text x="20" y="1240" fill="#1a2744" font-size="14" font-weight="bold">GENERAL NOTES FOR SHOP AND SITE</text>
+  <text x="20" y="1260" fill="#333" font-size="12">1.  Mark all lumber crown-side before cutting. Orient crowns up on rafters and beams.</text>
+  <text x="20" y="1278" fill="#333" font-size="12">2.  Pre-drill all bolt holes. Avoid splitting ends: maintain 1-3/4" minimum edge distance on all bolts.</text>
+  <text x="20" y="1296" fill="#333" font-size="12">3.  All exterior hardware to be hot-dip galvanized (ASTM A153) or stainless. No electro-galv in direct contact with cedar.</text>
+  <text x="20" y="1314" fill="#333" font-size="12">4.  Apply oil-based end-grain sealer (Anchorseal or equal) to all fresh cuts within 24 hours of cutting.</text>
+  <text x="20" y="1332" fill="#333" font-size="12">5.  Verify all 6 footing locations with laser level and string lines before pouring concrete. Check all diagonals equal (8'-8" approx).</text>
+  <text x="20" y="1350" fill="#333" font-size="12">6.  Install hub as last structural element. Dry-fit all 6 rafters before driving SDS screws. Adjust hub height on temporary post if needed.</text>
+  <text x="20" y="1368" fill="#c0392b" font-size="12" font-weight="bold">7.  This is a no-permit structure per Saanich BCBC 2018 exemption threshold. Builder verifies final jurisdiction requirements before starting.</text>
+  <text x="20" y="1386" fill="#333" font-size="12">     Drawing set ref: D01 Plan | D02 Face Elev | D03 Corner Elev | D04 Rafter+Hub | D05 Joinery | D06 Footing | SB01 Cut List</text>
+
+  <!-- Footer bar -->
+  <rect x="-10" y="1400" width="1120" height="30" fill="#1a2744"/>
+  <text x="550" y="1420" text-anchor="middle" fill="#aac8ff" font-size="12">Hexagonal Pavilion — Saanich, BC | Session a3776eee82a54e624 | Generated 2026-04-19 | connect.richfrem@gmail.com</text>
+
+</svg>

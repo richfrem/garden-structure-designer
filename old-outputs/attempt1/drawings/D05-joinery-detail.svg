@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DRAWING D05 — JOINERY DETAILS: POST-TO-BEAM + CORBEL BOLT PATTERN
+  Hexagonal Pavilion — Saanich, BC
+  Scale: Full size / 1:4  |  Sheet: D05  |  Date: 2026-04-19
+
+  Two details:
+    LEFT PANEL: Post-to-beam knife plate section view + elevation
+    RIGHT PANEL: Corbel bolt pattern + bird's mouth rafter seat
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="820" viewBox="-50 -50 1000 920"
+     font-family="Arial, Helvetica, sans-serif">
+
+  <rect x="-50" y="-50" width="1000" height="920" fill="#f8f7f4"/>
+  <rect x="-40" y="-40" width="980" height="920" fill="none" stroke="#000" stroke-width="3"/>
+
+  <rect x="-40" y="800" width="980" height="70" fill="#1a2744"/>
+  <text x="450" y="826" text-anchor="middle" fill="white" font-size="18" font-weight="bold">JOINERY DETAILS — POST-TO-BEAM / CORBEL / BIRD'S MOUTH</text>
+  <text x="450" y="848" text-anchor="middle" fill="#aac8ff" font-size="14">Saanich, BC  |  Scale: 1:4 (approx)  |  Sheet D05  |  Date: 2026-04-19</text>
+  <text x="450" y="868" text-anchor="middle" fill="#aac8ff" font-size="12">Knife plate: 3/8" A36 steel. All bolts: 1/2" dia galvanized. Edge dist: 1-3/4" min.</text>
+
+  <line x1="455" y1="-40" x2="455" y2="800" stroke="#555" stroke-width="1.5" stroke-dasharray="10,6"/>
+  <text x="220" y="-15" text-anchor="middle" fill="#1a2744" font-size="14" font-weight="bold">DETAIL C — POST-TO-BEAM KNIFE PLATE</text>
+  <text x="700" y="-15" text-anchor="middle" fill="#1a2744" font-size="14" font-weight="bold">DETAIL D — CORBEL + BIRD'S MOUTH</text>
+
+  <defs>
+    <marker id="da" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="daR" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/>
+    </marker>
+    <pattern id="steelFill" patternUnits="userSpaceOnUse" width="6" height="6">
+      <rect width="6" height="6" fill="#d0d8e8"/>
+      <path d="M0,6 L6,0" stroke="#8899bb" stroke-width="0.7"/>
+    </pattern>
+  </defs>
+
+  <!-- ══════════════════════════════════
+       DETAIL C — POST-TO-BEAM
+       Showing section through joint.
+       Scale: 1 px = 0.25 in (so 1 in = 4 px, 1 ft = 48 px)
+       Post 6x6 actual = 22 px wide.
+       Beam 6x8 actual: 22 px wide x 29 px deep.
+       Notch: 6 px deep x 29 px wide.
+       Knife plate: 1.5 px thick = shown as 4 px for visibility.
+  ══════════════════════════════════ -->
+
+  <!-- Scale note: 1 in = 8 px for this panel (larger for legibility) -->
+  <!-- Post 5.5 in = 44 px, Beam 7.25 in deep = 58 px, Beam 5.5 in wide = 44 px -->
+  <!-- Notch depth 1.5 in = 12 px, Knife plate 6 in down post = 48 px, 3 in into beam = 24 px -->
+  <!-- Bolt dia 0.5 in = 4 px, shown as open circles -->
+
+  <!-- SECTION HEADER -->
+  <text x="50" y="80" fill="#1a2744" font-size="13" font-weight="bold">SECTION: KNIFE PLATE IN POST + BEAM</text>
+  <text x="50" y="96" fill="#555" font-size="11">(Section cut through centre of post, looking along beam)</text>
+
+  <!-- POST in section (vertical rectangle, CL at X=200) -->
+  <!-- Post bottom at Y=700, post top at Y=700-9*8*12=... not needed, just show joint zone -->
+  <!-- Show 200 px of post height, joint at Y=350 -->
+  <rect x="178" y="150" width="44" height="400" fill="#c8a96e" stroke="#7B5C2F" stroke-width="2"/>
+
+  <!-- BEAM bearing in notch (beam sits ON TOP of post, notch depth = 12 px) -->
+  <!-- Notch: X=178 to 222 (full post width), Y=338 to 350 (12 px deep, notch shoulder at Y=338) -->
+  <!-- Beam bottom (soffit): Y=338; Beam top: Y=338-58=280 -->
+  <!-- Beam shown as HORIZONTAL cut out of post — actually beam runs perpendicular to view.
+       In section looking along beam, beam appears as full cross-section rectangle.
+       Beam CL at X=200. Since beam width (along beam span) is 5.5 in = 44 px,
+       and we're viewing along beam, we see the 5.5 in face. -->
+  <!-- Notch pocket in post -->
+  <rect x="178" y="338" width="44" height="12" fill="#e8d4a0" stroke="#7B5C2F" stroke-width="1" stroke-dasharray="3,2"/>
+  <!-- Beam cross-section (beam runs L-R in plan, so in this section we see beam end) -->
+  <!-- Show beam as rectangle sitting in notch: X=156 to 244 (beyond post for overhang sense), Y=280 to 338 -->
+  <rect x="156" y="280" width="88" height="58" fill="#b8935a" stroke="#7B5C2F" stroke-width="2"/>
+  <!-- Notch shoulder line -->
+  <line x1="178" y1="338" x2="156" y2="338" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="222" y1="338" x2="244" y2="338" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- KNIFE PLATE (steel, shown as thin tall rectangle through post and into beam) -->
+  <!-- Plate goes 6 in = 48 px DOWN from beam soffit into post: Y=338 to Y=338+48=386 -->
+  <!-- Plate goes 3 in = 24 px UP into beam from beam soffit: Y=338 to Y=338-24=314 -->
+  <!-- Plate width = 3/8 in = 3 px (shown as 6 px for visibility) -->
+  <rect x="197" y="314" width="6" height="72" fill="url(#steelFill)" stroke="#3344aa" stroke-width="1.5"/>
+  <text x="248" y="356" fill="#3344aa" font-size="10" font-weight="bold">3/8" A36</text>
+  <text x="248" y="368" fill="#3344aa" font-size="10">KNIFE PLATE</text>
+  <line x1="203" y1="360" x2="246" y2="360" stroke="#3344aa" stroke-width="0.8"/>
+
+  <!-- BOLTS through post (2 bolts, 3 in spacing = 24 px, at Y=360 and Y=384) -->
+  <circle cx="200" cy="358" r="5" fill="none" stroke="#1a2744" stroke-width="2"/>
+  <circle cx="200" cy="358" r="2" fill="#1a2744"/>
+  <circle cx="200" cy="382" r="5" fill="none" stroke="#1a2744" stroke-width="2"/>
+  <circle cx="200" cy="382" r="2" fill="#1a2744"/>
+  <!-- Bolt callout -->
+  <line x1="205" y1="358" x2="290" y2="355" stroke="#333" stroke-width="0.8"/>
+  <text x="292" y="353" fill="#333" font-size="11" font-weight="bold">1/2" DIA GALV BOLT</text>
+  <text x="292" y="367" fill="#333" font-size="11">2 THRU POST</text>
+  <text x="292" y="381" fill="#333" font-size="11">+ 2 THRU BEAM</text>
+  <text x="292" y="395" fill="#333" font-size="11">3" O.C., 1-3/4" EDGE</text>
+
+  <!-- BOLTS through beam (2 bolts at Y=295 and Y=319) -->
+  <circle cx="200" cy="296" r="5" fill="none" stroke="#1a2744" stroke-width="2"/>
+  <circle cx="200" cy="296" r="2" fill="#1a2744"/>
+  <circle cx="200" cy="320" r="5" fill="none" stroke="#1a2744" stroke-width="2"/>
+  <circle cx="200" cy="320" r="2" fill="#1a2744"/>
+
+  <!-- SECTION ELEVATION HEADER (second sub-view) -->
+  <text x="50" y="430" fill="#1a2744" font-size="13" font-weight="bold">ELEVATION: POST-TO-BEAM JOINT (FACE VIEW)</text>
+  <text x="50" y="446" fill="#555" font-size="11">(Looking at outer face of post — hardware concealed inside)</text>
+
+  <!-- Post face (outer face) - just shows post face with no visible hardware -->
+  <rect x="178" y="460" width="44" height="200" fill="#c8a96e" stroke="#7B5C2F" stroke-width="2"/>
+  <!-- Beam face above post top, spanning left to right -->
+  <rect x="100" y="460" width="200" height="58" fill="#b8935a" stroke="#7B5C2F" stroke-width="2"/>
+  <!-- Simpson BC6 post cap (symbolic U-shape at top of post) -->
+  <rect x="172" y="454" width="56" height="14" fill="#888" stroke="#333" stroke-width="1.5"/>
+  <text x="200" y="491" text-anchor="middle" fill="#3d2000" font-size="10">POST CAP</text>
+  <text x="200" y="503" text-anchor="middle" fill="#3d2000" font-size="10">SIMPSON BC6</text>
+  <!-- Notch shoulder (shown as dashed line in elevation) -->
+  <line x1="178" y1="518" x2="222" y2="518" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+  <!-- Label joint as concealed -->
+  <text x="310" y="506" fill="#555" font-size="11" font-style="italic">Hardware</text>
+  <text x="310" y="520" fill="#555" font-size="11" font-style="italic">concealed</text>
+  <text x="310" y="534" fill="#555" font-size="11" font-style="italic">inside joint</text>
+  <line x1="244" y1="515" x2="308" y2="515" stroke="#555" stroke-width="0.8"/>
+
+  <!-- Notch depth callout -->
+  <line x1="130" y1="460" x2="130" y2="518" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#daR)" marker-end="url(#da)"/>
+  <text x="70" y="493" fill="#c0392b" font-size="10">1-1/2"</text>
+  <text x="70" y="505" fill="#c0392b" font-size="10">NOTCH</text>
+
+  <!-- Post width -->
+  <line x1="178" y1="675" x2="222" y2="675" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#daR)" marker-end="url(#da)"/>
+  <text x="180" y="690" fill="#c0392b" font-size="10">5-1/2" POST</text>
+
+  <!-- Beam depth -->
+  <line x1="310" y1="460" x2="310" y2="518" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#daR)" marker-end="url(#da)"/>
+  <text x="314" y="495" fill="#c0392b" font-size="10">7-1/4"</text>
+  <text x="314" y="507" fill="#c0392b" font-size="10">BEAM</text>
+
+  <!-- ══════════════════════════════════
+       DETAIL D — CORBEL + BIRD'S MOUTH
+  ══════════════════════════════════ -->
+
+  <text x="470" y="80" fill="#1a2744" font-size="13" font-weight="bold">CORBEL KNEE BRACE — ELEVATION</text>
+  <text x="470" y="96" fill="#555" font-size="11">4x4 cedar, 45° each end, 12" leg each direction</text>
+
+  <!-- Post (partial, CL at X=680) -->
+  <rect x="658" y="100" width="44" height="300" fill="#c8a96e" stroke="#7B5C2F" stroke-width="2"/>
+  <!-- Beam (horizontal, soffit at Y=280) -->
+  <rect x="500" y="222" width="360" height="58" fill="#b8935a" stroke="#7B5C2F" stroke-width="2"/>
+
+  <!-- Corbel body (4x4 = 28 px wide) -->
+  <!-- Corbel diagonal: from post face (X=658) at Y=280+96=376 down to beam soffit (Y=280) at X=658-96=562 -->
+  <!-- Actually corbel projects 12 in = 96 px along post and 12 in = 96 px along beam -->
+  <!-- Post attachment: Y from 280 to 376 (96 px); Beam attachment: X from 562 to 658 (96 px) -->
+  <!-- Corbel diagonal from (562, 280) to (658, 376) -->
+  <!-- 4x4 width = 28 px, draw as parallelogram -->
+  <polygon points="562,280 590,280 686,376 658,376" fill="#c8a96e" stroke="#7B5C2F" stroke-width="2"/>
+
+  <!-- Bolts at post end: 2 bolts, stacked vertically on post face -->
+  <!-- Bolt centres at X=658+14=672 (into post face), Y=308 and Y=338 -->
+  <circle cx="665" cy="310" r="6" fill="none" stroke="#1a2744" stroke-width="2"/>
+  <circle cx="665" cy="310" r="2.5" fill="#1a2744"/>
+  <circle cx="665" cy="340" r="6" fill="none" stroke="#1a2744" stroke-width="2"/>
+  <circle cx="665" cy="340" r="2.5" fill="#1a2744"/>
+
+  <!-- Bolts at beam end: 2 bolts, horizontal -->
+  <!-- Bolt centres at Y=280-14=266 (into beam soffit), X=590 and X=620 -->
+  <circle cx="592" cy="266" r="6" fill="none" stroke="#1a2744" stroke-width="2"/>
+  <circle cx="592" cy="266" r="2.5" fill="#1a2744"/>
+  <circle cx="622" cy="266" r="6" fill="none" stroke="#1a2744" stroke-width="2"/>
+  <circle cx="622" cy="266" r="2.5" fill="#1a2744"/>
+
+  <!-- Bolt callout -->
+  <line x1="672" y1="310" x2="760" y2="295" stroke="#333" stroke-width="0.8"/>
+  <text x="762" y="293" fill="#333" font-size="11" font-weight="bold">(2) 1/2"x5" GALV</text>
+  <text x="762" y="307" fill="#333" font-size="11">CARRIAGE BOLT</text>
+  <text x="762" y="321" fill="#333" font-size="11">+ 2" SQ WASHER</text>
+  <text x="762" y="335" fill="#333" font-size="11">3" O.C. STACKED</text>
+
+  <!-- 45 deg angle marks at each end -->
+  <!-- Post end angle -->
+  <path d="M 658,376 A 30,30 0 0,1 686,376" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="654" y="400" fill="#c0392b" font-size="11" font-weight="bold">45°</text>
+  <!-- Beam end angle -->
+  <path d="M 562,280 A 30,30 0 0,1 562,252" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="536" y="258" fill="#c0392b" font-size="11" font-weight="bold">45°</text>
+
+  <!-- Leg dimension along post -->
+  <line x1="720" y1="280" x2="720" y2="376" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#daR)" marker-end="url(#da)"/>
+  <text x="724" y="332" fill="#c0392b" font-size="11">12" LEG</text>
+  <line x1="658" y1="280" x2="728" y2="280" stroke="#c0392b" stroke-width="0.7" stroke-dasharray="3,2"/>
+  <line x1="658" y1="376" x2="728" y2="376" stroke="#c0392b" stroke-width="0.7" stroke-dasharray="3,2"/>
+
+  <!-- Leg dimension along beam -->
+  <line x1="562" y1="410" x2="658" y2="410" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#daR)" marker-end="url(#da)"/>
+  <text x="592" y="426" fill="#c0392b" font-size="11">12" LEG</text>
+  <line x1="562" y1="376" x2="562" y2="418" stroke="#c0392b" stroke-width="0.7" stroke-dasharray="3,2"/>
+  <line x1="658" y1="376" x2="658" y2="418" stroke="#c0392b" stroke-width="0.7" stroke-dasharray="3,2"/>
+
+  <!-- Corbel size callout -->
+  <text x="595" y="336" fill="#2d1a00" font-size="11" font-weight="bold">4x4 RS CEDAR</text>
+  <text x="595" y="350" fill="#2d1a00" font-size="11">(3.5"x3.5" ACTUAL)</text>
+  <text x="595" y="364" fill="#2d1a00" font-size="11">L = 21" CUT LENGTH</text>
+
+  <!-- BIRD'S MOUTH DETAIL (sub-detail below) -->
+  <text x="470" y="460" fill="#1a2744" font-size="13" font-weight="bold">BIRD'S MOUTH RAFTER SEAT (AT RING BEAM)</text>
+  <text x="470" y="476" fill="#555" font-size="11">Rafter 4x6, seat depth 1-1/2", plumb cut 18.43°</text>
+
+  <!-- Rafter cross section at beam -->
+  <!-- Rafter body at 4:12 slope; show in section at beam bearing point -->
+  <!-- Beam top at Y=580, beam surface shown -->
+  <rect x="490" y="580" width="320" height="58" fill="#b8935a" stroke="#7B5C2F" stroke-width="2"/>
+  <text x="650" y="614" text-anchor="middle" fill="#3d2000" font-size="11" font-weight="bold">6x8 RING BEAM</text>
+
+  <!-- Rafter angled at 18.43 deg (4:12), sitting on beam with bird's mouth -->
+  <!-- Bird's mouth seat: 12 px deep (1.5 in), 28 px wide (3.5 in) -->
+  <!-- Rafter body: 22 px wide (5.5 in), drawn at angle -->
+  <!-- Rafter lower left at (610, 580), seat notch, rafter goes up-right at 26.57 deg -->
+  <!-- Seat corner at (610, 580). Plumb cut vertical at X=610 up 12 px to (610,568).
+       Level seat from (610,580) goes left 28 px to (582,580). -->
+  <!-- Rafter body continues up from (582,568) at slope -->
+  <!-- rise/run = 4/12 => for 200 px run, rise = 67 px -->
+  <polygon points="582,580 582,568 610,568 810,501 817,522 610,580"
+           fill="#c8a96e" stroke="#7B5C2F" stroke-width="2"/>
+
+  <!-- Bird's mouth cutout (white polygon cut into rafter bottom) -->
+  <polygon points="582,580 610,580 610,568" fill="#b8935a"/>
+  <!-- Seat notch lines -->
+  <line x1="582" y1="580" x2="610" y2="580" stroke="#333" stroke-width="1.5"/>
+  <line x1="610" y1="568" x2="610" y2="580" stroke="#333" stroke-width="1.5"/>
+
+  <!-- Seat depth -->
+  <line x1="555" y1="568" x2="555" y2="580" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#daR)" marker-end="url(#da)"/>
+  <text x="524" y="578" fill="#c0392b" font-size="10">1-1/2"</text>
+  <text x="524" y="590" fill="#c0392b" font-size="10">SEAT</text>
+
+  <!-- Seat width -->
+  <line x1="582" y1="598" x2="610" y2="598" stroke="#c0392b" stroke-width="1.2"
+        marker-start="url(#daR)" marker-end="url(#da)"/>
+  <text x="586" y="614" fill="#c0392b" font-size="10">3-1/2"</text>
+
+  <!-- Pitch angle -->
+  <path d="M 630,568 A 20,20 0 0,1 640,580" fill="none" stroke="#1a6e8f" stroke-width="1.5"/>
+  <text x="642" y="573" fill="#1a6e8f" font-size="11">18.43°</text>
+
+  <!-- Hurricane tie -->
+  <rect x="566" y="580" width="12" height="20" fill="#888" stroke="#333" stroke-width="1"/>
+  <text x="490" y="632" fill="#333" font-size="11" font-weight="bold">SIMPSON H2.5A</text>
+  <text x="490" y="646" fill="#333" font-size="11">HURRICANE TIE</text>
+  <text x="490" y="660" fill="#333" font-size="11">BOTH SIDES</text>
+  <line x1="572" y1="600" x2="570" y2="620" stroke="#333" stroke-width="0.8"/>
+  <line x1="570" y1="620" x2="560" y2="630" stroke="#333" stroke-width="0.8"/>
+
+  <!-- Plumb cut label -->
+  <text x="700" y="456" fill="#555" font-size="11">PLUMB CUT</text>
+  <text x="700" y="470" fill="#555" font-size="11">AT TAIL</text>
+  <text x="700" y="484" fill="#555" font-size="11">(OPTIONAL</text>
+  <text x="700" y="498" fill="#555" font-size="11">DECOR TAIL)</text>
+  <line x1="810" y1="468" x2="720" y2="470" stroke="#555" stroke-width="0.8"/>
+
+  <!-- Scale bar -->
+  <g transform="translate(470, 740)">
+    <text x="0" y="-5" fill="#333" font-size="11" font-weight="bold">SCALE: 1" = 8 px (APPROX 1:1.5)</text>
+    <rect x="0" y="0" width="32" height="8" fill="#333"/>
+    <rect x="32" y="0" width="32" height="8" fill="white" stroke="#333"/>
+    <rect x="64" y="0" width="32" height="8" fill="#333"/>
+    <text x="0" y="18" fill="#333" font-size="10">0</text>
+    <text x="28" y="18" fill="#333" font-size="10">4"</text>
+    <text x="60" y="18" fill="#333" font-size="10">8"</text>
+    <text x="92" y="18" fill="#333" font-size="10">12"</text>
+  </g>
+
+</svg>

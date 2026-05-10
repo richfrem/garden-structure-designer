@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DRAWING D06 — FOOTING DETAIL: 18" DIA CONCRETE CAISSON + SIMPSON ABA66Z
+  Hexagonal Pavilion — Saanich, BC
+  Scale: 1:6 (2 px per inch)  |  Sheet: D06  |  Date: 2026-04-19
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="820" viewBox="-50 -50 1000 920"
+     font-family="Arial, Helvetica, sans-serif">
+
+  <rect x="-50" y="-50" width="1000" height="920" fill="#f8f7f4"/>
+  <rect x="-40" y="-40" width="980" height="920" fill="none" stroke="#000" stroke-width="3"/>
+
+  <rect x="-40" y="800" width="980" height="70" fill="#1a2744"/>
+  <text x="450" y="826" text-anchor="middle" fill="white" font-size="19" font-weight="bold">FOOTING DETAIL — 18" DIA CONCRETE CAISSON + ABA66Z POST BASE</text>
+  <text x="450" y="848" text-anchor="middle" fill="#aac8ff" font-size="14">Saanich, BC  |  Scale: 1:6 (approx)  |  Sheet D06  |  Date: 2026-04-19</text>
+  <text x="450" y="867" text-anchor="middle" fill="#aac8ff" font-size="12">25 MPa concrete. Frost depth 450 mm. 610 mm (24") embedment. TYP 6 PLACES.</text>
+
+  <defs>
+    <pattern id="concreteH3" patternUnits="userSpaceOnUse" width="10" height="10">
+      <rect width="10" height="10" fill="#d0ccc0"/>
+      <circle cx="2" cy="2" r="1" fill="#aaa"/>
+      <circle cx="7" cy="6" r="1.2" fill="#bbb"/>
+      <circle cx="4" cy="8" r="0.8" fill="#999"/>
+    </pattern>
+    <pattern id="earthHatch" patternUnits="userSpaceOnUse" width="12" height="12">
+      <rect width="12" height="12" fill="#c8b890"/>
+      <path d="M0,12 L12,0" stroke="#a09060" stroke-width="0.8" opacity="0.6"/>
+    </pattern>
+    <marker id="fa" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="faR" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="fa2" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#1a6e8f"/>
+    </marker>
+    <marker id="fa2R" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#1a6e8f"/>
+    </marker>
+  </defs>
+
+  <!-- Scale: 1 in = 8 px for this detail. 18 in = 144 px diameter, radius = 72 px -->
+  <!-- 24 in deep = 192 px -->
+  <!-- Centre at X=350 -->
+
+  <!-- EARTH / SOIL CONTEXT -->
+  <!-- Grade line at Y=260 -->
+  <rect x="100" y="260" width="500" height="500" fill="url(#earthHatch)"/>
+  <!-- Earth above grade not needed (structure above grade) -->
+  <line x1="60" y1="260" x2="700" y2="260" stroke="#5a4a28" stroke-width="3"/>
+  <text x="720" y="264" fill="#5a4a28" font-size="13" font-weight="bold">F.G.</text>
+  <text x="720" y="278" fill="#5a4a28" font-size="11">(FINISHED GRADE)</text>
+
+  <!-- Frost depth line (18 in = 144 px below grade = Y=404) -->
+  <line x1="60" y1="404" x2="700" y2="404" stroke="#a0522d" stroke-width="1.5" stroke-dasharray="10,6"/>
+  <text x="720" y="406" fill="#a0522d" font-size="12" font-weight="bold">FROST DEPTH</text>
+  <text x="720" y="420" fill="#a0522d" font-size="11">18" (450 mm)</text>
+
+  <!-- Bottom of caisson at Y=260+192=452. Caisson from Y=260 to Y=452 -->
+  <!-- Caisson width = 144 px, CL at X=350, left=X278, right=X422 -->
+  <rect x="278" y="260" width="144" height="192" fill="url(#concreteH3)" stroke="#666" stroke-width="2"/>
+
+  <!-- Bottom of caisson — bell or flat (flat per spec) -->
+  <ellipse cx="350" cy="452" rx="72" ry="10" fill="#b0a890" stroke="#666" stroke-width="1.5"/>
+
+  <!-- Caisson top bell flare at grade (small flare) -->
+  <path d="M 278,260 Q 270,250 270,245 L 430,245 Q 430,250 422,260"
+        fill="#c0b89a" stroke="#666" stroke-width="1.5"/>
+  <text x="350" y="372" text-anchor="middle" fill="#444" font-size="13" font-weight="bold">25 MPa CONCRETE</text>
+  <text x="350" y="390" text-anchor="middle" fill="#444" font-size="11">SITE-MIXED OR READY-MIX</text>
+
+  <!-- J-BOLT (anchor bolt, 1/2 in dia x 10 in long, embed 7 in = 56 px, projecting 4 in = 32 px above base) -->
+  <!-- J-bolt CL at X=350, embed from Y=260 down to Y=316 (56 px), hook at Y=316 -->
+  <!-- Projection above grade Y=260 up to Y=228 (32 px) -->
+  <line x1="350" y1="228" x2="350" y2="316" stroke="#1a2744" stroke-width="6"/>
+  <!-- J hook -->
+  <path d="M 350,316 Q 368,316 368,300" fill="none" stroke="#1a2744" stroke-width="6" stroke-linecap="round"/>
+  <!-- Bolt label -->
+  <line x1="350" y1="268" x2="480" y2="240" stroke="#333" stroke-width="0.8"/>
+  <text x="482" y="238" fill="#333" font-size="11" font-weight="bold">1/2" DIA x 10" GALV J-BOLT</text>
+  <text x="482" y="252" fill="#333" font-size="11">7" MIN EMBEDMENT</text>
+  <text x="482" y="266" fill="#333" font-size="11">SET IN WET CONCRETE</text>
+  <text x="482" y="280" fill="#333" font-size="11">28-DAY CURE BEFORE LOADING</text>
+
+  <!-- ABA66Z BASE HARDWARE (above grade, symbolic) -->
+  <!-- Base plate at grade Y=260, standoff height 3 in = 24 px -->
+  <!-- Base plate: width ~80 px, height 10 px at Y=248 to 258 -->
+  <rect x="310" y="250" width="80" height="10" fill="#888" stroke="#333" stroke-width="1.5"/>
+  <!-- Standoff channel (U shape) projecting up from base plate -->
+  <rect x="335" y="218" width="10" height="32" fill="#888" stroke="#333" stroke-width="1.5"/>
+  <rect x="355" y="218" width="10" height="32" fill="#888" stroke="#333" stroke-width="1.5"/>
+  <!-- Base label -->
+  <line x1="310" y1="245" x2="200" y2="210" stroke="#333" stroke-width="0.8"/>
+  <text x="30" y="208" fill="#333" font-size="12" font-weight="bold">SIMPSON ABA66Z</text>
+  <text x="30" y="222" fill="#333" font-size="11">ADJUST. STANDOFF BASE</text>
+  <text x="30" y="236" fill="#333" font-size="11">ZMAX GALVANIZED</text>
+  <text x="30" y="250" fill="#333" font-size="11">3/4" MIN AIR GAP TO POST</text>
+
+  <!-- POST bottom (above standoff) -->
+  <rect x="329" y="140" width="44" height="78" fill="#c8a96e" stroke="#7B5C2F" stroke-width="2"/>
+  <!-- Post label -->
+  <line x1="373" y1="175" x2="480" y2="160" stroke="#333" stroke-width="0.8"/>
+  <text x="482" y="158" fill="#333" font-size="12" font-weight="bold">6x6 RS CEDAR POST</text>
+  <text x="482" y="172" fill="#333" font-size="11">(5.5" x 5.5" ACTUAL)</text>
+  <text x="482" y="186" fill="#333" font-size="11">3/4" STANDOFF GAP</text>
+  <text x="482" y="200" fill="#333" font-size="11">(AIR CIRCULATION)</text>
+
+  <!-- Air gap indicator -->
+  <line x1="335" y1="218" x2="335" y2="218"/>
+  <rect x="329" y="215" width="44" height="8" fill="#f0f0f0" stroke="#aaa" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="280" y="222" fill="#555" font-size="10">3/4" GAP</text>
+
+  <!-- Nailing schedule note -->
+  <rect x="60" y="530" width="320" height="120" fill="#fff9e6" stroke="#f39c12" stroke-width="1.5" rx="4"/>
+  <text x="70" y="550" fill="#1a2744" font-size="12" font-weight="bold">ABA66Z NAILING SCHEDULE</text>
+  <text x="70" y="567" fill="#333" font-size="11">• 16 x 10d (3") hot-dip galv nails into post sides</text>
+  <text x="70" y="582" fill="#333" font-size="11">• Nail both flanges per manufacturer schedule</text>
+  <text x="70" y="597" fill="#333" font-size="11">• Do NOT nail through bottom of post into standoff</text>
+  <text x="70" y="612" fill="#333" font-size="11">• Uplift rating: 2,545 lbs (Design)</text>
+  <text x="70" y="627" fill="#333" font-size="11">• Lateral rating: 1,830 lbs (Design)</text>
+  <text x="70" y="642" fill="#333" font-size="11">• Check: actual uplift from structural calc «« rating</text>
+
+  <!-- DIMENSIONS -->
+  <!-- Caisson diameter -->
+  <line x1="278" y1="475" x2="422" y2="475" stroke="#c0392b" stroke-width="1.5"
+        marker-start="url(#faR)" marker-end="url(#fa)"/>
+  <line x1="278" y1="452" x2="278" y2="482" stroke="#c0392b" stroke-width="0.8"/>
+  <line x1="422" y1="452" x2="422" y2="482" stroke="#c0392b" stroke-width="0.8"/>
+  <text x="350" y="494" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">18" DIA</text>
+
+  <!-- Caisson depth -->
+  <line x1="450" y1="260" x2="450" y2="452" stroke="#c0392b" stroke-width="1.5"
+        marker-start="url(#faR)" marker-end="url(#fa)"/>
+  <text x="458" y="366" fill="#c0392b" font-size="13" font-weight="bold">24"</text>
+  <text x="458" y="381" fill="#c0392b" font-size="11">DEEP</text>
+  <line x1="422" y1="260" x2="460" y2="260" stroke="#c0392b" stroke-width="0.8"/>
+  <line x1="422" y1="452" x2="460" y2="452" stroke="#c0392b" stroke-width="0.8"/>
+
+  <!-- Frost depth offset dimension -->
+  <line x1="220" y1="260" x2="220" y2="404" stroke="#1a6e8f" stroke-width="1.5"
+        marker-start="url(#fa2R)" marker-end="url(#fa2)"/>
+  <text x="170" y="338" fill="#1a6e8f" font-size="11">18"</text>
+  <text x="165" y="352" fill="#1a6e8f" font-size="11">FROST</text>
+  <line x1="278" y1="260" x2="212" y2="260" stroke="#1a6e8f" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <line x1="278" y1="404" x2="212" y2="404" stroke="#1a6e8f" stroke-width="0.8" stroke-dasharray="3,2"/>
+
+  <!-- J-bolt projection -->
+  <line x1="140" y1="228" x2="140" y2="260" stroke="#1a2744" stroke-width="1.2"
+        marker-start="url(#fa2R)" marker-end="url(#fa2)"/>
+  <text x="80" y="248" fill="#1a2744" font-size="10">4" PROJ.</text>
+  <line x1="278" y1="228" x2="132" y2="228" stroke="#1a2744" stroke-width="0.7" stroke-dasharray="3,2"/>
+  <line x1="278" y1="260" x2="132" y2="260" stroke="#1a2744" stroke-width="0.7" stroke-dasharray="3,2"/>
+
+  <!-- FOOTING LAYOUT NOTE (right side) -->
+  <rect x="560" y="530" width="360" height="220" fill="#f0f8ff" stroke="#1a6e8f" stroke-width="1.5" rx="4"/>
+  <text x="570" y="550" fill="#1a2744" font-size="12" font-weight="bold">INSTALLATION SEQUENCE</text>
+  <text x="570" y="568" fill="#333" font-size="11">1. Layout 6 footing locations per plan (D01).</text>
+  <text x="570" y="584" fill="#333" font-size="11">2. Auger 18" dia x 30" deep hole (extra 6"</text>
+  <text x="570" y="598" fill="#333" font-size="11">   for loose bearing material at bottom).</text>
+  <text x="570" y="614" fill="#333" font-size="11">3. Fill bottom 6" with gravel, tamp firm.</text>
+  <text x="570" y="630" fill="#333" font-size="11">4. Set cardboard tube form (Sonotube) 24".</text>
+  <text x="570" y="646" fill="#333" font-size="11">5. Pour 25 MPa concrete. Set J-bolt while</text>
+  <text x="570" y="660" fill="#333" font-size="11">   wet, plumb and centred. Brace overnight.</text>
+  <text x="570" y="676" fill="#333" font-size="11">6. Strip tube after 24 hr. Full cure: 28 days.</text>
+  <text x="570" y="692" fill="#333" font-size="11">7. Set ABA66Z base over J-bolt. Shim level.</text>
+  <text x="570" y="708" fill="#333" font-size="11">8. Drop posts into standoff. Nail per schedule.</text>
+  <text x="570" y="726" fill="#c0392b" font-size="11" font-weight="bold">NOTE: Verify final post layout with string lines</text>
+  <text x="570" y="740" fill="#c0392b" font-size="11" font-weight="bold">before concrete pour. Check diagonals equal.</text>
+
+  <!-- Scale bar -->
+  <g transform="translate(80, 752)">
+    <text x="0" y="-5" fill="#333" font-size="11" font-weight="bold">SCALE: 1" = 6" (APPROX 1:6)</text>
+    <rect x="0" y="0" width="16" height="8" fill="#333"/>
+    <rect x="16" y="0" width="16" height="8" fill="white" stroke="#333"/>
+    <rect x="32" y="0" width="16" height="8" fill="#333"/>
+    <rect x="48" y="0" width="16" height="8" fill="white" stroke="#333"/>
+    <text x="0" y="20" fill="#333" font-size="10">0</text>
+    <text x="12" y="20" fill="#333" font-size="10">6"</text>
+    <text x="28" y="20" fill="#333" font-size="10">12"</text>
+    <text x="44" y="20" fill="#333" font-size="10">18"</text>
+    <text x="60" y="20" fill="#333" font-size="10">24"</text>
+  </g>
+
+</svg>
