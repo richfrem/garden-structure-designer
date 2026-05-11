@@ -54,6 +54,14 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 REVIEWER = "run_drawing_red_team.py"
 
+# Resolve canonical staging dir via path_utils (CWD-agnostic)
+sys.path.insert(0, str(SCRIPT_DIR))
+try:
+    from path_utils import staging_dir as _staging_dir
+    _STAGING = _staging_dir()
+except Exception:
+    _STAGING = Path("plugins/garden-structure-designer/context/staging")
+
 # Sheets that MUST exist for a complete package
 REQUIRED_SHEETS = [
     "blueprint-plan.svg",
@@ -66,12 +74,12 @@ REQUIRED_SHEETS = [
     "drawing-perspective-view.svg",
 ]
 
-# Deterministic staging artifacts that must exist before the gate can approve
+# Deterministic staging artifacts resolved via path_utils (not hardcoded repo-relative strings)
 REQUIRED_STAGING_ARTIFACTS = [
-    "plugins/garden-structure-designer/context/staging/structural-model.json",
-    "plugins/garden-structure-designer/context/staging/geometry-calculations.json",
-    "plugins/garden-structure-designer/context/staging/schema-validation-report.json",
-    "plugins/garden-structure-designer/context/staging/physics-validation-report.json",
+    str(_STAGING / "structural-model.json"),
+    str(_STAGING / "geometry-calculations.json"),
+    str(_STAGING / "schema-validation-report.json"),
+    str(_STAGING / "physics-validation-report.json"),
 ]
 
 
