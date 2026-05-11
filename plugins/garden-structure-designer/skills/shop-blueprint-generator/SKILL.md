@@ -132,8 +132,8 @@ Blueprint generation ends at SVG + cut-list production. The stage is NOT complet
    ```bash
    python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
      --svg-dir outputs \
-     --model plugins/garden-structure-designer/context/staging/structural-model.json \
-     --report-dir plugins/garden-structure-designer/context/staging \
+     --model context/staging/structural-model.json \
+     --report-dir context/staging \
      --md-dir outputs
    ```
 2. `context/staging/drawing-red-team-report.json` exists with `may_claim_success: true`.
