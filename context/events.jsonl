@@ -64,3 +64,4 @@
 {"time": "2026-04-14T12:24:38.691043Z", "agent": "legacy-hook", "type": "agent_start", "action": "session_start", "status": "success"}
 {"time": "2026-04-14T12:26:02.874547Z", "agent": "legacy-hook", "type": "agent_start", "action": "session_start", "status": "success"}
 {"time": "2026-04-14T19:26:07.307979+00:00", "agent": "post_run_hook", "type": "metric", "action": "session_summary", "status": "success", "results": {"human_interventions": 0, "workflow_uncertainty": 0, "missed_steps": 0, "cli_errors": 0, "friction_events_total": 0, "hook_errors": 0, "correlation_id": "session", "session_id": "unknown"}}
+{"time": "2026-05-10T18:33:24.423920Z", "agent": "legacy-hook", "type": "agent_start", "action": "session_start", "status": "success"}
