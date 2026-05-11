@@ -17,17 +17,17 @@ Layer: Execution
 Usage Examples:
     # Single file:
     python3 drawing_content_validator.py outputs/blueprint-elevation.svg \\
-        plugins/garden-structure-designer/context/staging/structural-model.json
+        context/staging/structural-model.json
 
     # Single file with JSON output:
     python3 drawing_content_validator.py outputs/blueprint-elevation.svg \\
-        plugins/garden-structure-designer/context/staging/structural-model.json \\
+        context/staging/structural-model.json \\
         --json-output context/staging/drawing-content-report.json
 
     # Batch mode (from shell loop):
     for f in outputs/*.svg; do
         python3 drawing_content_validator.py "$f" \\
-            plugins/garden-structure-designer/context/staging/structural-model.json \\
+            context/staging/structural-model.json \\
             --json-output context/staging/drawing-content-report.json --append
     done
 

@@ -2,8 +2,15 @@
   "name": "garden-structure-designer",
   "version": "1.3.0",
   "description": "Multi-agent pipeline that translates garden structure designs into professional PDF engineering documents.",
-  "author": "Rich Fremmerlid",
+  "author": {
+    "name": "Richard Fremmerlid"
+  },
   "type": "plugin",
   "entrypoint": "scripts/plugin_add.py",
-  "tags": ["architecture", "engineering", "structural", "design"]
+  "tags": [
+    "architecture",
+    "engineering",
+    "structural",
+    "design"
+  ]
 }
