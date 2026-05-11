@@ -42,19 +42,20 @@ def main():
     if repair.get("status") in ["FAIL", "BLOCKED"] or drift.get("failed_axes"):
         overall_status = "BLOCKED / FAILED"
 
-    # Content validation failure always overrides to BLOCKED — checked first
     content_status = content_report.get("status", "MISSING")
-    if content_status == "FAIL":
-        overall_status = "BLOCKED / FAILED"
-    elif content_status == "MISSING" and overall_status == "COMPLETED":
-        overall_status = "PARTIAL — drawing content report missing"
-
-    # Red-team state checked after content (content failure is more severe)
     red_team_status = red_team.get("status", "MISSING")
     red_team_may_claim = red_team.get("may_claim_success", False)
-    if red_team_status == "MISSING" or not red_team_may_claim:
-        if overall_status == "COMPLETED":
-            overall_status = "PARTIAL — drawing red-team not approved"
+    
+    missing_artifacts = not all([
+        (stage_dir / "structural-model.json").exists(),
+        (stage_dir / "geometry-calculations.json").exists()
+    ])
+
+    if overall_status == "COMPLETED":
+        if content_status == "MISSING" or red_team_status == "MISSING":
+            overall_status = "PARTIAL — drawing reports missing"
+        if content_status == "FAIL" or not red_team_may_claim or missing_artifacts:
+            overall_status = "BLOCKED / FAILED (DASHBOARD_STALE_OR_WRONG_PATH)"
         
     repair_str = "None"
     if repair.get("attempts"):

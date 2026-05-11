@@ -1,0 +1,57 @@
+{
+  "members": {
+    "posts": {
+      "quantity": 6,
+      "dimensions": "6x6",
+      "cutLength_ft": 8.33,
+      "spanDistance_ft": 5.0,
+      "nominalSize": "6x6"
+    },
+    "beams": {
+      "quantity": 6,
+      "dimensions": "4x8",
+      "depth_in": 7.25,
+      "nominalSize": "4x8",
+      "cutLength_ft": 5.25
+    },
+    "kneebraces": {
+      "quantity": 12,
+      "dimensions": "4x4",
+      "cutLength_in": 36,
+      "angle_deg": 45
+    },
+    "kingpostHub": {
+      "quantity": 1,
+      "dimensions": "6x6",
+      "cutLength_in": 24
+    },
+    "rafters": {
+      "quantity": 6,
+      "dimensions": "4x6",
+      "miterAngle_deg": 28.71,
+      "cutLength_ft": 5.4,
+      "nominalSize": "4x6"
+    }
+  },
+  "roofStructure": {
+    "pitch": "4:12",
+    "pitchDefaulted": false,
+    "style": "Open Rafter"
+  },
+  "overhang_in": 12,
+  "bracing_added": true,
+  "_locked": true,
+  "schema": "garden-structure-designer/structural-model/1.0",
+  "structureType": "Pergola",
+  "planShape": "Hexagon",
+  "materials": {
+    "primary": "Cedar"
+  },
+  "joinery": {
+    "type": "traditional"
+  },
+  "source_hash": "5a3cb9fb499153c36752ae23919f3f4d2c14b6115a1cff117ac38de8349de735",
+  "foundation": {
+    "caisson_diameter_in": 12
+  }
+}

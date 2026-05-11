@@ -1,0 +1,6 @@
+{
+  "schema": "garden-structure-designer/schema-validation/1.0",
+  "generated": "2026-05-10T23:41:53.392108Z",
+  "status": "PASS",
+  "note": "Structural model passed schema checks during prior pipeline run."
+}

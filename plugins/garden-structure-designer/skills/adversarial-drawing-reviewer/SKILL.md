@@ -69,6 +69,31 @@ python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
   --md-dir outputs
 ```
 
+## Obstacle Escalation
+
+When the red-team gate fails, the reviewer must distinguish between:
+
+- drawings are bad;
+- reports are stale;
+- paths are inconsistent;
+- required artifacts are missing;
+- validators are misconfigured.
+
+The reviewer must not only say "FAIL." The reviewer must identify the likely class of failure and recommend the next control-plane action.
+
+Required output fields in `drawing-red-team-report.json`:
+
+```json
+{
+  "failure_classification": [
+    "RENDERER_PLACEHOLDER_OUTPUT",
+    "PATH_SPLIT",
+    "STALE_REPORT"
+  ],
+  "recommended_next_action": "FIX_PATHS_FIRST|RERUN_REPORTS_FIRST|FIX_RENDERER_FIRST|BLOCK_AND_REPORT"
+}
+```
+
 This writes:
 - `context/staging/drawing-content-report.json` — per-sheet content detail
 - `context/staging/drawing-red-team-report.json` — gate verdict + `may_claim_success`

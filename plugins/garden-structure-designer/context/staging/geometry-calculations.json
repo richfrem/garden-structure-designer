@@ -1,0 +1,52 @@
+{
+  "schema": "geometry-calculations/1.0",
+  "source": "context/staging/structural-model.json",
+  "pitch": "4:12",
+  "sides": 6,
+  "compound_cut": {
+    "miter_deg": 28.71,
+    "bevel_deg": 9.1,
+    "pitch_angle_deg": 18.43,
+    "plan_half_angle_deg": 30.0
+  },
+  "beam_ring": {
+    "beam_miter_deg": 30.0,
+    "interior_angle_deg": 120.0
+  },
+  "rafter": {
+    "structural_length_ft": 5.27,
+    "total_with_overhang_ft": 6.325,
+    "total_with_overhang_in": 75.89
+  },
+  "roof_rise": {
+    "rise_ft": 1.667,
+    "rise_in": 20.0
+  },
+  "total_height": {
+    "post_ft": 8.33,
+    "beam_depth_ft": 0.604,
+    "roof_rise_ft": 1.667,
+    "total_height_ft": 10.601,
+    "total_height_in": 127.21
+  },
+  "svg_coordinates": {
+    "viewBox": "0 0 1100 900",
+    "width_px": 1100,
+    "height_px": 900,
+    "margin_top_px": 80,
+    "margin_bottom_px": 120,
+    "grade_y": 780,
+    "scale_px_per_ft": 42.0,
+    "content_height_px": 446,
+    "content_width_px": 620,
+    "post_top_y": 430,
+    "beam_soffit_y": 430,
+    "beam_top_y": 405,
+    "hub_apex_y": 335,
+    "rise_px": 70,
+    "beam_px": 25,
+    "post_px": 350
+  },
+  "warnings": [],
+  "source_hash": "c9bd9be3719f750bff53c801a0227998ea46200b0274491a852951ba99be2ab1"
+}

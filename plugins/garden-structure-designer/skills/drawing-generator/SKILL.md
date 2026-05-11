@@ -93,3 +93,27 @@ If `context/staging/drawing-red-team-report.json` does not exist or has `may_cla
 the package status is **BLOCKED** and this skill has NOT successfully completed the pipeline.
 
 Passing `svg_validator.py` alone is **not** sufficient for pipeline completion.
+
+## Stop-and-Diagnose Before Renderer Rewrite
+
+If generated SVGs fail the red-team gate, this skill must not immediately rewrite drawing logic.
+
+First determine whether the failure is caused by:
+
+- path split between `context/staging` and `plugins/garden-structure-designer/context/staging`;
+- stale quality dashboard;
+- missing `geometry-calculations.json`;
+- missing `schema-validation-report.json`;
+- missing `physics-validation-report.json`;
+- red-team/content validator correctly rejecting placeholder drawings;
+- renderer genuinely lacking required drawing content.
+
+Only rewrite `render_drawings.py` after confirming:
+
+1. the active staging path is known;
+2. the model and geometry files are current;
+3. the quality dashboard reads the same staging path;
+4. the red-team/content validator is running against current SVGs;
+5. the failure is genuinely renderer output quality.
+
+If the failure is a path/reporting problem, fix the path/reporting problem first.
