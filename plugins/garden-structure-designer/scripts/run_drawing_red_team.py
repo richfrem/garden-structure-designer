@@ -74,13 +74,7 @@ REQUIRED_SHEETS = [
     "drawing-perspective-view.svg",
 ]
 
-# Deterministic staging artifacts resolved via path_utils (not hardcoded repo-relative strings)
-REQUIRED_STAGING_ARTIFACTS = [
-    str(_STAGING / "structural-model.json"),
-    str(_STAGING / "geometry-calculations.json"),
-    str(_STAGING / "schema-validation-report.json"),
-    str(_STAGING / "physics-validation-report.json"),
-]
+
 
 
 # ---------------------------------------------------------------------------
@@ -242,8 +236,14 @@ def run_review(
     md_report_path = os.path.join(md_dir, "drawing-red-team-report.md")
 
     # --- Pre-flight: check required deterministic staging artifacts ---
+    required_staging_artifacts = [
+        str(Path(report_dir) / "structural-model.json"),
+        str(Path(report_dir) / "geometry-calculations.json"),
+        str(Path(report_dir) / "schema-validation-report.json"),
+        str(Path(report_dir) / "physics-validation-report.json"),
+    ]
     missing_artifacts = [
-        a for a in REQUIRED_STAGING_ARTIFACTS if not os.path.exists(a)
+        a for a in required_staging_artifacts if not os.path.exists(a)
     ]
     if missing_artifacts:
         report = {
@@ -412,12 +412,12 @@ def main() -> None:
     )
     parser.add_argument(
         "--model",
-        default="plugins/garden-structure-designer/context/staging/structural-model.json",
+        default=str(_STAGING / "structural-model.json"),
         help="Path to structural-model.json.",
     )
     parser.add_argument(
         "--report-dir",
-        default="plugins/garden-structure-designer/context/staging",
+        default=str(_STAGING),
         help="Directory to write JSON reports.",
     )
     parser.add_argument(

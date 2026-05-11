@@ -64,8 +64,8 @@ Run this single command — it enumerates all SVGs, runs both validators, writes
 ```bash
 python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
   --svg-dir outputs \
-  --model plugins/garden-structure-designer/context/staging/structural-model.json \
-  --report-dir plugins/garden-structure-designer/context/staging \
+  --model context/staging/structural-model.json \
+  --report-dir context/staging \
   --md-dir outputs
 ```
 
@@ -106,12 +106,12 @@ Individual validator runs for debugging a specific sheet:
 ```bash
 python3 plugins/garden-structure-designer/scripts/svg_validator.py \
   outputs/<sheet>.svg \
-  plugins/garden-structure-designer/context/staging/structural-model.json
+  context/staging/structural-model.json
 
 python3 plugins/garden-structure-designer/scripts/drawing_content_validator.py \
   outputs/<sheet>.svg \
-  plugins/garden-structure-designer/context/staging/structural-model.json \
-  --json-output plugins/garden-structure-designer/context/staging/drawing-content-report.json \
+  context/staging/structural-model.json \
+  --json-output context/staging/drawing-content-report.json \
   --append
 ```
 
