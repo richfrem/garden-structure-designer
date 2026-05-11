@@ -10,19 +10,27 @@ Before compilation begins, this skill MUST verify:
 
 ```bash
 # Check the gate report exists and is approved
-python3 -c "
+python3 - <<'PY'
 import json, sys
+from pathlib import Path
+sys.path.append("plugins/garden-structure-designer/scripts")
+from path_utils import staging_dir
+
+report_path = staging_dir() / "drawing-red-team-report.json"
+
 try:
-    r = json.load(open('plugins/garden-structure-designer/context/staging/drawing-red-team-report.json'))
-    if not r.get('may_claim_success'):
-        print('BLOCKED: drawing-red-team-report.json has may_claim_success: false')
-        print('Summary:', r.get('summary',''))
-        sys.exit(1)
-    print('Gate approved — proceeding with compilation.')
+    r = json.load(open(report_path))
 except FileNotFoundError:
-    print('BLOCKED: drawing-red-team-report.json not found. Run Stage 5.75 first.')
+    print(f"BLOCKED: {report_path} not found. Run Stage 5.75 first.")
     sys.exit(1)
-"
+
+if not r.get("may_claim_success"):
+    print("BLOCKED: drawing-red-team-report.json has may_claim_success: false")
+    print("Summary:", r.get("summary", ""))
+    sys.exit(1)
+
+print("Gate approved — proceeding with compilation.")
+PY
 ```
 
 If this check fails, **do not compile**. Write a blocking message to `outputs/COMPILATION_BLOCKED.md` explaining that the drawing red-team gate must pass first. Do not proceed to `embed_svgs.py` or PDF conversion.

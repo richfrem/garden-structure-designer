@@ -89,8 +89,8 @@ Authoritative gate command:
 ```bash
 python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
   --svg-dir outputs \
-  --model plugins/garden-structure-designer/context/staging/structural-model.json \
-  --report-dir plugins/garden-structure-designer/context/staging \
+  --model context/staging/structural-model.json \
+  --report-dir context/staging \
   --md-dir outputs
 ```
 
