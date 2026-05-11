@@ -52,11 +52,11 @@ outputs/blueprint-isometric.svg
 outputs/blueprint-component-isolation.svg
 outputs/quality-dashboard.md
 outputs/run-insights.json
-plugins/garden-structure-designer/context/staging/design-spec.json
-plugins/garden-structure-designer/context/staging/structural-model.json
-plugins/garden-structure-designer/context/staging/geometry-calculations.json
-plugins/garden-structure-designer/context/staging/schema-validation-report.json
-plugins/garden-structure-designer/context/staging/physics-validation-report.json
+context/staging/design-spec.json
+context/staging/structural-model.json
+context/staging/geometry-calculations.json
+context/staging/schema-validation-report.json
+context/staging/physics-validation-report.json
 ```
 
 If any required deterministic artifact is missing, mark the review `FAIL`.
@@ -90,7 +90,7 @@ If available, run:
 ```bash
 python3 plugins/garden-structure-designer/scripts/svg_validator.py \
   <svg-file> \
-  plugins/garden-structure-designer/context/staging/structural-model.json
+  context/staging/structural-model.json
 ```
 
 If available, run:
@@ -98,7 +98,7 @@ If available, run:
 ```bash
 python3 plugins/garden-structure-designer/scripts/drawing_content_validator.py \
   <svg-file> \
-  plugins/garden-structure-designer/context/staging/structural-model.json
+  context/staging/structural-model.json
 ```
 
 However, do not rely blindly on validator output. If a validator passes a visually useless drawing, call that out as validator insufficiency.
@@ -307,7 +307,7 @@ DETERMINISTIC_ARTIFACTS_NOT_REVALIDATED
 Write:
 
 ```text
-plugins/garden-structure-designer/context/staging/drawing-red-team-report.json
+context/staging/drawing-red-team-report.json
 ```
 
 Use this schema:
