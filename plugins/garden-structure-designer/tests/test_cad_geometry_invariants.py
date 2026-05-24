@@ -107,6 +107,8 @@ def test_rafters_terminate_at_hub_radius(scene, solids_by_role):
     """
     hub_r = scene.hub_r
     for r in solids_by_role.get("rafter", []):
+        if r.tag.startswith("Jack"):
+            continue  # Jack rafters terminate at hip rafters
         xy_r = v2_radius(r.p1)
         assert abs(xy_r - hub_r) <= _FT_TOL + 0.05, (
             f"Rafter {r.tag}: apex XY radius={xy_r:.6f} hub_r={hub_r:.6f} "
@@ -268,7 +270,7 @@ def test_isometric_has_expected_semantic_counts():
     qty = 6   # hex pergola
     assert count_unique("post")   == qty, f"Expected {qty} posts, got {count_unique('post')}"
     assert count_unique("beam")   == qty, f"Expected {qty} beams, got {count_unique('beam')}"
-    assert count_unique("rafter") == qty, f"Expected {qty} rafters, got {count_unique('rafter')}"
+    assert count_unique("rafter") == qty * 3, f"Expected {qty * 3} rafters, got {count_unique('rafter')}"
 
     # Hub appears as one logical member
     hub_count = svg.count('data-role="hub"')
@@ -289,6 +291,8 @@ def test_no_rafter_endpoint_inside_hub_radius(scene, solids_by_role):
     _tol  = _FT_TOL   # 1/10 inch
 
     for r in solids_by_role.get("rafter", []):
+        if r.tag.startswith("Jack"):
+            continue  # Jack rafters terminate at hip rafters
         xy_r = v2_radius(r.p1)
         assert xy_r >= hub_r - _tol, (
             f"Rafter {r.tag}: apex XY radius={xy_r:.6f} ft < hub_r={hub_r:.6f} ft "

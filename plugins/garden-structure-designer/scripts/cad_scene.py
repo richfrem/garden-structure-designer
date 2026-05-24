@@ -208,6 +208,10 @@ def _palettes(is_blueprint: bool) -> dict[str, dict[str, str]]:
                        "right":"#0e1e34","start":"#162c4e","end":"#162c4e","other":"#132440"},
             "hub":    {"top":"#204878","bottom":"#0e2035","left":"#1a3868",
                        "right":"#152d56","start":"#1d4070","end":"#1d4070","other":"#1a3868"},
+            "purlin": {"top":"#1b3760","bottom":"#0d1f32","left":"#132440",
+                       "right":"#0e1e34","start":"#162c4e","end":"#162c4e","other":"#132440"},
+            "footing":{"top":"#183050","bottom":"#0d1e30","left":"#122440",
+                       "right":"#0e1e34","start":"#162c4e","end":"#162c4e","other":"#122440"},
         }
     return {
         "post":   {"top":"#f1e5cd","bottom":"#c8b090","left":"#ecdfc8",
@@ -220,6 +224,10 @@ def _palettes(is_blueprint: bool) -> dict[str, dict[str, str]]:
                    "right":"#d8c4a0","start":"#e0d0b0","end":"#e0d0b0","other":"#e8d8b8"},
         "hub":    {"top":"#f5ecd8","bottom":"#d0b888","left":"#e8d8c0",
                    "right":"#dcc8a8","start":"#e4d4b8","end":"#e4d4b8","other":"#e8d8c0"},
+        "purlin": {"top":"#f0e4cc","bottom":"#c0a080","left":"#e8d8b8",
+                   "right":"#d8c4a0","start":"#e0d0b0","end":"#e0d0b0","other":"#e8d8b8"},
+        "footing":{"top":"#e0e0e0","bottom":"#b0b0b0","left":"#d3d3d3",
+                   "right":"#c0c0c0","start":"#c8c8c8","end":"#c8c8c8","other":"#d3d3d3"},
     }
 
 
@@ -290,18 +298,15 @@ def build_structure_scene(
     # ── Solids list ──────────────────────────────────────────────────────────
     solids: list[Solid] = []
 
-    # Footing markers (point-solids; rendered as circles, not prisms)
+    # Concrete Footing Blocks (concrete square piers)
+    FOOTING_HW = (12.0 / 12.0) / 2.0  # 12" x 12" actual footprint
     for i, (px, py) in enumerate(post_xy):
-        s = Solid(role="footing", tag=f"FT{i+1}",
-                  p0=(px, py, Z_GRADE), p1=(px, py, Z_GRADE))
-        s.faces.append(Face(
-            verts=[(px, py, Z_GRADE)],
-            normal=UP,
-            color="#e5e5e5",
-            role="footing",
-            tag=f"FT{i+1}",
+        p0_footing = (px, py, Z_GRADE - 1.5)  # extends 18 inches below grade
+        p1_footing = (px, py, Z_GRADE + 0.33) # rises 4 inches above grade
+        solids.append(_make_prism(
+            p0_footing, p1_footing, FOOTING_HW, FOOTING_HW, UP,
+            pal["footing"], "footing", f"FT{i+1}"
         ))
-        solids.append(s)
 
     # Posts — vertical from grade to post_top (= beam underside)
     for i, (px, py) in enumerate(post_xy):
@@ -345,16 +350,137 @@ def build_structure_scene(
         p1b: V3 = (px2 - ux*(POST_HW + brace_run),  py2 - uy*(POST_HW + brace_run),  Z_POST_TOP)
         solids.append(_make_prism(p0b, p1b, BRACE_HW, BRACE_HD, UP, pal["brace"], "brace", f"Brace{i}b"))
 
+    # Rafter overhang (tails)
+    overhang_in = model.get("overhang_in", 12)
+    overhang_ft = overhang_in / 12.0
+
     # Hip rafters — from rafter seat at post (Z_BEAM_TOP) to hub face (Z_APEX)
+    # They extend past the post seat by overhang_ft in the outward direction
     for i in range(qty):
         px, py = post_xy[i]
         ang = 2*math.pi*i/qty
-        # Width axis of rafter = tangent to the ring (perpendicular to rafter in XY)
         tang: V3 = (math.cos(ang + math.pi/2), math.sin(ang + math.pi/2), 0.0)
+        
+        p1_apex = rafter_apex[i]
+        p_seat = (px, py, Z_BEAM_TOP)
+        
+        # Outward unit direction in XY
+        len_xy = math.sqrt(px*px + py*py)
+        dir_xy_norm = (px / len_xy, py / len_xy)
+        
+        # Slope of hip rafter
+        slope = (Z_APEX - Z_BEAM_TOP) / (len_xy - hub_r)
+        
+        # Extended starting point (at tail end)
+        p0_start = (
+            px + dir_xy_norm[0] * overhang_ft,
+            py + dir_xy_norm[1] * overhang_ft,
+            Z_BEAM_TOP - slope * overhang_ft
+        )
+        
         solids.append(_make_prism(
-            (px, py, Z_BEAM_TOP), rafter_apex[i],
+            p0_start, p1_apex,
             RAFTER_HW, RAFTER_HD, tang,
             pal["rafter"], "rafter", f"R{i+1}",
+        ))
+
+    # Jack rafters (common rafters) — 2 per side, 12 total.
+    # For each beam segment i connecting post i to post i+1:
+    for i in range(qty):
+        px1, py1 = post_xy[i]
+        px2, py2 = post_xy[(i+1) % qty]
+        
+        bx = px2 - px1
+        by = py2 - py1
+        blen = math.sqrt(bx*bx + by*by)
+        if blen < 1e-9:
+            continue
+        ux = bx / blen
+        uy = by / blen
+        
+        # Inward normal of beam segment (pointing toward center)
+        in_x = -uy
+        in_y = ux
+        
+        # Slope of the roof plane perpendicular to the beam
+        mx = (px1 + px2) / 2.0
+        my = (py1 + py2) / 2.0
+        apothem = math.sqrt(mx*mx + my*my)
+        slope_perp = roof_r / (apothem - hub_r * math.cos(math.pi / qty))
+        
+        for fraction, tag_suffix in [(1.0/3.0, "a"), (2.0/3.0, "b")]:
+            # Seat point on the beam
+            sx = px1 + bx * fraction
+            sy = py1 + by * fraction
+            
+            # This jack rafter runs inwards and upwards.
+            # If fraction = 1/3 (closer to post i): intersects hip rafter i
+            # If fraction = 2/3 (closer to post i+1): intersects hip rafter i+1
+            if fraction < 0.5:
+                px_corner, py_corner = px1, py1
+                px_apex, py_apex = rafter_apex[i][0], rafter_apex[i][1]
+            else:
+                px_corner, py_corner = px2, py2
+                px_apex, py_apex = rafter_apex[(i+1)%qty][0], rafter_apex[(i+1)%qty][1]
+                
+            dx_hip = px_apex - px_corner
+            dy_hip = py_apex - py_corner
+            
+            # Solve for intersection in XY:
+            # px_corner + s * dx_hip = sx + t * in_x
+            # py_corner + s * dy_hip = sy + t * in_y
+            # -> dx_hip * s - in_x * t = sx - px_corner
+            # -> dy_hip * s - in_y * t = sy - py_corner
+            det = -dx_hip * in_y + in_x * dy_hip
+            if abs(det) > 1e-6:
+                s_val = (-(sx - px_corner) * in_y + in_x * (sy - py_corner)) / det
+                t_val = (dx_hip * (sy - py_corner) - dy_hip * (sx - px_corner)) / det
+                
+                # Intersection in 3D
+                int_x = px_corner + dx_hip * s_val
+                int_y = py_corner + dy_hip * s_val
+                int_z = Z_BEAM_TOP + t_val * slope_perp
+                pt_int = (int_x, int_y, int_z)
+                
+                # Tail start (extended outward by overhang_ft)
+                p0_start = (
+                    sx - in_x * overhang_ft,
+                    sy - in_y * overhang_ft,
+                    Z_BEAM_TOP - slope_perp * overhang_ft
+                )
+                
+                tang: V3 = (ux, uy, 0.0)
+                
+                solids.append(_make_prism(
+                    p0_start, pt_int,
+                    RAFTER_HW, RAFTER_HD, tang,
+                    pal["rafter"], "rafter", f"Jack{i}{tag_suffix}"
+                ))
+
+    # Purlin Ring — horizontal collar/purlin timbers connecting the hip rafters
+    s_purlin = 0.55
+    Z_PURLIN = Z_BEAM_TOP + roof_r * s_purlin
+    PURLIN_HW = (3.5 / 12.0) / 2.0  # 4x4 actual half-width
+    PURLIN_HD = (3.5 / 12.0) / 2.0
+    
+    purlin_pts: list[V3] = []
+    for i in range(qty):
+        px, py = post_xy[i]
+        ax, ay, az = rafter_apex[i]
+        pt = (
+            px + (ax - px) * s_purlin,
+            py + (ay - py) * s_purlin,
+            Z_PURLIN
+        )
+        purlin_pts.append(pt)
+        
+    for i in range(qty):
+        pt1 = purlin_pts[i]
+        pt2 = purlin_pts[(i+1) % qty]
+        solids.append(_make_prism(
+            pt1, pt2,
+            PURLIN_HW, PURLIN_HD, UP,
+            pal["purlin"], "purlin", f"Purlin{i+1}"
         ))
 
     # Hub — polygonal prism (qty-sided)
@@ -453,6 +579,8 @@ def validate_scene_geometry(scene: Scene) -> None:
     # 2 & 3 — Rafter apex termination at hub face
     rafters = by_role.get("rafter", [])
     for r in rafters:
+        if r.tag.startswith("Jack"):
+            continue  # Jack rafters terminate at hip rafters, not the hub face!
         # p1 is the apex end
         apex = r.p1
         xy_r = v2_radius(apex)
@@ -485,8 +613,7 @@ def validate_scene_geometry(scene: Scene) -> None:
 
     # 6 — All member axis lengths > 0
     for s in scene.solids:
-        if s.role == "footing":
-            continue
+        # Footing is a solid prism now, so it will have length > 0
         length = vlen(vsub(s.p1, s.p0))
         if length < 1e-6:
             raise GeometryError(
@@ -510,7 +637,7 @@ def validate_scene_geometry(scene: Scene) -> None:
     # 8 — Member counts
     expected = {
         "footing": qty, "post": qty, "beam": qty,
-        "rafter": qty, "brace": qty * 2, "hub": 1,
+        "rafter": qty * 3, "brace": qty * 2, "purlin": qty, "hub": 1,
     }
     for role, expected_count in expected.items():
         actual = len(by_role.get(role, []))

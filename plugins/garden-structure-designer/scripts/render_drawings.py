@@ -577,7 +577,7 @@ def render_elevation_view(model: dict, calcs: dict, filename: str) -> list[str]:
         x = cx + r * math.cos(angle)
         opacity = 1.0 if math.sin(angle) >= -0.1 else 0.4
         if abs(x - cx) > 40:
-            direction = -1 if x < cx else 1
+            direction = 1 if x < cx else -1
             # Knee brace body
             bx1, by1 = x, beam_y + 120
             bx2, by2 = x + direction*120, beam_y

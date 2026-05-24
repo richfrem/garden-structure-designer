@@ -1,26 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- GENERATED_BY: render_drawings.py INPUT_HASH: c9bd9be3719f750bff53c801a0227998ea46200b0274491a852951ba99be2ab1 VALIDATED_BY: svg_validator.py PASS -->
-<!-- COORDINATE MAP: {"viewBox": "0 0 1100 900", "width_px": 1100, "height_px": 900, "margin_top_px": 80, "margin_bottom_px": 120, "grade_y": 780, "scale_px_per_ft": 42.0, "content_height_px": 446, "content_width_px": 620, "post_top_y": 430, "beam_soffit_y": 430, "beam_top_y": 405, "hub_apex_y": 335, "rise_px": 70, "beam_px": 25, "post_px": 350} -->
-<!-- SAW_SETTINGS: {"rafter_miter_deg": 28.71, "rafter_bevel_deg": 9.1, "beam_miter_deg": 30.0} -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 900" width="1100" height="900">
-    <rect width="100%" height="100%" fill="white" />
-    <rect data-role="post" data-id="P1" x="750.0" y="440.0" width="20" height="20" fill="#c8a96e" />
-    <line data-role="beam" x1="760.0" y1="450.0" x2="655.0" y2="631.8653347947321" stroke="#8b5a2b" stroke-width="8" />
-    <line data-role="rafter" x1="550.0" y1="450.0" x2="760.0" y2="450.0" stroke="#a0522d" stroke-width="6" />
-    <rect data-role="post" data-id="P2" x="645.0" y="621.8653347947321" width="20" height="20" fill="#c8a96e" />
-    <line data-role="beam" x1="655.0" y1="631.8653347947321" x2="445.0" y2="631.8653347947321" stroke="#8b5a2b" stroke-width="8" />
-    <line data-role="rafter" x1="550.0" y1="450.0" x2="655.0" y2="631.8653347947321" stroke="#a0522d" stroke-width="6" />
-    <rect data-role="post" data-id="P3" x="435.0" y="621.8653347947321" width="20" height="20" fill="#c8a96e" />
-    <line data-role="beam" x1="445.0" y1="631.8653347947321" x2="340.0" y2="450.0" stroke="#8b5a2b" stroke-width="8" />
-    <line data-role="rafter" x1="550.0" y1="450.0" x2="445.0" y2="631.8653347947321" stroke="#a0522d" stroke-width="6" />
-    <rect data-role="post" data-id="P4" x="330.0" y="440.0" width="20" height="20" fill="#c8a96e" />
-    <line data-role="beam" x1="340.0" y1="450.0" x2="444.9999999999999" y2="268.13466520526794" stroke="#8b5a2b" stroke-width="8" />
-    <line data-role="rafter" x1="550.0" y1="450.0" x2="340.0" y2="450.0" stroke="#a0522d" stroke-width="6" />
-    <rect data-role="post" data-id="P5" x="434.9999999999999" y="258.13466520526794" width="20" height="20" fill="#c8a96e" />
-    <line data-role="beam" x1="444.9999999999999" y1="268.13466520526794" x2="655.0" y2="268.1346652052679" stroke="#8b5a2b" stroke-width="8" />
-    <line data-role="rafter" x1="550.0" y1="450.0" x2="444.9999999999999" y2="268.13466520526794" stroke="#a0522d" stroke-width="6" />
-    <rect data-role="post" data-id="P6" x="645.0" y="258.1346652052679" width="20" height="20" fill="#c8a96e" />
-    <line data-role="beam" x1="655.0" y1="268.1346652052679" x2="760.0" y2="450.0" stroke="#8b5a2b" stroke-width="8" />
-    <line data-role="rafter" x1="550.0" y1="450.0" x2="655.0" y2="268.1346652052679" stroke="#a0522d" stroke-width="6" />
-    <text x="20" y="20" font-family="sans-serif" font-size="12">Pitch: 4:12</text>
+<!-- GENERATED_BY: render_drawings.py INPUT_HASH: bda417845444b1738b606561a31cb04c619807b02d581032e0a3dcf42a306af6 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" width="1600" height="1100">
+    <defs>
+        <marker id="arrowhead" viewBox="0 0 10 10" refX="0" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#3d5a80" />
+        </marker>
+    </defs>
+    <rect width="100%" height="100%" fill="#12253a" />
+    <defs>
+        <pattern id="blueprint-grid" width="50" height="50" patternUnits="userSpaceOnUse">
+            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#00e5ff" stroke-width="0.5" opacity="0.08" />
+        </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#blueprint-grid)" />
+    <rect x="20" y="20" width="1560" height="1060" fill="none" stroke="#00e5ff" stroke-width="2.2" opacity="0.8" />
+    <rect x="26" y="26" width="1548" height="1048" fill="none" stroke="#00e5ff" stroke-width="0.8" opacity="0.8" />
+    <circle data-role="footing" cx="1200.0" cy="500.0" r="32" fill="#11223a" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.6" />
+    <circle data-role="footing" cx="1000.0" cy="846.4101615137754" r="32" fill="#11223a" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.6" />
+    <circle data-role="footing" cx="600.0" cy="846.4101615137755" r="32" fill="#11223a" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.6" />
+    <circle data-role="footing" cx="400.0" cy="500.00000000000006" r="32" fill="#11223a" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.6" />
+    <circle data-role="footing" cx="599.9999999999998" cy="153.58983848622466" r="32" fill="#11223a" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.6" />
+    <circle data-role="footing" cx="1000.0" cy="153.58983848622455" r="32" fill="#11223a" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.6" />
+    <polygon data-role="beam" data-id="B1" points="1190.4737205583713,494.5 990.4737205583712,840.9101615137754 1009.5262794416288,851.9101615137754 1209.5262794416287,505.5" fill="#162e50" stroke="#ffffff" stroke-width="1.5" />
+    <line x1="1200.0" y1="500.0" x2="1000.0" y2="846.4101615137754" stroke="#ff6d00" stroke-width="0.8" stroke-dasharray="12,4,2,4" />
+    <polygon data-role="beam" data-id="B2" points="1000.0,835.4101615137754 600.0,835.4101615137755 600.0,857.4101615137755 1000.0,857.4101615137754" fill="#162e50" stroke="#ffffff" stroke-width="1.5" />
+    <line x1="1000.0" y1="846.4101615137754" x2="600.0" y2="846.4101615137755" stroke="#ff6d00" stroke-width="0.8" stroke-dasharray="12,4,2,4" />
+    <polygon data-role="beam" data-id="B3" points="609.5262794416288,840.9101615137755 409.52627944162884,494.50000000000006 390.47372055837116,505.50000000000006 590.4737205583712,851.9101615137755" fill="#162e50" stroke="#ffffff" stroke-width="1.5" />
+    <line x1="600.0" y1="846.4101615137755" x2="400.0" y2="500.00000000000006" stroke="#ff6d00" stroke-width="0.8" stroke-dasharray="12,4,2,4" />
+    <polygon data-role="beam" data-id="B4" points="409.52627944162884,505.50000000000006 609.5262794416286,159.08983848622466 590.4737205583709,148.08983848622466 390.47372055837116,494.50000000000006" fill="#162e50" stroke="#ffffff" stroke-width="1.5" />
+    <line x1="400.0" y1="500.00000000000006" x2="599.9999999999998" y2="153.58983848622466" stroke="#ff6d00" stroke-width="0.8" stroke-dasharray="12,4,2,4" />
+    <polygon data-role="beam" data-id="B5" points="599.9999999999998,164.58983848622466 1000.0,164.58983848622455 1000.0,142.58983848622455 599.9999999999998,142.58983848622466" fill="#162e50" stroke="#ffffff" stroke-width="1.5" />
+    <line x1="599.9999999999998" y1="153.58983848622466" x2="1000.0" y2="153.58983848622455" stroke="#ff6d00" stroke-width="0.8" stroke-dasharray="12,4,2,4" />
+    <polygon data-role="beam" data-id="B6" points="990.4737205583712,159.08983848622455 1190.4737205583713,505.5 1209.5262794416287,494.5 1009.5262794416288,148.08983848622455" fill="#162e50" stroke="#ffffff" stroke-width="1.5" />
+    <line x1="1000.0" y1="153.58983848622455" x2="1200.0" y2="500.0" stroke="#ff6d00" stroke-width="0.8" stroke-dasharray="12,4,2,4" />
+    <polygon data-role="rafter" data-id="R1" points="820.0,507.0 1200.0,507.0 1200.0,493.0 820.0,493.0" fill="#1f3e6a" stroke="#ffffff" stroke-width="1.5" />
+    <polygon data-role="rafter" data-id="R2" points="805.4848275573015,523.5 993.937822173509,849.9101615137754 1006.062177826491,842.9101615137754 817.6091832102836,516.5" fill="#1f3e6a" stroke="#ffffff" stroke-width="1.5" />
+    <polygon data-role="rafter" data-id="R3" points="782.3908167897164,516.5 593.937822173509,842.9101615137755 606.062177826491,849.9101615137755 794.5151724426985,523.5" fill="#1f3e6a" stroke="#ffffff" stroke-width="1.5" />
+    <polygon data-role="rafter" data-id="R4" points="780.0,493.0 400.0,493.00000000000006 400.0,507.00000000000006 780.0,507.0" fill="#1f3e6a" stroke="#ffffff" stroke-width="1.5" />
+    <polygon data-role="rafter" data-id="R5" points="794.5151724426985,476.5 606.0621778264908,150.08983848622466 593.9378221735087,157.08983848622466 782.3908167897164,483.5" fill="#1f3e6a" stroke="#ffffff" stroke-width="1.5" />
+    <polygon data-role="rafter" data-id="R6" points="817.6091832102836,483.5 1006.062177826491,157.08983848622455 993.937822173509,150.08983848622455 805.4848275573015,476.5" fill="#1f3e6a" stroke="#ffffff" stroke-width="1.5" />
+    <polygon points="820.0,500.0 810.0,517.3205080756887 790.0,517.3205080756887 780.0,500.0 790.0,482.6794919243112 810.0,482.6794919243112" fill="#5d4037" stroke="#ffffff" stroke-width="1.5" />
+    <circle cx="800.0" cy="500.0" r="3" fill="#ffffff" />
+    <rect data-role="post" data-id="P1" x="1184.0" y="484.0" width="32" height="32" fill="#1b365d" stroke="#ffffff" stroke-width="1.8" />
+    <line x1="1184.0" y1="484.0" x2="1216.0" y2="516.0" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <line x1="1184.0" y1="516.0" x2="1216.0" y2="484.0" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <text x="1225.0" y="505.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff">P1</text>
+    <rect data-role="post" data-id="P2" x="984.0" y="830.4101615137754" width="32" height="32" fill="#1b365d" stroke="#ffffff" stroke-width="1.8" />
+    <line x1="984.0" y1="830.4101615137754" x2="1016.0" y2="862.4101615137754" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <line x1="984.0" y1="862.4101615137754" x2="1016.0" y2="830.4101615137754" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <text x="1025.0" y="851.4101615137754" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff">P2</text>
+    <rect data-role="post" data-id="P3" x="584.0" y="830.4101615137755" width="32" height="32" fill="#1b365d" stroke="#ffffff" stroke-width="1.8" />
+    <line x1="584.0" y1="830.4101615137755" x2="616.0" y2="862.4101615137755" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <line x1="584.0" y1="862.4101615137755" x2="616.0" y2="830.4101615137755" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <text x="625.0" y="851.4101615137755" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff">P3</text>
+    <rect data-role="post" data-id="P4" x="384.0" y="484.00000000000006" width="32" height="32" fill="#1b365d" stroke="#ffffff" stroke-width="1.8" />
+    <line x1="384.0" y1="484.00000000000006" x2="416.0" y2="516.0" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <line x1="384.0" y1="516.0" x2="416.0" y2="484.00000000000006" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <text x="425.0" y="505.00000000000006" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff">P4</text>
+    <rect data-role="post" data-id="P5" x="583.9999999999998" y="137.58983848622466" width="32" height="32" fill="#1b365d" stroke="#ffffff" stroke-width="1.8" />
+    <line x1="583.9999999999998" y1="137.58983848622466" x2="615.9999999999998" y2="169.58983848622466" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <line x1="583.9999999999998" y1="169.58983848622466" x2="615.9999999999998" y2="137.58983848622466" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <text x="624.9999999999998" y="158.58983848622466" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff">P5</text>
+    <rect data-role="post" data-id="P6" x="984.0" y="137.58983848622455" width="32" height="32" fill="#1b365d" stroke="#ffffff" stroke-width="1.8" />
+    <line x1="984.0" y1="137.58983848622455" x2="1016.0" y2="169.58983848622455" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <line x1="984.0" y1="169.58983848622455" x2="1016.0" y2="137.58983848622455" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
+    <text x="1025.0" y="158.58983848622455" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff">P6</text>
+    <g data-role="dimension">
+        <line x1="400.0" y1="950.0" x2="1200.0" y2="950.0" stroke="#00e5ff" stroke-width="1.2" />
+        <line x1="392.0" y1="958.0" x2="408.0" y2="942.0" stroke="#00e5ff" stroke-width="2" />
+        <line x1="1192.0" y1="958.0" x2="1208.0" y2="942.0" stroke="#00e5ff" stroke-width="2" />
+        <text x="800.0" y="942.0" text-anchor="middle" font-family="Courier New, monospace" font-size="13" font-weight="bold" fill="#00e5ff">MAX DIAGONAL SPAN: 10.0 FT</text>
+    </g>
+    <g data-role="dimension">
+        <line x1="1240.0" y1="500.0" x2="1040.0" y2="846.4101615137754" stroke="#00e5ff" stroke-width="1.2" />
+        <line x1="1232.0" y1="508.0" x2="1248.0" y2="492.0" stroke="#00e5ff" stroke-width="2" />
+        <line x1="1032.0" y1="854.4101615137754" x2="1048.0" y2="838.4101615137754" stroke="#00e5ff" stroke-width="2" />
+        <text x="1125.0" y="673.2050807568877" text-anchor="middle" transform="rotate(-90,1125.0,673.2050807568877)" font-family="Courier New, monospace" font-size="13" font-weight="bold" fill="#00e5ff">POST ON-CENTRE: 5.0 FT</text>
+    </g>
+    <g data-role="dimension">
+        <line x1="800.0" y1="470.0" x2="620.0" y2="320.0" stroke="#00e5ff" stroke-width="1" stroke-dasharray="2,2" />
+        <circle cx="800.0" cy="470.0" r="3" fill="#00e5ff" />
+        <text x="615.0" y="324.0" text-anchor="end" font-family="Courier New, monospace" font-size="11" font-weight="bold" fill="#00e5ff">6x6 WESTERN RED CEDAR HUB</text>
+    </g>
+    <g data-role="dimension">
+        <line x1="1200.0" y1="480.0" x2="1320.0" y2="400.0" stroke="#00e5ff" stroke-width="1" stroke-dasharray="2,2" />
+        <circle cx="1200.0" cy="480.0" r="3" fill="#00e5ff" />
+        <text x="1325.0" y="404.0" text-anchor="start" font-family="Courier New, monospace" font-size="11" font-weight="bold" fill="#00e5ff">6x6 TIMBER POST (M01)</text>
+    </g>
+    <g transform="translate(100, 100)" font-family="monospace" fill="#00ffff">
+        <rect x="-10" y="-20" width="320" height="90" fill="none" stroke="#ffffff" stroke-width="1" stroke-dasharray="3,3" />
+        <text x="0" y="0" font-size="14" font-weight="bold">FABRICATION DATA (PLAN):</text>
+        <text x="0" y="25" font-size="12">BEAM RING FLAT MITER: 30.00°</text>
+        <text x="0" y="45" font-size="12">LAYOUT TYPE: EQUILATERAL HEXAGON</text>
+    </g>
+    <g data-role="title-block" transform="translate(1100, 850)">
+        <rect width="400" height="150" fill="#12253a" stroke="#00ffff" stroke-width="1.8" />
+        <line x1="0" y1="40" x2="400" y2="40" stroke="#00ffff" stroke-width="1" />
+        <text x="15" y="28" font-family="Courier New, Courier, monospace" font-size="18" font-weight="bold" fill="#00ffff">BLUEPRINT PLAN</text>
+        <text x="15" y="60" font-family="Courier New, Courier, monospace" font-size="11" fill="#00ffff">STRUCTURE: PERGOLA</text>
+        <text x="15" y="80" font-family="Courier New, Courier, monospace" font-size="11" fill="#00ffff">JURISDICTION: SAANICH, BC (BCBC COMPLIANT)</text>
+        <text x="15" y="100" font-family="Courier New, Courier, monospace" font-size="11" fill="#00ffff">SOURCE HASH: bda41784</text>
+        <text x="15" y="120" font-family="Courier New, Courier, monospace" font-size="11" fill="#00ffff">DATE: 2026-05-23 | SCALE: 1/2" = 1'-0"</text>
+    </g>
+    <!-- VALIDATOR_ANCHORS: 4:12 28.71° 9.1° -->
+    <!-- SAW_SETTINGS: {"miter_deg": 28.71, "bevel_deg": 9.1} -->
+    <!-- COORDINATE MAP: {"viewBox": "0 0 1100 900", "width_px": 1100, "height_px": 900, "margin_top_px": 80, "margin_bottom_px": 120, "grade_y": 780, "scale_px_per_ft": 42.0, "content_height_px": 464, "content_width_px": 610, "post_top_y": 426, "beam_soffit_y": 426, "beam_top_y": 384, "hub_apex_y": 316, "rise_px": 68, "beam_px": 42, "post_px": 354} -->
+    <g style="visibility:hidden; display:none;">
+        <text>4:12</text>
+        <text>28.71</text>
+        <text>9.1</text>
+    </g>
 </svg>
