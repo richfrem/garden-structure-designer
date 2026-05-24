@@ -555,6 +555,9 @@ def render_elevation_view(model: dict, calcs: dict, filename: str) -> list[str]:
             c = vcent(face.verts)
             # Depth: smaller Y is closer (depth = -c[1])
             depth = -c[1]
+            # Role-based depth bias to ensure roof members are layered on top of support elements
+            if face.role in ("rafter", "purlin", "hub"):
+                depth += 20.0
             face_entries.append((depth, face, solid))
 
     # Sort back-to-front (lowest depth first)
@@ -716,6 +719,9 @@ def render_perspective_view(model: dict, calcs: dict, filename: str) -> list[str
             # Centroid depth
             c = vcent(face.verts)
             depth = c[0]*CAM[0] + c[1]*CAM[1] + c[2]*CAM[2]
+            # Role-based depth bias to ensure roof members are layered on top of support elements
+            if face.role in ("rafter", "purlin", "hub"):
+                depth += 20.0
             face_entries.append((depth, face, solid, opacity))
 
     # Sort back-to-front (painter's algorithm)
