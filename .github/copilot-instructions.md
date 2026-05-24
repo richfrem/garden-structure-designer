@@ -99,6 +99,15 @@ When updating an existing skill, agent, or document, only modify the specific se
 ### 4. Goal-Driven Execution
 The ultimate goal is generating a professional-grade structural construction PDF packet. Ensure that all validations (e.g., `validation-agent` red-team physics check) pass completely before proceeding to the document compilation stage.
 
+### 5. Self-Evolution & Error Recovery
+When a tool, script, or verification step fails, treat it as an evolution event as defined in `.agent/rules/self-evolution-policy.md`. Keep edits within boundaries, classify the failure tier (Gap, Failure, Regression), limit fixes to a maximum of 3 attempts, and record every patch in `evolution-log.md`.
+
+### 6. Test-Driven Development (TDD)
+Enforce the strict iron law from `.agent/rules/test-driven-development.md`: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST. Never write implementation code before a failing unit or integration test exists. Place tests in `plugins/<plugin>/tests/` and run the suite before committing.
+
+### 7. Data-Driven & Declarative Architecture
+Enforce the strict engineering policy from `.agent/rules/data-driven-declarative.md`: all CAD engine dimensions, framing member counts, offsets, scales, and fabrication cut lists must dynamically resolve from staging `structure.json`. Hardcoding geometry layouts, viewport scales, and silent fallback defaults (e.g. `.get(key, default)` defaults) in python scripts is strictly prohibited. If configurations are missing, fail-closed immediately.
+
 ---
 
 ## Updated Coding Rules
@@ -109,6 +118,9 @@ The ultimate goal is generating a professional-grade structural construction PDF
 - **Test-cut warnings**: Always append physical "test-cut" warnings on compound cuts for carpenters.
 - **Jurisdiction-aware**: Always capture user location (e.g., BC Building Code) before any structural computation.
 - **Platform agnostic**: No external framework dependencies; must work across Claude Cowork, Antigravity, Gemini CLI, Copilot CLI.
+- **Mandatory Static Scan Guard**: Run `hardcode_guard.py` before any layout render to verify that no silent defaults with literal numbers or scale hardcodes exist.
+- **Browser Visual Verification**: Generate raster PNG screenshots using Chromium via Playwright, log explicit `[SMOKE]` milestones, and run visual heuristics (hub density, blank sheet, corner clutter). A package is ONLY valid if the browser smoke test passes.
+- **Computer Vision Topology Audit**: Extract dynamically expected structural elements (posts, beams, rafters) from `structure.json` and validate them against raster drawing shapes using OpenCV Canny edges and Hough line transforms to prevent empty/corrupted views.
 
 ---
 
@@ -224,6 +236,66 @@ If the adversarial report (`context/staging/drawing-red-team-report.json`) does 
 
 ---
 
+## 🛡️ Structure-Generic Visual Validation (Uncompressed Rules)
+
+The verification system MUST NOT assume a specific structure type (e.g. hex gazebo, hub-based roof, etc.). All validation must be dynamically derived from `structure.json`.
+
+### 1. Derive Expected Elements From structure.json
+The agent MUST extract expected components dynamically:
+- **Posts**: `expected_posts = structure.layout.post_count`
+- **Beams**: expected_beams = number of perimeter edges (usually equal to post_count, but must be derived from layout shape).
+- **Rafters**: `expected_rafters = structure.roof.primary_rafters.count`
+- **Secondary Members (optional)**: if enabled: `jack_rafters`, `purlin_ring`
+- **Hub (conditional)**:
+  ```
+  IF structure.hub.type exists AND is not "none":
+      expected_hubs = 1
+  ELSE:
+      expected_hubs = 0
+  ```
+
+### 2. Do NOT Assume Structural Type
+The agent MUST NOT assume:
+- hexagonal layout
+- central hub exists
+- rafters converge to a point
+- equal number of rafters + posts
+
+Instead, it MUST:
+- read `structure.structure.shape`
+- read `structure.roof.type`
+- adapt validation rules accordingly
+
+### 3. Conditional Validation Rules
+- **If hub exists**: rafters must terminate at hub.
+- **If NO hub**: rafters must terminate according to roof type (ridge beam, opposite beam, or open span).
+- **If purlins enabled**: expect horizontal ring members and validate their presence visually.
+- **If bracing enabled**: braces must connect post to beam and be present per `count_per_post`.
+
+### 4. Layout-Driven Geometry Expectations
+The agent MUST infer layout geometry:
+- **Hexagon**: 6 posts, circular symmetry.
+- **Square**: 4 posts, orthogonal alignment.
+- **Rectangle**: uneven spans, different beam lengths.
+Validation MUST adapt dynamically.
+
+### 5. Visual Topology Rule
+The rendered image MUST satisfy:
+ALL connections in `structure.json` must appear visually:
+- post to beam
+- beam to rafter
+- rafter to hub OR other termination
+If topology differs then FAIL.
+
+### 6. Forbidden Hardcoding
+The agent MUST NOT:
+- assume 6 posts
+- assume hub exists
+- assume radial rafters
+- assume symmetry unless defined
+
+---
+
 ## Skill/Component Standards
 - **Agents** live in `plugins/<plugin-name>/agents/<name>/AGENT.md` with YAML frontmatter (`name`, `description`, `allowed-tools`).
 - **Skills** live in `plugins/<plugin-name>/skills/<name>/SKILL.md` with the same frontmatter pattern.
@@ -235,8 +307,18 @@ If the adversarial report (`context/staging/drawing-red-team-report.json`) does 
 A garden-structure-designer task is **not complete** merely because Markdown files, render prompts, or photorealistic images were updated.
 
 The authoritative construction package consists of validated deterministic artifacts:
-- `context/staging/design-spec.json` / `structural-model.json` / `geometry-calculations.json`
-- `outputs/*.svg` and `outputs/shop-blueprint/SB01-cut-list.json`
-- `outputs/quality-dashboard.md` and `outputs/run-insights.json`
+```
+context/staging/design-spec.json          context/staging/structural-model.json
+context/staging/geometry-calculations.json
+outputs/*.svg                              outputs/shop-blueprint/SB01-cut-list.json
+outputs/quality-dashboard.md              outputs/run-insights.json
+```
 
-All geometry, dimensions, angles, and cut lengths must trace back to JSON/SVG artifacts generated by scripts. Photorealistic images are presentation references only. Before claiming success, report: artifacts regenerated or revalidated · validators run · remaining warnings · status: PASS / PARTIAL / BLOCKED / DRAFT ONLY.
+All geometry, dimensions, angles, cut lengths, and validation claims must trace back to JSON/SVG artifacts generated or validated by scripts. Photorealistic images are presentation references only.
+
+Before claiming success, agents must report:
+- deterministic artifacts regenerated or revalidated;
+- validators run and their exit results;
+- remaining warnings;
+- status: **PASS**, **PARTIAL**, **BLOCKED**, or **DRAFT ONLY**.
+

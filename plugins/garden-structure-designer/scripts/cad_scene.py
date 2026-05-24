@@ -328,10 +328,11 @@ def _build_scene_legacy(
     rafter_full_d = RAFTER_HD * 2.0
     hub_r = max(0.60, rafter_full_w + rafter_full_d)
 
+    hub_r_face = hub_r * math.cos(math.pi / qty)
     # ── Rafter apex termination nodes (exact hub polygon face) ───────────────
     rafter_apex: list[V3] = [
-        (hub_r * math.cos(2*math.pi*i/qty),
-         hub_r * math.sin(2*math.pi*i/qty),
+        (hub_r_face * math.cos(2*math.pi*i/qty),
+         hub_r_face * math.sin(2*math.pi*i/qty),
          Z_APEX)
         for i in range(qty)
     ]
@@ -563,7 +564,7 @@ def _build_scene_legacy(
             pt = (
                 px + (ax - px) * s_purlin,
                 py + (ay - py) * s_purlin,
-                Z_PURLIN + dy_vertical
+                Z_PURLIN + dy_vertical + PURLIN_HD
             )
             purlin_pts.append(pt)
         
@@ -578,16 +579,16 @@ def _build_scene_legacy(
 
         # Hub — polygonal prism (qty-sided)
         # Substantial hanging pendant matching the target image: extends 1.25 ft below apex
-    hub_ztop = Z_APEX + RAFTER_HD + 0.15
-    hub_zbot = Z_APEX - 1.25
+    hub_ztop = Z_APEX + dy_vertical
+    hub_zbot = Z_APEX - 1.2 * dy_vertical
     C_HUB = pal["hub"]
 
     ring_top: list[V3] = [
-        (hub_r*math.cos(2*math.pi*i/qty), hub_r*math.sin(2*math.pi*i/qty), hub_ztop)
+        (hub_r*math.cos(2*math.pi*(i+0.5)/qty), hub_r*math.sin(2*math.pi*(i+0.5)/qty), hub_ztop)
         for i in range(qty)
     ]
     ring_bot: list[V3] = [
-        (hub_r*math.cos(2*math.pi*i/qty), hub_r*math.sin(2*math.pi*i/qty), hub_zbot)
+        (hub_r*math.cos(2*math.pi*(i+0.5)/qty), hub_r*math.sin(2*math.pi*(i+0.5)/qty), hub_zbot)
         for i in range(qty)
     ]
 
@@ -597,7 +598,7 @@ def _build_scene_legacy(
     hub_solid.faces.append(Face(list(reversed(ring_bot)), vscl(UP, -1.0), C_HUB["bottom"], "hub", "HUB"))
     for i in range(qty):
         j = (i+1) % qty
-        mid_ang = 2*math.pi*(i+0.5)/qty
+        mid_ang = 2*math.pi*(i+1.0)/qty
         sn: V3 = (math.cos(mid_ang), math.sin(mid_ang), 0.0)
         shade = C_HUB["left"] if vdot(sn, (0.866, 0.5, 0.0)) > 0 else C_HUB["right"]
         hub_solid.faces.append(Face(
@@ -698,10 +699,11 @@ def _build_scene_from_structure(
         for i in range(qty)
     ]
 
+    hub_r_face = hub_r * math.cos(math.pi / qty)
     # ── Rafter apex termination nodes (exact hub polygon face) ───────────────
     rafter_apex: list[V3] = [
-        (hub_r * math.cos(2*math.pi*i/qty),
-         hub_r * math.sin(2*math.pi*i/qty),
+        (hub_r_face * math.cos(2*math.pi*i/qty),
+         hub_r_face * math.sin(2*math.pi*i/qty),
          Z_APEX)
         for i in range(qty)
     ]
@@ -882,7 +884,7 @@ def _build_scene_from_structure(
         pt = (
             px + (ax - px) * s_purlin,
             py + (ay - py) * s_purlin,
-            Z_PURLIN + dy_vertical
+            Z_PURLIN + dy_vertical + PURLIN_HD
         )
         purlin_pts.append(pt)
 
@@ -895,17 +897,22 @@ def _build_scene_from_structure(
             pal["purlin"], "purlin", f"Purlin{i+1}"
         ))
 
+    # Calculate dy_vertical for hip rafter (reuse first post slope)
+    len_xy_ex = math.sqrt(post_xy[0][0]**2 + post_xy[0][1]**2)
+    slope_ex = (Z_APEX - Z_BEAM_TOP) / (len_xy_ex - hub_r)
+    dy_vertical_hip = RAFTER_HD / math.cos(math.atan(slope_ex))
+
     # Hub — polygonal prism (qty-sided)
-    hub_ztop = Z_APEX + RAFTER_HD + hub_clearance_ft
-    hub_zbot = Z_APEX - hub_height_ft
+    hub_ztop = Z_APEX + dy_vertical_hip
+    hub_zbot = Z_APEX - 1.2 * dy_vertical_hip
     C_HUB = pal["hub"]
 
     ring_top: list[V3] = [
-        (hub_r*math.cos(2*math.pi*i/qty), hub_r*math.sin(2*math.pi*i/qty), hub_ztop)
+        (hub_r*math.cos(2*math.pi*(i+0.5)/qty), hub_r*math.sin(2*math.pi*(i+0.5)/qty), hub_ztop)
         for i in range(qty)
     ]
     ring_bot: list[V3] = [
-        (hub_r*math.cos(2*math.pi*i/qty), hub_r*math.sin(2*math.pi*i/qty), hub_zbot)
+        (hub_r*math.cos(2*math.pi*(i+0.5)/qty), hub_r*math.sin(2*math.pi*(i+0.5)/qty), hub_zbot)
         for i in range(qty)
     ]
 
@@ -915,7 +922,7 @@ def _build_scene_from_structure(
     hub_solid.faces.append(Face(list(reversed(ring_bot)), vscl(UP, -1.0), C_HUB["bottom"], "hub", "HUB"))
     for i in range(qty):
         j = (i+1) % qty
-        mid_ang = 2*math.pi*(i+0.5)/qty
+        mid_ang = 2*math.pi*(i+1.0)/qty
         sn: V3 = (math.cos(mid_ang), math.sin(mid_ang), 0.0)
         shade = C_HUB["left"] if vdot(sn, (0.866, 0.5, 0.0)) > 0 else C_HUB["right"]
         hub_solid.faces.append(Face(
@@ -989,21 +996,22 @@ def validate_scene_geometry(scene: Scene) -> None:
 
     # 2 & 3 — Rafter apex termination at hub face
     rafters = by_role.get("rafter", [])
+    hub_r_face = scene.hub_r * math.cos(math.pi / qty)
     for r in rafters:
         if r.tag.startswith("Jack"):
             continue  # Jack rafters terminate at hip rafters, not the hub face!
         # p1 is the apex end
         apex = r.p1
         xy_r = v2_radius(apex)
-        if xy_r < scene.hub_r - _FT_TOL:
+        if xy_r < hub_r_face - _FT_TOL:
             raise GeometryError(
                 f"Invariant 2/3 violated: rafter {r.tag} apex XY radius {xy_r:.4f} ft "
-                f"< hub_r {scene.hub_r:.4f} ft  (rafter penetrates hub)"
+                f"< hub_r_face {hub_r_face:.4f} ft  (rafter penetrates hub)"
             )
-        if xy_r > scene.hub_r + 0.2:   # 2.4" max overshoot tolerance
+        if xy_r > hub_r_face + 0.2:   # 2.4" max overshoot tolerance
             raise GeometryError(
                 f"Invariant 2 violated: rafter {r.tag} apex XY radius {xy_r:.4f} ft "
-                f"> hub_r {scene.hub_r:.4f} + 0.2  (rafter overshoots hub face)"
+                f"> hub_r_face {hub_r_face:.4f} + 0.2  (rafter overshoots hub face)"
             )
 
     # 4 & 5 — Brace endpoints

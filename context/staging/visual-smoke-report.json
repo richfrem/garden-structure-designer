@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/visual-smoke-report/1.0",
-  "generated_at": "2026-05-24T07:49:33.335074+00:00",
+  "generated_at": "2026-05-24T15:48:31.476196+00:00",
   "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
   "structure_path": "context/staging/structure.json",
   "svg_dir": "outputs",
@@ -16,12 +16,26 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.15226041666666668,
-        "bbox_fill_ratio": 0.9439171875,
+        "non_bg_ratio": 0.184614453125,
+        "bbox_fill_ratio": 0.95239296875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.058150510204081636
+        "expected_topology": {
+          "posts": 6,
+          "beams": 6,
+          "rafters": 6,
+          "hub": 1,
+          "braces": 12
+        },
+        "detected_components": {
+          "posts": 12,
+          "beams": 61,
+          "rafters": 122
+        },
+        "cv_content_ratio": 1.0,
+        "cv_hub_density": 2501,
+        "hub_edge_density": 0.06758928571428571
       },
       "failures": [],
       "warnings": [],
@@ -43,11 +57,25 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.16285,
-        "bbox_fill_ratio": 0.9439171875,
-        "top_left_clustered": false
+        "non_bg_ratio": 0.19980703125,
+        "bbox_fill_ratio": 0.95239296875,
+        "top_left_clustered": false,
+        "expected_topology": {
+          "posts": 6,
+          "beams": 6,
+          "rafters": 6,
+          "hub": 1,
+          "braces": 12
+        },
+        "detected_components": {
+          "posts": 34,
+          "beams": 55,
+          "rafters": 71
+        },
+        "cv_content_ratio": 1.0,
+        "cv_hub_density": 2029
       },
       "failures": [],
       "warnings": [],
@@ -60,12 +88,26 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.20086770833333334,
-        "bbox_fill_ratio": 0.9439171875,
+        "non_bg_ratio": 0.256480859375,
+        "bbox_fill_ratio": 0.95239296875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.11072704081632653
+        "expected_topology": {
+          "posts": 6,
+          "beams": 6,
+          "rafters": 6,
+          "hub": 1,
+          "braces": 12
+        },
+        "detected_components": {
+          "posts": 31,
+          "beams": 69,
+          "rafters": 118
+        },
+        "cv_content_ratio": 1.0,
+        "cv_hub_density": 2515,
+        "hub_edge_density": 0.1082780612244898
       },
       "failures": [],
       "warnings": [],
@@ -87,12 +129,26 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.20098020833333333,
-        "bbox_fill_ratio": 0.9439171875,
+        "non_bg_ratio": 0.256480859375,
+        "bbox_fill_ratio": 0.95239296875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.11072704081632653
+        "expected_topology": {
+          "posts": 6,
+          "beams": 6,
+          "rafters": 6,
+          "hub": 1,
+          "braces": 12
+        },
+        "detected_components": {
+          "posts": 31,
+          "beams": 69,
+          "rafters": 118
+        },
+        "cv_content_ratio": 1.0,
+        "cv_hub_density": 2515,
+        "hub_edge_density": 0.1082780612244898
       },
       "failures": [],
       "warnings": [],
@@ -114,12 +170,26 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.156746875,
-        "bbox_fill_ratio": 0.9467546875,
+        "non_bg_ratio": 0.1843625,
+        "bbox_fill_ratio": 0.95239296875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.07139030612244898
+        "expected_topology": {
+          "posts": 6,
+          "beams": 6,
+          "rafters": 6,
+          "hub": 1,
+          "braces": 12
+        },
+        "detected_components": {
+          "posts": 11,
+          "beams": 62,
+          "rafters": 117
+        },
+        "cv_content_ratio": 1.0,
+        "cv_hub_density": 2491,
+        "hub_edge_density": 0.06551020408163265
       },
       "failures": [],
       "warnings": [],
@@ -141,11 +211,25 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.10009583333333333,
-        "bbox_fill_ratio": 0.9467546875,
-        "top_left_clustered": false
+        "non_bg_ratio": 0.107391796875,
+        "bbox_fill_ratio": 0.95239296875,
+        "top_left_clustered": false,
+        "expected_topology": {
+          "posts": 6,
+          "beams": 6,
+          "rafters": 6,
+          "hub": 1,
+          "braces": 12
+        },
+        "detected_components": {
+          "posts": 27,
+          "beams": 60,
+          "rafters": 68
+        },
+        "cv_content_ratio": 1.0,
+        "cv_hub_density": 2164
       },
       "failures": [],
       "warnings": [],
@@ -158,12 +242,26 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.153309375,
-        "bbox_fill_ratio": 0.9467546875,
+        "non_bg_ratio": 0.184692578125,
+        "bbox_fill_ratio": 0.95239296875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.11071428571428571
+        "expected_topology": {
+          "posts": 6,
+          "beams": 6,
+          "rafters": 6,
+          "hub": 1,
+          "braces": 12
+        },
+        "detected_components": {
+          "posts": 34,
+          "beams": 63,
+          "rafters": 128
+        },
+        "cv_content_ratio": 1.0,
+        "cv_hub_density": 2312,
+        "hub_edge_density": 0.10755102040816326
       },
       "failures": [],
       "warnings": [],
@@ -185,11 +283,25 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.10128489583333333,
-        "bbox_fill_ratio": 0.9467546875,
-        "top_left_clustered": false
+        "non_bg_ratio": 0.097366796875,
+        "bbox_fill_ratio": 0.95239296875,
+        "top_left_clustered": false,
+        "expected_topology": {
+          "posts": 6,
+          "beams": 6,
+          "rafters": 6,
+          "hub": 1,
+          "braces": 12
+        },
+        "detected_components": {
+          "posts": 14,
+          "beams": 125,
+          "rafters": 13
+        },
+        "cv_content_ratio": 1.0,
+        "cv_hub_density": 2066
       },
       "failures": [],
       "warnings": [],

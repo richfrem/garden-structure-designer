@@ -1,0 +1,1 @@
+../../../scripts/hardcode_guard.py

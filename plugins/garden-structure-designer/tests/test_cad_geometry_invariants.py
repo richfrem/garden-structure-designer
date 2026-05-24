@@ -103,16 +103,18 @@ def test_post_top_equals_beam_bottom(scene):
 
 def test_rafters_terminate_at_hub_radius(scene, solids_by_role):
     """
-    Each rafter p1 (apex end) must have XY radius == hub_r within 1/10".
+    Each rafter p1 (apex end) must have XY radius == hub_r_face within 1/10".
     """
+    import math
     hub_r = scene.hub_r
+    hub_r_face = hub_r * math.cos(math.pi / scene.qty)
     for r in solids_by_role.get("rafter", []):
         if r.tag.startswith("Jack"):
             continue  # Jack rafters terminate at hip rafters
         xy_r = v2_radius(r.p1)
-        assert abs(xy_r - hub_r) <= _FT_TOL + 0.05, (
-            f"Rafter {r.tag}: apex XY radius={xy_r:.6f} hub_r={hub_r:.6f} "
-            f"(delta={abs(xy_r - hub_r)*12:.2f}\")"
+        assert abs(xy_r - hub_r_face) <= _FT_TOL + 0.05, (
+            f"Rafter {r.tag}: apex XY radius={xy_r:.6f} hub_r_face={hub_r_face:.6f} "
+            f"(delta={abs(xy_r - hub_r_face)*12:.2f}\")"
         )
 
 
@@ -286,21 +288,23 @@ def test_isometric_has_expected_semantic_counts():
 
 def test_no_rafter_endpoint_inside_hub_radius(scene, solids_by_role):
     """
-    Every rafter apex (p1) must have XY radius >= hub_r.
-    A radius smaller than hub_r means the rafter end is inside the hub solid,
+    Every rafter apex (p1) must have XY radius >= hub_r_face.
+    A radius smaller than hub_r_face means the rafter end is inside the hub solid,
     which is geometrically impossible.
     """
+    import math
     hub_r = scene.hub_r
+    hub_r_face = hub_r * math.cos(math.pi / scene.qty)
     _tol  = _FT_TOL   # 1/10 inch
 
     for r in solids_by_role.get("rafter", []):
         if r.tag.startswith("Jack"):
             continue  # Jack rafters terminate at hip rafters
         xy_r = v2_radius(r.p1)
-        assert xy_r >= hub_r - _tol, (
-            f"Rafter {r.tag}: apex XY radius={xy_r:.6f} ft < hub_r={hub_r:.6f} ft "
+        assert xy_r >= hub_r_face - _tol, (
+            f"Rafter {r.tag}: apex XY radius={xy_r:.6f} ft < hub_r_face={hub_r_face:.6f} ft "
             f"— rafter endpoint is INSIDE the hub solid "
-            f"(penetration={abs(xy_r - hub_r)*12:.3f}\")"
+            f"(penetration={abs(xy_r - hub_r_face)*12:.3f}\")"
         )
 
 

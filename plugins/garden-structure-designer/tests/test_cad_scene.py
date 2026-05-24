@@ -65,11 +65,12 @@ def test_rafters_trimmed_at_hub(tmp_path):
     s = _seeded_structure(tmp_path)
     scene = build_structure_scene(s)
     hub_r = s["geometry"]["hub_radius_ft"]
+    hub_r_face = hub_r * math.cos(math.pi / 6)
     # We expect rafters to end at the hub face, which is slightly further than hub_r
     rafters = [so for so in scene.solids if so.role == "rafter" and so.tag.startswith("R")]
     for r in rafters:
         # Distance from center in XY to p1 (apex end)
         dist = math.sqrt(r.p1[0]**2 + r.p1[1]**2)
         # Should be exactly at hub face radius (which is slightly > hub_r for polygon but approx hub_r)
-        assert dist >= hub_r - 0.01
-        assert dist <= hub_r * 1.2 # Allow for polygon corner
+        assert dist >= hub_r_face - 0.01
+        assert dist <= hub_r_face * 1.2 # Allow for polygon corner

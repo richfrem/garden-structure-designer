@@ -72,11 +72,17 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
 12b. Run `scripts/cross_artifact_validator.py context/staging outputs`.
      - Validates paths, SAW_SETTINGS metadata against structure.json source hash, and ensures that beam miters ≠ rafter miters appropriately across all MD and SVG artifacts.
 
-### Stage 5.6 — Visual Smoke Test Gate (Browser Render)
+### Stage 5.6 — Visual Smoke Test Gate (Browser Render) & Hardcode Guard
 
-After drawing generation, the orchestrator MUST invoke the visual smoke test to catch raster-level failures (spaghetti hub, blank sheets, beam hover) that XML validators miss.
+After drawing generation, the orchestrator MUST invoke both the hardcode guard and the visual smoke test to catch code-level hardcoding and raster-level rendering failures (spaghetti hub, blank sheets, beam hover) before any validation.
 
-Authoritative gate command:
+Authoritative static guard command:
+
+```bash
+python3 plugins/garden-structure-designer/scripts/hardcode_guard.py
+```
+
+Authoritative visual gate command:
 
 ```bash
 python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py \
@@ -88,18 +94,18 @@ python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py \
   --fail-on-regression
 ```
 
-This command:
-- Renders all SVGs in **headless Chromium** via Playwright.
-- Computes hub crop windows from **CAD nodes** projected to pixel space.
-- Evaluates image heuristics (blank, clustering, hub density, beam-hover gap).
-- Exits 1 and sets `may_claim_success: false` if any heuristic fails.
+These gates enforce the following check list:
+1. **Static Invariant Guard**: Scan the codebase using `hardcode_guard.py`. If any silent `.get()` fallback defaults with numbers or scale literals are found, exit `1` immediately.
+2. **Headless Browser Render**: Render all SVGs in **headless Chromium** via Playwright. Print explicit logs (`[SMOKE] Launching Chromium headless`, `[SMOKE] Rendering SVG`, `[SMOKE] Saved PNG`).
+3. **Mandatory Evidence Output**:
+   - `outputs/visual-smoke/*.png` must exist and be non-empty.
+   - `context/staging/visual-smoke-report.json` must exist.
+   - Heuristics must report `"status": "PASS"`.
 
-Required outputs:
-- `context/staging/visual-smoke-report.json`
-- `outputs/visual-smoke-report.md`
-- `outputs/visual-smoke/*.png`
-
-If this gate fails, do not proceed to the Red-Team agent review.
+If any static check, browser launch, or visual heuristic fails, or if any required screenshot PNG is missing, the stage fails:
+- Set `STATUS = BLOCKED`
+- Set `may_claim_success = False`
+- Halt execution and do not proceed to Stage 5.75 Red-Team review.
 
 ### Stage 5.75 — Adversarial Drawing Red-Team Gate
 

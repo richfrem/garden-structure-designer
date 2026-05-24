@@ -105,6 +105,7 @@ _STRUCTURE: dict = {
         "no_zero_length_members": True,
     },
     "presentation": {"palette": "cedar_warm"},
+    "materials": {"primary": "Cedar"},
 }
 
 

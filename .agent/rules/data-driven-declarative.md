@@ -10,21 +10,22 @@ This policy governs the absolute separation of geometry parameters from algorith
 ### Non-Negotiables
 
 1. **Zero Hardcoded Design Constants**:
-   No structural coordinates, board-foot sizing multipliers, framing counts, pitch slopes, secondary rafter division fractions, post offset spacing, bracing clearance margins, or joinery parameters may be hardcoded as magic numbers inside Python files (`*.py`).
-   * **Violation**: `s_purlin = 0.55` or `fractions = [1/3, 2/3]` inside model generators.
-   * **Compliant**: `s_purlin = structure_data.get("members", {}).get("purlins", {}).get("height_fraction", 0.55)` and computing intermediate rafter fractions dynamically from `structure_data.get("roof", {}).get("secondary_rafters", {}).get("count_per_side", 2)`.
+   No structural coordinates, board-foot sizing multipliers, framing counts, pitch slopes, secondary rafter division fractions, post offset spacing, bracing clearance margins, or joinery parameters may be hardcoded as magic numbers inside Python files (`*.py`). Scale factors, margins, viewport parameters, and view coordinates must be driven dynamically by `structure.json`.
+   * **Violation**: `scale = 80.0` or `scale = 55.0` or `s_purlin = 0.55` inside rendering scripts.
+   * **Compliant**: Calculating scales dynamically based on bounding box or using coordinates from `structure.json`.
 
 2. **Single Staging Source of Truth (`structure.json`)**:
    All pipeline steps must consume and write back to `context/staging/structure.json` as the unified data bus. Passing state via file-system shims, shell arguments, or concurrent global variables is strictly prohibited. The 3D build123d compiler, 2D SVG renderer, and fabrication compiler must read from the exact same JSON file to maintain mathematical parity across all views.
 
-3. **Defensive Schema Parsing**:
-   Always parse JSON keys using `.get()` with safe, building-code compliant fallbacks. Never assume keys are present, and never allow missing JSON properties to crash the CAD compiler.
-   ```python
-   # Recommended Pattern
-   roof_spec = structure_data.get("roof", {})
-   secondary_spec = roof_spec.get("secondary_rafters", {})
-   count = secondary_spec.get("count_per_side", 2)
-   ```
+3. **Explicit Fail-Closed Parsing (No Silent Fallbacks)**:
+   Silent fallbacks are FORBIDDEN in geometry, rendering, or presentation logic. All required geometry parameters and critical configurations must be explicitly checked. If a configuration or geometry field is missing, fail immediately by raising a `ValueError`.
+   * **Violation**: `scale = coords.get("scale_px_per_ft", 55.0)` or `key = structure.get("presentation", {}).get("palette", "cedar_warm")`.
+   * **Compliant**:
+     ```python
+     if "presentation" not in structure or "palette" not in structure["presentation"]:
+         raise ValueError("MISSING_REQUIRED_CONFIG: presentation.palette")
+     key = structure["presentation"]["palette"]
+     ```
 
 4. **Bi-Directional Schema Alignment**:
    Any new structural framing member, attachment hardware, or custom geometry added to the CAD engine must first have its parameter schema defined in `generate_real_schemas.py` or the appropriate JSON Schema contract. The database schema, data model, and compilation scripts must remain in lockstep.
