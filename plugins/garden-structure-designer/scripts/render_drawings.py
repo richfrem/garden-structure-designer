@@ -411,96 +411,95 @@ def draw_3d_brace(svg_list: list[str], x1: float, y1: float, x2: float, y2: floa
 # --- Page Renderers ---
 
 def render_plan_view(model: dict, calcs: dict, filename: str) -> list[str]:
-    """Generates a professional double-line, heavily annotated top-down Plan View."""
+    """
+    Generates a professional double-line, heavily annotated top-down Plan View
+    by projecting the 3D solid CAD model top-down.
+    """
     svg_list = []
     is_blueprint = "blueprint" in filename
     palette = BLUE_COLORS if is_blueprint else ARCH_COLORS
     stroke = palette["outline"]
-    
-    qty = model.get("members", {}).get("posts", {}).get("quantity", 6)
+
+    # ── Build & validate scene ───────────────────────────────────────────────
+    scene = build_structure_scene(model, calcs, is_blueprint=is_blueprint)
+    validate_scene_geometry(scene)
+
+    qty      = scene.qty
     span_diag = model.get("dimensions", {}).get("max_diagonal_ft", 10.0)
-    r_ft = span_diag / 2.0
+
     scale = 80.0
     cx, cy = VIEWBOX_W / 2, VIEWBOX_H / 2 - 50
-    r = r_ft * scale
-    
-    # 1. Concrete Footings
-    for i in range(qty):
-        angle = 2 * math.pi * i / qty
-        x, y = cx + r * math.cos(angle), cy + r * math.sin(angle)
-        svg_list.append(f'    <circle data-role="footing" cx="{x}" cy="{y}" r="32" fill="{palette["footing"]}" stroke="{stroke}" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.6" />')
-        
-    # 2. Double-line Beam Ring (extruding actual 5.5" width)
-    beam_w = 22.0  # visual scaling equivalent to 5.5"
-    for i in range(qty):
-        angle = 2 * math.pi * i / qty
-        next_angle = 2 * math.pi * ((i+1) % qty) / qty
-        x1, y1 = cx + r * math.cos(angle), cy + r * math.sin(angle)
-        x2, y2 = cx + r * math.cos(next_angle), cy + r * math.sin(next_angle)
-        
-        dx, dy = x2 - x1, y2 - y1
-        length = math.sqrt(dx*dx + dy*dy)
-        nx, ny = -dy / length * (beam_w/2), dx / length * (beam_w/2)
-        
-        svg_list.append(f'    <polygon data-role="beam" data-id="B{i+1}" points="{x1+nx},{y1+ny} {x2+nx},{y2+ny} {x2-nx},{y2-ny} {x1-nx},{y1-ny}" fill="{palette["beam"]}" stroke="{stroke}" stroke-width="1.5" />')
-        # Centerlines for Blueprint
-        if is_blueprint:
-            svg_list.append(f'    <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{palette["centerline"]}" stroke-width="0.8" stroke-dasharray="12,4,2,4" />')
-            
-    # 3. Double-line Hip Rafters (extruding actual 3.5" width, stopping flush at hub face)
-    rafter_w = 14.0
-    for i in range(qty):
-        angle = 2 * math.pi * i / qty
-        x, y = cx + r * math.cos(angle), cy + r * math.sin(angle)
-        
-        # Shorten rafter start point by hub face radius (0.25 ft / max_trig) in pixels
-        cos_a = math.cos(angle)
-        sin_a = math.sin(angle)
-        max_trig = max(abs(cos_a), abs(sin_a))
-        hub_r_ft = 0.25 / max_trig if max_trig > 0 else 0.25
-        rx_px = hub_r_ft * scale * cos_a
-        ry_px = hub_r_ft * scale * sin_a
-        
-        rcx = cx + rx_px
-        rcy = cy + ry_px
-        
-        dx, dy = x - rcx, y - rcy
-        length = math.sqrt(dx*dx + dy*dy)
-        nx, ny = -dy / length * (rafter_w/2), dx / length * (rafter_w/2)
-        
-        svg_list.append(f'    <polygon data-role="rafter" data-id="R{i+1}" points="{rcx+nx},{rcy+ny} {x+nx},{y+ny} {x-nx},{y-ny} {rcx-nx},{rcy-ny}" fill="{palette["rafter"]}" stroke="{stroke}" stroke-width="1.5" />')
-        
-    # 4. King Post Hub (Central hexagon)
-    hub_pts = []
-    for i in range(qty):
-        angle = 2 * math.pi * i / qty
-        hub_pts.append(f"{cx + 20 * math.cos(angle)},{cy + 20 * math.sin(angle)}")
-    svg_list.append(f'    <polygon points="{" ".join(hub_pts)}" fill="#5d4037" stroke="{stroke}" stroke-width="1.5" />')
-    svg_list.append(f'    <circle cx="{cx}" cy="{cy}" r="3" fill="{stroke}" />')
-    
-    # 5. Timber Posts (6x6 visual blocks with crossed wood cross-section CAD lines)
-    for i in range(qty):
-        angle = 2 * math.pi * i / qty
-        x, y = cx + r * math.cos(angle), cy + r * math.sin(angle)
-        svg_list.append(f'    <rect data-role="post" data-id="P{i+1}" x="{x-16}" y="{y-16}" width="32" height="32" fill="{palette["post"]}" stroke="{stroke}" stroke-width="1.8" />')
-        # Crossed lines for timber end grain
-        svg_list.append(f'    <line x1="{x-16}" y1="{y-16}" x2="{x+16}" y2="{y+16}" stroke="{stroke}" stroke-width="0.8" opacity="0.5" />')
-        svg_list.append(f'    <line x1="{x-16}" y1="{y+16}" x2="{x+16}" y2="{y-16}" stroke="{stroke}" stroke-width="0.8" opacity="0.5" />')
-        # Text ID Labels
-        svg_list.append(f'    <text x="{x+25}" y="{y+5}" font-family="monospace" font-size="12" font-weight="bold" fill="{palette["text"]}">P{i+1}</text>')
 
-    # 6. Dimensions and Callout Ticks
-    draw_dimension(svg_list, cx - r, cy + r + 50, cx + r, cy + r + 50, f"MAX DIAGONAL SPAN: {span_diag} FT", is_blueprint=is_blueprint)
-    side_len = round(2 * r_ft * math.sin(math.pi / qty), 2)
-    x1, y1 = cx + r * math.cos(0), cy + r * math.sin(0)
-    x2, y2 = cx + r * math.cos(2*math.pi/qty), cy + r * math.sin(2*math.pi/qty)
+    def proj2d(pt: tuple) -> tuple:
+        # Orthographic top-down projection: scale and center
+        return (cx + pt[0] * scale, cy + pt[1] * scale)
+
+    # ── Build flat face list with Z-depth sorting ────────────────────────────
+    face_entries: list[tuple] = []   # (depth, face, solid)
+
+    for solid in scene.solids:
+        for face in solid.faces:
+            # Backface cull: normal Z must be positive (top-facing)
+            # We keep vertical side faces (normal Z == 0) so we see the outlines of posts/beams/rafters.
+            # So cull only if normal Z is distinctly negative (pointing downwards).
+            if face.normal[2] < -1e-6:
+                continue
+
+            c = vcent(face.verts)
+            depth = c[2]
+            face_entries.append((depth, face, solid))
+
+    # Sort back-to-front (lowest Z first: footing -> post -> beam -> purlin -> rafter -> hub)
+    face_entries.sort(key=lambda t: t[0])
+
+    # ── Project and emit SVG polygons ────────────────────────────────────────
+    tagged: set = set()
+
+    for _, face, solid in face_entries:
+        role  = face.role
+        color = face.color
+        tag   = face.tag
+        verts = face.verts
+
+        pts2d = [proj2d(v) for v in verts]
+        pts_str = " ".join(f"{p[0]:.1f},{p[1]:.1f}" for p in pts2d)
+
+        # First-face tagging strategy (one data-role/data-id per member)
+        role_attr = ""
+        if tag is not None:
+            key = (role, tag)
+            if key not in tagged:
+                tagged.add(key)
+                role_attr = f' data-role="{role}" data-id="{tag}"'
+
+        if role == "footing":
+            svg_list.append(
+                f'    <polygon{role_attr} points="{pts_str}"'
+                f' fill="{color}" stroke="{stroke}" stroke-width="1.2"'
+                f' stroke-dasharray="3,3" opacity="0.6" />'
+            )
+        else:
+            svg_list.append(
+                f'    <polygon{role_attr} points="{pts_str}"'
+                f' fill="{color}" stroke="{stroke}" stroke-width="1.5" />'
+            )
+
+    # ── 6. Dimensions and Callout Ticks ──────────────────────────────────────
+    r_px = (span_diag / 2.0) * scale
+    draw_dimension(svg_list, cx - r_px, cy + r_px + 50, cx + r_px, cy + r_px + 50, f"MAX DIAGONAL SPAN: {span_diag} FT", is_blueprint=is_blueprint)
+    
+    side_len = round(2 * (span_diag/2.0) * math.sin(math.pi / qty), 2)
+    angle = 2 * math.pi * 0 / qty
+    next_angle = 2 * math.pi * 1 / qty
+    x1, y1 = cx + r_px * math.cos(angle), cy + r_px * math.sin(angle)
+    x2, y2 = cx + r_px * math.cos(next_angle), cy + r_px * math.sin(next_angle)
     draw_dimension(svg_list, x1+40, y1, x2+40, y2, f"POST ON-CENTRE: {side_len} FT", vertical=True, is_blueprint=is_blueprint)
     
-    # 7. Detailed Leader lines pointing to members
+    # ── 7. Detailed Leader lines pointing to members ────────────────────────
     draw_leader(svg_list, cx, cy - 30, cx - 180, cy - 180, "6x6 WESTERN RED CEDAR HUB", is_blueprint=is_blueprint)
-    draw_leader(svg_list, cx + r * math.cos(0), cy + r * math.sin(0) - 20, cx + r * math.cos(0) + 120, cy + r * math.sin(0) - 100, "6x6 TIMBER POST (M01)", is_blueprint=is_blueprint)
+    draw_leader(svg_list, cx + r_px * math.cos(0), cy + r_px * math.sin(0) - 20, cx + r_px * math.cos(0) + 120, cy + r_px * math.sin(0) - 100, "6x6 TIMBER POST (M01)", is_blueprint=is_blueprint)
     
-    # 8. Fabrication Data Balloon
+    # ── 8. Fabrication Data Balloon ──────────────────────────────────────────
     beam_miter = calcs.get("beam_ring", {}).get("beam_miter_deg", 30.0)
     fx, fy = 100, 100
     svg_list.append(f'    <g transform="translate({fx}, {fy})" font-family="monospace" fill="{palette["text"]}">')
