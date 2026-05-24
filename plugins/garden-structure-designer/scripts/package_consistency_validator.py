@@ -56,6 +56,11 @@ def validate_package() -> list[str]:
             errors.append(f"MISSING_OUTPUT: {rf} was not generated.")
             
     import glob
+    # Check for photorealistic renders
+    render_dir = os.path.join(out_dir_path, "high-resolution-image")
+    renders = glob.glob(os.path.join(render_dir, "*_render_*.png"))
+    if not renders:
+        errors.append("MISSING_RENDERS: No photorealistic renders found in outputs/high-resolution-image/")
     import re
     svg_files = glob.glob(os.path.join(out_dir_path, "**", "*.svg"), recursive=True)
     dates = set()

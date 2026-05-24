@@ -183,10 +183,10 @@ Reason: <which check failed and which member/element>
 
 ### Stage 6.5 — Package Consistency QA
 13b. Run `scripts/package_consistency_validator.py`.
-     - Ensure required SVGs and the JSON cut-list exist before compilation.
+     - Ensure required SVGs, the JSON cut-list, and the photorealistic renders in `outputs/high-resolution-image/` exist before compilation.
 
 ### Stage 7 — Compilation
-14. Call `document-compiler` to aggregate all sheets and builder documents into the final PDF packet in `outputs/pdf/`.
+14. Call `document-compiler` to aggregate all sheets, builder documents, and photorealistic renders into the final PDF packet in `outputs/pdf/`. Ensure the first photorealistic render is placed at the top of the plan document directly under the title.
 
 ### Stage 8 — Learning Capture and Self-Healing
 15. Read validation reports and the package consistency report.

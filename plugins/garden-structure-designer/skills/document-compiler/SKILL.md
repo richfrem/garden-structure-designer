@@ -4,17 +4,17 @@ description: Assembles all outputs into a structured document and formats for PD
 allowed-tools: Read, Write, Bash
 ---
 
-## 🚨 Pre-Flight: Drawing Red-Team Gate Check (MANDATORY)
+## 🚨 Pre-Flight: Drawing Red-Team & Photorealistic Render Gate Check (MANDATORY)
 
 Before compilation begins, this skill MUST verify:
 
 ```bash
-# Check the gate report exists and is approved
+# Check the gate report exists and is approved, and verify photorealistic renders
 python3 - <<'PY'
 import json, sys
 from pathlib import Path
 sys.path.append("plugins/garden-structure-designer/scripts")
-from path_utils import staging_dir
+from path_utils import staging_dir, outputs_dir
 
 report_path = staging_dir() / "drawing-red-team-report.json"
 
@@ -29,11 +29,19 @@ if not r.get("may_claim_success"):
     print("Summary:", r.get("summary", ""))
     sys.exit(1)
 
-print("Gate approved — proceeding with compilation.")
+# Verify photorealistic renders exist
+image_dir = outputs_dir() / "high-resolution-image"
+renders = list(image_dir.glob("*_render_*.png"))
+if not renders:
+    print(f"BLOCKED: No photorealistic renders found in {image_dir}")
+    sys.exit(1)
+
+print(f"Gate approved — proceeding with compilation. Found {len(renders)} photorealistic renders.")
 PY
 ```
 
-If this check fails, **do not compile**. Write a blocking message to `outputs/COMPILATION_BLOCKED.md` explaining that the drawing red-team gate must pass first. Do not proceed to `embed_svgs.py` or PDF conversion.
+If this check fails, **do not compile**. Write a blocking message to `outputs/COMPILATION_BLOCKED.md` explaining that the drawing red-team gate and photorealistic render verification must pass first. Do not proceed to `embed_svgs.py` or PDF conversion.
+
 
 ## Expected Inputs
 All models inside `context/staging/`.
@@ -41,8 +49,8 @@ Visuals from `drawing-generator` (Plan, Elevation, Perspective, Isometric).
 Technical cut-sheets from `shop-blueprint-generator` (Dimensioned orthographics and isolated joinery components).
 
 ## Core Responsibilities
-1. Construct the document adhering to the PDF Layout requirements (architectural diagrams and 3D visual layouts first, then the detailed technical shop blueprints, followed by timber cut-list tables and fastener tables).
-2. Write the intermediate Markdown to `outputs/design-package.md` using standard `![alt](path)` image references pointing to the actual SVG/PNG files in `outputs/`.
+1. Construct the document adhering to the PDF Layout requirements. Place the primary photorealistic render (`outputs/high-resolution-image/*_render_1.png`) at the top of the compiled document, directly underneath the main title. Follow this with architectural diagrams and 3D visual layouts, then the detailed technical shop blueprints, and lastly the timber cut-list tables and fastener tables.
+2. Write the intermediate Markdown to `outputs/design-package.md` (or `outputs/pergola_plan.md` depending on the active naming convention) using standard `![alt](path)` image references pointing to the actual SVG/PNG files in `outputs/`.
 3. **Embed all assets before PDF conversion** — run `embed_svgs.py` to inline every SVG and PNG as raw HTML so the PDF contains the visuals, not broken links:
    ```bash
    python3 plugins/garden-structure-designer/scripts/embed_svgs.py \
