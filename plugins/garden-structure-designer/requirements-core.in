@@ -1,0 +1,8 @@
+# garden-structure-designer — core runtime dependencies
+# Rule: this is the intent file. pip-compile generates requirements-core.txt.
+# Commit BOTH files together. Never pip install directly.
+
+# CAD geometry kernel — provides true BREP solid modelling, STEP/SVG export
+build123d>=0.7.0
+
+# Existing stdlib-only scripts have no additional deps beyond Python 3.8+
