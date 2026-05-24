@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "lifecycle": "GEOMETRY_SEALED",
+    "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
+    "created_at": "2026-05-24T05:00:22.487718+00:00",
+    "updated_at": "2026-05-24T05:00:26.408190+00:00"
+  },
+  "intent": {
+    "jurisdiction": "BC_SAANICH",
+    "material_preference": "Western Red Cedar",
+    "joinery_style": "Traditional timber framing"
+  },
+  "structure": {
+    "type": "pergola",
+    "shape": "hexagon",
+    "sides": 6
+  },
+  "layout": {
+    "post_count": 6,
+    "inscribed_radius_ft": 4.875,
+    "post_spacing_ft": 4.875
+  },
+  "members": {
+    "posts": {
+      "nominal_size": "6x6",
+      "actual_width_in": 5.5,
+      "actual_depth_in": 5.5,
+      "cut_length_ft": 8.42
+    },
+    "beams": {
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "cut_length_ft": 5.0
+    }
+  },
+  "roof": {
+    "type": "hip",
+    "pitch": "4:12",
+    "pitch_defaulted": false,
+    "primary_rafters": {
+      "count": 6,
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "overhang_ft": 0.75
+    },
+    "secondary_rafters": {
+      "enabled": false
+    }
+  },
+  "hub": {
+    "type": "polygonal",
+    "radius_ft": "auto",
+    "radius_min_ft": 0.6,
+    "height_ratio_to_rafter": 2.5,
+    "clearance_ft": 0.5
+  },
+  "bracing": {
+    "enabled": true,
+    "layout": "paired_per_post",
+    "brace": {
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "length_ft": 2.5,
+      "angle_deg": 45,
+      "count_per_post": 2
+    }
+  },
+  "footings": {
+    "type": "sonotube",
+    "diameter_in": 12,
+    "depth_in": 24,
+    "concrete_grade": "20MPa"
+  },
+  "joinery": {
+    "beam_seat_style": "exposed_tenon",
+    "rafter_tail": "decorative_scallop",
+    "rafter_seat_style": "birds_mouth"
+  },
+  "invariants": {
+    "rafter_count_equals_post_count": true,
+    "post_top_equals_beam_bottom": true,
+    "no_rafter_inside_hub_radius": true,
+    "brace_must_connect_to_surfaces": true,
+    "no_solid_intersections": true,
+    "member_counts_match_sections": true,
+    "no_zero_length_members": true,
+    "presentation_primary_counts_match": true
+  },
+  "presentation": {
+    "view_mode": "presentation",
+    "roof_style": "open_rafter",
+    "visibility_rules": {
+      "primary_members_only": true,
+      "fade_secondary": true,
+      "suppress_internal_roof_framing": true,
+      "max_visible_braces_per_post": 1
+    },
+    "labeling": {
+      "avoid_geometry_overlap": true,
+      "use_leaders_when_colliding": true
+    },
+    "palette": "cedar_warm"
+  },
+  "code": {
+    "_sealed": false,
+    "wind_load_kPa": null,
+    "snow_load_kPa": null,
+    "height_limit_ft": null,
+    "permit_required": null
+  },
+  "geometry": {
+    "_comment": "DERIVED \u2014 written by geometry_engine.py. Do not manually edit.",
+    "_sealed": true,
+    "compound_cut": {
+      "miter_deg": 28.71,
+      "bevel_deg": 9.1,
+      "pitch_angle_deg": 18.43,
+      "plan_half_angle_deg": 30.0
+    },
+    "beam_ring": {
+      "beam_miter_deg": 30.0,
+      "interior_angle_deg": 120.0
+    },
+    "rafter": {
+      "structural_length_ft": 5.139,
+      "total_with_overhang_ft": 5.929,
+      "total_with_overhang_in": 71.15
+    },
+    "roof_rise": {
+      "rise_ft": 1.625,
+      "rise_in": 19.5
+    },
+    "total_height": {
+      "post_ft": 8.42,
+      "beam_depth_ft": 1.0,
+      "roof_rise_ft": 1.625,
+      "total_height_ft": 11.045,
+      "total_height_in": 132.54
+    },
+    "hub_radius_ft": 0.75,
+    "svg_coordinates": {
+      "viewBox": "0 0 1100 900",
+      "width_px": 1100,
+      "height_px": 900,
+      "margin_top_px": 80,
+      "margin_bottom_px": 120,
+      "grade_y": 780,
+      "scale_px_per_ft": 42.0,
+      "content_height_px": 464,
+      "content_width_px": 610,
+      "post_top_y": 426,
+      "beam_soffit_y": 426,
+      "beam_top_y": 384,
+      "hub_apex_y": 316,
+      "rise_px": 68,
+      "beam_px": 42,
+      "post_px": 354
+    },
+    "warnings": []
+  },
+  "cad": {
+    "_comment": "DERIVED \u2014 written by cad_scene.py.",
+    "_sealed": false,
+    "units": "feet",
+    "coordinate_system": "right_handed_z_up",
+    "precision": 0.001
+  }
+}
