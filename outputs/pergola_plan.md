@@ -27,6 +27,23 @@
 **Visual Intent:** Heavy 6×6 warm cedar posts on visible concrete footing pads; exposed 4×6 hip rafters with decorative tails; heavy 4×8 beam ring; diagonal knee braces; traditional mortise-and-tenon joinery.  
 **Revision:** 1.3.1 | May 2025
 
+### 3D Render Candidates
+
+**Candidate 1: Symmetrical Garden View**
+![Hexagonal Cedar Pergola Photorealistic Render 1](high-resolution-image/hexagon_cedar_pergola_render_1.png)
+
+<div style="page-break-after: always;"></div>
+
+**Candidate 2: Golden Hour Detail View**
+![Hexagonal Cedar Pergola Photorealistic Render 2](high-resolution-image/hexagon_cedar_pergola_render_2.png)
+
+<div style="page-break-after: always;"></div>
+
+**Candidate 3: Stone Patio Wide-Angle View**
+![Hexagonal Cedar Pergola Photorealistic Render 3](high-resolution-image/hexagon_cedar_pergola_render_3.png)
+
+<div style="page-break-after: always;"></div>
+
 ---
 
 ## 1. Project Overview
