@@ -649,13 +649,23 @@ def detect_brace_float(structure: dict[str, typing.Any]) -> typing.Optional[dict
     if not bracing.get("enabled"):
         return None
     brace_s = bracing.get("brace", {})
-    length_in = float(brace_s.get("cutLength_in", 0.0))
+    # Accept either cutLength_in (legacy) or length_ft (current schema)
+    if "cutLength_in" in brace_s:
+        length_in = float(brace_s["cutLength_in"])
+    elif "length_ft" in brace_s:
+        length_in = float(brace_s["length_ft"]) * 12.0
+    else:
+        return {
+            "code": "BRACE_FLOAT",
+            "severity": "FAIL",
+            "detail": "bracing.brace has neither cutLength_in nor length_ft — brace length unspecified",
+        }
     angle = float(brace_s.get("angle_deg", 45.0))
     if length_in <= 0:
         return {
             "code": "BRACE_FLOAT",
             "severity": "FAIL",
-            "detail": f"brace.cutLength_in={length_in} — zero-length brace cannot contact post face",
+            "detail": f"brace length={length_in:.3f} in — zero-length brace cannot contact post face",
         }
     if not (5.0 <= angle <= 85.0):
         return {
@@ -677,12 +687,14 @@ def detect_beam_gap(structure: dict[str, typing.Any]) -> typing.Optional[dict[st
     """
     geom = structure.get("geometry", {})
     spans = geom.get("spans", {})
-    beam_span = float(spans.get("beam_span_ft", 0.0))
+    if "beam_span_ft" not in spans:
+        return None  # geometry_engine hasn't populated spans yet — skip rather than false-fail
+    beam_span = float(spans["beam_span_ft"])
     if beam_span <= 0:
         return {
             "code": "BEAM_GAP",
             "severity": "FAIL",
-            "detail": f"beam_span_ft={beam_span} — zero or missing beam span in geometry.spans",
+            "detail": f"beam_span_ft={beam_span} — zero beam span in geometry.spans",
         }
     inscribed = float(structure.get("layout", {}).get("inscribed_radius_ft", 0.0))
     qty = int(structure.get("layout", {}).get("post_count", 0))

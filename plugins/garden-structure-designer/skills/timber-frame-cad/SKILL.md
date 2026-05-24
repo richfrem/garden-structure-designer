@@ -61,6 +61,36 @@ python3 plugins/garden-structure-designer/scripts/render_drawings.py context/sta
 * **Avoid monolithic depth-biasing.** Shifts of `+20.0` or more override physical space and cause background rafters to render in front of foreground posts. Foreground layering is cleanly resolved by separating physical timber Z coordinates and using minor, sub-inch ordering offsets.
 * **Keep CAD models in sync.** Any mathematical shift inside `cad_scene.py` must be duplicated identically in `cad_backend_build123d.py` (converting feet to millimeters for OpenCascade) to prevent validation mismatches.
 
+## CAD Debuggability Requirement (HARD RULE)
+
+Every solid built by this skill MUST be traceable to a named member in `structure.json`. Anonymous geometry is prohibited.
+
+### Member Tagging
+All `Solid` objects MUST carry their stable member ID in `Solid.tag`:
+- `Solid(role="post",   tag="P1")` — P1 through P{post_count}
+- `Solid(role="beam",   tag="B1")` — B1 through B{post_count}
+- `Solid(role="rafter", tag="R1")` — R1 through R{rafter_count}
+- `Solid(role="hub",    tag="HUB")`
+- `Solid(role="brace",  tag="Brace1a")` — sequential per-post pair
+- `Solid(role="footing",tag="FT1")` — FT1 through FT{post_count}
+
+Tags MUST match IDs in `structure.json` exactly. Any mismatch is a traceability failure and the pipeline MUST halt.
+
+### SVG Machine-Readable Attributes
+Every projected polygon in SVG output MUST include:
+```xml
+<polygon data-role="beam" data-tag="B3" ... />
+```
+Both `data-role` and `data-tag` are required. `data-id` alone is insufficient.
+
+### Validation Failure Messages
+If any geometry invariant fails, the error message MUST reference the exact member tag:
+```
+FAIL: Brace2b → B3  (foot XY 0.45 ft from P2, circumradius=0.32 ft)
+FAIL: R4 → HUB  (tip distance 2.3" from nearest hub face plane)
+```
+Generic messages without member IDs are prohibited.
+
 ## Completion: HANDOFF_BLOCK
 
 On successful modeling and rendering, emit the following handoff block:

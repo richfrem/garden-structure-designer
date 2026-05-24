@@ -13,6 +13,7 @@ STRUCTURE_SEED = {
         "updated_at": "2026-01-01T00:00:00Z"
     },
     "intent": {"jurisdiction": "BC_SAANICH"},
+    "materials": {"primary": "Cedar"},
     "structure": {"type": "pergola", "shape": "hexagon", "sides": 6},
     "layout": {"post_count": 6, "inscribed_radius_ft": 4.875, "post_spacing_ft": 4.875},
     "members": {
@@ -27,9 +28,9 @@ STRUCTURE_SEED = {
             "count": 6, "nominal_size": "4x6",
             "actual_width_in": 3.5, "actual_depth_in": 5.5, "overhang_ft": 0.75
         },
-        "secondary_members": {
-            "jack_rafters": {"enabled": False, "count_per_side": 0},
-            "purlin_ring": {"enabled": False, "radius_ratio": 0.55}
+        "secondary_rafters": {
+            "enabled": False, "count_per_side": 0,
+            "actual_width_in": 3.5, "actual_depth_in": 5.5
         }
     },
     "hub": {"type": "polygonal", "radius_ft": "auto",

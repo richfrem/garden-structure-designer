@@ -58,9 +58,36 @@ A revision is incomplete unless each SVG passes `svg_validator.py`. Photorealist
 4. Run `svg_validator.py` on each output.
 5. Update the composite dependency manifest.
 
+## CAD Debuggability — Debug Label Requirement (HARD RULE)
+
+All generated drawings MUST include visible member ID labels. This is a first-class architectural requirement.
+
+### Label Rules
+Every primary structural member (post, beam, rafter, hub, brace) MUST carry a visible `→ {ID}` label:
+- Placed near the member axis midpoint
+- Format: `→ P1`, `→ B3`, `→ R2`, `→ HUB`, `→ Brace2a`
+- Must not overlap critical dimension lines
+- Must remain readable at print scale
+
+### Label Failure Conditions (→ FAIL)
+- Missing labels on any post, beam, or rafter
+- Label text does not match `structure.json` member ID
+- Duplicate IDs in the same drawing
+- Labels present in code but not rendered in browser snapshot
+
+### Machine-Readable Attributes (Required alongside visual labels)
+All structural elements MUST embed BOTH:
+```xml
+<g data-role="beam" data-tag="B3">
+  <polygon ... />
+  <text data-label="B3">→ B3</text>
+</g>
+```
+`data-role` alone is insufficient. `data-tag` is required for bidirectional traceability.
+
 ## Semantic Topology
-All generated SVGs MUST embed `data-role` and `data-id` attributes on structural elements:
-`<rect data-role="post" data-id="P1" x="..." y="..." fill="#c8a96e" />`
+All generated SVGs MUST embed `data-role` and `data-tag` attributes on structural elements:
+`<polygon data-role="post" data-tag="P1" x="..." y="..." fill="#c8a96e" />`
 
 ## Execution
 ```bash

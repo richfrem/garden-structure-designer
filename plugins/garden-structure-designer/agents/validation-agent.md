@@ -140,6 +140,33 @@ The validation agent must **not** override the drawing red-team approval.
 
 If normal validators pass but the red-team rejects the drawings, the package is not ready.
 
+## CAD Debug Trace Requirement (HARD RULE)
+
+Every reported failure MUST reference exact member ID(s), the connection relationship, and a physical measurement.
+
+### Required Failure Format
+```
+FAIL: Brace3b → Beam B2  (head gap = 1.2")
+FAIL: Beam B4 → Post P4  (soffit Z mismatch = 0.9")
+FAIL: Rafter R3 → HUB    (tip distance = 2.3" from hub face plane, expected ≤ 0.5")
+```
+
+### Prohibited Failure Format
+Any of the following are invalid and must be treated as a validator defect:
+- "brace is floating"
+- "beam is misaligned"
+- "rafter doesn't reach hub"
+
+Generic messages without member IDs prevent debugging and must be flagged as `VALIDATOR_MESSAGE_TOO_VAGUE`.
+
+### Traceability Check
+Before emitting `READY`, verify:
+1. Every failure in `drift_report.json` names at least one member ID from `structure.json`.
+2. Every SVG structural element carries `data-tag` matching a known member ID.
+3. No element in any SVG is anonymous (no `data-tag` = traceability failure).
+
+If any element cannot be identified deterministically → fail with `TRACEABILITY_FAILURE`.
+
 ## Pass Criteria
 
 Emit `READY` only when ALL of the following are true:

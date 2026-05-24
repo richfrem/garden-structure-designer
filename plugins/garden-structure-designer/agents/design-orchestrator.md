@@ -154,6 +154,22 @@ The orchestrator must **not** emit `PASS`, `READY`, or `DESIGN COMPLETE` unless 
 
 This gate exists because XML-valid SVGs can still be visually useless. Passing `svg_validator.py` alone is not sufficient.
 
+### CAD Debuggability Gate (HARD RULE — enforced at every PASS boundary)
+
+No stage may emit `PASS` unless ALL of the following are confirmed:
+
+1. **All members have visible IDs** — every post, beam, rafter in every drawing carries a `→ {ID}` label matching `structure.json`.
+2. **All SVG elements carry `data-tag`** — every structural polygon has both `data-role` and `data-tag` attributes. `data-id` alone is insufficient.
+3. **No anonymous geometry** — every rendered element maps to a named member. Any element without a `data-tag` is a traceability failure.
+4. **All validation reports reference member IDs** — any failure message without a specific member tag (e.g., "brace is floating") is a `VALIDATOR_MESSAGE_TOO_VAGUE` defect and itself constitutes a FAIL.
+5. **Connection traceability** — `drift_report.json` failures name both the source and target member: `Brace2b → B3`, not "brace disconnected".
+
+If any of these checks fail, halt and emit:
+```
+BLOCKED: CAD_DEBUGGABILITY_FAILURE
+Reason: <which check failed and which member/element>
+```
+
 ### Stage 6 — Deterministic Fabrication Cuts & Builder Documents
 13. Run `fabrication_builder.py` to generate the exact, compound saw-cut settings and miter/bevel angles for all members:
     ```bash
