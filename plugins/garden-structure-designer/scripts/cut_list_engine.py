@@ -4,7 +4,7 @@ cut_list_engine.py (CLI)
 =====================================
 
 Purpose:
-    cut_list_engine.py Computes exact cut lengths and board-foot (BF) totals deterministically.
+    cut_list_engine.py (CLI) =====================================
 
 Layer: Execution
 

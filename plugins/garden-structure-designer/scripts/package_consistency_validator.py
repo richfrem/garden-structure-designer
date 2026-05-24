@@ -4,7 +4,7 @@ package_consistency_validator.py (CLI)
 =====================================
 
 Purpose:
-    package_consistency_validator.py Validates the final assembled PDF/Markdown package for consistency.
+    package_consistency_validator.py (CLI) =====================================
 
 Layer: Execution
 
@@ -42,8 +42,8 @@ import sys
 
 def validate_package() -> list[str]:
     errors = []
-    outputs_dir = str(outputs_dir())
-    if not os.path.exists(outputs_dir):
+    out_dir_path = str(outputs_dir())
+    if not os.path.exists(out_dir_path):
         return ["Outputs directory not found"]
         
     required_files = [
@@ -52,12 +52,12 @@ def validate_package() -> list[str]:
         "shop-blueprint/SB01-cut-list.json"
     ]
     for rf in required_files:
-        if not os.path.exists(os.path.join(outputs_dir, rf)):
+        if not os.path.exists(os.path.join(out_dir_path, rf)):
             errors.append(f"MISSING_OUTPUT: {rf} was not generated.")
             
     import glob
     import re
-    svg_files = glob.glob(os.path.join(outputs_dir, "**", "*.svg"), recursive=True)
+    svg_files = glob.glob(os.path.join(out_dir_path, "**", "*.svg"), recursive=True)
     dates = set()
     titles = set()
     for svg in svg_files:

@@ -432,7 +432,20 @@ def _build_scene_legacy(
         dy_vertical = RAFTER_HD / math.cos(theta)
         
         p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_vertical)
-        p1_apex_shifted = (p1_apex[0], p1_apex[1], p1_apex[2] + dy_vertical)
+        # Use exact hub termination point from geometry.joints
+        term_pts = geom.get("joints", {}).get("rafters", {}).get("hub_termination_points", {}).get("points", [])
+        term_pt = None
+        for pt in term_pts:
+            if pt.get("rafter_id") == f"R{i+1}":
+                term_pt = pt.get("point")
+                break
+                
+        if term_pt:
+            p1_apex = term_pt
+            p1_apex_shifted = (p1_apex[0], p1_apex[1], p1_apex[2] + dy_vertical)
+        else:
+            p1_apex_shifted = (p1_apex[0], p1_apex[1], p1_apex[2] + dy_vertical)
+
         
         solids.append(_make_prism(
             p0_start_shifted, p1_apex_shifted,
@@ -521,41 +534,42 @@ def _build_scene_legacy(
                 ))
 
     # Purlin Ring — horizontal collar/purlin timbers connecting the hip rafters
-    s_purlin = 0.55
-    Z_PURLIN = Z_BEAM_TOP + roof_r * s_purlin
-    purlins_spec = model.get("members", {}).get("purlins", {})
-    PURLIN_HW = (purlins_spec.get("width_in", 3.5) / 12.0) / 2.0
-    PURLIN_HD = (purlins_spec.get("depth_in", 3.5) / 12.0) / 2.0
+    if structure.get("members", {}).get("purlins", {}).get("enabled", False):
+        s_purlin = 0.55
+        Z_PURLIN = Z_BEAM_TOP + roof_r * s_purlin
+        purlins_spec = model.get("members", {}).get("purlins", {})
+        PURLIN_HW = (purlins_spec.get("width_in", 3.5) / 12.0) / 2.0
+        PURLIN_HD = (purlins_spec.get("depth_in", 3.5) / 12.0) / 2.0
     
-    # Calculate dy_vertical again for purlin offset
-    dx_hip_ex = post_xy[0][0] - rafter_apex[0][0]
-    dy_hip_ex = post_xy[0][1] - rafter_apex[0][1]
-    len_xy_ex = math.sqrt(post_xy[0][0]**2 + post_xy[0][1]**2)
-    slope_ex = (Z_APEX - Z_BEAM_TOP) / (len_xy_ex - hub_r)
-    dy_vertical = RAFTER_HD / math.cos(math.atan(slope_ex))
+        # Calculate dy_vertical again for purlin offset
+        dx_hip_ex = post_xy[0][0] - rafter_apex[0][0]
+        dy_hip_ex = post_xy[0][1] - rafter_apex[0][1]
+        len_xy_ex = math.sqrt(post_xy[0][0]**2 + post_xy[0][1]**2)
+        slope_ex = (Z_APEX - Z_BEAM_TOP) / (len_xy_ex - hub_r)
+        dy_vertical = RAFTER_HD / math.cos(math.atan(slope_ex))
 
-    purlin_pts: list[V3] = []
-    for i in range(qty):
-        px, py = post_xy[i]
-        ax, ay, az = rafter_apex[i]
-        pt = (
-            px + (ax - px) * s_purlin,
-            py + (ay - py) * s_purlin,
-            Z_PURLIN + dy_vertical
-        )
-        purlin_pts.append(pt)
+        purlin_pts: list[V3] = []
+        for i in range(qty):
+            px, py = post_xy[i]
+            ax, ay, az = rafter_apex[i]
+            pt = (
+                px + (ax - px) * s_purlin,
+                py + (ay - py) * s_purlin,
+                Z_PURLIN + dy_vertical
+            )
+            purlin_pts.append(pt)
         
-    for i in range(qty):
-        pt1 = purlin_pts[i]
-        pt2 = purlin_pts[(i+1) % qty]
-        solids.append(_make_prism(
-            pt1, pt2,
-            PURLIN_HW, PURLIN_HD, UP,
-            pal["purlin"], "purlin", f"Purlin{i+1}"
-        ))
+        for i in range(qty):
+            pt1 = purlin_pts[i]
+            pt2 = purlin_pts[(i+1) % qty]
+            solids.append(_make_prism(
+                pt1, pt2,
+                PURLIN_HW, PURLIN_HD, UP,
+                pal["purlin"], "purlin", f"Purlin{i+1}"
+            ))
 
-    # Hub — polygonal prism (qty-sided)
-    # Substantial hanging pendant matching the target image: extends 1.25 ft below apex
+        # Hub — polygonal prism (qty-sided)
+        # Substantial hanging pendant matching the target image: extends 1.25 ft below apex
     hub_ztop = Z_APEX + RAFTER_HD + 0.15
     hub_zbot = Z_APEX - 1.25
     C_HUB = pal["hub"]
@@ -773,69 +787,70 @@ def _build_scene_from_structure(
         ))
 
     # Jack rafters (common rafters) — 2 per side, 12 total.
-    for i in range(qty):
-        px1, py1 = post_xy[i]
-        px2, py2 = post_xy[(i+1) % qty]
+    if roof.get("secondary_rafters", {}).get("enabled", False):
+        for i in range(qty):
+            px1, py1 = post_xy[i]
+            px2, py2 = post_xy[(i+1) % qty]
 
-        bx = px2 - px1
-        by = py2 - py1
-        blen = math.sqrt(bx*bx + by*by)
-        if blen < 1e-9:
-            continue
-        ux = bx / blen
-        uy = by / blen
+            bx = px2 - px1
+            by = py2 - py1
+            blen = math.sqrt(bx*bx + by*by)
+            if blen < 1e-9:
+                continue
+            ux = bx / blen
+            uy = by / blen
 
-        # Inward normal of beam segment (pointing toward center)
-        in_x = -uy
-        in_y = ux
+            # Inward normal of beam segment (pointing toward center)
+            in_x = -uy
+            in_y = ux
 
-        # Slope of the roof plane perpendicular to the beam
-        mx = (px1 + px2) / 2.0
-        my = (py1 + py2) / 2.0
-        apothem = math.sqrt(mx*mx + my*my)
-        slope_perp = roof_r / (apothem - hub_r * math.cos(math.pi / qty))
+            # Slope of the roof plane perpendicular to the beam
+            mx = (px1 + px2) / 2.0
+            my = (py1 + py2) / 2.0
+            apothem = math.sqrt(mx*mx + my*my)
+            slope_perp = roof_r / (apothem - hub_r * math.cos(math.pi / qty))
 
-        for fraction, tag_suffix in [(1.0/3.0, "a"), (2.0/3.0, "b")]:
-            sx = px1 + bx * fraction
-            sy = py1 + by * fraction
+            for fraction, tag_suffix in [(1.0/3.0, "a"), (2.0/3.0, "b")]:
+                sx = px1 + bx * fraction
+                sy = py1 + by * fraction
 
-            if fraction < 0.5:
-                px_corner, py_corner = px1, py1
-                px_apex, py_apex = rafter_apex[i][0], rafter_apex[i][1]
-            else:
-                px_corner, py_corner = px2, py2
-                px_apex, py_apex = rafter_apex[(i+1)%qty][0], rafter_apex[(i+1)%qty][1]
+                if fraction < 0.5:
+                    px_corner, py_corner = px1, py1
+                    px_apex, py_apex = rafter_apex[i][0], rafter_apex[i][1]
+                else:
+                    px_corner, py_corner = px2, py2
+                    px_apex, py_apex = rafter_apex[(i+1)%qty][0], rafter_apex[(i+1)%qty][1]
 
-            dx_hip = px_apex - px_corner
-            dy_hip = py_apex - py_corner
+                dx_hip = px_apex - px_corner
+                dy_hip = py_apex - py_corner
 
-            det = -dx_hip * in_y + in_x * dy_hip
-            if abs(det) > 1e-6:
-                s_val = (-(sx - px_corner) * in_y + in_x * (sy - py_corner)) / det
-                t_val = (dx_hip * (sy - py_corner) - dy_hip * (sx - px_corner)) / det
+                det = -dx_hip * in_y + in_x * dy_hip
+                if abs(det) > 1e-6:
+                    s_val = (-(sx - px_corner) * in_y + in_x * (sy - py_corner)) / det
+                    t_val = (dx_hip * (sy - py_corner) - dy_hip * (sx - px_corner)) / det
 
-                int_x = px_corner + dx_hip * s_val
-                int_y = py_corner + dy_hip * s_val
-                int_z = Z_BEAM_TOP + t_val * slope_perp
-                pt_int = (int_x, int_y, int_z)
+                    int_x = px_corner + dx_hip * s_val
+                    int_y = py_corner + dy_hip * s_val
+                    int_z = Z_BEAM_TOP + t_val * slope_perp
+                    pt_int = (int_x, int_y, int_z)
 
-                p0_start = (
-                    sx - in_x * overhang_ft,
-                    sy - in_y * overhang_ft,
-                    Z_BEAM_TOP - slope_perp * overhang_ft
-                )
+                    p0_start = (
+                        sx - in_x * overhang_ft,
+                        sy - in_y * overhang_ft,
+                        Z_BEAM_TOP - slope_perp * overhang_ft
+                    )
 
-                theta_perp = math.atan(slope_perp)
-                dy_perp = RAFTER_HD / math.cos(theta_perp)
+                    theta_perp = math.atan(slope_perp)
+                    dy_perp = RAFTER_HD / math.cos(theta_perp)
 
-                p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_perp)
-                pt_int_shifted = (pt_int[0], pt_int[1], pt_int[2] + dy_perp)
+                    p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_perp)
+                    pt_int_shifted = (pt_int[0], pt_int[1], pt_int[2] + dy_perp)
 
-                solids.append(_make_prism(
-                    p0_start_shifted, pt_int_shifted,
-                    RAFTER_HW, RAFTER_HD, UP,
-                    pal["rafter"], "rafter", f"Jack{i}{tag_suffix}"
-                ))
+                    solids.append(_make_prism(
+                        p0_start_shifted, pt_int_shifted,
+                        RAFTER_HW, RAFTER_HD, UP,
+                        pal["rafter"], "rafter", f"Jack{i}{tag_suffix}"
+                    ))
 
     # Purlin Ring — horizontal collar/purlin timbers connecting the hip rafters
     s_purlin = 0.55
@@ -1021,8 +1036,12 @@ def validate_scene_geometry(scene: Scene) -> None:
     # 8 — Member counts
     expected = {
         "footing": qty, "post": qty, "beam": qty,
-        "rafter": qty * 3, "brace": qty * 2, "purlin": qty, "hub": 1,
+        "brace": qty * 2, "hub": 1,
     }
+    # Dynamic checks for optional members
+    expected["rafter"] = qty * 3 if any(s.role == "rafter" and s.tag.startswith("Jack") for s in scene.solids) else qty
+    expected["purlin"] = qty if any(s.role == "purlin" for s in scene.solids) else 0
+
     for role, expected_count in expected.items():
         actual = len(by_role.get(role, []))
         if actual != expected_count:

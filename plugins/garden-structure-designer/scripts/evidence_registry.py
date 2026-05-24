@@ -1,10 +1,36 @@
 #!/usr/bin/env python3
 """
-evidence_registry.py
+evidence_registry.py (CLI)
 =====================================
+
 Purpose:
-    Core logic for evidence_registry.py functionality within garden-structure-designer pipeline.
+    evidence_registry.py =====================================
+
 Layer: Execution
+
+Usage Examples:
+    python evidence_registry.py [args]
+
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
 """
 import json
 import os

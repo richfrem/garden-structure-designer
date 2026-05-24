@@ -1,0 +1,1 @@
+../../../scripts/run_obstacle_triage.py

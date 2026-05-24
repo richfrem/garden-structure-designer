@@ -1,10 +1,36 @@
 #!/usr/bin/env python3
 """
-update_design_run_summary.py
+update_design_run_summary.py (CLI)
 =====================================
+
 Purpose:
-    Core logic for update_design_run_summary.py functionality within garden-structure-designer pipeline.
+    update_design_run_summary.py =====================================
+
 Layer: Execution
+
+Usage Examples:
+    python update_design_run_summary.py [args]
+
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
 """
 import json
 import sys

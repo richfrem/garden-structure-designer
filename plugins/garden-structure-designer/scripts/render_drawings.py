@@ -341,8 +341,9 @@ def render_elevation_view(structure: dict, filename: str) -> list[str]:
     total_h   = structure["geometry"]["total_height"]["total_height_ft"]
 
     margin = 100
-    scale = 75.0
-    cx, cy = coords["width_px"] / 2, coords["height_px"] - margin - 150
+    available_h = coords["height_px"] - margin - 150
+    scale = min(75.0, available_h / total_h)
+    cx, cy = coords["width_px"] / 2, coords["height_px"] - margin - 50
 
     def proj2d(pt: tuple) -> tuple:
         # Front orthographic projection:
@@ -502,13 +503,8 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
     face_entries: list[tuple] = []   # (depth, face, solid, opacity)
 
     for solid in scene.solids:
-        # Determine visibility for secondary roof members (Jack rafters and Purlins)
-        is_secondary_roof = (solid.role == "purlin") or (solid.role == "rafter" and solid.tag.startswith("Jack"))
-
-        if is_secondary_roof:
-            continue  # Omit secondary roof spiderweb entirely in isometric/perspective views
         # Determine brace visibility / opacity
-        elif solid.role == "brace":
+        if solid.role == "brace":
             mid_depth = sum(
                 CAM[i] * ((solid.p0[i]+solid.p1[i])/2.0) for i in range(3)
             )

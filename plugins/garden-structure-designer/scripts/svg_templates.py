@@ -4,7 +4,7 @@ svg_templates.py (CLI)
 =====================================
 
 Purpose:
-    svg_templates.py Shared SVG template functions for drawing generation.
+    svg_templates.py (CLI) =====================================
 
 Layer: Execution
 

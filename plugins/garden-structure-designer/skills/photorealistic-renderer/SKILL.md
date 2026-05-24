@@ -24,17 +24,14 @@ Visual concept only — construction geometry is governed by validated JSON/SVG 
 
 If a render appears to conflict with deterministic geometry, the render is subordinate to:
 ```
-context/staging/structural-model.json
-context/staging/geometry-calculations.json
+context/staging/structure.json
 outputs/*.svg
 ```
 
 After generating a render, hand control back to `design-orchestrator` to confirm deterministic artifacts and quality dashboard status.
 
 
-- `context/staging/structural-model.json` (must be locked: `_locked: true`)
-- `context/staging/geometry-calculations.json`
-- `context/staging/design-spec.json` (optional — enriches prompt with site context)
+- `context/staging/structure.json` (must be locked: `_locked: true`; includes members, geometry, and intent/meta sections)
 
 ## Outputs
 - `outputs/render-prompt.txt` — single self-contained file: all geometry locks, structural description, camera direction, and exclusions. Paste the whole thing verbatim into ChatGPT or any image model.
@@ -45,9 +42,9 @@ After generating a render, hand control back to `design-orchestrator` to confirm
 
 ## Phase 1 — Read Locked Model
 
-Read `context/staging/structural-model.json`. If `_locked` is not `true`, halt with:
+Read `context/staging/structure.json`. If `_locked` is not `true`, halt with:
 ```
-ERROR: structural-model.json is not locked. Run structural-engine first.
+ERROR: structure.json is not locked. Run structural-engine first.
 ```
 
 Extract the fields that describe **this specific structure** — the exact fields vary by structure type:
@@ -63,10 +60,10 @@ Extract the fields that describe **this specific structure** — the exact field
 - `joinery.type` → mortise-and-tenon, screwed, bolted, notched…
 - Any unique members (king post hub, ridge beam, purlins, lattice panels, gates…)
 
-Also read `context/staging/geometry-calculations.json`:
+Also read `context/staging/structure.json` (geometry section):
 - `total_height_ft`, `post_cut_ft`, `span_ft`, `diameter_ft` — whatever dimensions are present
 
-Also read `context/staging/design-spec.json` (if present):
+Also read `context/staging/structure.json` (intent/meta section, if present):
 - `site.location`, `site.setting`, `site.surroundings` → used to set the scene realistically
 
 ---
@@ -162,8 +159,8 @@ needed — the geometry lock improves odds but is not a guarantee.
 ## Gotchas
 
 - **Prompt file is always written first.** A user should always get a usable prompt even if image generation is not available in the environment.
-- **Do not hardcode angles.** Read `miter_deg`, `bevel_deg`, `pitch` from geometry-calculations.json every time.
-- **Model must be locked.** Never generate a render prompt from an unlocked structural model.
+- **Do not hardcode angles.** Read `miter_deg`, `bevel_deg`, `pitch` from `structure.json` (geometry section) every time.
+- **Model must be locked.** Never generate a render prompt from an unlocked `structure.json`.
 - **Image output path is `outputs/photorealistic-render.png`** — not `output/`.
 - **Copilot CLI cannot generate images.** Every model in the CLI (GPT-5.4, GPT-5.5, Claude, etc.) is a language model only. Direct the user to ChatGPT, Midjourney, Firefly, or the OpenAI images API. Do not call `copilot image` — that command does not exist.
 - **The CAD-SPEC approach is the only validated technique for exact post counts.** Simple count statements and stop-sign analogies alone still produced 7–8 posts across multiple generations. What finally worked: (1) perimeter rule with explicit turn count and interior angle, (2) naming the specific failure shape ("NOT an octagon"), (3) system parity constraint cross-locking all member counts, (4) plan geometry construction logic (circumscribed circle, equal angular increments), (5) camera raised to 6–7 ft, (6) dedicated Anti-Failure Constraints section. All of these together produced a correct 6-post image on the first run.
@@ -173,8 +170,8 @@ needed — the geometry lock improves odds but is not a guarantee.
 
 ## Smoke Test
 
-1. **Locked model → single prompt file written:** Given `_locked: true`: `outputs/render-prompt.txt` is created with real values substituted, geometry lock block at top, `Exclude:` block at bottom. ✓
-2. **Unlocked model → halt:** Given `_locked: false`: skill halts with clear error message; no prompt files written. ✓
+1. **Locked model → single prompt file written:** Given `structure.json` with `_locked: true`: `outputs/render-prompt.txt` is created with real values substituted, geometry lock block at top, `Exclude:` block at bottom. ✓
+2. **Unlocked model → halt:** Given `structure.json` with `_locked: false`: skill halts with clear error message; no prompt files written. ✓
 3. **CLI unavailable → graceful fallback:** Given `copilot` CLI not in PATH: `outputs/RENDER_FAILED.md` is written and `outputs/render-prompt.txt` is still present for manual use. ✓
 4. **Value substitution check:** `[POST_CUT_FT]` and `[TOTAL_HEIGHT_FT]` must not appear literally in the output prompt — they must be replaced with model values. ✓
 

@@ -4,7 +4,7 @@ manifest_utils.py (CLI)
 =====================================
 
 Purpose:
-    
+    manifest_utils.py (CLI) =====================================
 
 Layer: Execution
 

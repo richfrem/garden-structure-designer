@@ -80,7 +80,7 @@ For each SVG:
 5. Check whether drawing elements are clustered in one corner.
 6. Check whether the sheet is mostly blank.
 7. Check whether the drawing type actually contains the expected content.
-8. Compare geometry claims against `geometry-calculations.json`.
+8. Compare geometry claims against `structure.json` `geometry` section (fields: `compound_cut`, `total_height`, `hub_radius_ft`).
 9. Check whether the drawing would be useful to a builder.
 
 If available, run:

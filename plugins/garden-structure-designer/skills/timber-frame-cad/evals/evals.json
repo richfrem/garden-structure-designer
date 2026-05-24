@@ -1,0 +1,23 @@
+{
+  "skill": "timber-frame-cad",
+  "test_cases": [
+    {
+      "id": "TC001",
+      "input": "Build the 3D CAD model and export to STEP and STL.",
+      "should_trigger": true,
+      "notes": "Solid modeling and file export belongs to timber-frame-cad"
+    },
+    {
+      "id": "TC002",
+      "input": "Validate the timber-frame geometric alignments and post top bearing constraints.",
+      "should_trigger": true,
+      "notes": "Parametric solid geometry validation belongs to timber-frame-cad"
+    },
+    {
+      "id": "TC003",
+      "input": "Generate a clean, presentation-filtered isometric drawing omitting secondary roof spiderweb members.",
+      "should_trigger": true,
+      "notes": "Isometric view filtering and projection belongs to timber-frame-cad"
+    }
+  ]
+}

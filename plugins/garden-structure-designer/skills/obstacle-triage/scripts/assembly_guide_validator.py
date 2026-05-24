@@ -1,0 +1,1 @@
+../../../scripts/assembly_guide_validator.py

@@ -1,3 +1,26 @@
+<style>
+  svg, img {
+    max-width: 100% !important;
+    height: auto !important;
+    box-sizing: border-box;
+  }
+  .svg-embed {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    page-break-inside: avoid;
+  }
+  .svg-embed svg {
+    width: 100% !important;
+    height: auto !important;
+  }
+  table {
+    width: 100% !important;
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+</style>
+
 # Hexagonal Cedar Timber Pergola — Master Construction Plan
 **Location:** Saanich, BC  
 **Style:** Warm cedar timber — open-frame, mortise & tenon, no metal hangers  
@@ -66,7 +89,7 @@ Dimensioned construction drawings with title blocks for shop use.
 
 ## 4. Structural Members & Cut List
 
-Full machine-readable list: [`../output/shop-blueprint/SB01-cut-list.json`](../output/shop-blueprint/SB01-cut-list.json)
+Full machine-readable list: [`../outputs/shop-blueprint/SB01-cut-list.json`](../outputs/shop-blueprint/SB01-cut-list.json)
 
 | ID | Member | Profile | Cut Length | Qty | Notes |
 |----|--------|---------|-----------|-----|-------|
@@ -129,7 +152,7 @@ Seismic zone 4 — confirm E66 hold-down spec with an engineer.
 
 | Document | File |
 |----------|------|
-| Detailed cut list (JSON) | [`../output/shop-blueprint/SB01-cut-list.json`](../output/shop-blueprint/SB01-cut-list.json) |
+| Detailed cut list (JSON) | [`../outputs/shop-blueprint/SB01-cut-list.json`](../outputs/shop-blueprint/SB01-cut-list.json) |
 | Lumber purchase list | [`lumber-purchase-list.md`](lumber-purchase-list.md) |
 | Budget estimate (CAD) | [`budget-estimate.md`](budget-estimate.md) |
 

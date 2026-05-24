@@ -79,6 +79,35 @@ python3 plugins/garden-structure-designer/scripts/emit_legacy_views.py \
 12b. Run `scripts/cross_artifact_validator.py context/staging outputs`.
      - Validates paths, SAW_SETTINGS metadata against structure.json source hash, and ensures that beam miters ≠ rafter miters appropriately across all MD and SVG artifacts.
 
+### Stage 5.6 — Visual Smoke Test Gate (Browser Render)
+
+After drawing generation, the orchestrator MUST invoke the visual smoke test to catch raster-level failures (spaghetti hub, blank sheets, beam hover) that XML validators miss.
+
+Authoritative gate command:
+
+```bash
+python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py \
+  --structure context/staging/structure.json \
+  --svg-dir outputs \
+  --out-dir outputs/visual-smoke \
+  --report-json context/staging/visual-smoke-report.json \
+  --report-md outputs/visual-smoke-report.md \
+  --fail-on-regression
+```
+
+This command:
+- Renders all SVGs in **headless Chromium** via Playwright.
+- Computes hub crop windows from **CAD nodes** projected to pixel space.
+- Evaluates image heuristics (blank, clustering, hub density, beam-hover gap).
+- Exits 1 and sets `may_claim_success: false` if any heuristic fails.
+
+Required outputs:
+- `context/staging/visual-smoke-report.json`
+- `outputs/visual-smoke-report.md`
+- `outputs/visual-smoke/*.png`
+
+If this gate fails, do not proceed to the Red-Team agent review.
+
 ### Stage 5.75 — Adversarial Drawing Red-Team Gate
 
 After SVG drawing generation and normal SVG validation, the orchestrator MUST invoke the `adversarial-drawing-reviewer` skill or launch the `drawing-red-team-agent`.
@@ -266,7 +295,9 @@ context/staging/design-run-summary.md
 context/staging/schema-validation-report.json
 context/staging/physics-validation-report.json
 context/staging/drawing-red-team-report.json
+context/staging/visual-smoke-report.json
 outputs/drawing-red-team-report.md
+outputs/visual-smoke-report.md
 ```
 
 Markdown files, render prompts, and PNG concept images are **secondary presentation artifacts**. They are never sufficient proof that the package has been revised.
@@ -287,10 +318,17 @@ python3 plugins/garden-structure-designer/scripts/structural_physics_validator.p
 python3 plugins/garden-structure-designer/scripts/render_drawings.py \
   context/staging/structure.json
 
+python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py \
+  --structure context/staging/structure.json \
+  --svg-dir outputs \
+  --out-dir outputs/visual-smoke \
+  --report-json context/staging/visual-smoke-report.json \
+  --report-md outputs/visual-smoke-report.md
+
 python3 plugins/garden-structure-designer/scripts/generate_quality_dashboard.py
 ```
 
-The final response MUST include: files changed · structural parameters preserved vs changed · commands run · validator results · drawing red-team result (`may_claim_success`) · remaining warnings · status: **PASS / PARTIAL / BLOCKED / DRAFT ONLY**.
+The final response MUST include: files changed · structural parameters preserved vs changed · commands run · validator results · visual smoke test results · drawing red-team result (`may_claim_success`) · remaining warnings · status: **PASS / PARTIAL / BLOCKED / DRAFT ONLY**.
 
 **Status taxonomy:**
 - `PASS` — all deterministic artifacts regenerated/revalidated, validators passed, dashboard updated.

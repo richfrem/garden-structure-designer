@@ -1,10 +1,36 @@
 #!/usr/bin/env python3
 """
-path_utils.py
+path_utils.py (CLI)
 =====================================
+
 Purpose:
-    Core logic for path_utils.py functionality within garden-structure-designer pipeline.
+    path_utils.py =====================================
+
 Layer: Execution
+
+Usage Examples:
+    python path_utils.py [args]
+
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
 """
 from pathlib import Path
 import os
@@ -21,7 +47,7 @@ def plugin_root(start: str | Path | None = None) -> Path:
     return find_repo_root(start) / "plugins" / "garden-structure-designer"
 
 def staging_dir(start: str | Path | None = None) -> Path:
-    return plugin_root(start) / "context" / "staging"
+    return find_repo_root(start) / "context" / "staging"
 
 def outputs_dir(start: str | Path | None = None) -> Path:
     return find_repo_root(start) / "outputs"

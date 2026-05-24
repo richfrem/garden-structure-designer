@@ -1,57 +1,36 @@
 #!/usr/bin/env python3
 """
-drawing_content_validator.py
+drawing_content_validator.py (CLI)
 =====================================
 
 Purpose:
-    Content-quality validator for generated SVG drawing sheets.
-    Goes beyond XML well-formedness (svg_validator.py) to assess whether
-    drawings are builder-meaningful: dimensions, member IDs, title blocks,
-    semantic role counts, sheet coverage, and component isolation panels.
-
-    Uses PER-SHEET minimum thresholds. Global low thresholds (e.g. MIN=3)
-    are intentionally avoided — they allowed garbage drawings to pass.
+    drawing_content_validator.py =====================================
 
 Layer: Execution
 
 Usage Examples:
-    # Single file:
-    python3 drawing_content_validator.py outputs/blueprint-elevation.svg \\
-        context/staging/structural-model.json
+    python drawing_content_validator.py [args]
 
-    # Single file with JSON output:
-    python3 drawing_content_validator.py outputs/blueprint-elevation.svg \\
-        context/staging/structural-model.json \\
-        --json-output context/staging/drawing-content-report.json
+Supported Object Types:
+    JSON, SVG, Markdown
 
-    # Batch mode (from shell loop):
-    for f in outputs/*.svg; do
-        python3 drawing_content_validator.py "$f" \\
-            context/staging/structural-model.json \\
-            --json-output context/staging/drawing-content-report.json --append
-    done
+CLI Arguments:
+    Varies per script, typically input file paths.
 
-Failure Codes Emitted:
-    SVG_PLACEHOLDER_GEOMETRY         — fewer than 5 geometric elements total
-    SVG_CONTENT_TOO_SMALL            — below sheet-specific min_elements threshold
-    SVG_CONTENT_TOP_LEFT_CLUSTER     — all geometry in top-left 20% of viewBox
-    SVG_TOO_FEW_SEMANTIC_ELEMENTS    — below sheet-specific min_semantic threshold
-    SVG_TOO_FEW_TEXT_LABELS          — below sheet-specific min_text threshold
-    SVG_MISSING_REQUIRED_ROLE        — a required data-role is absent for this sheet
-    SVG_MISSING_DIMENSIONS           — no dimension annotations on a blueprint sheet
-    SVG_MISSING_TITLE_BLOCK          — no title block on a blueprint sheet
-    SVG_MISSING_MEMBER_IDS           — no member ID labels (P1, B1, R1) on blueprint
-    SVG_MISSING_BRACES               — no brace elements on elevation/isometric
-    SVG_MISSING_FOOTINGS             — no footing elements on elevation/isometric
-    SVG_MISSING_COMPONENT_DETAILS    — fewer than required component panels
-    SVG_NOT_BUILDER_MEANINGFUL       — general builder-usefulness failure
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
 
 Script Dependencies:
-    Standard library: argparse, json, os, re, sys
+    Standard library json, os, sys, math, hashlib, etc.
 
 Consumed by:
-    adversarial-drawing-reviewer skill, drawing-red-team-agent,
-    run_drawing_red_team.py, generate_quality_dashboard.py
+    design-orchestrator, various skills in the pipeline.
 """
 from __future__ import annotations
 

@@ -4,7 +4,7 @@ svg_validator.py (CLI)
 =====================================
 
 Purpose:
-    svg_validator.py =====================================
+    svg_validator.py (CLI) =====================================
 
 Layer: Execution
 

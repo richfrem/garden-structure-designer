@@ -14,8 +14,7 @@ metadata:
     category: validation
     consumes:
       - outputs/*.svg
-      - context/staging/structural-model.json
-      - context/staging/geometry-calculations.json
+      - context/staging/structure.json
     produces:
       - context/staging/drawing-red-team-report.json
       - outputs/drawing-red-team-report.md
@@ -40,9 +39,8 @@ This skill must launch or simulate an independent adversarial review of every ge
 ## Required Behavior
 
 1. Read all SVG outputs in `outputs/`.
-2. Read deterministic model files:
-   - `context/staging/structural-model.json`
-   - `context/staging/geometry-calculations.json`
+2. Read deterministic model file:
+   - `context/staging/structure.json`
 3. Run `svg_validator.py` if available.
 4. Run `drawing_content_validator.py` if available.
 5. Launch the `drawing-red-team-agent` or conduct the same review using its criteria.
@@ -64,7 +62,7 @@ Run this single command — it enumerates all SVGs, runs both validators, writes
 ```bash
 python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
   --svg-dir outputs \
-  --model context/staging/structural-model.json \
+  --model context/staging/structure.json \
   --report-dir context/staging \
   --md-dir outputs
 ```
@@ -106,11 +104,11 @@ Individual validator runs for debugging a specific sheet:
 ```bash
 python3 plugins/garden-structure-designer/scripts/svg_validator.py \
   outputs/<sheet>.svg \
-  context/staging/structural-model.json
+  context/staging/structure.json
 
 python3 plugins/garden-structure-designer/scripts/drawing_content_validator.py \
   outputs/<sheet>.svg \
-  context/staging/structural-model.json \
+  context/staging/structure.json \
   --json-output context/staging/drawing-content-report.json \
   --append
 ```

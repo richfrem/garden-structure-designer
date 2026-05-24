@@ -4,7 +4,7 @@ cross_artifact_validator.py (CLI)
 =====================================
 
 Purpose:
-    cross_artifact_validator.py Validates consistency across all generated artifacts (Markdown, SVG, JSON).
+    cross_artifact_validator.py (CLI) =====================================
 
 Layer: Execution
 
@@ -52,12 +52,13 @@ def check_paths(file_path: str, content: str) -> list[str]:
 
 def validate(staging_dir: str, outputs_dir: str) -> list[str]:
     errors = []
-    calcs_path = os.path.join(staging_dir, "geometry-calculations.json")
-    if not os.path.exists(calcs_path):
-        return ["MISSING_GEOMETRY: geometry-calculations.json not found."]
+    model_path = os.path.join(staging_dir, "structure.json")
+    if not os.path.exists(model_path):
+        return ["MISSING_STRUCTURE: structure.json not found."]
         
-    with open(calcs_path) as f:
-        calcs = json.load(f)
+    with open(model_path) as f:
+        model = json.load(f)
+    calcs = model.get("geometry", {})
         
     miter = str(round(calcs.get("compound_cut", {}).get("miter_deg", 0), 2))
     bevel = str(round(calcs.get("compound_cut", {}).get("bevel_deg", 0), 2))

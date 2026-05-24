@@ -1,3 +1,5 @@
+from __future__ import annotations
+import math
 #!/usr/bin/env python3
 """
 geometry_engine.py (CLI)
@@ -32,7 +34,6 @@ Script Dependencies:
 Consumed by:
     design-orchestrator, various skills in the pipeline.
 """
-from __future__ import annotations
 
 import json
 import math
@@ -221,8 +222,8 @@ def svg_layout(
     scale_px_per_ft: float = 42.0,
     margin_top_px: int = 80,
     margin_bottom_px: int = 120,
-    min_height_px: int = 900,
-    min_width_px: int = 1100,
+    min_height_px: int = 1200,
+    min_width_px: int = 1600,
 ) -> dict[str, Any]:
     """
     Compute dynamic SVG viewport dimensions and coordinate datums.
@@ -379,6 +380,252 @@ def compute(model_path: str) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
+def compute_joints(structure):
+    joints = {
+        "units": "feet",
+        "coordinate_system": "right_handed_z_up",
+        "tolerance_ft": 0.0052,
+        "notes": [
+            "Derived by geometry_engine.py. Do not manually edit.",
+            "Planes are point-normal form. Normals are unit-length.",
+            "All joint points are construction nodes for cad_scene.py."
+        ]
+    }
+    
+    qty = structure["layout"]["post_count"]
+    r_ft = structure["layout"]["inscribed_radius_ft"]
+    post_h = structure["members"]["posts"]["cut_length_ft"]
+    beam_d_in = structure["members"]["beams"]["actual_depth_in"]
+    beam_d_ft = beam_d_in / 12.0
+    roof_r = structure["geometry"]["roof_rise"]["rise_ft"]
+    
+    Z_GRADE = 0.0
+    Z_POST_TOP = post_h - beam_d_ft
+    Z_BEAM_CENTER = Z_POST_TOP + beam_d_ft / 2.0
+    Z_BEAM_TOP = post_h
+    Z_APEX = post_h + roof_r
+    
+    joints["z_planes"] = {
+        "Z_GRADE": Z_GRADE,
+        "Z_POST_TOP": round(Z_POST_TOP, 3),
+        "Z_BEAM_TOP": round(Z_BEAM_TOP, 3),
+        "Z_BEAM_CENTER": round(Z_BEAM_CENTER, 3),
+        "Z_APEX": round(Z_APEX, 3),
+        "Z_BEAM_SOFFIT": round(Z_POST_TOP, 3)
+    }
+    
+    post_xy = []
+    for i in range(qty):
+        x = r_ft * math.cos(2*math.pi*i/qty)
+        y = r_ft * math.sin(2*math.pi*i/qty)
+        post_xy.append([round(x, 4), round(y, 4)])
+        
+    beam_segments = []
+    for i in range(qty):
+        beam_segments.append({
+            "id": f"B{i+1}",
+            "i0": i,
+            "i1": (i+1)%qty
+        })
+        
+    joints["layout"] = {
+        "post_count": qty,
+        "post_radius_ft": r_ft,
+        "post_xy": post_xy,
+        "beam_segments": beam_segments
+    }
+    
+    # Hub planes
+    hub_r = structure["geometry"]["hub_radius_ft"]
+    face_planes = []
+    for i in range(qty):
+        theta = 2*math.pi*i/qty
+        nx = math.cos(theta)
+        ny = math.sin(theta)
+        px = hub_r * nx
+        py = hub_r * ny
+        face_planes.append({
+            "face_id": f"H{i+1}",
+            "theta_deg": round(math.degrees(theta), 1),
+            "point": [round(px, 4), round(py, 4), round(Z_APEX, 3)],
+            "normal": [round(nx, 4), round(ny, 4), 0.0]
+        })
+        
+    joints["hub"] = {
+        "type": structure["hub"]["type"],
+        "sides": qty,
+        "radius_ft_resolved": hub_r,
+        "face_planes": {
+            "alignment": structure["hub"].get("face_alignment", "mid_angle"),
+            "planes": face_planes
+        }
+    }
+    
+    # Rafter termination points
+    term_points = []
+    for i in range(qty):
+        # rafter axis from center outward (in XY)
+        # plane is H{i+1}
+        nx, ny, _ = face_planes[i]["normal"]
+        px, py, _ = face_planes[i]["point"]
+        
+        # Line L(t) = t * (nx, ny)  (since it's radial)
+        # Plane eqn: (L - P) dot N = 0
+        # t*nx*nx + t*ny*ny - px*nx - py*ny = 0
+        # t = px*nx + py*ny
+        t = px*nx + py*ny
+        term_x = t * nx
+        term_y = t * ny
+        
+        term_points.append({
+            "rafter_id": f"R{i+1}",
+            "face_id": f"H{i+1}",
+            "point": [round(term_x, 4), round(term_y, 4), round(Z_APEX, 3)]
+        })
+        
+    rafter_d_in = structure["roof"]["primary_rafters"]["actual_depth_in"]
+    seat_depth = (rafter_d_in / 12.0) / 3.0
+        
+    joints["rafters"] = {
+        "primary_count": qty,
+        "seat_depth_ft": "auto_1_over_3_depth",
+        "seat_depth_ft_resolved": round(seat_depth, 4),
+        "hub_termination_points": {
+            "points": term_points
+        }
+    }
+    
+    # Braces
+    bracing_spec = structure.get("bracing", {})
+    joints["braces"] = {"enabled": bracing_spec.get("enabled", False)}
+    
+    if bracing_spec.get("enabled", False):
+        brace_spec = bracing_spec.get("brace", {})
+        b_len = brace_spec.get("length_ft", 2.5)
+        b_ang = math.radians(brace_spec.get("angle_deg", 45))
+        b_run = b_len * math.cos(b_ang)
+        b_drop = b_len * math.sin(b_ang)
+        post_w_in = structure["members"]["posts"]["actual_width_in"]
+        post_hw = (post_w_in / 12.0) / 2.0
+        
+        brace_pairs = []
+        for i in range(qty):
+            vi = post_xy[i]
+            
+            # Toward next
+            j = (i+1)%qty
+            vj = post_xy[j]
+            dx = vj[0] - vi[0]
+            dy = vj[1] - vi[1]
+            dlen = math.sqrt(dx*dx + dy*dy)
+            dx /= dlen
+            dy /= dlen
+            
+            start_x = vi[0] + dx * post_hw
+            start_y = vi[1] + dy * post_hw
+            start_z = Z_POST_TOP - b_drop
+            
+            end_x = vi[0] + dx * (post_hw + b_run)
+            end_y = vi[1] + dy * (post_hw + b_run)
+            end_z = Z_POST_TOP
+            
+            brace_pairs.append({
+                "brace_id": f"K{i+1}A",
+                "post_index": i,
+                "toward_post_index": j,
+                "start": [round(start_x, 4), round(start_y, 4), round(start_z, 3)],
+                "end": [round(end_x, 4), round(end_y, 4), round(end_z, 3)]
+            })
+            
+            # Toward prev
+            j = (i-1)%qty
+            vj = post_xy[j]
+            dx = vj[0] - vi[0]
+            dy = vj[1] - vi[1]
+            dlen = math.sqrt(dx*dx + dy*dy)
+            dx /= dlen
+            dy /= dlen
+            
+            start_x = vi[0] + dx * post_hw
+            start_y = vi[1] + dy * post_hw
+            start_z = Z_POST_TOP - b_drop
+            
+            end_x = vi[0] + dx * (post_hw + b_run)
+            end_y = vi[1] + dy * (post_hw + b_run)
+            end_z = Z_POST_TOP
+            
+            brace_pairs.append({
+                "brace_id": f"K{i+1}B",
+                "post_index": i,
+                "toward_post_index": j,
+                "start": [round(start_x, 4), round(start_y, 4), round(start_z, 3)],
+                "end": [round(end_x, 4), round(end_y, 4), round(end_z, 3)]
+            })
+            
+        joints["braces"]["layout"] = bracing_spec.get("layout", "paired_per_post")
+        joints["braces"]["endpoints"] = {"pairs": brace_pairs}
+        
+    # Beam Ring Corner Planes
+    corner_planes = []
+    beam_end_planes = []
+    for i in range(qty):
+        vi = post_xy[i]
+        vnext = post_xy[(i+1)%qty]
+        vprev = post_xy[(i-1)%qty]
+        
+        # unext = unit(vnext - vi)
+        dx_next = vnext[0] - vi[0]
+        dy_next = vnext[1] - vi[1]
+        dl_next = math.sqrt(dx_next**2 + dy_next**2)
+        ux_next = dx_next / dl_next
+        uy_next = dy_next / dl_next
+        
+        # uprev = unit(vprev - vi)
+        dx_prev = vprev[0] - vi[0]
+        dy_prev = vprev[1] - vi[1]
+        dl_prev = math.sqrt(dx_prev**2 + dy_prev**2)
+        ux_prev = dx_prev / dl_prev
+        uy_prev = dy_prev / dl_prev
+        
+        # angle bisector n_i = unit(unext + uprev)
+        nx = ux_next + ux_prev
+        ny = uy_next + uy_prev
+        nlen = math.sqrt(nx**2 + ny**2)
+        if nlen > 1e-6:
+            nx /= nlen
+            ny /= nlen
+        else:
+            nx, ny = 1.0, 0.0
+            
+        plane = {
+            "corner_id": f"C{i+1}",
+            "post_index": i,
+            "point": [round(vi[0], 4), round(vi[1], 4), round(Z_BEAM_CENTER, 3)],
+            "normal": [round(nx, 4), round(ny, 4), 0.0]
+        }
+        corner_planes.append(plane)
+        
+    for i in range(qty):
+        c_start = corner_planes[i]
+        c_end = corner_planes[(i+1)%qty]
+        bid = f"B{i+1}"
+        beam_end_planes.append({
+            "beam_id": bid, "end": "start", "corner_id": c_start["corner_id"],
+            "point": c_start["point"], "normal": c_start["normal"]
+        })
+        beam_end_planes.append({
+            "beam_id": bid, "end": "end", "corner_id": c_end["corner_id"],
+            "point": c_end["point"], "normal": c_end["normal"]
+        })
+        
+    joints["beam_ring"] = {
+        "corner_planes": corner_planes,
+        "beam_end_planes": beam_end_planes
+    }
+        
+    return joints
+
+
 def compute_from_structure(structure_path: str) -> dict:
     """
     Read structure.json, compute all geometry, seal geometry section, write back.
@@ -470,6 +717,9 @@ def compute_from_structure(structure_path: str) -> dict:
         "post_px":       round(post_px),
     }
 
+    # --- Fabrication-Grade Joint Computation ---
+    joints = compute_joints(structure)
+    
     structure["geometry"] = {
         "_comment": "DERIVED — written by geometry_engine.py. Do not manually edit.",
         "_sealed":     True,
@@ -481,6 +731,7 @@ def compute_from_structure(structure_path: str) -> dict:
         "hub_radius_ft": round(hub_r, 4),
         "svg_coordinates": svg_coords,
         "warnings":     warnings,
+        "joints": joints,
     }
     structure["meta"]["lifecycle"] = "GEOMETRY_SEALED"
 

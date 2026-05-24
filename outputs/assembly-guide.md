@@ -99,7 +99,7 @@ Apply two coats Penofin Cedar Transparent to all surfaces **including inside mor
 4. Once all 6 posts are plumb, torque J-bolt nuts to spec.
 
 ### 3.2 — Assemble beam ring
-The beam ring is 6 × 4×8 cedar, mitered at 28.71° opposing ends.  
+The beam ring is 6 × 6×12 cedar, mitered at 30.00° opposing ends.  
 **Dry-fit on the ground first — the ring must close with no gaps before it goes up.**
 
 1. Lay all 6 beams on flat ground in a hex ring.
@@ -135,22 +135,16 @@ The beam ring is 6 × 4×8 cedar, mitered at 28.71° opposing ends.
 3. Drive 2 × 3/4" oak pegs per brace.
 4. Braces should be tight and non-rocking when done.
 
-### 4.3 — Install hip rafters and hub
+### 4.3 — Install hip rafters and hub (Tripod-First Hoisting Method)
 
-> This is the most challenging step — rehearse order with crew.
+> This is the most challenging step — rehearse order with crew. For hexagonal structures, a tripod-first hoisting method is required for maximum safety and stability.
 
-**Option A (scaffolding available):**
-1. Install hub on temporary centring jig at apex height.
-2. Feed rafters one by one, seating bird's mouth on beam top and tenon into hub mortise.
-3. Once all 6 rafters are hand-seated, tap home and peg.
-
-**Option B (ground pre-assembly):**
-1. Assemble all 6 rafters into hub on the ground as a complete wheel.
-2. Lift entire assembly as a unit onto the beam ring (needs 3+ people and a ladder).
-3. Seat all 6 bird's mouths simultaneously; adjust until each sits flat.
-4. Temporarily brace with diagonal 1×3 strips while pegging.
-
-**Either method:** Peg each rafter-to-hub tenon with 2 × 3/4" oak pegs before removing any temporary bracing.
+1. **Assemble the initial tripod on the ground**: Take the central king-post hub and install **three alternating** rafters into it. Alternating rafters are those spaced 120° apart (e.g., rafters 1, 3, and 5). 
+2. **Secure the tripod apex**: Peg the three alternating rafter-to-hub joints with 2 × 3/4" oak pegs to lock them into a rigid tripod frame.
+3. **Hoist the tripod**: With 3 people, lift the self-supporting **tripod** assembly up onto the beam ring.
+4. **Seat and brace**: Seat the bird's mouths of these first three rafters onto their corresponding beam/post locations. Plumb the central hub and brace the tripod rafters with temporary 1×3 cleats to the beams.
+5. **Install the remaining three rafters**: Feed the three remaining rafters one by one into the remaining open mortises on the hub, seating their bottom bird's mouths on the beam ring.
+6. **Final pegging**: Tap all rafters home and peg the remaining rafter-to-hub joints with 2 × 3/4" oak pegs. Ensure the entire rafter wheel is rigid and level before removing temporary bracing.
 
 ### 4.4 — Install purlin ring
 1. Purlins (4×4, 3'-3") run between rafters mid-span.
@@ -183,7 +177,7 @@ The beam ring is 6 × 4×8 cedar, mitered at 28.71° opposing ends.
 |-----|-------|-------|-------------|
 | Hip rafter top (seat) | 28.71° | 9.10° | Hub/top end |
 | Hip rafter tail (decorative) | 0° | 9.10° | Tail/overhang end |
-| Ring beam both ends | 28.71° | 0° | Both ends (opposing) |
+| Ring beam both ends | 30.00° | 0° | Both ends (opposing) |
 | Knee brace both ends | 45° | 0° | Both ends |
 | Purlin half-lap | — | 9.10° | Field fit |
 

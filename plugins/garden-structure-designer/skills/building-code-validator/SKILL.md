@@ -5,7 +5,7 @@ allowed-tools: Read, Write
 ---
 
 ## Expected Inputs
-`context/staging/design-spec.json` containing the user's location string.
+`context/staging/structure.json` containing the user's location string.
 
 ## Core Operations
 1. Load localized logic (e.g. BC Building Code tables for coastal vs interior snow loads).
@@ -21,6 +21,6 @@ allowed-tools: Read, Write
 
 ## Smoke Test
 
-1. **Interior BC lookup:** Given `design-spec.json` with `jurisdiction=BC-Interior` (Kelowna): outputs `building-code.json` with `snow_load_psf ≥ 40`, `jurisdiction_resolved: true`. ✓
+1. **Interior BC lookup:** Given `structure.json` with `jurisdiction=BC-Interior` (Kelowna): outputs `building-code.json` with `snow_load_psf ≥ 40`, `jurisdiction_resolved: true`. ✓
 2. **Coastal BC lookup:** Given `jurisdiction=BC-Coastal` (Richmond): outputs `snow_load_psf ≤ 25`. ✓
-3. **Unknown jurisdiction:** Given `jurisdiction=Unknown`: outputs `building-code.json` with `jurisdiction_resolved: false` and a non-empty `jurisdiction_warning`. ✓
+3. **Unknown jurisdiction:** Given `jurisdiction=Unknown` in `structure.json`: outputs `building-code.json` with `jurisdiction_resolved: false` and a non-empty `jurisdiction_warning`. ✓

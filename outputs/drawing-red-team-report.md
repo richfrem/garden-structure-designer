@@ -3,7 +3,7 @@
 **Status:** PASS  
 **May claim success:** true  
 **Reviewer:** run_drawing_red_team.py  
-**Generated:** 2026-05-24T01:54:39.360244+00:00  
+**Generated:** 2026-05-24T06:45:39.489121+00:00  
 
 > All SVG sheets passed deterministic machine validation and sheet-specific content-quality checks. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.
 
@@ -32,7 +32,7 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 7
@@ -48,7 +48,7 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 7
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 3
@@ -64,7 +64,7 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 4
@@ -80,7 +80,7 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 7
@@ -96,7 +96,7 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 7
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 3
@@ -112,7 +112,7 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 7
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 3
@@ -128,7 +128,7 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 4

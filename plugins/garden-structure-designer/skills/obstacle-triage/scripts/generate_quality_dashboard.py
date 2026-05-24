@@ -1,0 +1,1 @@
+../../../scripts/generate_quality_dashboard.py

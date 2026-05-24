@@ -86,6 +86,25 @@
             "actual_depth_in": { "type": "number", "exclusiveMinimum": 0 },
             "overhang_ft": { "type": "number", "minimum": 0 }
           }
+        },
+        "secondary_members": {
+          "type": "object",
+          "properties": {
+            "jack_rafters": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "count_per_side": { "type": "integer", "minimum": 0 }
+              }
+            },
+            "purlin_ring": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "radius_ratio": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+              }
+            }
+          }
         }
       }
     },

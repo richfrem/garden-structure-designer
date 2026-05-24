@@ -4,7 +4,7 @@ embed_svgs.py (CLI)
 =====================================
 
 Purpose:
-    embed_svgs.py — Inline SVG and PNG assets into a Markdown file for PDF compilation.
+    embed_svgs.py (CLI) =====================================
 
 Layer: Execution
 
@@ -44,8 +44,11 @@ def embed_svg(svg_path: str) -> str:
         content = f.read().strip()
     # Remove XML declaration if present — browsers and md-to-pdf don't need it
     content = re.sub(r"<\?xml[^>]*\?>", "", content).strip()
+    # Make SVG responsive by replacing hardcoded width/height with 100%/auto
+    content = re.sub(r'(<svg[^>]*)\bwidth="[^"]+"', r'\g<1>width="100%"', content)
+    content = re.sub(r'(<svg[^>]*)\bheight="[^"]+"', r'\g<1>height="auto"', content)
     # Wrap in a div so md-to-pdf treats it as a block element
-    return f'<div class="svg-embed" style="page-break-inside:avoid;margin:16px 0;">\n{content}\n</div>'
+    return f'<div class="svg-embed" style="page-break-inside:avoid;margin:16px 0;width:100%;max-width:100%;box-sizing:border-box;">\n{content}\n</div>'
 
 
 def embed_png(png_path: str, alt: str) -> str:
