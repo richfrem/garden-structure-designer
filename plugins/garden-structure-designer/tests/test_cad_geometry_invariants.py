@@ -21,6 +21,8 @@ Tests:
 
 from __future__ import annotations
 
+import copy
+import json
 import math
 import sys
 from pathlib import Path
@@ -469,3 +471,41 @@ def test_invariant10_catches_floating_brace_head():
     with pytest.raises(GeometryError, match="Invariant 10"):
         validate_scene_geometry(s)
 
+
+
+# ---------------------------------------------------------------------------
+# New-path: geometry invariants hold when using constraint-based pipeline
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def new_path_scene(tmp_path_factory):
+    from test_geometry_engine import STRUCTURE_SEED
+    from geometry_engine import compute_from_structure
+    tmp = tmp_path_factory.mktemp("new_path_invariants")
+    p = tmp / "structure.json"
+    p.write_text(json.dumps(copy.deepcopy(STRUCTURE_SEED)))
+    compute_from_structure(str(p))
+    s = json.loads(p.read_text())
+    scene = build_structure_scene(s)
+    validate_scene_geometry(scene)
+    return scene
+
+
+def test_new_path_post_top_equals_beam_bottom(new_path_scene):
+    """Invariant 1 on constraint-based path: post top Z == beam underside Z."""
+    Z_POST_TOP = new_path_scene.Z_POST_TOP
+    Z_BEAM_TOP = new_path_scene.Z_BEAM_TOP
+    beam_d = Z_BEAM_TOP - Z_POST_TOP
+    for s in new_path_scene.solids:
+        if s.role == "post":
+            assert abs(max(s.p0[2], s.p1[2]) - Z_POST_TOP) <= _FT_TOL, f"{s.tag} top Z mismatch"
+        elif s.role == "beam":
+            centre_z = (s.p0[2] + s.p1[2]) / 2.0
+            assert abs(centre_z - beam_d / 2.0 - Z_POST_TOP) <= _FT_TOL, f"{s.tag} bottom Z mismatch"
+
+
+def test_new_path_all_member_lengths_positive(new_path_scene):
+    """Invariant 4 on constraint-based path: no zero-length members."""
+    for s in new_path_scene.solids:
+        length = vlen(vsub(s.p1, s.p0))
+        assert length > 0, f"Zero-length member on new path: {s.tag}"

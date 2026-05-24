@@ -3,7 +3,7 @@
 **Status:** PASS  
 **May claim success:** true  
 **Reviewer:** run_drawing_red_team.py  
-**Generated:** 2026-05-24T20:49:56.212483+00:00  
+**Generated:** 2026-05-24T22:34:01.529877+00:00  
 
 > All SVG sheets passed deterministic machine validation, sheet-specific content-quality checks, and headless browser visual smoke heuristics. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.
 
@@ -11,7 +11,7 @@
 
 ## Per-Sheet Results
 
-### ✅ `outputs/blueprint-component-isolation.svg` — PASS
+### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-component-isolation.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 7
@@ -27,7 +27,7 @@
 
 ---
 
-### ✅ `outputs/blueprint-elevation.svg` — PASS
+### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-elevation.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -43,7 +43,7 @@
 
 ---
 
-### ✅ `outputs/blueprint-isometric.svg` — PASS
+### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-isometric.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -59,7 +59,7 @@
 
 ---
 
-### ✅ `outputs/blueprint-plan.svg` — PASS
+### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-plan.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -75,7 +75,7 @@
 
 ---
 
-### ✅ `outputs/drawing-elevation-view.svg` — PASS
+### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-elevation-view.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -91,7 +91,7 @@
 
 ---
 
-### ✅ `outputs/drawing-isometric-view.svg` — PASS
+### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-isometric-view.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -107,7 +107,7 @@
 
 ---
 
-### ✅ `outputs/drawing-perspective-view.svg` — PASS
+### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-perspective-view.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -123,7 +123,7 @@
 
 ---
 
-### ✅ `outputs/drawing-plan-view.svg` — PASS
+### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-plan-view.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6

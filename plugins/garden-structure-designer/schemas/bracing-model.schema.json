@@ -20,7 +20,7 @@
         "required": [
           "type",
           "quantity",
-          "length_in"
+          "constraints"
         ],
         "properties": {
           "type": {
@@ -30,7 +30,27 @@
             "type": "integer"
           },
           "length_in": {
-            "type": "number"
+            "type": "number",
+            "description": "Derived output from geometry_engine. Not a required input in the constraint-based architecture."
+          },
+          "constraints": {
+            "type": "object",
+            "required": [
+              "start_surface",
+              "end_surface"
+            ],
+            "properties": {
+              "start_surface": {
+                "type": "string"
+              },
+              "end_surface": {
+                "type": "string"
+              },
+              "run_ft": {
+                "type": "number",
+                "description": "Horizontal run in feet. Derived by cad_language_translator from bracing geometry."
+              }
+            }
           }
         }
       }

@@ -26,6 +26,7 @@ Tests:
 from __future__ import annotations
 
 import copy
+import json
 import sys
 from pathlib import Path
 
@@ -238,3 +239,31 @@ def test_no_hub_skips_rafter_tip_cleanly(valid_scene):
     assert not any("rafter_tip" in e or "hub_face" in e for e in errors), (
         f"No hub should produce no rafter-hub errors, got: {errors}"
     )
+
+
+# ---------------------------------------------------------------------------
+# 11. New-path: validate_connections passes on constraint-based scene
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def new_path_scene(tmp_path_factory):
+    """Build scene using the new constraint-based pipeline (compute_from_structure)."""
+    from test_geometry_engine import STRUCTURE_SEED
+    from geometry_engine import compute_from_structure
+    tmp = tmp_path_factory.mktemp("new_path")
+    p = tmp / "structure.json"
+    p.write_text(json.dumps(copy.deepcopy(STRUCTURE_SEED)))
+    compute_from_structure(str(p))
+    s = json.loads(p.read_text())
+    return build_structure_scene(s)
+
+
+def test_all_checks_pass_on_new_path_scene(new_path_scene):
+    """All physical connection checks must pass when using the constraint-based pipeline."""
+    errors = validate_connections(new_path_scene)
+    assert not errors, f"New-path scene failed physical checks: {errors}"
+
+
+def test_assert_connections_passes_on_new_path_scene(new_path_scene):
+    """assert_connections_physical must not raise on constraint-based scene."""
+    assert_connections_physical(new_path_scene)

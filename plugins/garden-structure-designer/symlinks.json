@@ -1514,12 +1514,6 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
-      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/cad_backend.py",
-      "strategy": "symlink",
-      "description": ""
-    },
-    {
       "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
       "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/run_obstacle_triage.py",
       "strategy": "symlink",
@@ -1618,12 +1612,6 @@
     {
       "src": "plugins/garden-structure-designer/scripts/cad_backend_build123d.py",
       "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/cad_backend_build123d.py",
-      "strategy": "symlink",
-      "description": ""
-    },
-    {
-      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
-      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/cad_backend.py",
       "strategy": "symlink",
       "description": ""
     },
@@ -1784,12 +1772,6 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
-      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/cad_backend.py",
-      "strategy": "symlink",
-      "description": ""
-    },
-    {
       "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
       "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/run_obstacle_triage.py",
       "strategy": "symlink",
@@ -1868,12 +1850,6 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
-      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cad_backend.py",
-      "strategy": "symlink",
-      "description": ""
-    },
-    {
       "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
       "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/run_obstacle_triage.py",
       "strategy": "symlink",
@@ -1930,12 +1906,6 @@
     {
       "src": "plugins/garden-structure-designer/scripts/build_payload.py",
       "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/build_payload.py",
-      "strategy": "symlink",
-      "description": ""
-    },
-    {
-      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
-      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cad_backend.py",
       "strategy": "symlink",
       "description": ""
     },
@@ -2116,12 +2086,6 @@
     {
       "src": "plugins/garden-structure-designer/scripts/build_payload.py",
       "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/build_payload.py",
-      "strategy": "symlink",
-      "description": ""
-    },
-    {
-      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
-      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/cad_backend.py",
       "strategy": "symlink",
       "description": ""
     },
@@ -2494,12 +2458,6 @@
     {
       "src": "plugins/garden-structure-designer/scripts/cad_backend_build123d.py",
       "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/cad_backend_build123d.py",
-      "strategy": "symlink",
-      "description": ""
-    },
-    {
-      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/cad_backend.py",
       "strategy": "symlink",
       "description": ""
     },

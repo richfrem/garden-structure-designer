@@ -1,10 +1,10 @@
 {
   "schema": "garden-structure-designer/drawing-content-report/1.0",
-  "generated": "2026-05-24T20:49:56.328102+00:00",
+  "generated": "2026-05-24T22:34:01.609449+00:00",
   "status": "PASS",
   "files": [
     {
-      "file": "outputs/blueprint-component-isolation.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-component-isolation.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 77,
@@ -22,7 +22,7 @@
       "text_label_count": 35
     },
     {
-      "file": "outputs/blueprint-elevation.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-elevation.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 237,
@@ -40,7 +40,7 @@
       "text_label_count": 52
     },
     {
-      "file": "outputs/blueprint-isometric.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-isometric.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 188,
@@ -58,7 +58,7 @@
       "text_label_count": 53
     },
     {
-      "file": "outputs/blueprint-plan.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-plan.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 227,
@@ -76,7 +76,7 @@
       "text_label_count": 52
     },
     {
-      "file": "outputs/drawing-elevation-view.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-elevation-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 179,
@@ -94,7 +94,7 @@
       "text_label_count": 52
     },
     {
-      "file": "outputs/drawing-isometric-view.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-isometric-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 144,
@@ -112,7 +112,7 @@
       "text_label_count": 53
     },
     {
-      "file": "outputs/drawing-perspective-view.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-perspective-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 179,
@@ -130,7 +130,7 @@
       "text_label_count": 56
     },
     {
-      "file": "outputs/drawing-plan-view.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-plan-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 227,
