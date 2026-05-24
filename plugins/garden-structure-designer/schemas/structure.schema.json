@@ -64,7 +64,7 @@
             "nominal_size": { "type": "string" },
             "actual_width_in": { "type": "number", "exclusiveMinimum": 0 },
             "actual_depth_in": { "type": "number", "exclusiveMinimum": 0 },
-            "cut_length_ft": { "type": "number" }
+            "cut_length_ft": { "type": "number", "exclusiveMinimum": 0 }
           }
         }
       }
