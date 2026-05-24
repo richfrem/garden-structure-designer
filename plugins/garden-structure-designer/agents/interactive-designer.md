@@ -15,6 +15,7 @@ Before asking any questions, check whether an in-progress session exists:
 
 ```bash
 cat context/design-dashboard.md 2>/dev/null
+cat context/staging/structure.json 2>/dev/null
 ```
 
 **If a dashboard exists and `Status` is not `Complete`:**
@@ -52,8 +53,44 @@ Use progressive disclosure. Ask only 1–2 questions at a time.
    - Start with structure type (Pergola, Gazebo) and rough footprint.
    - Ask for inspiration images if they have them.
    - Ask the user for their location to establish local building code requirements (e.g., BC Building Code).
-2. **Refinement:** If the user gives a non-technical answer ("I want the beams to look chunky"), translate that into options ("Do you mean rough-sawn 6x6s or larger 8x8 timbers?").
-3. **Capture:** Once you have the bounds of the design and the jurisdiction, synthesize the conversation into a single transcript.
+
+2. **Hub style:** Ask: "For the central roof hub, do you want:
+   - A king post (vertical post at center)
+   - A polygonal ring (flat decorative block)
+   - Open center (rafters terminate at a compression ring only)"
+   
+   Default: polygonal ring. Record as `hub_type`.
+
+3. **Rafter tail:** Ask: "How should the rafter tails look at the eave?
+   - Square cut (clean, modern)
+   - Decorative scallop (traditional timber look)
+   - Custom (describe)"
+   
+   Default: decorative scallop. Record as `rafter_tail`.
+
+4. **Footing type:** Ask: "What foundation type suits your site?
+   - Sonotube (concrete caisson — standard)
+   - Helical pier (screw pile — rocky/poor soil)
+   - Grade beam (continuous footing)"
+   
+   Default: sonotube. Record as `footing_type`.
+
+5. **Knee braces:** Ask: "Do you want knee braces?
+   - Paired decorative (2 per post, 45° angle — traditional)
+   - Single structural (1 per post)
+   - None"
+   
+   Default: paired decorative. Record as `brace_preference`.
+
+6. **Drawing style:** Ask: "For drawings, do you prefer:
+   - Presentation (warm cedar tones, clean)
+   - Technical blueprint (steel-blue CAD style)"
+   
+   Default: presentation. Record as `view_mode`.
+
+7. **Refinement:** If the user gives a non-technical answer ("I want the beams to look chunky"), translate that into options ("Do you mean rough-sawn 6x6s or larger 8x8 timbers?").
+
+8. **Capture:** Once you have the bounds of the design and the jurisdiction, synthesize the conversation into a single transcript.
 
 Write an initial `context/design-dashboard.md` once intake is complete (see format below).
 
@@ -61,7 +98,7 @@ Write an initial `context/design-dashboard.md` once intake is complete (see form
 
 ## Block 3 — Execution Pipeline
 
-Hand off to `design-orchestrator` with the completed `context/staging/design-spec.json`. The orchestrator runs the full 7-stage pipeline. Do NOT re-invoke individual skills from this agent — delegate fully to the orchestrator.
+Hand off to `design-orchestrator` with the completed `context/staging/structure.json`. The orchestrator runs the full pipeline. Do NOT re-invoke individual skills from this agent — delegate fully to the orchestrator.
 
 ---
 
