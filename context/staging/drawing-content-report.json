@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/drawing-content-report/1.0",
-  "generated": "2026-05-24T18:53:10.594153+00:00",
+  "generated": "2026-05-24T19:29:37.526119+00:00",
   "status": "PASS",
   "files": [
     {
@@ -25,127 +25,127 @@
       "file": "outputs/blueprint-elevation.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 214,
-      "semantic_total": 44,
+      "total_elements": 256,
+      "semantic_total": 56,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 7,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 32
+      "text_label_count": 50
     },
     {
       "file": "outputs/blueprint-isometric.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 118,
-      "semantic_total": 35,
+      "total_elements": 185,
+      "semantic_total": 59,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 7,
         "footing": 6,
-        "dimension": 3,
+        "dimension": 15,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 44
+      "text_label_count": 56
     },
     {
       "file": "outputs/blueprint-plan.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 218,
-      "semantic_total": 41,
+      "total_elements": 236,
+      "semantic_total": 53,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 4,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 22
+      "text_label_count": 28
     },
     {
       "file": "outputs/drawing-elevation-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 223,
-      "semantic_total": 44,
+      "total_elements": 265,
+      "semantic_total": 56,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 7,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 32
+      "text_label_count": 50
     },
     {
       "file": "outputs/drawing-isometric-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 113,
-      "semantic_total": 35,
+      "total_elements": 180,
+      "semantic_total": 59,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 7,
         "footing": 6,
-        "dimension": 3,
+        "dimension": 15,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 44
+      "text_label_count": 56
     },
     {
       "file": "outputs/drawing-perspective-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 112,
-      "semantic_total": 35,
+      "total_elements": 179,
+      "semantic_total": 59,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 7,
         "footing": 6,
-        "dimension": 3,
+        "dimension": 15,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 44
+      "text_label_count": 56
     },
     {
       "file": "outputs/drawing-plan-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 213,
-      "semantic_total": 41,
+      "total_elements": 231,
+      "semantic_total": 53,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 4,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 22
+      "text_label_count": 28
     }
   ]
 }

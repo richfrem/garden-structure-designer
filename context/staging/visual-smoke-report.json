@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/visual-smoke-report/1.0",
-  "generated_at": "2026-05-24T18:53:05.325653+00:00",
+  "generated_at": "2026-05-24T19:29:36.160712+00:00",
   "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
   "structure_path": "context/staging/structure.json",
   "svg_dir": "outputs",
@@ -18,7 +18,7 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.14740208333333332,
+        "non_bg_ratio": 0.17404895833333334,
         "bbox_fill_ratio": 0.9534177083333333,
         "top_left_clustered": false,
         "expected_topology": {
@@ -29,25 +29,17 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 6,
-          "beams": 46,
-          "rafters": 72
+          "posts": 9,
+          "beams": 53,
+          "rafters": 113
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 1647,
-        "hub_edge_density": 0.06758928571428571
+        "cv_hub_density": 2049
       },
       "failures": [],
-      "warnings": [],
-      "hub_crop_png": "outputs/visual-smoke/drawing-plan-view.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          440,
-          280,
-          280
-        ]
-      },
+      "warnings": [
+        "Could not compute hub crop window."
+      ],
       "status": "PASS"
     },
     {
@@ -59,7 +51,7 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.19330989583333333,
+        "non_bg_ratio": 0.19758958333333335,
         "bbox_fill_ratio": 0.9534177083333333,
         "top_left_clustered": false,
         "expected_topology": {
@@ -70,9 +62,9 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 20,
-          "beams": 59,
-          "rafters": 42
+          "posts": 27,
+          "beams": 53,
+          "rafters": 60
         },
         "cv_content_ratio": 1.0,
         "cv_hub_density": 1756
@@ -90,7 +82,7 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.219978125,
+        "non_bg_ratio": 0.23896145833333332,
         "bbox_fill_ratio": 0.9534177083333333,
         "top_left_clustered": false,
         "expected_topology": {
@@ -101,25 +93,17 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 35,
-          "beams": 67,
-          "rafters": 66
+          "posts": 34,
+          "beams": 74,
+          "rafters": 91
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 3250,
-        "hub_edge_density": 0.1082780612244898
+        "cv_hub_density": 3281
       },
       "failures": [],
-      "warnings": [],
-      "hub_crop_png": "outputs/visual-smoke/drawing-isometric-view.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          307,
-          280,
-          280
-        ]
-      },
+      "warnings": [
+        "Could not compute hub crop window."
+      ],
       "status": "PASS"
     },
     {
@@ -131,7 +115,7 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.23245208333333334,
+        "non_bg_ratio": 0.25092916666666665,
         "bbox_fill_ratio": 0.9534177083333333,
         "top_left_clustered": false,
         "expected_topology": {
@@ -143,24 +127,16 @@
         },
         "detected_components": {
           "posts": 30,
-          "beams": 70,
-          "rafters": 61
+          "beams": 73,
+          "rafters": 92
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2805,
-        "hub_edge_density": 0.1082780612244898
+        "cv_hub_density": 2774
       },
       "failures": [],
-      "warnings": [],
-      "hub_crop_png": "outputs/visual-smoke/drawing-perspective-view.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          307,
-          280,
-          280
-        ]
-      },
+      "warnings": [
+        "Could not compute hub crop window."
+      ],
       "status": "PASS"
     },
     {
@@ -172,7 +148,7 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.15921197916666666,
+        "non_bg_ratio": 0.18656302083333334,
         "bbox_fill_ratio": 0.9550572916666666,
         "top_left_clustered": false,
         "expected_topology": {
@@ -183,25 +159,17 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 6,
-          "beams": 48,
-          "rafters": 75
+          "posts": 9,
+          "beams": 53,
+          "rafters": 114
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 1644,
-        "hub_edge_density": 0.06551020408163265
+        "cv_hub_density": 2048
       },
       "failures": [],
-      "warnings": [],
-      "hub_crop_png": "outputs/visual-smoke/blueprint-plan.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          440,
-          280,
-          280
-        ]
-      },
+      "warnings": [
+        "Could not compute hub crop window."
+      ],
       "status": "PASS"
     },
     {
@@ -213,7 +181,7 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.11135208333333334,
+        "non_bg_ratio": 0.11996041666666667,
         "bbox_fill_ratio": 0.9550572916666666,
         "top_left_clustered": false,
         "expected_topology": {
@@ -224,9 +192,9 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 21,
-          "beams": 53,
-          "rafters": 45
+          "posts": 27,
+          "beams": 56,
+          "rafters": 64
         },
         "cv_content_ratio": 1.0,
         "cv_hub_density": 1923
@@ -244,7 +212,7 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.17433854166666668,
+        "non_bg_ratio": 0.190196875,
         "bbox_fill_ratio": 0.9550572916666666,
         "top_left_clustered": false,
         "expected_topology": {
@@ -255,25 +223,17 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 31,
-          "beams": 57,
-          "rafters": 66
+          "posts": 32,
+          "beams": 74,
+          "rafters": 99
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 3214,
-        "hub_edge_density": 0.10755102040816326
+        "cv_hub_density": 3252
       },
       "failures": [],
-      "warnings": [],
-      "hub_crop_png": "outputs/visual-smoke/blueprint-isometric.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          307,
-          280,
-          280
-        ]
-      },
+      "warnings": [
+        "Could not compute hub crop window."
+      ],
       "status": "PASS"
     },
     {
