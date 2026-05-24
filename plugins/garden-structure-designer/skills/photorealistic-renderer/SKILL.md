@@ -70,69 +70,56 @@ Also read `context/staging/structure.json` (intent/meta section, if present):
 
 ## Phase 2 — Compose and Write Prompt
 
-Write `outputs/render-prompt.txt` by assembling the prompt from the model data. There is no fixed template — the content is derived from what was actually designed. The structure below defines the **sections to include and how to populate each one**.
+Write `outputs/render-prompt.txt` as two blocks: a **positive prompt** (dense flowing prose) followed by a **`Negative prompt:`** line. No headers, no bullet lists, no section labels inside the file — those parse poorly in image models.
 
-### Prompt structure (always in this order)
+### Why prose, not headers
 
-**1. Geometry Lock block** *(always first — see Gotchas for why)*
+Structured headers (`CRITICAL GEOMETRY LOCK`, `STRUCTURAL FRAME`, etc.) are read sequentially by language models that generate images. Dense prose with geometry constraints embedded naturally performs significantly better because the model parses the description holistically rather than as a checklist it can partially ignore.
 
-Open with a `CRITICAL GEOMETRY LOCK — NON-NEGOTIABLE:` block using the CAD-SPEC approach (validated as the only technique that reliably enforced 6 posts):
+### Positive prompt — how to write it
 
-- **Absolute geometry definition:** State sides, vertices, and structural corner posts as three separate lines. Use "ONLY N POSTS TOTAL" with explicit wrong counts.
-- **Perimeter rule:** "The viewer must be able to visually trace the perimeter and make exactly N directional turns ([angle]° each). Interior angle at every corner = [angle]°."
-- **Name the failure shape explicitly:** "This is NOT an octagon — never 8 sides, never 8 posts" (or whatever the likely confabulation shape is).
-- **Post count hard lock:** "TOTAL POSTS = N" as a standalone line. Add "No doubled posts, no closely spaced posts, no decorative posts."
-- **System parity constraint:** "N posts = N beam segments = N roof edges = N hip rafters. All systems must match this count exactly."
-- **Plan geometry construction logic:** State that posts are positioned on a circumscribed circle at equal angular increments (e.g. 60° for hex).
-- **Visibility + countability:** "Viewer must be able to count: 1, 2, 3…N — clearly and unambiguously."
-- **Failure condition:** "If more or fewer than N [members] appear, the image is incorrect."
-- Only include constraints meaningful for this structure — a lean-to shed does not need a rafter parity lock.
+Write 6–8 dense sentences. Each sentence covers one system and embeds its exact count directly in natural language. Do not separate counts into a separate lock block — weave them into the description.
 
-**2. Scene & Setting**
+**Sentence 1 — Opening + identity + material + location:**
+Open with `Ultra-realistic architectural visualization of a handcrafted [shape] [species] timber-frame [structure type]` then add the site context (location, setting). Everything flows from the model data — no defaults.
 
-Derive from `structure.json` if present. Otherwise use reasonable defaults for the project context. Include: location/climate, garden character, time of day, lighting conditions.
+**Sentence 2 — Posts + footings:**
+Describe the posts with the exact count embedded naturally: `exactly [N] evenly spaced [size] [species] posts on visible [footing type] with [hardware]`, then close with the anti-confabulation constraint in the same sentence: `one post at each vertex only, no extra supports, no doubled posts`. Include post height in feet.
 
-**3. Structure (Must Be Geometrically Correct & Buildable)**
+**Sentence 3 — Beam ring:**
+`Heavy [size] [species] beam ring with exactly [N] beam segments forming a closed [shape], [joinery description], [finish], [material character]`.
 
-One section per structural system, populated from model data. Include only the systems that exist in the model. Example sections: Plan shape / Posts / Primary beam / Roof structure / Bracing / Joinery / Special members. For each repeated member, state the exact quantity with `EXACTLY N` where count accuracy matters visually.
+**Sentence 4 — Roof structure** (include all roof members that exist in the model):
+`Open timber-frame roof with exactly [N] primary hip rafters converging into [hub description]` — if jack rafters exist: `each roof bay containing exactly [count_per_bay] shorter jack rafters terminating into adjacent hip rafters, creating layered timber framing detail`. Include joinery: `traditional birdsmouth cuts`, `chamfered knee braces`. If purlins are absent, say so explicitly (`no purlins`).
 
-**4. Material & Finish**
+**Sentence 5 — Dimensions + what's absent:**
+`Roof pitch [pitch] with [overhang_in]-inch rafter tail overhangs, open sky between rafters` — then explicitly name what is NOT there: `no roofing material, no shingles, no ridge beam` and any other members absent from this design.
 
-Derive species, grade, and finish from the model. Include grain character, finish tone, and craftsmanship quality.
+**Sentence 6 — Camera:**
+`Camera angle: slightly elevated 3/4 corner perspective from one vertex of the [shape], [lens]mm lens, deep focus, all [N] posts fully visible and individually countable.`
 
-**5. Camera & Composition**
+**Sentence 7 — Environment:**
+Derive from `site.*` in structure.json. Include: setting type, hardscape, planting palette, lighting character. Keep it one sentence.
 
-Choose the camera angle that best reveals the structure's defining geometry. For symmetrical structures, a **slightly elevated 3/4 corner view (camera height 6–7 ft)** works best — the extra elevation helps the viewer count perimeter members without foreshortening. For linear structures (pergola, fence run), a 3/4 angled view along the length. For simple sheds, a straight-on 3/4 elevation. Always include: angle, height, lens, aperture, focus point, depth of field intent.
+**Sentence 8 — Style:**
+Close with style descriptors: `Photorealistic, luxury residential landscape design aesthetic, professional architectural rendering, natural proportions, realistic timber joinery, ultra-detailed wood texture, balanced composition, soft background depth of field.`
 
-Add: "All [primary structural members] must be clearly visible — no post fully hidden behind another. No overlap that could obscure counting."
+### Negative prompt — how to write it
 
-**6. Final Validation Requirement**
+One line, starting with `Negative prompt:`, comma-separated. Always include:
 
-List 3–5 things the viewer must be able to count or confirm in the image. Derived from the most visually critical members.
-
-**7. Exclude block** *(always last)*
-
-- Standard hardware/style exclusions (see base list below)
-- Add the **specific wrong shape by name** (e.g. `octagonal geometry, 8 posts, 8 sides` if the structure is hexagonal)
-- Add all wrong counts explicitly (e.g. `7 posts, 8 posts, 5 posts`)
-- Add confabulation patterns: `doubled posts, closely spaced posts, decorative posts, uneven spacing, extra vertical elements, distorted polygon`
-- Add structural exclusions specific to what was NOT designed (no roofing if open-rafter, no walls if open-sided)
-
-Standard base exclusions:
-```
-metal brackets, joist hangers, hurricane ties, screws, bolts, plywood,
-pressure treated lumber, green lumber, modern furniture, string lights,
-anime style, cartoon, illustration, watercolor, blueprint overlay,
-distorted perspective, fisheye, people, animals, cars, shadows too dark,
-overexposed sky, clipping, grain noise, JPEG artifacts
-```
+- The specific **wrong shape by name** (e.g. `octagon, 8 posts` if hex; `hexagon, 6 posts` if square)
+- All **wrong post counts** by number (e.g. `7 posts, 8 posts, 5 posts`)
+- **Confabulation patterns**: `extra columns, doubled posts, asymmetrical spacing, missing jack rafters`
+- **Members absent from this design**: `roofing panels, shingles, walls, lattice, railings, enclosed gazebo, ridge beam, purlins` (tailor to the model)
+- **Hardware**: `metal brackets, joist hangers, hurricane ties, modern steel hardware`
+- **Style**: `cartoon, illustration, CGI artifacts, distorted geometry, fisheye lens, blurry rafters, people, furniture, string lights`
 
 ---
 
-> **Example only — hexagonal cedar gazebo (Vancouver Island):**
-> See `references/example-hex-gazebo-prompt.md` for a fully worked example showing
-> what the output looks like for this specific project. That file shows the level of
-> detail expected, not a template to copy.
+> **Example — hexagonal cedar pergola (Vancouver Island):**
+> See `references/example-hex-gazebo-prompt.md` for a fully worked example.
+> That file is the reference for output quality and prose density — not a template to copy verbatim.
 
 ---
 
