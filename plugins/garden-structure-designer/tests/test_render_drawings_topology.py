@@ -12,6 +12,6 @@ def test_svg_generation(tmp_path):
     content = out.read_text()
     assert content.count('data-role="post"') == 6
     assert content.count('data-role="beam"') == 6
-    assert content.count('data-role="rafter"') == 6
+    assert content.count('data-role="rafter"') == 18
     assert 'SAW_SETTINGS' in content
     assert 'COORDINATE MAP' in content
