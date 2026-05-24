@@ -1,7 +1,7 @@
 """
 test_cad_geometry_invariants.py
 ================================
-7 geometry invariant regression tests required by the CAD refactor spec.
+Geometry invariant regression tests required by the CAD refactor spec.
 
 Tests:
   1. test_post_top_equals_beam_bottom
@@ -11,6 +11,12 @@ Tests:
   5. test_projected_labels_do_not_overlap_major_faces
   6. test_isometric_has_expected_semantic_counts
   7. test_no_rafter_endpoint_inside_hub_radius
+  8. test_validator_catches_zero_length_member (integration)
+  9. test_beam_endpoints_on_post_grid  (Invariant 9 positive)
+  9b. test_invariant9_catches_displaced_beam  (Invariant 9 mutation)
+  10. test_brace_foot_on_post_face  (Invariant 10 positive)
+  10b. test_invariant10_catches_floating_brace_foot  (Invariant 10 mutation — lower foot)
+  10c. test_invariant10_catches_floating_brace_head  (Invariant 10 mutation — upper head)
 """
 
 from __future__ import annotations
@@ -358,4 +364,106 @@ def test_rafters_supported_on_beams(scene):
                             f"Rafter {s.tag} underside vertex {v} penetrates beam! "
                             f"Z={v[2]:.4f} ft, expected >= Z_BEAM_TOP={scene.Z_BEAM_TOP:.4f} ft"
                         )
+
+
+# ---------------------------------------------------------------------------
+# 9. Beam endpoints must sit on the post position grid (Invariant 9)
+# ---------------------------------------------------------------------------
+
+def test_beam_endpoints_on_post_grid(scene, solids_by_role):
+    """
+    Invariant 9 (positive): every beam's p0 and p1 XY coordinates must coincide
+    with a post position within 1/8 inch.  Beams are constructed from post_xy
+    so any drift is a builder error, not a tolerance question.
+    """
+    _BEAM_POST_SNAP = 1.0 / 96.0   # 1/8 inch in feet
+    for b in solids_by_role.get("beam", []):
+        for end_pt, label in ((b.p0, "p0"), (b.p1, "p1")):
+            nearest_dist = min(
+                math.sqrt((end_pt[0] - px) ** 2 + (end_pt[1] - py) ** 2)
+                for px, py in scene.post_xy
+            )
+            assert nearest_dist <= _BEAM_POST_SNAP, (
+                f"Beam {b.tag} {label} XY ({end_pt[0]:.4f}, {end_pt[1]:.4f}) is "
+                f"{nearest_dist * 12:.3f}\" from nearest post (max 1/8\") — "
+                "beam endpoint is disconnected from post grid"
+            )
+
+
+def test_invariant9_catches_displaced_beam():
+    """
+    Invariant 9 (mutation): displace a beam endpoint 0.5 ft off the post grid;
+    validate_scene_geometry must raise GeometryError naming Invariant 9.
+    """
+    s = build_structure_scene(MODEL, CALCS)
+    beams = [solid for solid in s.solids if solid.role == "beam"]
+    assert beams, "Need at least one beam for this mutation test"
+    # Shift the first beam's p0 0.5 ft off its post position (clearly > 1/8" snap)
+    b0 = beams[0]
+    beams[0].p0 = (b0.p0[0] + 0.5, b0.p0[1], b0.p0[2])
+
+    with pytest.raises(GeometryError, match="Invariant 9"):
+        validate_scene_geometry(s)
+
+
+# ---------------------------------------------------------------------------
+# 10. Brace foot must contact a post face; brace head within beam span (Inv 10)
+# ---------------------------------------------------------------------------
+
+def test_brace_foot_on_post_face(scene, solids_by_role):
+    """
+    Invariant 10 (positive): every brace lower endpoint XY must be within 1 ft
+    of a post position.  Braces are anchored to the post face so their lower
+    foot is always at distance ≈ POST_HW from the post centre.
+    """
+    _BRACE_FOOT_MAX = 1.0   # ft
+    for b in solids_by_role.get("brace", []):
+        lower_pt = b.p0 if b.p0[2] <= b.p1[2] else b.p1
+        nearest_dist = min(
+            math.sqrt((lower_pt[0] - px) ** 2 + (lower_pt[1] - py) ** 2)
+            for px, py in scene.post_xy
+        )
+        assert nearest_dist <= _BRACE_FOOT_MAX, (
+            f"Brace {b.tag} lower foot XY ({lower_pt[0]:.4f}, {lower_pt[1]:.4f}) is "
+            f"{nearest_dist:.3f} ft from nearest post (max {_BRACE_FOOT_MAX} ft) — "
+            "brace foot is floating off the post face"
+        )
+
+
+def test_invariant10_catches_floating_brace_foot():
+    """
+    Invariant 10 (mutation): move a brace's lower foot 50 ft from any post;
+    validate_scene_geometry must raise GeometryError naming Invariant 10.
+    """
+    s = build_structure_scene(MODEL, CALCS)
+    braces = [solid for solid in s.solids if solid.role == "brace"]
+    assert braces, "Need at least one brace for this mutation test"
+    b0 = braces[0]
+    lower_idx_is_p0 = b0.p0[2] <= b0.p1[2]
+    if lower_idx_is_p0:
+        braces[0].p0 = (50.0, 50.0, b0.p0[2])
+    else:
+        braces[0].p1 = (50.0, 50.0, b0.p1[2])
+
+    with pytest.raises(GeometryError, match="Invariant 10"):
+        validate_scene_geometry(s)
+
+
+def test_invariant10_catches_floating_brace_head():
+    """
+    Invariant 10 (mutation): move a brace's upper head 50 ft from any post;
+    validate_scene_geometry must raise GeometryError naming Invariant 10.
+    """
+    s = build_structure_scene(MODEL, CALCS)
+    braces = [solid for solid in s.solids if solid.role == "brace"]
+    assert braces, "Need at least one brace for this mutation test"
+    b0 = braces[0]
+    upper_idx_is_p0 = b0.p0[2] > b0.p1[2]
+    if upper_idx_is_p0:
+        braces[0].p0 = (50.0, 50.0, b0.p0[2])
+    else:
+        braces[0].p1 = (50.0, 50.0, b0.p1[2])
+
+    with pytest.raises(GeometryError, match="Invariant 10"):
+        validate_scene_geometry(s)
 

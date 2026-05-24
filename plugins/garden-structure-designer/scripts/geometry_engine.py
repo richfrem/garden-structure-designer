@@ -493,8 +493,18 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
     
     if bracing_spec.get("enabled", False):
         brace_spec = bracing_spec.get("brace", {})
-        b_len = brace_spec.get("length_ft", 2.5)
-        b_ang = math.radians(brace_spec.get("angle_deg", 45))
+        if "length_ft" not in brace_spec:
+            raise ValueError(
+                "bracing.brace.length_ft is required when bracing.enabled is True — "
+                "add it to structure.json before running geometry_engine"
+            )
+        if "angle_deg" not in brace_spec:
+            raise ValueError(
+                "bracing.brace.angle_deg is required when bracing.enabled is True — "
+                "add it to structure.json before running geometry_engine"
+            )
+        b_len = brace_spec["length_ft"]
+        b_ang = math.radians(brace_spec["angle_deg"])
         b_run = b_len * math.cos(b_ang)
         b_drop = b_len * math.sin(b_ang)
         post_w_in = structure["members"]["posts"]["actual_width_in"]
@@ -581,7 +591,11 @@ def compute_from_structure(structure_path: str) -> dict:
     roof     = structure["roof"]
     hub_spec = structure["hub"]
     inv      = structure.get("invariants", {})
-    precision = cad_meta.get("precision", 0.001)
+    if "precision" not in cad_meta:
+        raise ValueError(
+            "cad.precision is required — add it to structure.json before running geometry_engine"
+        )
+    precision = cad_meta["precision"]
 
     sides      = layout["post_count"]
     span_ft    = layout["inscribed_radius_ft"]
@@ -601,7 +615,11 @@ def compute_from_structure(structure_path: str) -> dict:
 
     # Hub radius: geometry_engine owns the formula.
     # Contract: hub_r >= radius_min_ft AND satisfies no_rafter_inside_hub_radius.
-    radius_min = hub_spec.get("radius_min_ft", 0.6)
+    if "radius_min_ft" not in hub_spec:
+        raise ValueError(
+            "hub.radius_min_ft is required — add it to structure.json before running geometry_engine"
+        )
+    radius_min = hub_spec["radius_min_ft"]
     hub_r = max(radius_min, (rafter_w_in + rafter_d_in) / 12.0)
 
     warnings: list = []
