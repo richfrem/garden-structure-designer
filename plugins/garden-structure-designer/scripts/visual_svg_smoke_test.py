@@ -256,6 +256,7 @@ def main():
     parser.add_argument("--report-md", required=True)
     parser.add_argument("--baseline-dir")
     parser.add_argument("--fail-on-regression", action="store_true")
+    parser.add_argument("--headed", action="store_true", help="Run browser in headed mode for visual debugging")
     args = parser.parse_args()
 
     # Setup dirs
@@ -300,7 +301,8 @@ def main():
     overall_failures = []
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True, args=['--disable-gpu', '--disable-font-subpixel-positioning'])
+        print(f"Launching Chromium ({'headed' if args.headed else 'headless'})…")
+        browser = p.chromium.launch(headless=not args.headed, args=['--disable-gpu', '--disable-font-subpixel-positioning'])
         page = browser.new_page()
         
         # Set viewport from structure if available
@@ -328,6 +330,7 @@ def main():
             }
 
             # Render full sheet
+            print(f"Rendering SVG → PNG: {sheet}")
             file_url = f"file://{sheet_path.absolute()}"
             page.goto(file_url, wait_until='load')
             page.wait_for_selector('svg', state='attached')
@@ -338,6 +341,14 @@ def main():
                 svg_element.first.screenshot(path=str(png_path))
             else:
                 page.screenshot(path=str(png_path))
+
+            # Hard-fail check: confirm screenshot was successfully generated
+            if not png_path.exists() or png_path.stat().st_size == 0:
+                print(f"BROWSER_RENDER_BLOCKED: Failed to generate screenshot for {sheet}")
+                file_report["failures"].append("BROWSER_RENDER_BLOCKED")
+                overall_failures.append(f"BROWSER_RENDER_BLOCKED: {sheet}")
+                report["files"].append(file_report)
+                continue
 
             metrics, failures = evaluate_image(str(png_path), kind)
             file_report["metrics"].update(metrics)
@@ -358,7 +369,16 @@ def main():
                     
                     hub_png_name = sheet.replace(".svg", ".hub.png")
                     hub_png_path = Path(args.out_dir) / hub_png_name
+                    print(f"Rendering HUB CROP → PNG: {sheet}")
                     page.screenshot(path=str(hub_png_path), clip=clip)
+
+                    # Hard-fail check: confirm hub crop screenshot was successfully generated
+                    if not hub_png_path.exists() or hub_png_path.stat().st_size == 0:
+                        print(f"BROWSER_RENDER_BLOCKED: Failed to generate hub crop screenshot for {sheet}")
+                        file_report["failures"].append("BROWSER_RENDER_BLOCKED")
+                        overall_failures.append(f"BROWSER_RENDER_BLOCKED (Hub Crop): {sheet}")
+                        report["files"].append(file_report)
+                        continue
                     
                     file_report["hub_crop_png"] = str(hub_png_path)
                     file_report["clip"] = {"hub_box_px": [cx, cy, cw, ch]}
