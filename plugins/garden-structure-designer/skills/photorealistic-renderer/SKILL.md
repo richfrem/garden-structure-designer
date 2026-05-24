@@ -70,71 +70,237 @@ Also read `context/staging/structure.json` (intent/meta section, if present):
 
 ## Phase 2 — Compose and Write Prompt
 
-Write `outputs/render-prompt.txt` as two blocks: a **positive prompt** (dense flowing prose) followed by a **`Negative prompt:`** line. No headers, no bullet lists, no section labels inside the file — those parse poorly in image models.
+Write `outputs/render-prompt.txt` using the **CAD-SPEC format** — structured sections with a title, explicit geometry locks, per-member subsections, and a final `Exclude:` block. All values are derived from `structure.json`; nothing is hardcoded.
 
-### Why prose, not headers
+### Format overview
 
-Structured headers (`CRITICAL GEOMETRY LOCK`, `STRUCTURAL FRAME`, etc.) are read sequentially by language models that generate images. Dense prose with geometry constraints embedded naturally performs significantly better because the model parses the description holistically rather than as a checklist it can partially ignore.
+```
+[SHAPE] TIMBER FRAME — CAD-SPEC PROMPT (MAX ENFORCEMENT)
 
-### What NOT to put in the positive prompt
+ABSOLUTE GEOMETRY DEFINITION (TOP PRIORITY — DO NOT VIOLATE):
+[geometry constraints]
 
-**Do not include construction specifications.** Miter angles (28.71°), bevel degrees (9.1°), actual lumber dimensions (3.5 × 5.5 inches), f-stop values (f/8), ISO values — these are meaningless to image models and dilute the visual description. Keep the language architectural and visual, not technical.
+PLAN GEOMETRY (EXPLICIT CONSTRUCTION LOGIC)
+[dimensions and spacing]
 
-**The rule:** If a carpenter needs it to cut wood, it does not belong in the prompt. If an architect needs it to describe what something looks like, it does.
+STRUCTURAL FRAME
+[one subsection per member type that exists in the model]
 
-| Include | Exclude |
-|---------|---------|
-| `6x6 cedar posts` | `actual 5.5 × 5.5 inches` |
-| `4:12 pitch` | `18.43° slope` |
-| `9-inch rafter tail overhang` | `0.75 ft overhang` |
-| `mortise-and-tenon craftsmanship` | `28.71° miter, 9.1° bevel` |
-| `35mm lens, deep focus` | `f/8 aperture` |
-| `chamfered knee braces` | `3.5 × 3.5 actual, 45.0 degrees` |
+MATERIAL + FINISH
+[species, finish, character]
 
-### Positive prompt — how to write it
+SCENE + ENVIRONMENT
+[site, planting, lighting]
 
-Write 7–8 dense sentences. Each sentence covers one system and embeds its exact count directly in natural language. Do not separate counts into a separate lock block — weave them into the description. Use nominal lumber sizes (6x6, 6x12, 4x6), not actual dimensions.
+CAMERA + VISUAL VERIFICATION (CRITICAL)
+[angle, lens, counting test]
 
-**Sentence 1 — Opening + identity + material + location:**
-Open with `Ultra-realistic architectural visualization of a handcrafted [shape] [species] timber-frame [structure type]` then add the site context (location, setting). Everything flows from the model data — no defaults.
+ANTI-FAILURE CONSTRAINTS
+[explicitly forbid wrong shapes and wrong counts]
 
-**Sentence 2 — Posts + footings:**
-Describe the posts with the exact count embedded naturally: `exactly [N] evenly spaced [size] [species] posts on visible [footing type] with [hardware]`, then close with the anti-confabulation constraint in the same sentence: `one post at each vertex only, no extra supports, no doubled posts`.
+FINAL VALIDATION CHECK (MANDATORY)
+[list of things that must be true for the image to be correct]
 
-**Sentence 3 — Beam ring:**
-`Heavy [size] [species] beam ring with exactly [N] beam segments forming a closed [shape], [joinery style], [finish], [material character]`. Joinery in plain language: `exposed timber joinery`, `mortise-and-tenon craftsmanship`.
+Exclude: [comma-separated list]
+```
 
-**Sentence 4 — Roof structure** (include all roof members that exist in the model):
-`Open timber-frame roof with exactly [N] primary hip rafters converging into [hub description]` — if jack rafters exist: `each roof bay containing exactly [count_per_bay] shorter jack rafters terminating into adjacent hip rafters, creating layered timber framing detail`. Include joinery in plain language: `traditional birdsmouth cuts`, `chamfered knee braces`. If purlins are absent, say so explicitly (`no purlins`).
+---
 
-**Sentence 5 — Pitch + overhang + what's absent:**
-`Roof pitch [pitch] with [overhang_in]-inch rafter tail overhangs, open sky between rafters` — then explicitly name what is NOT there: `no roofing material, no shingles, no ridge beam` and any other members absent from this design.
+### Section 1 — Title
 
-**Sentence 6 — Camera:**
-`Camera angle: slightly elevated 3/4 corner perspective from one vertex of the [shape], [focal-length]mm lens, deep focus, all [N] posts fully visible and individually countable.`
+`[SHAPE] TIMBER FRAME — CAD-SPEC PROMPT (MAX ENFORCEMENT)`
 
-**Sentence 7 — Environment:**
-Derive from `site.*` and `intent.jurisdiction` in structure.json. Include: setting type, hardscape, planting palette, lighting character. Keep it one sentence.
+Derive shape from `structure.shape` (e.g. HEXAGONAL, SQUARE, OCTAGONAL).
 
-**Sentence 8 — Style:**
-Close with: `Photorealistic, luxury residential landscape design aesthetic, professional architectural rendering, natural proportions, realistic timber joinery, ultra-detailed wood texture, balanced composition, soft background depth of field.`
+---
 
-### Negative prompt — how to write it
+### Section 2 — ABSOLUTE GEOMETRY DEFINITION
 
-One line, starting with `Negative prompt:`, comma-separated. Always include:
+Always first. Derive every value from the model — no guessing.
 
-- The specific **wrong shape by name** (e.g. `octagon, 8 posts` if hex; `hexagon, 6 posts` if square)
-- All **wrong post counts** by number (e.g. `7 posts, 8 posts, 5 posts`)
-- **Confabulation patterns**: `extra columns, doubled posts, asymmetrical spacing, missing jack rafters`
-- **Members absent from this design**: `roofing panels, shingles, walls, lattice, railings, enclosed gazebo, ridge beam, purlins` (tailor to the model)
-- **Hardware**: `metal brackets, joist hangers, hurricane ties, modern steel hardware`
-- **Style**: `cartoon, illustration, CGI artifacts, distorted geometry, fisheye lens, blurry rafters, people, furniture, string lights`
+- **Shape definition**: N sides, N vertices, N structural corner posts ONLY
+- **Perimeter rule**: "The outer boundary consists of exactly N straight edges. The viewer must be able to visually trace the perimeter and make exactly N directional turns ([interior_angle]° each). Interior angle at every corner = [interior_angle] degrees."
+- **Name the failure shape explicitly**: "This is NOT an [confabulation_shape] — never [wrong_N] sides, never [wrong_N] posts." For hexagon the failure shape is octagon. For square it is hexagon. Name whatever the model is most likely to confuse.
+- **Post count hard lock**: "TOTAL POSTS = N. One post per vertex. No additional vertical supports anywhere on the perimeter or inside. No doubled posts, no closely spaced posts, no decorative posts. Posts must be evenly spaced at [360/N]° around the center."
+- **System parity constraint**: "N posts = N beam segments = N roof edges = N hip rafters. All systems must match this count exactly." Only include systems that actually exist in the model.
+
+Interior angles by shape: triangle=60°, square=90°, pentagon=108°, hexagon=120°, octagon=135°.
+
+---
+
+### Section 3 — PLAN GEOMETRY
+
+Derive from `layout.*` and `structure.*`:
+- Shape name
+- Span or diameter (from `inscribed_radius_ft` × 2, or `circumscribed_radius_ft` × 2)
+- Post positioning logic ("Posts positioned on a perfect circumscribed circle")
+- Post spacing in degrees (360 / post_count)
+
+---
+
+### Section 4 — STRUCTURAL FRAME
+
+One subsection per member type that **exists in the model**. Do not include sections for members that are absent. Use nominal lumber sizes (6x6, 4x8) — not actual dimensions (5.5×5.5). Do not include cut angles or miter values — those are carpenter specs, not visual descriptions.
+
+**Posts subsection** (always present):
+```
+Posts
+- [species] timber, nominal [size]
+- Quantity: EXACTLY [post_count]
+- Height: [cut_length_ft rounded to nearest half-foot]' to beam soffit
+- Mounted on visible [footing description]
+- Perfect vertical alignment
+```
+
+**Beam Ring subsection** (if beams exist):
+```
+[descriptor] Primary Beam Ring
+- [beam_count] segments (one between each pair of posts)
+- Material: [nominal_size] [species] timber
+- Each segment connects post-to-post only
+- Forms a closed [N]-sided ring — no extra segments
+```
+
+**Roof Structure subsection** (if roof exists):
+```
+Roof Structure (OPEN FRAME — NO ROOFING)
+- [primary_rafter_count] exposed hip rafters ([nominal_size] [species])
+- One rafter per post
+- Decorative rafter tails extending past the beam ring
+- Rafters converge into a central [hub description]
+- Pitch: [pitch]
+```
+
+If **jack rafters** exist (`secondary_rafters.enabled = true`):
+```
+- Each roof bay contains exactly [count_per_side] jack rafters (shorter, [nominal_size])
+- Jack rafters terminate into adjacent hip rafters — do not reach the hub
+- Creates layered timber framing detail in each bay
+```
+
+If **purlins** are enabled (`purlins.enabled = true` AND `show_purlins = true` in visibility_rules):
+```
+Purlin Ring
+- Continuous horizontal ring inside roof
+- Follows [shape] symmetry — no added segmentation
+```
+If purlins are disabled or suppressed: **omit this subsection entirely**.
+
+**Knee Bracing subsection** (if bracing enabled):
+```
+Knee Bracing
+- [total_brace_count] total diagonal knee braces
+- [count_per_post] per post
+- Material: [nominal_size] [species]
+- Curved or chamfered profile, ~[angle_deg]° angle
+- Symmetrical and evenly distributed
+```
+
+**Joinery subsection** (always):
+```
+Joinery
+- Traditional mortise-and-tenon
+- Visible joinery / connector detailing at post-to-beam and brace intersections
+- No modern metal hardware visible anywhere
+```
+
+---
+
+### Section 5 — MATERIAL + FINISH
+
+Derive from `materials.primary`, `intent.finish` (if present), or project context:
+```
+Wood: warm [species] timber appearance
+Finish: [finish description]
+Visible grain, tonal variation, subtle tool marks
+Realistic, professional-grade timber frame presentation
+```
+
+---
+
+### Section 6 — SCENE + ENVIRONMENT
+
+Derive from `intent.site`, `intent.jurisdiction`, and project context:
+```
+Photorealistic setting in a [location] garden/patio:
+- [hardscape description]
+- [planting palette]
+- [lighting conditions]
+- [atmosphere]
+```
+
+---
+
+### Section 7 — CAMERA + VISUAL VERIFICATION
+
+For symmetrical structures use a **slightly elevated 3/4 corner view at 6–7 ft** — this camera height is critical for making all posts countable without foreshortening. For linear structures use a 3/4 angled view along the length.
+
+```
+CAMERA + VISUAL VERIFICATION (CRITICAL)
+- Perspective: slightly elevated 3/4 view (camera height ~6–7 ft)
+- Lens: 35mm equivalent
+- Aperture: f/8
+- All [N] posts must be clearly visible — no post fully hidden behind another
+- No overlap that could obscure counting
+- Counting test: viewer must be able to count 1, 2, 3…[N] posts clearly
+```
+
+---
+
+### Section 8 — ANTI-FAILURE CONSTRAINTS
+
+```
+ANTI-FAILURE CONSTRAINTS
+
+Explicitly forbid:
+- [failure shape] geometry (e.g. Octagonal geometry)
+- [wrong_count+1] or [wrong_count+2] posts
+- Any extra vertical elements
+- Uneven spacing
+- Distorted or non-regular polygon shapes
+
+This is a simple [N]-node structural system.
+The perimeter contains ONLY [N] structural verticals.
+No visual clutter that could resemble additional posts.
+```
+
+---
+
+### Section 9 — FINAL VALIDATION CHECK
+
+List exactly what must be true. Derive counts from the model — never hardcode.
+
+```
+FINAL VALIDATION CHECK (MANDATORY)
+
+The generated image is ONLY correct if:
+- The perimeter is a true [shape] ([N] edges)
+- There are exactly [N] posts on [footing type]
+- There are exactly [N] exposed [primary member] with [tail description]
+[- There are exactly [jack_count] jack rafters (if they exist)]
+- There are exactly [brace_count] diagonal knee braces (if bracing enabled)
+- The structure is symmetrical and physically believable
+
+If any of these conditions fail, the image is incorrect.
+```
+
+---
+
+### Section 10 — Exclude block
+
+Always last. One paragraph starting with `Exclude:`. Include:
+- Standard hardware: `metal brackets, joist hangers, hurricane ties, screws, bolts, plywood, pressure treated lumber, green lumber`
+- Wrong geometry by name: `octagonal geometry` (if hex), `7 posts, 8 posts, extra post, 5 posts`
+- Confabulation patterns: `doubled posts, closely spaced posts, decorative posts, asymmetric posts, uneven post spacing, extra vertical members`
+- Absent members: `roofing material, shingles` (if open-rafter); `walls, railings, partial walls` (if open-sided); `purlins` (if purlins disabled)
+- Style exclusions: `modern furniture, string lights, anime style, cartoon, illustration, watercolor, blueprint overlay, distorted perspective, fisheye, people, animals, cars, shadows too dark, overexposed sky, clipping, grain noise, JPEG artifacts`
 
 ---
 
 > **Example — hexagonal cedar pergola (Vancouver Island):**
-> See `references/example-hex-gazebo-prompt.md` for a fully worked example.
-> That file is the reference for output quality and prose density — not a template to copy verbatim.
+> See `references/example-hex-gazebo-prompt.md` for a fully worked example showing
+> what the output looks like for this specific project. That file shows the level of
+> detail and section structure expected — not a template to copy verbatim.
 
 ---
 
