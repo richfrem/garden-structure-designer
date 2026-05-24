@@ -236,23 +236,60 @@ def _palettes(is_blueprint: bool) -> dict[str, dict[str, str]]:
 # ---------------------------------------------------------------------------
 
 def build_structure_scene(
-    model: dict,
-    calcs: dict,
+    structure: dict,
+    calcs: "dict | bool | None" = None,
     is_blueprint: bool = False,
 ) -> Scene:
     """
     Compute all 3D construction nodes and emit Solid objects.
 
+    Preferred (v1.3+) calling convention:
+        build_structure_scene(structure, is_blueprint=False)
+    where ``structure`` is a fully-computed structure.json dict (geometry section
+    must be sealed by geometry_engine.py before calling).
+
+    Legacy calling convention (deprecated, kept for render_drawings.py compat):
+        build_structure_scene(model, calcs, is_blueprint=False)
+    where ``model`` is the old structural-model.json dict and ``calcs`` is the
+    old geometry-calculations.json dict.
+
     All member endpoints derive from the shared Z-plane constants below.
     No SVG is generated here.
     """
+    # ── Detect calling convention ────────────────────────────────────────────
+    # New convention: structure has "meta.schema_version" or "geometry._sealed"
+    # Old convention: calcs is a non-None, non-bool dict (legacy geometry-calcs)
+    _using_legacy = isinstance(calcs, dict)
+    if _using_legacy:
+        # Legacy path: calcs is the old geometry-calculations dict
+        is_blueprint = is_blueprint  # already set correctly
+        return _build_scene_legacy(structure, calcs, is_blueprint)
+
+    # New path: calcs is either None or a bool (is_blueprint passed positionally)
+    if isinstance(calcs, bool):
+        is_blueprint = calcs
+    return _build_scene_from_structure(structure, is_blueprint)
+
+
+def _build_scene_legacy(
+    model: dict,
+    calcs: dict,
+    is_blueprint: bool = False,
+) -> Scene:
+    """Legacy implementation reading from (model, calcs) dicts."""
     pal = _palettes(is_blueprint)
     UP: V3 = (0.0, 0.0, 1.0)
 
     # ── Parameters ──────────────────────────────────────────────────────────
     qty       = model.get("members", {}).get("posts", {}).get("quantity", 6)
-    span_diag = model.get("dimensions", {}).get("max_diagonal_ft", 10.0)
+
+    # Dynamically resolve span_diag from dimensions or calculate from posts spanDistance
+    span_diag = model.get("dimensions", {}).get("max_diagonal_ft")
+    if span_diag is None:
+        posts_spec = model.get("members", {}).get("posts", {})
+        span_diag = posts_spec.get("spanDistance_ft", 5.0) * 2.0
     r_ft      = span_diag / 2.0
+
     post_h    = calcs.get("total_height", {}).get("post_ft", 8.33)
     roof_r    = calcs.get("roof_rise",    {}).get("rise_ft", 1.6)
     beam_d    = calcs.get("total_height", {}).get("beam_depth_ft", 1.0)
@@ -264,13 +301,19 @@ def build_structure_scene(
     Z_APEX     = post_h + roof_r      # hub centre elevation
 
     # ── Cross-section half-dimensions (feet) ─────────────────────────────────
-    POST_HW   = (5.5 / 12.0) / 2.0   # 6×6 nominal (5.5" actual)
-    BEAM_HW   = (5.5 / 12.0) / 2.0
+    posts_spec = model.get("members", {}).get("posts", {})
+    beams_spec = model.get("members", {}).get("beams", {})
+    braces_spec = model.get("members", {}).get("kneebraces", {})
+    rafters_spec = model.get("members", {}).get("rafters", {})
+
+    POST_HW   = (posts_spec.get("width_in", 5.5) / 12.0) / 2.0
+    POST_HD   = (posts_spec.get("depth_in", 5.5) / 12.0) / 2.0
+    BEAM_HW   = (beams_spec.get("width_in", 5.5) / 12.0) / 2.0
     BEAM_HD   = beam_d / 2.0
-    RAFTER_HW = (3.5 / 12.0) / 2.0   # 4× nominal
-    RAFTER_HD = (5.5 / 12.0) / 2.0
-    BRACE_HW  = (3.5 / 12.0) / 2.0
-    BRACE_HD  = (3.5 / 12.0) / 2.0
+    RAFTER_HW = (rafters_spec.get("width_in", 3.5) / 12.0) / 2.0
+    RAFTER_HD = (rafters_spec.get("depth_in", 5.5) / 12.0) / 2.0
+    BRACE_HW  = (braces_spec.get("width_in", 3.5) / 12.0) / 2.0
+    BRACE_HD  = (braces_spec.get("depth_in", 3.5) / 12.0) / 2.0
 
     # ── Post XY positions ────────────────────────────────────────────────────
     post_xy: list[tuple[float, float]] = [
@@ -280,9 +323,10 @@ def build_structure_scene(
     ]
 
     # ── Hub polygon face radius ──────────────────────────────────────────────
-    # Minimum radius so adjacent RAFTER_HW×2 rafters at n-gon spacing don't overlap.
+    # Make a substantial and readable polygonal king-post / compression hub
     rafter_full_w = RAFTER_HW * 2.0
-    hub_r = (rafter_full_w / 2.0) / math.sin(math.pi / qty) + 0.04  # 0.04 ft margin
+    rafter_full_d = RAFTER_HD * 2.0
+    hub_r = max(0.60, rafter_full_w + rafter_full_d)
 
     # ── Rafter apex termination nodes (exact hub polygon face) ───────────────
     rafter_apex: list[V3] = [
@@ -293,13 +337,18 @@ def build_structure_scene(
     ]
 
     # ── Brace run length ─────────────────────────────────────────────────────
-    brace_run = max(2.0, min(3.0, post_h * 0.30))  # 2.5 ft for 8.33 ft posts
+    if "cutLength_in" in braces_spec and "angle_deg" in braces_spec:
+        brace_run = (braces_spec["cutLength_in"] / 12.0) * math.cos(math.radians(braces_spec["angle_deg"]))
+    else:
+        brace_run = 1.5  # fallback
+    brace_drop = brace_run  # legacy: assume 45-degree brace so drop == run
 
     # ── Solids list ──────────────────────────────────────────────────────────
     solids: list[Solid] = []
 
     # Concrete Footing Blocks (concrete square piers)
-    FOOTING_HW = (12.0 / 12.0) / 2.0  # 12" x 12" actual footprint
+    foundation_spec = model.get("foundation", {})
+    FOOTING_HW = (foundation_spec.get("caisson_diameter_in", 12.0) / 12.0) / 2.0
     for i, (px, py) in enumerate(post_xy):
         p0_footing = (px, py, Z_GRADE - 1.5)  # extends 18 inches below grade
         p1_footing = (px, py, Z_GRADE + 0.33) # rises 4 inches above grade
@@ -312,7 +361,7 @@ def build_structure_scene(
     for i, (px, py) in enumerate(post_xy):
         solids.append(_make_prism(
             (px, py, Z_GRADE), (px, py, Z_POST_TOP),
-            POST_HW, POST_HW, UP,
+            POST_HW, POST_HD, UP,
             pal["post"], "post", f"P{i+1}",
         ))
 
@@ -378,9 +427,16 @@ def build_structure_scene(
             Z_BEAM_TOP - slope * overhang_ft
         )
         
+        # Shift rafter up vertically so its underside rests exactly on top of the beam ring
+        theta = math.atan(slope)
+        dy_vertical = RAFTER_HD / math.cos(theta)
+        
+        p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_vertical)
+        p1_apex_shifted = (p1_apex[0], p1_apex[1], p1_apex[2] + dy_vertical)
+        
         solids.append(_make_prism(
-            p0_start, p1_apex,
-            RAFTER_HW, RAFTER_HD, tang,
+            p0_start_shifted, p1_apex_shifted,
+            RAFTER_HW, RAFTER_HD, UP,
             pal["rafter"], "rafter", f"R{i+1}",
         ))
 
@@ -442,27 +498,42 @@ def build_structure_scene(
                 int_z = Z_BEAM_TOP + t_val * slope_perp
                 pt_int = (int_x, int_y, int_z)
                 
-                # Tail start (extended outward by overhang_ft)
+                # Extended starting point at tail end of jack rafter
                 p0_start = (
                     sx - in_x * overhang_ft,
                     sy - in_y * overhang_ft,
                     Z_BEAM_TOP - slope_perp * overhang_ft
                 )
                 
+                # Shift jack rafter up vertically so its underside rests exactly on top of the beam ring
+                theta_perp = math.atan(slope_perp)
+                dy_perp = RAFTER_HD / math.cos(theta_perp)
+                
+                p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_perp)
+                pt_int_shifted = (pt_int[0], pt_int[1], pt_int[2] + dy_perp)
+                
                 tang: V3 = (ux, uy, 0.0)
                 
                 solids.append(_make_prism(
-                    p0_start, pt_int,
-                    RAFTER_HW, RAFTER_HD, tang,
+                    p0_start_shifted, pt_int_shifted,
+                    RAFTER_HW, RAFTER_HD, UP,
                     pal["rafter"], "rafter", f"Jack{i}{tag_suffix}"
                 ))
 
     # Purlin Ring — horizontal collar/purlin timbers connecting the hip rafters
     s_purlin = 0.55
     Z_PURLIN = Z_BEAM_TOP + roof_r * s_purlin
-    PURLIN_HW = (3.5 / 12.0) / 2.0  # 4x4 actual half-width
-    PURLIN_HD = (3.5 / 12.0) / 2.0
+    purlins_spec = model.get("members", {}).get("purlins", {})
+    PURLIN_HW = (purlins_spec.get("width_in", 3.5) / 12.0) / 2.0
+    PURLIN_HD = (purlins_spec.get("depth_in", 3.5) / 12.0) / 2.0
     
+    # Calculate dy_vertical again for purlin offset
+    dx_hip_ex = post_xy[0][0] - rafter_apex[0][0]
+    dy_hip_ex = post_xy[0][1] - rafter_apex[0][1]
+    len_xy_ex = math.sqrt(post_xy[0][0]**2 + post_xy[0][1]**2)
+    slope_ex = (Z_APEX - Z_BEAM_TOP) / (len_xy_ex - hub_r)
+    dy_vertical = RAFTER_HD / math.cos(math.atan(slope_ex))
+
     purlin_pts: list[V3] = []
     for i in range(qty):
         px, py = post_xy[i]
@@ -470,7 +541,7 @@ def build_structure_scene(
         pt = (
             px + (ax - px) * s_purlin,
             py + (ay - py) * s_purlin,
-            Z_PURLIN
+            Z_PURLIN + dy_vertical
         )
         purlin_pts.append(pt)
         
@@ -484,9 +555,322 @@ def build_structure_scene(
         ))
 
     # Hub — polygonal prism (qty-sided)
-    hub_hd  = RAFTER_HD + 0.05       # slightly taller than rafter to cap ends
-    hub_ztop = Z_APEX + hub_hd
-    hub_zbot = Z_APEX - hub_hd
+    # Substantial hanging pendant matching the target image: extends 1.25 ft below apex
+    hub_ztop = Z_APEX + RAFTER_HD + 0.15
+    hub_zbot = Z_APEX - 1.25
+    C_HUB = pal["hub"]
+
+    ring_top: list[V3] = [
+        (hub_r*math.cos(2*math.pi*i/qty), hub_r*math.sin(2*math.pi*i/qty), hub_ztop)
+        for i in range(qty)
+    ]
+    ring_bot: list[V3] = [
+        (hub_r*math.cos(2*math.pi*i/qty), hub_r*math.sin(2*math.pi*i/qty), hub_zbot)
+        for i in range(qty)
+    ]
+
+    hub_solid = Solid(role="hub", tag="HUB",
+                      p0=(0.0, 0.0, hub_zbot), p1=(0.0, 0.0, hub_ztop))
+    hub_solid.faces.append(Face(ring_top, UP, C_HUB["top"], "hub", "HUB"))
+    hub_solid.faces.append(Face(list(reversed(ring_bot)), vscl(UP, -1.0), C_HUB["bottom"], "hub", "HUB"))
+    for i in range(qty):
+        j = (i+1) % qty
+        mid_ang = 2*math.pi*(i+0.5)/qty
+        sn: V3 = (math.cos(mid_ang), math.sin(mid_ang), 0.0)
+        shade = C_HUB["left"] if vdot(sn, (0.866, 0.5, 0.0)) > 0 else C_HUB["right"]
+        hub_solid.faces.append(Face(
+            [ring_bot[i], ring_bot[j], ring_top[j], ring_top[i]],
+            sn, shade, "hub", "HUB",
+        ))
+    solids.append(hub_solid)
+
+    return Scene(
+        solids=solids,
+        qty=qty,
+        hub_r=hub_r,
+        Z_GRADE=Z_GRADE,
+        Z_POST_TOP=Z_POST_TOP,
+        Z_BEAM_TOP=Z_BEAM_TOP,
+        Z_APEX=Z_APEX,
+        post_xy=post_xy,
+    )
+
+
+# ---------------------------------------------------------------------------
+# _build_scene_from_structure — new v1.3+ path reading from structure.json
+# ---------------------------------------------------------------------------
+
+def _build_scene_from_structure(
+    structure: dict,
+    is_blueprint: bool = False,
+) -> Scene:
+    """
+    Build the scene from a fully-computed structure.json dict.
+    The geometry section must be sealed by geometry_engine.py before calling.
+    """
+    pal = _palettes(is_blueprint)
+    UP: V3 = (0.0, 0.0, 1.0)
+
+    # Coordinate system contract
+    cad_meta = structure.get("cad", {})
+    assert cad_meta.get("coordinate_system", "right_handed_z_up") == "right_handed_z_up", \
+        "cad.coordinate_system must be 'right_handed_z_up'"
+
+    # ── Parameters from structure sections ──────────────────────────────────
+    layout        = structure["layout"]
+    members       = structure["members"]
+    roof          = structure["roof"]
+    hub_spec      = structure["hub"]
+    bracing_spec  = structure.get("bracing", {})
+    footings_spec = structure["footings"]
+    geom          = structure["geometry"]
+
+    qty  = layout["post_count"]
+    r_ft = layout["inscribed_radius_ft"]
+
+    post_h    = members["posts"]["cut_length_ft"]
+    beam_d_in = members["beams"]["actual_depth_in"]
+    beam_d    = beam_d_in / 12.0
+
+    roof_r = geom["roof_rise"]["rise_ft"]
+    hub_r  = geom["hub_radius_ft"]   # resolved and sealed by geometry_engine.py
+
+    overhang_ft = roof["primary_rafters"]["overhang_ft"]
+
+    # ── Shared Z planes ──────────────────────────────────────────────────────
+    Z_GRADE    = 0.0
+    Z_POST_TOP = post_h - beam_d      # post top cap  ≡  beam underside  ← SHARED
+    Z_BEAM_TOP = post_h               # beam top      ≡  rafter seat
+    Z_APEX     = post_h + roof_r      # hub centre elevation
+
+    # ── Cross-section half-dimensions (feet) ─────────────────────────────────
+    POST_HW   = (members["posts"]["actual_width_in"]  / 12.0) / 2.0
+    POST_HD   = (members["posts"]["actual_depth_in"]  / 12.0) / 2.0
+    BEAM_HW   = (members["beams"]["actual_width_in"]  / 12.0) / 2.0
+    BEAM_HD   = beam_d / 2.0
+    RAFTER_HW = (roof["primary_rafters"]["actual_width_in"] / 12.0) / 2.0
+    RAFTER_HD = (roof["primary_rafters"]["actual_depth_in"] / 12.0) / 2.0
+
+    brace_s    = bracing_spec.get("brace", {})
+    BRACE_HW   = (brace_s.get("actual_width_in", 3.5) / 12.0) / 2.0
+    BRACE_HD   = (brace_s.get("actual_depth_in", 3.5) / 12.0) / 2.0
+    # length_ft is the hypotenuse; run and drop are its horizontal/vertical components
+    _brace_len = brace_s.get("length_ft", 2.5)
+    _brace_rad = math.radians(brace_s.get("angle_deg", 45))
+    brace_run  = _brace_len * math.cos(_brace_rad)   # horizontal distance along post face
+    brace_drop = _brace_len * math.sin(_brace_rad)   # vertical drop from beam soffit
+
+    FOOTING_HW = (footings_spec.get("diameter_in", 12.0) / 12.0) / 2.0
+
+    # Hub vertical extent from spec
+    hub_clearance_ft = hub_spec.get("clearance_ft", 0.5)
+    hub_height_ratio = hub_spec.get("height_ratio_to_rafter", 2.5)
+    hub_height_ft    = RAFTER_HD * 2.0 * hub_height_ratio
+
+    purlins_spec = structure.get("members", {}).get("purlins", {})
+
+    # ── Post XY positions ────────────────────────────────────────────────────
+    post_xy: list[tuple[float, float]] = [
+        (r_ft * math.cos(2*math.pi*i/qty),
+         r_ft * math.sin(2*math.pi*i/qty))
+        for i in range(qty)
+    ]
+
+    # ── Rafter apex termination nodes (exact hub polygon face) ───────────────
+    rafter_apex: list[V3] = [
+        (hub_r * math.cos(2*math.pi*i/qty),
+         hub_r * math.sin(2*math.pi*i/qty),
+         Z_APEX)
+        for i in range(qty)
+    ]
+
+    # ── Solids list ──────────────────────────────────────────────────────────
+    solids: list[Solid] = []
+
+    # Concrete Footing Blocks (concrete square piers)
+    for i, (px, py) in enumerate(post_xy):
+        p0_footing = (px, py, Z_GRADE - 1.5)   # extends 18 inches below grade
+        p1_footing = (px, py, Z_GRADE + 0.33)  # rises 4 inches above grade
+        solids.append(_make_prism(
+            p0_footing, p1_footing, FOOTING_HW, FOOTING_HW, UP,
+            pal["footing"], "footing", f"FT{i+1}"
+        ))
+
+    # Posts — vertical from grade to post_top (= beam underside)
+    for i, (px, py) in enumerate(post_xy):
+        solids.append(_make_prism(
+            (px, py, Z_GRADE), (px, py, Z_POST_TOP),
+            POST_HW, POST_HD, UP,
+            pal["post"], "post", f"P{i+1}",
+        ))
+
+    # Ring beams — horizontal from post_top to post_top.
+    # Beam centreline Z = Z_POST_TOP + BEAM_HD (midpoint of beam cross-section).
+    for i in range(qty):
+        px1, py1 = post_xy[i]
+        px2, py2 = post_xy[(i+1) % qty]
+        bz = Z_POST_TOP + BEAM_HD
+        solids.append(_make_prism(
+            (px1, py1, bz), (px2, py2, bz),
+            BEAM_HW, BEAM_HD, UP,
+            pal["beam"], "beam", f"B{i+1}",
+        ))
+
+    # Knee braces — all 12 generated; visibility filtered at render time
+    for i in range(qty):
+        px1, py1 = post_xy[i]
+        px2, py2 = post_xy[(i+1) % qty]
+        sdx = px2 - px1; sdy = py2 - py1
+        slen = math.sqrt(sdx*sdx + sdy*sdy)
+        if slen < 1e-9:
+            continue
+        ux = sdx/slen; uy = sdy/slen
+
+        # Brace-a: from post-i face toward post-(i+1), sloping up to beam soffit
+        p0a: V3 = (px1 + ux*POST_HW,                py1 + uy*POST_HW,                Z_POST_TOP - brace_drop)
+        p1a: V3 = (px1 + ux*(POST_HW + brace_run),  py1 + uy*(POST_HW + brace_run),  Z_POST_TOP)
+        solids.append(_make_prism(p0a, p1a, BRACE_HW, BRACE_HD, UP, pal["brace"], "brace", f"Brace{i}a"))
+
+        # Brace-b: mirror from post-(i+1) face
+        p0b: V3 = (px2 - ux*POST_HW,                py2 - uy*POST_HW,                Z_POST_TOP - brace_drop)
+        p1b: V3 = (px2 - ux*(POST_HW + brace_run),  py2 - uy*(POST_HW + brace_run),  Z_POST_TOP)
+        solids.append(_make_prism(p0b, p1b, BRACE_HW, BRACE_HD, UP, pal["brace"], "brace", f"Brace{i}b"))
+
+    # Rafter overhang (tails)
+    # Hip rafters — from rafter seat at post (Z_BEAM_TOP) to hub face (Z_APEX)
+    # They extend past the post seat by overhang_ft in the outward direction
+    for i in range(qty):
+        px, py = post_xy[i]
+        ang = 2*math.pi*i/qty
+
+        p1_apex = rafter_apex[i]
+
+        # Outward unit direction in XY
+        len_xy = math.sqrt(px*px + py*py)
+        dir_xy_norm = (px / len_xy, py / len_xy)
+
+        # Slope of hip rafter
+        slope = (Z_APEX - Z_BEAM_TOP) / (len_xy - hub_r)
+
+        # Extended starting point (at tail end)
+        p0_start = (
+            px + dir_xy_norm[0] * overhang_ft,
+            py + dir_xy_norm[1] * overhang_ft,
+            Z_BEAM_TOP - slope * overhang_ft
+        )
+
+        # Shift rafter up vertically so its underside rests exactly on top of the beam ring
+        theta = math.atan(slope)
+        dy_vertical = RAFTER_HD / math.cos(theta)
+
+        p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_vertical)
+        p1_apex_shifted = (p1_apex[0], p1_apex[1], p1_apex[2] + dy_vertical)
+
+        solids.append(_make_prism(
+            p0_start_shifted, p1_apex_shifted,
+            RAFTER_HW, RAFTER_HD, UP,
+            pal["rafter"], "rafter", f"R{i+1}",
+        ))
+
+    # Jack rafters (common rafters) — 2 per side, 12 total.
+    for i in range(qty):
+        px1, py1 = post_xy[i]
+        px2, py2 = post_xy[(i+1) % qty]
+
+        bx = px2 - px1
+        by = py2 - py1
+        blen = math.sqrt(bx*bx + by*by)
+        if blen < 1e-9:
+            continue
+        ux = bx / blen
+        uy = by / blen
+
+        # Inward normal of beam segment (pointing toward center)
+        in_x = -uy
+        in_y = ux
+
+        # Slope of the roof plane perpendicular to the beam
+        mx = (px1 + px2) / 2.0
+        my = (py1 + py2) / 2.0
+        apothem = math.sqrt(mx*mx + my*my)
+        slope_perp = roof_r / (apothem - hub_r * math.cos(math.pi / qty))
+
+        for fraction, tag_suffix in [(1.0/3.0, "a"), (2.0/3.0, "b")]:
+            sx = px1 + bx * fraction
+            sy = py1 + by * fraction
+
+            if fraction < 0.5:
+                px_corner, py_corner = px1, py1
+                px_apex, py_apex = rafter_apex[i][0], rafter_apex[i][1]
+            else:
+                px_corner, py_corner = px2, py2
+                px_apex, py_apex = rafter_apex[(i+1)%qty][0], rafter_apex[(i+1)%qty][1]
+
+            dx_hip = px_apex - px_corner
+            dy_hip = py_apex - py_corner
+
+            det = -dx_hip * in_y + in_x * dy_hip
+            if abs(det) > 1e-6:
+                s_val = (-(sx - px_corner) * in_y + in_x * (sy - py_corner)) / det
+                t_val = (dx_hip * (sy - py_corner) - dy_hip * (sx - px_corner)) / det
+
+                int_x = px_corner + dx_hip * s_val
+                int_y = py_corner + dy_hip * s_val
+                int_z = Z_BEAM_TOP + t_val * slope_perp
+                pt_int = (int_x, int_y, int_z)
+
+                p0_start = (
+                    sx - in_x * overhang_ft,
+                    sy - in_y * overhang_ft,
+                    Z_BEAM_TOP - slope_perp * overhang_ft
+                )
+
+                theta_perp = math.atan(slope_perp)
+                dy_perp = RAFTER_HD / math.cos(theta_perp)
+
+                p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_perp)
+                pt_int_shifted = (pt_int[0], pt_int[1], pt_int[2] + dy_perp)
+
+                solids.append(_make_prism(
+                    p0_start_shifted, pt_int_shifted,
+                    RAFTER_HW, RAFTER_HD, UP,
+                    pal["rafter"], "rafter", f"Jack{i}{tag_suffix}"
+                ))
+
+    # Purlin Ring — horizontal collar/purlin timbers connecting the hip rafters
+    s_purlin = 0.55
+    Z_PURLIN = Z_BEAM_TOP + roof_r * s_purlin
+    PURLIN_HW = (purlins_spec.get("width_in", 3.5) / 12.0) / 2.0
+    PURLIN_HD = (purlins_spec.get("depth_in", 3.5) / 12.0) / 2.0
+
+    # Calculate dy_vertical for purlin offset (reuse hip rafter slope)
+    len_xy_ex = math.sqrt(post_xy[0][0]**2 + post_xy[0][1]**2)
+    slope_ex = (Z_APEX - Z_BEAM_TOP) / (len_xy_ex - hub_r)
+    dy_vertical = RAFTER_HD / math.cos(math.atan(slope_ex))
+
+    purlin_pts: list[V3] = []
+    for i in range(qty):
+        px, py = post_xy[i]
+        ax, ay, az = rafter_apex[i]
+        pt = (
+            px + (ax - px) * s_purlin,
+            py + (ay - py) * s_purlin,
+            Z_PURLIN + dy_vertical
+        )
+        purlin_pts.append(pt)
+
+    for i in range(qty):
+        pt1 = purlin_pts[i]
+        pt2 = purlin_pts[(i+1) % qty]
+        solids.append(_make_prism(
+            pt1, pt2,
+            PURLIN_HW, PURLIN_HD, UP,
+            pal["purlin"], "purlin", f"Purlin{i+1}"
+        ))
+
+    # Hub — polygonal prism (qty-sided)
+    hub_ztop = Z_APEX + RAFTER_HD + hub_clearance_ft
+    hub_zbot = Z_APEX - hub_height_ft
     C_HUB = pal["hub"]
 
     ring_top: list[V3] = [
@@ -646,3 +1030,77 @@ def validate_scene_geometry(scene: Scene) -> None:
                 f"Invariant 8 violated: expected {expected_count} '{role}' solids, "
                 f"got {actual}"
             )
+
+
+# ---------------------------------------------------------------------------
+# Reusable View Mode & Filtering Layer (Scene -> View)
+# ---------------------------------------------------------------------------
+
+from enum import Enum
+
+class ViewMode(Enum):
+    PRESENTATION = "presentation"   # Clean high-end carpentry visual
+    STRUCTURAL = "structural"       # Raw engineering view showing all timbers
+    FABRICATION = "fabrication"     # Component-isolation detail view
+
+
+def filter_scene_for_view(
+    scene: Scene,
+    mode: ViewMode,
+    camera_dir: tuple[float, float, float] | None = None
+) -> list[Solid]:
+    """
+    Filters the comprehensive 3D Scene Graph into a filtered list of visible
+    Solids according to the specified ViewMode and camera direction.
+    """
+    if mode == ViewMode.STRUCTURAL:
+        # structural view displays all structural members in full
+        return scene.solids
+        
+    if mode == ViewMode.PRESENTATION:
+        # presentation view focuses on clean, readable primary frame aesthetics
+        visible_solids = []
+        
+        # Calculate brace depth ranges for selective visibility normalisation
+        braces = [s for s in scene.solids if s.role == "brace"]
+        if braces and camera_dir:
+            brace_depths = [
+                sum(camera_dir[i] * ((s.p0[i]+s.p1[i])/2.0) for i in range(3))
+                for s in braces
+            ]
+            b_min, b_max = min(brace_depths), max(brace_depths)
+            b_range = max(b_max - b_min, 1e-6)
+        else:
+            b_min, b_range = 0.0, 1.0
+
+        for solid in scene.solids:
+            # 1. Suppress all secondary roof members (jack rafters, purlins) to avoid spiderweb clutter
+            is_secondary_roof = (solid.role == "purlin") or (solid.role == "rafter" and solid.tag.startswith("Jack"))
+            if is_secondary_roof:
+                continue
+                
+            # 2. Selective knee brace visibility filtering based on depth
+            if solid.role == "brace":
+                if not camera_dir:
+                    visible_solids.append(solid)
+                    continue
+                # Compute camera-relative depth norm for the brace
+                mid_depth = sum(
+                    camera_dir[i] * ((solid.p0[i]+solid.p1[i])/2.0) for i in range(3)
+                )
+                norm = (mid_depth - b_min) / b_range
+                # Suppress rear and side-rear braces entirely to prevent visual overlap
+                if norm < 0.45:
+                    continue
+                # Foreground/side braces are kept
+                visible_solids.append(solid)
+            else:
+                # Keep posts, beams, primary hip rafters, hub, footings
+                visible_solids.append(solid)
+                
+        return visible_solids
+
+    if mode == ViewMode.FABRICATION:
+        # fabrication view isolates specific member types
+        return scene.solids
+
