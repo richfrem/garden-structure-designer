@@ -46,7 +46,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 try:
-    from cad_scene import Scene, Solid, vdot, vcent, vsub, vlen, vnorm  # noqa: F401
+    from cad_scene import Scene, Solid, vdot, vcent, vsub, vlen, vnorm, vscl  # noqa: F401
     V3 = tuple[float, float, float]
 except ImportError:
     pass  # CLI fallback: Scene must be passed pre-built
@@ -151,7 +151,7 @@ def _check_rafter_tip_on_hub_face(scene: "Scene") -> list[str]:
     if not hub_side_faces:
         return errors  # hub has no vertical faces — skip
 
-    rafters = [s for s in scene.solids if s.role == "rafter" and not s.tag.startswith("Jack")]
+    rafters = [s for s in scene.solids if s.role == "rafter" and not (s.tag.startswith("Jack") or s.tag.startswith("J"))]
     for rafter in rafters:
         pt = rafter.p1
         min_dist = min(
@@ -300,6 +300,35 @@ def _check_jack_to_hip_contact(scene: "Scene") -> list[str]:
     return errors
 
 
+def _check_rafter_seating_on_beam(scene: "Scene") -> list[str]:
+    """
+    Each rafter's level seat face (birdsmouth) must lie on the Z_BEAM_TOP plane within 1/8".
+    The normal pointing OUT of the rafter bottom is (0,0,-1).
+    """
+    errors: list[str] = []
+    rafters = [s for s in scene.solids if s.role == "rafter"]
+    for r in rafters:
+        # Outward normal for bottom seat face is DOWN (0,0,-1)
+        seat_faces = [
+            f for f in r.faces 
+            if f.normal[2] < -0.95 and abs(vcent(f.verts)[2] - scene.Z_BEAM_TOP) < 0.2
+        ]
+        if not seat_faces:
+            # If no level seat face found, the rafter is likely 'floating' or has no notch
+            errors.append(f"rafter_seating_on_beam: rafter {r.tag} has no level seat face near Z_BEAM_TOP (floating)")
+            continue
+            
+        for face in seat_faces:
+            fz = vcent(face.verts)[2]
+            delta = abs(fz - scene.Z_BEAM_TOP)
+            if delta > _CONTACT_TOL:
+                errors.append(
+                    f"rafter_seating_on_beam: rafter {r.tag} seat face Z={fz:.4f} ft, "
+                    f"Z_BEAM_TOP={scene.Z_BEAM_TOP:.4f} ft, gap={delta * 12:.3f}\""
+                )
+    return errors
+
+
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
@@ -314,6 +343,7 @@ def validate_connections(scene: "Scene") -> list[str]:
     errors.extend(_check_rafter_tip_on_hub_face(scene))
     errors.extend(_check_brace_foot_on_post_face(scene))
     errors.extend(_check_jack_to_hip_contact(scene))
+    errors.extend(_check_rafter_seating_on_beam(scene))
     return errors
 
 

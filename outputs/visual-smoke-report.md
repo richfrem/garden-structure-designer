@@ -1,7 +1,7 @@
 # Visual Smoke Test Report (SVG -> Browser Render)
 
 **Schema:** garden-structure-designer/visual-smoke-report/1.0  
-**Generated:** 2026-05-24T18:53:05.325653+00:00  
+**Generated:** 2026-05-24T19:29:36.160712+00:00  
 **Source Hash:** `6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61`  
 **Structure:** `context/staging/structure.json`  
 **SVG Dir:** `outputs`  
@@ -35,24 +35,21 @@ All sheets rendered and heuristics passed.
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-plan-view.svg`  
 **PNG:** `outputs/visual-smoke/drawing-plan-view.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/drawing-plan-view.hub.png`  
-**Hub Clip (px):** `[660, 440, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1474`
+- non_bg_ratio: `0.1740`
 - bbox_fill_ratio: `0.9534`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `1647`
+- cv_hub_density: `2049`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 6, 'beams': 46, 'rafters': 72}`
-- hub_edge_density: `0.0676`
+- detected_components: `{'posts': 9, 'beams': 53, 'rafters': 113}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- *(none)*
+- Could not compute hub crop window.
 
 ---
 ### drawing-elevation-view
@@ -61,13 +58,13 @@ All sheets rendered and heuristics passed.
 **PNG:** `outputs/visual-smoke/drawing-elevation-view.png`  
 
 #### Metrics
-- non_bg_ratio: `0.1933`
+- non_bg_ratio: `0.1976`
 - bbox_fill_ratio: `0.9534`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
 - cv_hub_density: `1756`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 20, 'beams': 59, 'rafters': 42}`
+- detected_components: `{'posts': 27, 'beams': 53, 'rafters': 60}`
 
 #### Failures
 - *(none)*
@@ -80,72 +77,63 @@ All sheets rendered and heuristics passed.
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-isometric-view.svg`  
 **PNG:** `outputs/visual-smoke/drawing-isometric-view.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/drawing-isometric-view.hub.png`  
-**Hub Clip (px):** `[660, 307, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.2200`
+- non_bg_ratio: `0.2390`
 - bbox_fill_ratio: `0.9534`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `3250`
+- cv_hub_density: `3281`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 35, 'beams': 67, 'rafters': 66}`
-- hub_edge_density: `0.1083`
+- detected_components: `{'posts': 34, 'beams': 74, 'rafters': 91}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- *(none)*
+- Could not compute hub crop window.
 
 ---
 ### drawing-perspective-view
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-perspective-view.svg`  
 **PNG:** `outputs/visual-smoke/drawing-perspective-view.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/drawing-perspective-view.hub.png`  
-**Hub Clip (px):** `[660, 307, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.2325`
+- non_bg_ratio: `0.2509`
 - bbox_fill_ratio: `0.9534`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2805`
+- cv_hub_density: `2774`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 30, 'beams': 70, 'rafters': 61}`
-- hub_edge_density: `0.1083`
+- detected_components: `{'posts': 30, 'beams': 73, 'rafters': 92}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- *(none)*
+- Could not compute hub crop window.
 
 ---
 ### blueprint-plan
 **Status:** **PASS**  
 **SVG:** `outputs/blueprint-plan.svg`  
 **PNG:** `outputs/visual-smoke/blueprint-plan.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/blueprint-plan.hub.png`  
-**Hub Clip (px):** `[660, 440, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1592`
+- non_bg_ratio: `0.1866`
 - bbox_fill_ratio: `0.9551`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `1644`
+- cv_hub_density: `2048`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 6, 'beams': 48, 'rafters': 75}`
-- hub_edge_density: `0.0655`
+- detected_components: `{'posts': 9, 'beams': 53, 'rafters': 114}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- *(none)*
+- Could not compute hub crop window.
 
 ---
 ### blueprint-elevation
@@ -154,13 +142,13 @@ All sheets rendered and heuristics passed.
 **PNG:** `outputs/visual-smoke/blueprint-elevation.png`  
 
 #### Metrics
-- non_bg_ratio: `0.1114`
+- non_bg_ratio: `0.1200`
 - bbox_fill_ratio: `0.9551`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
 - cv_hub_density: `1923`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 21, 'beams': 53, 'rafters': 45}`
+- detected_components: `{'posts': 27, 'beams': 56, 'rafters': 64}`
 
 #### Failures
 - *(none)*
@@ -173,24 +161,21 @@ All sheets rendered and heuristics passed.
 **Status:** **PASS**  
 **SVG:** `outputs/blueprint-isometric.svg`  
 **PNG:** `outputs/visual-smoke/blueprint-isometric.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/blueprint-isometric.hub.png`  
-**Hub Clip (px):** `[660, 307, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1743`
+- non_bg_ratio: `0.1902`
 - bbox_fill_ratio: `0.9551`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `3214`
+- cv_hub_density: `3252`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 31, 'beams': 57, 'rafters': 66}`
-- hub_edge_density: `0.1076`
+- detected_components: `{'posts': 32, 'beams': 74, 'rafters': 99}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- *(none)*
+- Could not compute hub crop window.
 
 ---
 ### blueprint-component-isolation

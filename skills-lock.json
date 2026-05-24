@@ -13,7 +13,7 @@
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-05-10T23:33:26.671166Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "agent-swarm": {
       "source": "https://github.com/richfrem/agent-plugins-skills",
@@ -55,21 +55,21 @@
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-04-19T16:06:19.337986Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "builder-docs-generator": {
       "source": "garden-structure-designer",
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-05-10T17:08:28.658429Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "building-code-validator": {
       "source": "garden-structure-designer",
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-04-19T16:06:19.337986Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "business-requirements-capture": {
       "source": "https://github.com/richfrem/agent-plugins-skills",
@@ -90,7 +90,7 @@
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-05-24T15:40:50.439411Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "claude-cli-agent": {
       "source": "https://github.com/richfrem/agent-plugins-skills",
@@ -244,14 +244,14 @@
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-04-19T16:06:19.337986Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "drawing-generator": {
       "source": "garden-structure-designer",
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-04-19T16:06:19.337986Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "dual-loop": {
       "source": "https://github.com/richfrem/agent-plugins-skills",
@@ -335,14 +335,14 @@
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-04-19T16:06:19.337986Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "joinery-designer": {
       "source": "garden-structure-designer",
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-04-19T16:06:19.337986Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "l5-red-team-auditor": {
       "source": "https://github.com/richfrem/agent-plugins-skills",
@@ -391,7 +391,7 @@
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-05-23T20:29:14.415286Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "optimize-agent-instructions": {
       "source": "https://github.com/richfrem/agent-plugins-skills",
@@ -531,7 +531,7 @@
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-05-10T17:08:28.658429Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "plugin-installer": {
       "source": "https://github.com/richfrem/agent-plugins-skills",
@@ -594,14 +594,14 @@
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-05-10T17:08:28.658429Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "structural-engine": {
       "source": "garden-structure-designer",
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-04-19T16:06:19.337986Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "subagent-driven-prototyping": {
       "source": "https://github.com/richfrem/agent-plugins-skills",
@@ -636,7 +636,7 @@
       "sourceType": "local",
       "computedHash": "",
       "installedAt": "2026-05-24T03:16:07.902336Z",
-      "updatedAt": "2026-05-24T19:18:19.588463Z"
+      "updatedAt": "2026-05-24T19:40:33.072599Z"
     },
     "todo-check": {
       "source": "https://github.com/richfrem/agent-plugins-skills",
