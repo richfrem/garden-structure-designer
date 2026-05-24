@@ -41,7 +41,7 @@ This automatically checks:
 
 Because you are fundamentally blind to pixel-level PNG rendering, you CANNOT validate AI-generated image renders independently. You MUST:
 1. Check if any `outputs/*.png` files exist.
-2. If yes, pause and prompt the human user: *"Human: please visually confirm that [outputs/hexagon-gazebo-render.png] shows exactly [N] posts and a [shape] roof matching our structural-model.json. Reply YES/NO."*
+4. If yes, pause and prompt the human user: *"Human: please visually confirm that [outputs/hexagon-gazebo-render.png] shows exactly [N] posts and a [shape] roof matching our structure.json. Reply YES/NO."*
 3. Do NOT emit `READY` until the human confirms.
 
 For SVGs rendered to PNG (e.g. via browser screen-capture), verify topology via the static XML check instead.

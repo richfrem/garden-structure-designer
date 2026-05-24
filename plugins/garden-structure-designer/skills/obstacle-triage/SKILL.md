@@ -72,7 +72,7 @@ Use this JSON shape:
     "plugins/garden-structure-designer/context/staging"
   ],
   "evidence": [
-    "structural-model.json found in context/staging but not plugin staging",
+    "structure.json found in context/staging but not plugin staging",
     "quality-dashboard.md says COMPLETED while red-team report says FAIL"
   ],
   "recommended_next_action": "FIX_PATHS_FIRST",

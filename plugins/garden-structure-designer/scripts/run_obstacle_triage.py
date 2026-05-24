@@ -53,14 +53,14 @@ def main():
     
     has_path_split = False
     if plugin_staging.exists() and root_staging.exists() and plugin_staging.resolve() != root_staging.resolve():
-        if (plugin_staging / "structural-model.json").exists() and (root_staging / "structural-model.json").exists():
+        if (plugin_staging / "structure.json").exists() and (root_staging / "structure.json").exists():
             classifications.append("PATH_SPLIT")
-            evidence.append("structural-model.json found in both context/staging and plugin staging")
+            evidence.append("structure.json found in both context/staging and plugin staging")
             has_path_split = True
             
     # Check for missing staging artifacts
     missing_artifacts = []
-    for artifact in ["structural-model.json", "geometry-calculations.json"]:
+    for artifact in ["structure.json"]:
         if not (_STAGING / artifact).exists():
             missing_artifacts.append(artifact)
             

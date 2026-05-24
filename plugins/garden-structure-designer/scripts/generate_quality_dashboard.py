@@ -58,7 +58,7 @@ def main():
     repair = safe_load(stage_dir / "repair-report.json", {"status": "NONE", "attempts": []})
     physics = safe_load(stage_dir / "physics-validation-report.json", {"status": "UNKNOWN", "checks": []})
     learning = safe_load(stage_dir / "learning-registry.json", {"active_lessons": []})
-    model = safe_load(stage_dir / "structural-model.json", {})
+    model = safe_load(stage_dir / "structure.json", {})
     evidence = safe_load(stage_dir / "evidence-registry.json", {"evidence": []})
     drift = safe_load(stage_dir / "drift_report.json", {"failed_axes": []})
     red_team = safe_load(stage_dir / "drawing-red-team-report.json", {})
@@ -73,8 +73,7 @@ def main():
     red_team_may_claim = red_team.get("may_claim_success", False)
     
     missing_artifacts = not all([
-        (stage_dir / "structural-model.json").exists(),
-        (stage_dir / "geometry-calculations.json").exists()
+        (stage_dir / "structure.json").exists()
     ])
 
     if overall_status == "COMPLETED":

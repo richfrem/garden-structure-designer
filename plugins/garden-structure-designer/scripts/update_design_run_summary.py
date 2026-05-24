@@ -45,38 +45,62 @@ def safe_load(path):
     return {}
 
 def main():
-    model = safe_load(staging_dir() / "structural-model.json")
-    spec = safe_load(staging_dir() / "design-spec.json")
-    calcs = safe_load(staging_dir() / "geometry-calculations.json")
+    structure = safe_load(staging_dir() / "structure.json")
+    
+    meta = structure.get("meta", {})
+    intent = structure.get("intent", {})
+    layout = structure.get("layout", {})
+    roof = structure.get("roof", {})
+    geom = structure.get("geometry", {})
+    
+    structure_type = structure.get("structure", {}).get("type", "Unknown")
+    plan_shape = structure.get("structure", {}).get("shape", "Unknown")
+    jurisdiction = intent.get("jurisdiction", "Unknown")
+    post_count = layout.get("post_count", "Unknown")
+    pitch = roof.get("pitch", "Unknown")
+    
+    cuts = geom.get("compound_cut", {})
+    miter = cuts.get("miter_deg", "Unknown")
+    bevel = cuts.get("bevel_deg", "Unknown")
+    
+    beam_ring = geom.get("beam_ring", {})
+    beam_miter = beam_ring.get("beam_miter_deg", "Unknown")
+    
+    total_height = geom.get("total_height", {}).get("total_height_ft", "Unknown")
+    
+    source_hash = meta.get("source_hash", "Unknown")
+    svg_coords = geom.get("svg_coordinates", {})
+    viewbox = svg_coords.get("viewBox", "Unknown")
+    grade_y = svg_coords.get("grade_y", "Unknown")
     
     summary = f"""# Design Run Summary
-
-## Active Task
-Generate validated garden structure design package.
-
-## Locked Parameters
-- Structure type: {spec.get("structureType", "Unknown")}
-- Plan shape: {spec.get("planShape", "Unknown")}
-- Jurisdiction: {spec.get("jurisdiction", "Unknown")}
-- Post count: {model.get("members", {}).get("posts", {}).get("quantity", "Unknown")}
-- Pitch: {model.get("roofStructure", {}).get("pitch", "Unknown")}
-- Rafter miter: {calcs.get("compound_cut", {}).get("miter_deg", "Unknown")}
-- Rafter bevel: {calcs.get("compound_cut", {}).get("bevel_deg", "Unknown")}
-- Beam ring miter: {calcs.get("beam_ring", {}).get("beam_miter_deg", "Unknown")}
-- Total height: {calcs.get("total_height", {}).get("total_height_ft", "Unknown")}
-
-## Deterministic Calculations
-- Source: geometry-calculations.json
-- Source hash: {calcs.get("source_hash", "Unknown")}
-- SVG viewBox: {calcs.get("svg_coordinates", {}).get("viewBox", "Unknown")}
-- Grade Y: {calcs.get("svg_coordinates", {}).get("grade_y", "Unknown")}
-
-## Completed Stages
-Generated dynamically as pipeline executes.
-
-## Validation Findings
-Check repair-report.json and drift_report.json.
-"""
+ 
+ ## Active Task
+ Generate validated garden structure design package.
+ 
+ ## Locked Parameters
+ - Structure type: {structure_type}
+ - Plan shape: {plan_shape}
+ - Jurisdiction: {jurisdiction}
+ - Post count: {post_count}
+ - Pitch: {pitch}
+ - Rafter miter: {miter}
+ - Rafter bevel: {bevel}
+ - Beam ring miter: {beam_miter}
+ - Total height: {total_height}
+ 
+ ## Deterministic Calculations
+ - Source: structure.json
+ - Source hash: {source_hash}
+ - SVG viewBox: {viewbox}
+ - Grade Y: {grade_y}
+ 
+ ## Completed Stages
+ Generated dynamically as pipeline executes.
+ 
+ ## Validation Findings
+ Check repair-report.json and drift_report.json.
+ """
     with open(staging_dir() / "design-run-summary.md", "w") as f:
         f.write(summary)
         

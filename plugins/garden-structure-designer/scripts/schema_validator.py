@@ -85,12 +85,12 @@ def main():
         try:
             jsonschema.validate(data, schema)
             
-            if args.strict and file.name == "design-spec.json":
+            if args.strict and file.name == "structure.json":
                 known_keys = set(schema.get("properties", {}).keys())
                 data_keys = set(data.keys())
                 unknown = data_keys - known_keys
                 if unknown:
-                    file_report["warnings"].append(f"Unknown keys in design-spec: {unknown}")
+                    file_report["warnings"].append(f"Unknown keys in structure.json: {unknown}")
                     if overall_status == "PASS": overall_status = "WARNING"
                     file_report["status"] = "WARNING"
                     

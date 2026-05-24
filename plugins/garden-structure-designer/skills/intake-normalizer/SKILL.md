@@ -16,9 +16,9 @@ Raw conversational transcript from the `interactive-designer` agent, and optiona
 ## Gotchas
 
 - **City ≠ jurisdiction.** "Vancouver" could be Vancouver BC (Canadian codes) or Vancouver WA (US IBC). Always include province/state alongside city, or flag for clarification. Never resolve jurisdictions from city name alone.
-- **Ambiguous footprints default to square.** "About 12x12" with no shape specified implies a 4-post square structure, not hexagonal. Output the assumed shape explicitly in design-spec.json; do not silently assume.
+- **Ambiguous footprints default to square.** "About 12x12" with no shape specified implies a 4-post square structure, not hexagonal. Output the assumed shape explicitly in structure.json; do not silently assume.
 - **Missing pitch defaults to 4:12** — log this default in the JSON as `"pitch": "4:12", "pitchDefaulted": true` so downstream agents can see the assumption.
-- **NEEDS_CLARIFICATION blocks the pipeline.** Any field marked `NEEDS_CLARIFICATION` will cause the structural engine to halt. Do not forward design-spec.json with unresolved clarifications unless the orchestrator has explicitly approved safe defaults.
+- **NEEDS_CLARIFICATION blocks the pipeline.** Any field marked `NEEDS_CLARIFICATION` will cause the structural engine to halt. Do not forward structure.json with unresolved clarifications unless the orchestrator has explicitly approved safe defaults.
 - **Dimension vs. clear span.** Users often give overall footprint (including post thickness). Structural span is the center-to-center post distance. Clarify which measurement the user intends when in doubt.
 
 ## Smoke Test

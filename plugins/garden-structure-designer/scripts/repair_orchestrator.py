@@ -83,12 +83,12 @@ def main():
         save_json(report, staging_dir() / "repair-report.json")
         sys.exit(0)
 
-    # Check structural-model.json lock
-    model_path = staging_dir() / "structural-model.json"
+    # Check structure.json lock
+    model_path = staging_dir() / "structure.json"
     is_locked = False
     if model_path.exists():
         model = load_json(model_path)
-        is_locked = model.get("_locked", False)
+        is_locked = model.get("geometry", {}).get("_sealed", False) or model.get("members", {}).get("_sealed", False)
 
     # Try repairs
     for axis in axes:

@@ -1,6 +1,6 @@
 ---
 name: shop-blueprint-generator
-description: Generates heavily dimensioned, technical orthographic blueprints intended strictly for carpenters and fabricators. Outputs highly detailed line-drawings packed with dimensional arrows, bolt-hole spacing coordinates, exact cut lengths, and pitch angles. All angles are READ from geometry-calculations.json — NEVER derived mentally.
+description: Generates heavily dimensioned, technical orthographic blueprints intended strictly for carpenters and fabricators. Outputs highly detailed line-drawings packed with dimensional arrows, bolt-hole spacing coordinates, exact cut lengths, and pitch angles. All angles are READ from structure.json — NEVER derived mentally.
 allowed-tools: Read, Write, Bash
 ---
 

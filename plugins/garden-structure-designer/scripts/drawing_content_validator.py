@@ -208,6 +208,8 @@ def _has_hub_reference(raw: str, model: dict) -> bool:
     """Detect if the model/drawing references a central hub."""
     if "hub" in raw.lower():
         return True
+    if "hub" in model and model["hub"]:
+        return True
     roof = model.get("roofStructure", model.get("members", {}).get("roofStructure", {}))
     return bool(roof.get("hubDiameter") or roof.get("hub"))
 
