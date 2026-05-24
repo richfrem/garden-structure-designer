@@ -433,7 +433,7 @@ def _build_scene_legacy(
         
         p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_vertical)
         # Use exact hub termination point from geometry.joints
-        term_pts = geom.get("joints", {}).get("rafters", {}).get("hub_termination_points", {}).get("points", [])
+        term_pts = calcs.get("joints", {}).get("rafters", {}).get("hub_termination_points", {}).get("points", [])
         term_pt = None
         for pt in term_pts:
             if pt.get("rafter_id") == f"R{i+1}":
@@ -534,7 +534,7 @@ def _build_scene_legacy(
                 ))
 
     # Purlin Ring — horizontal collar/purlin timbers connecting the hip rafters
-    if structure.get("members", {}).get("purlins", {}).get("enabled", False):
+    if model.get("members", {}).get("purlins", {}).get("enabled", False):
         s_purlin = 0.55
         Z_PURLIN = Z_BEAM_TOP + roof_r * s_purlin
         purlins_spec = model.get("members", {}).get("purlins", {})

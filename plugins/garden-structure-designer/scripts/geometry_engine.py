@@ -380,7 +380,7 @@ def compute(model_path: str) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def compute_joints(structure):
+def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
     joints = {
         "units": "feet",
         "coordinate_system": "right_handed_z_up",
@@ -397,7 +397,7 @@ def compute_joints(structure):
     post_h = structure["members"]["posts"]["cut_length_ft"]
     beam_d_in = structure["members"]["beams"]["actual_depth_in"]
     beam_d_ft = beam_d_in / 12.0
-    roof_r = structure["geometry"]["roof_rise"]["rise_ft"]
+    roof_r = rise["rise_ft"]
     
     Z_GRADE = 0.0
     Z_POST_TOP = post_h - beam_d_ft
@@ -436,7 +436,6 @@ def compute_joints(structure):
     }
     
     # Hub planes
-    hub_r = structure["geometry"]["hub_radius_ft"]
     face_planes = []
     for i in range(qty):
         theta = 2*math.pi*i/qty
@@ -464,15 +463,8 @@ def compute_joints(structure):
     # Rafter termination points
     term_points = []
     for i in range(qty):
-        # rafter axis from center outward (in XY)
-        # plane is H{i+1}
         nx, ny, _ = face_planes[i]["normal"]
         px, py, _ = face_planes[i]["point"]
-        
-        # Line L(t) = t * (nx, ny)  (since it's radial)
-        # Plane eqn: (L - P) dot N = 0
-        # t*nx*nx + t*ny*ny - px*nx - py*ny = 0
-        # t = px*nx + py*ny
         t = px*nx + py*ny
         term_x = t * nx
         term_y = t * ny
@@ -511,57 +503,30 @@ def compute_joints(structure):
         brace_pairs = []
         for i in range(qty):
             vi = post_xy[i]
-            
             # Toward next
             j = (i+1)%qty
             vj = post_xy[j]
-            dx = vj[0] - vi[0]
-            dy = vj[1] - vi[1]
+            dx, dy = vj[0]-vi[0], vj[1]-vi[1]
             dlen = math.sqrt(dx*dx + dy*dy)
-            dx /= dlen
-            dy /= dlen
-            
-            start_x = vi[0] + dx * post_hw
-            start_y = vi[1] + dy * post_hw
-            start_z = Z_POST_TOP - b_drop
-            
-            end_x = vi[0] + dx * (post_hw + b_run)
-            end_y = vi[1] + dy * (post_hw + b_run)
-            end_z = Z_POST_TOP
-            
+            dx, dy = dx/dlen, dy/dlen
             brace_pairs.append({
                 "brace_id": f"K{i+1}A",
-                "post_index": i,
-                "toward_post_index": j,
-                "start": [round(start_x, 4), round(start_y, 4), round(start_z, 3)],
-                "end": [round(end_x, 4), round(end_y, 4), round(end_z, 3)]
+                "post_index": i, "toward_post_index": j,
+                "start": [round(vi[0]+dx*post_hw, 4), round(vi[1]+dy*post_hw, 4), round(Z_POST_TOP-b_drop, 3)],
+                "end": [round(vi[0]+dx*(post_hw+b_run), 4), round(vi[1]+dy*(post_hw+b_run), 4), round(Z_POST_TOP, 3)]
             })
-            
             # Toward prev
             j = (i-1)%qty
             vj = post_xy[j]
-            dx = vj[0] - vi[0]
-            dy = vj[1] - vi[1]
+            dx, dy = vj[0]-vi[0], vj[1]-vi[1]
             dlen = math.sqrt(dx*dx + dy*dy)
-            dx /= dlen
-            dy /= dlen
-            
-            start_x = vi[0] + dx * post_hw
-            start_y = vi[1] + dy * post_hw
-            start_z = Z_POST_TOP - b_drop
-            
-            end_x = vi[0] + dx * (post_hw + b_run)
-            end_y = vi[1] + dy * (post_hw + b_run)
-            end_z = Z_POST_TOP
-            
+            dx, dy = dx/dlen, dy/dlen
             brace_pairs.append({
                 "brace_id": f"K{i+1}B",
-                "post_index": i,
-                "toward_post_index": j,
-                "start": [round(start_x, 4), round(start_y, 4), round(start_z, 3)],
-                "end": [round(end_x, 4), round(end_y, 4), round(end_z, 3)]
+                "post_index": i, "toward_post_index": j,
+                "start": [round(vi[0]+dx*post_hw, 4), round(vi[1]+dy*post_hw, 4), round(Z_POST_TOP-b_drop, 3)],
+                "end": [round(vi[0]+dx*(post_hw+b_run), 4), round(vi[1]+dy*(post_hw+b_run), 4), round(Z_POST_TOP, 3)]
             })
-            
         joints["braces"]["layout"] = bracing_spec.get("layout", "paired_per_post")
         joints["braces"]["endpoints"] = {"pairs": brace_pairs}
         
@@ -572,60 +537,25 @@ def compute_joints(structure):
         vi = post_xy[i]
         vnext = post_xy[(i+1)%qty]
         vprev = post_xy[(i-1)%qty]
-        
-        # unext = unit(vnext - vi)
-        dx_next = vnext[0] - vi[0]
-        dy_next = vnext[1] - vi[1]
-        dl_next = math.sqrt(dx_next**2 + dy_next**2)
-        ux_next = dx_next / dl_next
-        uy_next = dy_next / dl_next
-        
-        # uprev = unit(vprev - vi)
-        dx_prev = vprev[0] - vi[0]
-        dy_prev = vprev[1] - vi[1]
-        dl_prev = math.sqrt(dx_prev**2 + dy_prev**2)
-        ux_prev = dx_prev / dl_prev
-        uy_prev = dy_prev / dl_prev
-        
-        # angle bisector n_i = unit(unext + uprev)
-        nx = ux_next + ux_prev
-        ny = uy_next + uy_prev
-        nlen = math.sqrt(nx**2 + ny**2)
-        if nlen > 1e-6:
-            nx /= nlen
-            ny /= nlen
-        else:
-            nx, ny = 1.0, 0.0
-            
-        plane = {
-            "corner_id": f"C{i+1}",
-            "post_index": i,
-            "point": [round(vi[0], 4), round(vi[1], 4), round(Z_BEAM_CENTER, 3)],
-            "normal": [round(nx, 4), round(ny, 4), 0.0]
-        }
-        corner_planes.append(plane)
+        dxn, dyn = vnext[0]-vi[0], vnext[1]-vi[1]
+        dln = math.sqrt(dxn**2 + dyn**2)
+        uxn, uyn = dxn/dln, dyn/dln
+        dxp, dyp = vprev[0]-vi[0], vprev[1]-vi[1]
+        dlp = math.sqrt(dxp**2 + dyp**2)
+        uxp, uyp = dxp/dlp, dyp/dlp
+        nx, ny = uxn+uxp, uyn+uyp
+        nlen = math.sqrt(nx**2+ny**2)
+        if nlen > 1e-6: nx, ny = nx/nlen, ny/nlen
+        else: nx, ny = 1.0, 0.0
+        corner_planes.append({"corner_id": f"C{i+1}", "post_index": i, "point": [round(vi[0], 4), round(vi[1], 4), round(Z_BEAM_CENTER, 3)], "normal": [round(nx, 4), round(ny, 4), 0.0]})
         
     for i in range(qty):
-        c_start = corner_planes[i]
-        c_end = corner_planes[(i+1)%qty]
-        bid = f"B{i+1}"
-        beam_end_planes.append({
-            "beam_id": bid, "end": "start", "corner_id": c_start["corner_id"],
-            "point": c_start["point"], "normal": c_start["normal"]
-        })
-        beam_end_planes.append({
-            "beam_id": bid, "end": "end", "corner_id": c_end["corner_id"],
-            "point": c_end["point"], "normal": c_end["normal"]
-        })
+        c_start, c_end = corner_planes[i], corner_planes[(i+1)%qty]
+        beam_end_planes.append({"beam_id": f"B{i+1}", "end": "start", "corner_id": c_start["corner_id"], "point": c_start["point"], "normal": c_start["normal"]})
+        beam_end_planes.append({"beam_id": f"B{i+1}", "end": "end", "corner_id": c_end["corner_id"], "point": c_end["point"], "normal": c_end["normal"]})
         
-    joints["beam_ring"] = {
-        "corner_planes": corner_planes,
-        "beam_end_planes": beam_end_planes
-    }
-        
+    joints["beam_ring"] = {"corner_planes": corner_planes, "beam_end_planes": beam_end_planes}
     return joints
-
-
 def compute_from_structure(structure_path: str) -> dict:
     """
     Read structure.json, compute all geometry, seal geometry section, write back.
@@ -718,7 +648,7 @@ def compute_from_structure(structure_path: str) -> dict:
     }
 
     # --- Fabrication-Grade Joint Computation ---
-    joints = compute_joints(structure)
+    joints = compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords)
     
     structure["geometry"] = {
         "_comment": "DERIVED — written by geometry_engine.py. Do not manually edit.",
