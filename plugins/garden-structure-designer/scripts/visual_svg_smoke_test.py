@@ -465,14 +465,19 @@ def detect_hub_density(image: np.ndarray) -> int:
     return int(np.count_nonzero(edges))
 
 # External Comment: Compares computer vision detections with expectations
-def full_visual_validation(image: np.ndarray, structure: dict[str, typing.Any]) -> list[str]:
+def full_visual_validation(
+    image: np.ndarray,
+    structure: dict[str, typing.Any],
+    sheet_key: str = "",
+) -> list[str]:
     """
     Orchestrates full structural validations using physical expectation counts.
-    
+
     Args:
         image: Standard BGR input image.
         structure: Loaded model specification JSON dict.
-        
+        sheet_key: Normalized sheet key for threshold lookup.
+
     Returns:
         List of failure codes. Empty list implies perfect validation.
     """
@@ -491,20 +496,34 @@ def full_visual_validation(image: np.ndarray, structure: dict[str, typing.Any]) 
                 if expected[k] > 0 and detected[k] < expected[k] // 2:
                     failures.append(f"COUNT_MISMATCH_{k.upper()}")
 
-    if detect_hub_density(image) > 5000:
-        failures.append("SPAGHETTI_HUB")
+    hub_result = detect_spaghetti_hub(detect_hub_density(image), sheet_key)
+    if hub_result:
+        failures.append(f"{hub_result['code']}: {hub_result['detail']}")
+
+    brace_result = detect_brace_float(structure)
+    if brace_result:
+        failures.append(f"{brace_result['code']}: {brace_result['detail']}")
+
+    beam_result = detect_beam_gap(structure)
+    if beam_result:
+        failures.append(f"{beam_result['code']}: {beam_result['detail']}")
 
     return failures
 
 # External Comment: Evaluates image using computer vision and returns a report
-def evaluate_image_cv(img_path: str, structure: dict[str, typing.Any]) -> tuple[dict[str, typing.Any], list[str]]:
+def evaluate_image_cv(
+    img_path: str,
+    structure: dict[str, typing.Any],
+    sheet_key: str = "",
+) -> tuple[dict[str, typing.Any], list[str]]:
     """
     Main cv-evaluation script wrapper that reads path and runs topology heuristics.
-    
+
     Args:
         img_path: Path to PNG screenshot.
         structure: Loaded structure parameters.
-        
+        sheet_key: Normalized sheet key for named-detector threshold lookup.
+
     Returns:
         Tuple of (cv_metrics, failures).
     """
@@ -514,18 +533,18 @@ def evaluate_image_cv(img_path: str, structure: dict[str, typing.Any]) -> tuple[
         image = cv2.imread(img_path)
         if image is None:
             return {}, ["IMAGE_LOAD_FAILED"]
-        
+
         expected = extract_expected_topology(structure)
         detected = detect_components(image)
         content_ratio = compute_content_ratio(image)
         hub_density = detect_hub_density(image)
-        
+
         metrics["expected_topology"] = expected
         metrics["detected_components"] = detected
         metrics["cv_content_ratio"] = float(content_ratio)
         metrics["cv_hub_density"] = int(hub_density)
-        
-        failures = full_visual_validation(image, structure)
+
+        failures = full_visual_validation(image, structure, sheet_key=sheet_key)
     except Exception as e:
         failures.append(f"CV_VALIDATION_ERROR: {str(e)}")
     return metrics, failures
@@ -596,6 +615,91 @@ def compute_mad(img_path1: str, img_path2: str) -> tuple[float, typing.Optional[
         return float(mad), None
     except Exception as e:
         return 1.0, f"MAD_COMPUTATION_ERROR: {e}"
+
+# ---------------------------------------------------------------------------
+# Named visual failure detectors — each returns a structured failure dict
+# or None (no failure).  These replace anonymous threshold checks so that
+# failure origins are unambiguous and reports are self-describing.
+# ---------------------------------------------------------------------------
+
+def detect_spaghetti_hub(hub_density: int, sheet_key: str) -> typing.Optional[dict[str, str]]:
+    """
+    Returns a structured failure dict if hub edge density exceeds the spaghetti threshold.
+    Hub density > 5000 indicates interpenetrating members at the apex (no Boolean trimming).
+    """
+    threshold = 5000
+    if hub_density > threshold:
+        return {
+            "code": "SPAGHETTI_HUB",
+            "severity": "FAIL",
+            "detail": (
+                f"hub edge pixel count {hub_density} exceeds threshold {threshold} "
+                f"on {sheet_key or 'unknown-sheet'} — secondary framing likely visible in 3D view"
+            ),
+        }
+    return None
+
+
+def detect_brace_float(structure: dict[str, typing.Any]) -> typing.Optional[dict[str, str]]:
+    """
+    Returns a structured failure dict if brace geometry parameters are degenerate.
+    A zero-length or near-horizontal/vertical brace cannot make valid contact with the post face.
+    """
+    bracing = structure.get("bracing", {})
+    if not bracing.get("enabled"):
+        return None
+    brace_s = bracing.get("brace", {})
+    length_in = float(brace_s.get("cutLength_in", 0.0))
+    angle = float(brace_s.get("angle_deg", 45.0))
+    if length_in <= 0:
+        return {
+            "code": "BRACE_FLOAT",
+            "severity": "FAIL",
+            "detail": f"brace.cutLength_in={length_in} — zero-length brace cannot contact post face",
+        }
+    if not (5.0 <= angle <= 85.0):
+        return {
+            "code": "BRACE_FLOAT",
+            "severity": "FAIL",
+            "detail": (
+                f"brace.angle_deg={angle} is outside [5°, 85°] — "
+                "degenerate brace geometry will produce floating or overlapping joints"
+            ),
+        }
+    return None
+
+
+def detect_beam_gap(structure: dict[str, typing.Any]) -> typing.Optional[dict[str, str]]:
+    """
+    Returns a structured failure dict if beam_span_ft is missing or deviates
+    significantly from the expected post-to-post chord length.
+    A gap means the beam doesn't connect to the posts it's supposed to span.
+    """
+    geom = structure.get("geometry", {})
+    spans = geom.get("spans", {})
+    beam_span = float(spans.get("beam_span_ft", 0.0))
+    if beam_span <= 0:
+        return {
+            "code": "BEAM_GAP",
+            "severity": "FAIL",
+            "detail": f"beam_span_ft={beam_span} — zero or missing beam span in geometry.spans",
+        }
+    inscribed = float(structure.get("layout", {}).get("inscribed_radius_ft", 0.0))
+    qty = int(structure.get("layout", {}).get("post_count", 0))
+    if inscribed > 0 and qty > 2:
+        expected_span = 2.0 * inscribed * math.sin(math.pi / qty)
+        delta = abs(beam_span - expected_span)
+        if delta > 0.5:
+            return {
+                "code": "BEAM_GAP",
+                "severity": "WARN",
+                "detail": (
+                    f"beam_span_ft={beam_span:.3f} differs from post chord {expected_span:.3f} ft "
+                    f"by {delta:.3f} ft — beam endpoints may not align with posts"
+                ),
+            }
+    return None
+
 
 # External Comment: Parse CLI parameters, spawn Playwright web instance, run smoke checks
 def main() -> None:
@@ -675,6 +779,17 @@ def main() -> None:
                 "warnings": []
             }
 
+            # Staleness gate: PNG must not be older than its source SVG.
+            # A stale PNG means the SVG was regenerated but the PNG wasn't — delete
+            # it here so the qlmanage fallback below produces fresh evidence.
+            if png_path.exists() and png_path.stat().st_size > 0:
+                if png_path.stat().st_mtime < sheet_path.stat().st_mtime:
+                    print(f"[SMOKE] PNG_STALE_OR_MISSING: {sheet} — PNG older than SVG, re-rendering")
+                    file_report["warnings"].append(
+                        f"PNG_STALE_OR_MISSING: PNG was older than SVG for {sheet} — re-rendered"
+                    )
+                    png_path.unlink()
+
             # PNGs are pre-generated by render_drawings.py alongside SVG output.
             # Only fall back to qlmanage (or Playwright) when the PNG is absent.
             if not png_path.exists() or png_path.stat().st_size == 0:
@@ -714,7 +829,7 @@ def main() -> None:
             file_report["metrics"].update(metrics)
             file_report["failures"].extend(failures)
 
-            cv_metrics, cv_failures = evaluate_image_cv(str(png_path), structure)
+            cv_metrics, cv_failures = evaluate_image_cv(str(png_path), structure, sheet_key=hub_sheet_key(sheet))
             file_report["metrics"].update(cv_metrics)
             if "isolation" not in sheet:
                 file_report["failures"].extend(cv_failures)

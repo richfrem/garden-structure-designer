@@ -484,18 +484,23 @@ def render_elevation_view(structure: dict, filename: str) -> list[str]:
     return svg_list
 
 
-def render_perspective_view(structure: dict, filename: str) -> list[str]:
+def render_perspective_view(
+    structure: dict,
+    filename: str,
+    azimuth_rot: float = 0.0,
+    suppress_secondary: bool = True,
+) -> list[str]:
     """
     CAD scene graph renderer — delegates all geometry to cad_scene.py.
 
-    Pipeline
-    --------
-    1. build_structure_scene()   → Scene (all 3D nodes, Solid/Face objects)
-    2. validate_scene_geometry() → raises GeometryError on any invariant failure
-    3. Project faces + depth sort (painter's algorithm, per-face centroid)
-    4. Backface cull: dot(face.normal, CAM) > 0
-    5. Brace opacity rules: front=1.0 / side=0.35 / rear=suppressed
-    6. Annotation layout: projected bboxes → push labels outside structure
+    Parameters
+    ----------
+    azimuth_rot:        Rotate scene around Z before projection (radians).
+                        0 = default camera; math.pi/qty = rotated 30° for hex.
+    suppress_secondary: When True (default) skip jack rafters and purlins.
+                        These interpenetrate without Boolean trimming and
+                        produce hub spaghetti in 3D views.  The plan view
+                        already shows them correctly from above.
     """
     svg_list = []
     is_blueprint = "blueprint" in filename
@@ -523,15 +528,31 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
     cx, cy = coords["width_px"] / 2, coords["height_px"] / 2 + 200
     r = (span_diag / 2.0) * scale
 
-    def proj3(pt: tuple) -> tuple:
-        return project_iso(pt[0], pt[1], pt[2], scale, cx, cy)
-
     # ── Camera direction ─────────────────────────────────────────────────────
-    # Mathematically exact camera vector for symmetric 30/30 isometric projection:
-    # Under a 30/30 projection, the view axis is perfectly diagonal (X=Y=Z)
+    # 30/30 isometric: view axis is (1,1,1) normalised.
     _cam_raw = (1.0, 1.0, 1.0)
     _cam_len = math.sqrt(sum(c*c for c in _cam_raw))
-    CAM: tuple[float, float, float] = (_cam_raw[0]/_cam_len, _cam_raw[1]/_cam_len, _cam_raw[2]/_cam_len)
+    CAM_base: tuple[float, float, float] = (_cam_raw[0]/_cam_len, _cam_raw[1]/_cam_len, _cam_raw[2]/_cam_len)
+
+    # When the scene is rotated by azimuth_rot, the effective camera direction
+    # in the unrotated frame rotates by -azimuth_rot around Z.
+    if azimuth_rot != 0.0:
+        _ca = math.cos(-azimuth_rot); _sa = math.sin(-azimuth_rot)
+        CAM: tuple[float, float, float] = (
+            CAM_base[0]*_ca - CAM_base[1]*_sa,
+            CAM_base[0]*_sa + CAM_base[1]*_ca,
+            CAM_base[2],
+        )
+        _rc = math.cos(azimuth_rot); _rs = math.sin(azimuth_rot)
+        def proj3(pt: tuple) -> tuple:
+            x, y, z = pt[0], pt[1], pt[2]
+            rx = x*_rc - y*_rs
+            ry = x*_rs + y*_rc
+            return project_iso(rx, ry, z, scale, cx, cy)
+    else:
+        CAM = CAM_base
+        def proj3(pt: tuple) -> tuple:  # type: ignore[misc]
+            return project_iso(pt[0], pt[1], pt[2], scale, cx, cy)
 
     # ── Collect all faces from all solids ────────────────────────────────────
     # Compute brace depth range for opacity normalisation
@@ -547,6 +568,15 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
     face_entries: list[tuple] = []   # (depth, face, solid, opacity)
 
     for solid in scene.solids:
+        # Suppress secondary framing in 3D presentation views.
+        # Jack rafters (tag "Jack…") and purlins create an untrimmed spaghetti
+        # at the hub; they are correctly visible in the top-down plan view.
+        if suppress_secondary:
+            if solid.role == "purlin":
+                continue
+            if solid.role == "rafter" and solid.tag.startswith("Jack"):
+                continue
+
         # Determine brace visibility / opacity
         if solid.role == "brace":
             mid_depth = sum(
@@ -560,7 +590,7 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
             opacity = 1.0
 
         for face in solid.faces:
-            # Cull start/end joint faces of purlins, beams, and braces to keep joints clean and flush
+            # Cull start/end joint faces of beams and braces to keep joints clean and flush
             axis = vsub(solid.p1, solid.p0)
             if vlen(axis) > 1e-6:
                 u = vnorm(axis)
@@ -568,7 +598,7 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
             else:
                 is_start_end = False
 
-            if is_start_end and solid.role in ("purlin", "beam", "brace"):
+            if is_start_end and solid.role in ("beam", "brace"):
                 continue
 
             if face.role == "footing":
@@ -590,8 +620,6 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
                 depth += 20.0
             elif solid.role == "rafter":
                 depth += 15.0
-            elif solid.role == "purlin":
-                depth += 10.0
             elif solid.role == "brace":
                 depth += 2.0
             elif solid.role == "beam":
@@ -650,16 +678,15 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
             visible_counts[role] = 0
         visible_counts[role] += 1
 
-    post_cnt = visible_counts["post"] if "post" in visible_counts else 0
-    beam_cnt = visible_counts["beam"] if "beam" in visible_counts else 0
-    rafter_cnt = visible_counts["rafter"] if "rafter" in visible_counts else 0
+    post_cnt    = visible_counts.get("post",   0)
+    beam_cnt    = visible_counts.get("beam",   0)
+    rafter_cnt  = visible_counts.get("rafter", 0)
 
-    assert post_cnt == qty, f"Expected {qty} posts, got {post_cnt}"
-    assert beam_cnt == qty, f"Expected {qty} beams, got {beam_cnt}"
+    assert post_cnt   == qty, f"Expected {qty} posts, got {post_cnt}"
+    assert beam_cnt   == qty, f"Expected {qty} beams, got {beam_cnt}"
     assert rafter_cnt == qty, f"Expected {qty} primary rafters, got {rafter_cnt}"
 
     # ── Annotation layout pass ───────────────────────────────────────────────
-    # Union bbox of all projected major member faces
     def bbox_union(boxes: list) -> tuple | None:
         if not boxes:
             return None
@@ -668,27 +695,6 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
             max(b[2] for b in boxes), max(b[3] for b in boxes),
         )
 
-    def bbox_overlaps(a: tuple, b: tuple) -> bool:
-        return not (a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1])
-
-    def safe_label_x(preferred_x: float, preferred_y: float,
-                     width_est: float, height_est: float) -> float:
-        """Push label left/right until its bbox clears the structure union bbox."""
-        ub = bbox_union(projected_bboxes)
-        if ub is None:
-            return preferred_x
-        lb = (preferred_x, preferred_y - height_est, preferred_x + width_est, preferred_y)
-        if not bbox_overlaps(lb, ub):
-            return preferred_x
-        # Push left until clear (max 3 attempts)
-        for shift in [50, 100, 160]:
-            candidate_x = preferred_x - shift
-            lb2 = (candidate_x, lb[1], candidate_x + width_est, lb[3])
-            if not bbox_overlaps(lb2, ub):
-                return candidate_x
-        return ub[0] - width_est - 20   # park fully left of structure
-
-    # Total height dimension (right side, always outside bbox)
     ub = bbox_union(projected_bboxes)
     right_x = (ub[2] + 60) if ub else (cx + r + 60)
     i_apex  = proj3((0.0, 0.0, scene.Z_APEX))
@@ -698,7 +704,6 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
         vertical=True, is_blueprint=is_blueprint
     )
 
-    # Diagonal span (below structure)
     bottom_y = (ub[3] + 55) if ub else (cy + 55)
     draw_dimension(
         svg_list, cx-r, bottom_y, cx+r, bottom_y,
@@ -706,7 +711,6 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
         is_blueprint=is_blueprint
     )
 
-    # Post callout — leader from post top to label outside bbox
     px0, py0 = scene.post_xy[0]
     top_px, top_py = proj3((px0, py0, scene.Z_POST_TOP))
     left_x = (ub[0] - 160) if ub else (cx - r - 160)
@@ -715,13 +719,25 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
         f"{post_nom} POST @ {post_h:.2f}ft", is_blueprint=is_blueprint
     )
 
-    # Sheet title (top-left, outside structure)
+    # Sheet title — differs between perspective (face-on) and isometric (rotated)
+    if azimuth_rot != 0.0:
+        title_line1 = "ISOMETRIC VIEW"
+        title_line2 = "30° ROTATED — PRIMARY FRAMING — SAANICH BC"
+    else:
+        title_line1 = "3D PERSPECTIVE MODEL"
+        title_line2 = "DETERMINISTIC CAD SOLID — HEX PERGOLA — SAANICH BC"
     svg_list.append(f'    <g transform="translate(60,60)" font-family="Courier New, monospace" fill="{palette["text"]}">')
-    svg_list.append(f'        <text x="0" y="0" font-size="20" font-weight="bold">3D PERSPECTIVE MODEL</text>')
-    svg_list.append(f'        <text x="0" y="25" font-size="12">DETERMINISTIC CAD SOLID — HEX PERGOLA — SAANICH BC</text>')
+    svg_list.append(f'        <text x="0" y="0" font-size="20" font-weight="bold">{title_line1}</text>')
+    svg_list.append(f'        <text x="0" y="25" font-size="12">{title_line2}</text>')
     svg_list.append(f'    </g>')
 
     return svg_list
+
+
+def render_isometric_view(structure: dict, filename: str) -> list[str]:
+    """Isometric view: scene rotated 30° (π/qty) to show a beam face instead of a post face."""
+    qty = structure["layout"]["post_count"]
+    return render_perspective_view(structure, filename, azimuth_rot=math.pi / qty)
 
 
 def render_component_isolation_view(structure: dict, filename: str) -> list[str]:
@@ -899,6 +915,18 @@ def _generate_png(svg_path: str | Path, width_px: int, height_px: int) -> bool:
             tmp_png.rename(target_png)
 
     if target_png.exists() and target_png.stat().st_size > 0:
+        # qlmanage on macOS Sequoia produces square PNGs regardless of SVG aspect
+        # ratio; resize to the correct SVG dimensions so CV heuristics and crops
+        # operate on undistorted pixel coordinates.
+        try:
+            from PIL import Image as _PILImage
+            _img = _PILImage.open(target_png)
+            if _img.size != (width_px, height_px):
+                _resample = getattr(_PILImage, "Resampling", _PILImage).LANCZOS
+                _img = _img.resize((width_px, height_px), _resample)
+                _img.save(target_png)
+        except Exception:
+            pass
         return True
 
     # --- Strategy 2: Playwright (fallback) ---
@@ -968,7 +996,9 @@ def generate_svg(filename: str, structure: dict, output_path: str) -> None:
         content = render_plan_view(structure, filename)
     elif "elevation" in filename:
         content = render_elevation_view(structure, filename)
-    elif "perspective" in filename or "isometric" in filename:
+    elif "isometric" in filename:
+        content = render_isometric_view(structure, filename)
+    elif "perspective" in filename:
         content = render_perspective_view(structure, filename)
     elif "isolation" in filename:
         content = render_component_isolation_view(structure, filename)
