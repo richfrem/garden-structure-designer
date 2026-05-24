@@ -250,6 +250,18 @@ def render_plan_view(structure: dict, filename: str) -> list[str]:
 
             c = vcent(face.verts)
             depth = c[2]
+            # Apply role-based depth bias to prevent depth-sorting collisions
+            # (roof members are structurally on top of support frames)
+            if solid.role == "hub":
+                depth += 20.0
+            elif solid.role == "rafter":
+                depth += 15.0
+            elif solid.role == "purlin":
+                depth += 10.0
+            elif solid.role == "brace":
+                depth += 2.0
+            elif solid.role == "beam":
+                depth += 5.0
             face_entries.append((depth, face, solid))
 
     # Sort back-to-front (lowest Z first: footing -> post -> beam -> purlin -> rafter -> hub)
@@ -364,6 +376,18 @@ def render_elevation_view(structure: dict, filename: str) -> list[str]:
             c = vcent(face.verts)
             # Depth: smaller Y is closer (depth = -c[1])
             depth = -c[1]
+            # Apply role-based depth bias to prevent depth-sorting collisions
+            # (roof members are structurally on top of support frames)
+            if solid.role == "hub":
+                depth += 20.0
+            elif solid.role == "rafter":
+                depth += 15.0
+            elif solid.role == "purlin":
+                depth += 10.0
+            elif solid.role == "brace":
+                depth += 2.0
+            elif solid.role == "beam":
+                depth += 5.0
             face_entries.append((depth, face, solid))
 
     # Sort back-to-front (lowest depth first)
@@ -540,6 +564,18 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
             # Centroid depth
             c = vcent(face.verts)
             depth = c[0]*CAM[0] + c[1]*CAM[1] + c[2]*CAM[2]
+            # Apply role-based depth bias to prevent depth-sorting collisions
+            # (roof members are structurally on top of support frames)
+            if solid.role == "hub":
+                depth += 20.0
+            elif solid.role == "rafter":
+                depth += 15.0
+            elif solid.role == "purlin":
+                depth += 10.0
+            elif solid.role == "brace":
+                depth += 2.0
+            elif solid.role == "beam":
+                depth += 5.0
             face_entries.append((depth, face, solid, opacity))
 
     # Sort back-to-front (painter's algorithm)
@@ -588,6 +624,8 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
     # ── Count Invariants Check (Assert exactly post_count primary members) ───
     visible_counts = {}
     for role, tag in tagged:
+        if role == "rafter" and not tag.startswith("R"):
+            continue
         visible_counts[role] = visible_counts.get(role, 0) + 1
 
     assert visible_counts.get("post", 0) == qty, f"Expected {qty} posts, got {visible_counts.get('post', 0)}"

@@ -247,7 +247,15 @@ def build_cad_model(model: dict, calcs: dict) -> b3d.Compound | None:
         roof_rise = calcs.get("roof_rise", {}).get("rise_ft", 1.6)
         slope_perp = roof_rise / (apothem - scene.hub_r * math.cos(math.pi / qty))
 
-        for fraction, tag_suffix in [(1.0 / 3.0, "a"), (2.0 / 3.0, "b")]:
+        sec_spec = model.get("roof", {}).get("secondary_rafters", {})
+        count_per_side = sec_spec.get("count_per_side", 2)
+        fractions_list = []
+        for j in range(count_per_side):
+            fraction = (j + 1.0) / (count_per_side + 1.0)
+            tag_suffix = chr(ord('a') + j)
+            fractions_list.append((fraction, tag_suffix))
+
+        for fraction, tag_suffix in fractions_list:
             sx = px1 + bx * fraction
             sy = py1 + by * fraction
 
@@ -291,7 +299,7 @@ def build_cad_model(model: dict, calcs: dict) -> b3d.Compound | None:
                     solids.append(solid)
 
     # 7. Purlin Ring
-    s_purlin = 0.55
+    s_purlin = purlins_spec.get("height_fraction", 0.55)
     Z_PURLIN = scene.Z_BEAM_TOP + (scene.Z_APEX - scene.Z_BEAM_TOP) * s_purlin
     # Calculate dy_vertical again for purlin offset
     dx_hip_ex = scene.post_xy[0][0] - rafter_apex[0][0]

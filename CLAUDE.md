@@ -97,6 +97,15 @@ When updating an existing skill, agent, or document, only modify the specific se
 ### 4. Goal-Driven Execution
 The ultimate goal is generating a professional-grade structural construction PDF packet. Ensure that all validations (e.g., `validation-agent` red-team physics check) pass completely before proceeding to the document compilation stage.
 
+### 5. Self-Evolution & Error Recovery
+When a tool, script, or verification step fails, treat it as an evolution event as defined in `.agent/rules/self-evolution-policy.md`. Keep edits within boundaries, classify the failure tier (Gap, Failure, Regression), limit fixes to a maximum of 3 attempts, and record every patch in `evolution-log.md`.
+
+### 6. Test-Driven Development (TDD)
+Enforce the strict iron law from `.agent/rules/test-driven-development.md`: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST. Never write implementation code before a failing unit or integration test exists. Place tests in `plugins/<plugin>/tests/` and run the suite before committing.
+
+### 7. Data-Driven & Declarative Architecture
+Enforce the strict engineering policy from `.agent/rules/data-driven-declarative.md`: all CAD engine dimensions, framing member counts, offsets, and fabrication cut lists must dynamically resolve from staging `structure.json`. Hardcoding geometry layouts and constants in python scripts is strictly prohibited.
+
 ---
 
 ## Updated Coding Rules

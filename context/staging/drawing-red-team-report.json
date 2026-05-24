@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/drawing-red-team-report/1.0",
-  "generated": "2026-05-24T06:45:39.489121+00:00",
+  "generated": "2026-05-24T07:17:08.654483+00:00",
   "status": "PASS",
   "reviewer": "run_drawing_red_team.py",
   "summary": "All SVG sheets passed deterministic machine validation and sheet-specific content-quality checks. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.",

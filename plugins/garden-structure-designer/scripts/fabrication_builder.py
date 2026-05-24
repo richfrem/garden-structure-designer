@@ -414,7 +414,267 @@ def main() -> None:
                 ]
             })
 
+    # ── 5. Secondary / Jack Rafters ─────────────────────────────────────────
+    secondary_spec = structure.get("roof", {}).get("secondary_rafters", {})
+    if secondary_spec.get("enabled", False):
+        sec_w = secondary_spec.get("actual_width_in", 3.5)
+        sec_d = secondary_spec.get("actual_depth_in", 3.5)
+        SEC_HW = (sec_w / 12.0) / 2.0
+        SEC_HD = (sec_d / 12.0) / 2.0
+        count_per_side = secondary_spec.get("count_per_side", 2)
+
+        for i in range(qty):
+            px1, py1 = post_xy[i]
+            px2, py2 = post_xy[(i+1) % qty]
+            bx = px2 - px1
+            by = py2 - py1
+            blen = math.sqrt(bx*bx + by*by)
+            if blen < 1e-9:
+                continue
+            ux = bx / blen
+            uy = by / blen
+
+            # Inward normal of beam segment (pointing toward center)
+            in_x = -uy
+            in_y = ux
+
+            # Slope of the roof plane perpendicular to the beam
+            mx = (px1 + px2) / 2.0
+            my = (py1 + py2) / 2.0
+            apothem = math.sqrt(mx*mx + my*my)
+            
+            roof_rise = structure["geometry"].get("roof_rise", {}).get("rise_ft", 1.6)
+            slope_perp = roof_rise / (apothem - hub_r * math.cos(math.pi / qty))
+
+            for j in range(count_per_side):
+                fraction = (j + 1.0) / (count_per_side + 1.0)
+                tag_suffix = chr(ord('a') + j)
+                sx = px1 + bx * fraction
+                sy = py1 + by * fraction
+
+                if fraction < 0.5:
+                    px_corner, py_corner = px1, py1
+                    px_apex, py_apex = rafter_apex[i][0], rafter_apex[i][1]
+                    hip_id = i + 1
+                else:
+                    px_corner, py_corner = px2, py2
+                    px_apex, py_apex = rafter_apex[(i+1)%qty][0], rafter_apex[(i+1)%qty][1]
+                    hip_id = ((i + 1) % qty) + 1
+
+                dx_hip = px_apex - px_corner
+                dy_hip = py_apex - py_corner
+
+                det = -dx_hip * in_y + in_x * dy_hip
+                if abs(det) > 1e-6:
+                    s_val = (-(sx - px_corner) * in_y + in_x * (sy - py_corner)) / det
+                    t_val = (dx_hip * (sy - py_corner) - dy_hip * (sx - px_corner)) / det
+
+                    int_x = px_corner + dx_hip * s_val
+                    int_y = py_corner + dy_hip * s_val
+                    int_z = Z_BEAM_TOP + t_val * slope_perp
+                    pt_int = (int_x, int_y, int_z)
+
+                    p0_start = (
+                        sx - in_x * overhang_ft,
+                        sy - in_y * overhang_ft,
+                        Z_BEAM_TOP - slope_perp * overhang_ft
+                    )
+
+                    theta_perp = math.atan(slope_perp)
+                    dy_perp = SEC_HD / math.cos(theta_perp)
+
+                    p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_perp)
+                    pt_int_shifted = (pt_int[0], pt_int[1], pt_int[2] + dy_perp)
+
+                    axis = vsub(pt_int_shifted, p0_start_shifted)
+                    axis_len = vlen(axis)
+
+                    # Local coordinate frame
+                    x_axis = vnorm(axis)
+                    y_axis = vnorm(vcross(UP, x_axis))
+                    z_axis = vnorm(vcross(x_axis, y_axis))
+
+                    # Cheek cut normal on the side of the hip rafter
+                    len_hip = math.sqrt(dx_hip**2 + dy_hip**2)
+                    N_hip_side = (-dy_hip / len_hip, dx_hip / len_hip, 0.0)
+
+                    miter_cheek, bevel_cheek = get_compound_cuts(N_hip_side, x_axis, y_axis, z_axis)
+
+                    # Birdsmouth Seat & Plumb Cuts for Jack Rafter
+                    # Plumb cut normal is along in_x, in_y, 0.0
+                    plumb_cut_plane_pt = (sx, sy, Z_BEAM_TOP + dy_perp)
+                    seat_cut_plane_pt = (sx, sy, Z_BEAM_TOP - seat_depth_ft + dy_perp)
+
+                    miter_seat, bevel_seat = get_compound_cuts(UP, x_axis, y_axis, z_axis)
+                    miter_plumb, bevel_plumb = get_compound_cuts((in_x, in_y, 0.0), x_axis, y_axis, z_axis)
+
+                    bid = f"Jack{i+1}{tag_suffix}"
+                    cut_list.append({
+                        "id": bid,
+                        "role": "rafter_secondary",
+                        "nominal_size": secondary_spec["nominal_size"],
+                        "actual_width_in": sec_w,
+                        "actual_depth_in": sec_d,
+                        "axis": {
+                            "start": [round(p0_start_shifted[0], 4), round(p0_start_shifted[1], 4), round(p0_start_shifted[2], 3)],
+                            "end": [round(pt_int_shifted[0], 4), round(pt_int_shifted[1], 4), round(pt_int_shifted[2], 3)]
+                        },
+                        "stock": {
+                            "cut_length_ft": round(axis_len, 3),
+                            "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)
+                        },
+                        "cuts": [
+                            {
+                                "cut_id": f"{bid}-END-HIP",
+                                "end": "end",
+                                "type": "compound_miter",
+                                "mates_to": f"rafter_primary_R{hip_id}",
+                                "plane": {
+                                    "point": [round(pt_int_shifted[0], 4), round(pt_int_shifted[1], 4), round(pt_int_shifted[2], 3)],
+                                    "normal": [round(N_hip_side[0], 4), round(N_hip_side[1], 4), 0.0]
+                                },
+                                "angles": {"miter_deg": abs(miter_cheek), "bevel_deg": abs(bevel_cheek)}
+                            },
+                            {
+                                "cut_id": f"{bid}-SEAT-BIRDSMOUTH",
+                                "end": "start",
+                                "type": "birdsmouth",
+                                "mates_to": f"beam_top_B{i+1}",
+                                "seat_depth_ft": round(seat_depth_ft, 4),
+                                "subcuts": [
+                                    {
+                                        "name": "plumb_cut",
+                                        "plane": {
+                                            "point": [round(plumb_cut_plane_pt[0], 4), round(plumb_cut_plane_pt[1], 4), round(plumb_cut_plane_pt[2], 3)],
+                                            "normal": [round(in_x, 4), round(in_y, 4), 0.0]
+                                        },
+                                        "angles": {"miter_deg": abs(miter_plumb), "bevel_deg": abs(bevel_plumb)}
+                                    },
+                                    {
+                                        "name": "seat_cut",
+                                        "plane": {
+                                            "point": [round(seat_cut_plane_pt[0], 4), round(seat_cut_plane_pt[1], 4), round(seat_cut_plane_pt[2], 3)],
+                                            "normal": [0.0, 0.0, 1.0]
+                                        },
+                                        "angles": {"miter_deg": abs(miter_seat), "bevel_deg": abs(bevel_seat)}
+                                    }
+                                ]
+                            },
+                            {
+                                "cut_id": f"{bid}-TAIL",
+                                "end": "start",
+                                "type": "plumb_tail",
+                                "style": "square_cut",
+                                "angles": {"miter_deg": 0.0, "bevel_deg": 0.0}
+                            }
+                        ]
+                    })
+
+    # ── 6. Collar Purlins ───────────────────────────────────────────────────
+    purlins_spec = structure["members"].get("purlins", {})
+    if purlins_spec.get("enabled", False):
+        pur_w = purlins_spec.get("actual_width_in", 3.5)
+        pur_d = purlins_spec.get("actual_depth_in", 3.5)
+        PUR_HW = (pur_w / 12.0) / 2.0
+        PUR_HD = (pur_d / 12.0) / 2.0
+        s_purlin = purlins_spec.get("height_fraction", 0.55)
+        Z_PURLIN = Z_BEAM_TOP + (Z_APEX - Z_BEAM_TOP) * s_purlin
+
+        px_ex, py_ex = post_xy[0]
+        len_xy_ex = math.sqrt(px_ex**2 + py_ex**2)
+        slope_ex = (Z_APEX - Z_BEAM_TOP) / (len_xy_ex - hub_r)
+        dy_vertical = RAFTER_HD / math.cos(math.atan(slope_ex))
+
+        purlin_pts = []
+        for i in range(qty):
+            px, py = post_xy[i]
+            ax, ay, az = rafter_apex[i]
+            pt = (
+                px + (ax - px) * s_purlin,
+                py + (ay - py) * s_purlin,
+                Z_PURLIN + dy_vertical
+            )
+            purlin_pts.append(pt)
+
+        for i in range(qty):
+            pt1 = purlin_pts[i]
+            pt2 = purlin_pts[(i+1) % qty]
+
+            axis = vsub(pt2, pt1)
+            axis_len = vlen(axis)
+
+            # Local coordinate frame
+            x_axis = vnorm(axis)
+            y_axis = vnorm(vcross(UP, x_axis))
+            z_axis = vnorm(vcross(x_axis, y_axis))
+
+            # Retrieve cheek planes from hip rafters
+            px1, py1 = post_xy[i]
+            ax1, ay1 = rafter_apex[i][0], rafter_apex[i][1]
+            dx_hip1 = ax1 - px1
+            dy_hip1 = ay1 - py1
+            len_hip1 = math.sqrt(dx_hip1**2 + dy_hip1**2)
+            N_hip1 = (-dy_hip1 / len_hip1, dx_hip1 / len_hip1, 0.0)
+
+            px2, py2 = post_xy[(i+1) % qty]
+            ax2, ay2 = rafter_apex[(i+1)%qty][0], rafter_apex[(i+1)%qty][1]
+            dx_hip2 = ax2 - px2
+            dy_hip2 = ay2 - py2
+            len_hip2 = math.sqrt(dx_hip2**2 + dy_hip2**2)
+            N_hip2 = (-dy_hip2 / len_hip2, dx_hip2 / len_hip2, 0.0)
+
+            miter_start, bevel_start = get_compound_cuts(N_hip1, x_axis, y_axis, z_axis)
+            miter_end, bevel_end = get_compound_cuts(N_hip2, x_axis, y_axis, z_axis)
+
+            bid = f"Purlin{i+1}"
+            cut_list.append({
+                "id": bid,
+                "role": "purlin",
+                "nominal_size": purlins_spec["nominal_size"],
+                "actual_width_in": pur_w,
+                "actual_depth_in": pur_d,
+                "axis": {
+                    "start": [round(pt1[0], 4), round(pt1[1], 4), round(pt1[2], 3)],
+                    "end": [round(pt2[0], 4), round(pt2[1], 4), round(pt2[2], 3)]
+                },
+                "stock": {
+                    "cut_length_ft": round(axis_len, 3),
+                    "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)
+                },
+                "cuts": [
+                    {
+                        "cut_id": f"{bid}-START-HIP",
+                        "end": "start",
+                        "type": "compound_miter",
+                        "mates_to": f"rafter_primary_R{i+1}",
+                        "plane": {
+                            "point": [round(pt1[0], 4), round(pt1[1], 4), round(pt1[2], 3)],
+                            "normal": [round(N_hip1[0], 4), round(N_hip1[1], 4), 0.0]
+                        },
+                        "angles": {"miter_deg": abs(miter_start), "bevel_deg": abs(bevel_start)}
+                    },
+                    {
+                        "cut_id": f"{bid}-END-HIP",
+                        "end": "end",
+                        "type": "compound_miter",
+                        "mates_to": f"rafter_primary_R{((i+1)%qty)+1}",
+                        "plane": {
+                            "point": [round(pt2[0], 4), round(pt2[1], 4), round(pt2[2], 3)],
+                            "normal": [round(N_hip2[0], 4), round(N_hip2[1], 4), 0.0]
+                        },
+                        "angles": {"miter_deg": abs(miter_end), "bevel_deg": abs(bevel_end)}
+                    }
+                ]
+            })
+
     # Compile the final cut list document
+    num_posts = qty
+    num_beams = qty
+    num_primary_rafters = qty
+    num_secondary_rafters = len([m for m in cut_list if m["role"] == "rafter_secondary"])
+    num_purlins = len([m for m in cut_list if m["role"] == "purlin"])
+    num_braces = len(endpoints) if bracing_spec.get("enabled") else 0
+
     out_payload = {
         "schema": "garden-structure-designer/fabrication-cut-list/1.0",
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -435,17 +695,19 @@ def main() -> None:
         "members": cut_list,
         "summary": {
             "counts": {
-                "posts": qty,
-                "beams": qty,
-                "rafters_primary": qty,
-                "braces": len(endpoints) if bracing_spec.get("enabled") else 0
+                "posts": num_posts,
+                "beams": num_beams,
+                "rafters_primary": num_primary_rafters,
+                "rafters_secondary": num_secondary_rafters,
+                "purlins": num_purlins,
+                "braces": num_braces
             },
             "cut_counts": {
-                "post_crosscut": qty * 2,
-                "beam_miter": qty * 2,
-                "compound_miter": qty,
-                "birdsmouth": qty,
-                "brace_miter": (len(endpoints) * 2) if bracing_spec.get("enabled") else 0
+                "post_crosscut": num_posts * 2,
+                "beam_miter": num_beams * 2,
+                "compound_miter": num_primary_rafters + num_secondary_rafters + (num_purlins * 2),
+                "birdsmouth": num_primary_rafters + num_secondary_rafters,
+                "brace_miter": num_braces * 2
             }
         }
     }
