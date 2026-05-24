@@ -101,17 +101,43 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
     palette = _get_palette(structure, is_blueprint)
     coords = structure["geometry"]["svg_coordinates"]
     scene = build_structure_scene(structure, is_blueprint=is_blueprint)
+
+    # Renderer invariant: scene member counts must match resolved_model — catch bugs immediately
+    _expected_posts = structure["layout"]["post_count"]
+    _actual_posts = len([s for s in scene.solids if s.role == "post"])
+    assert _actual_posts == _expected_posts, \
+        f"RENDERER BUG: scene has {_actual_posts} post(s) but layout.post_count={_expected_posts}"
+    _rm_members = structure.get("geometry", {}).get("joints", {}).get("resolved_model", {}).get("members", [])
+    if _rm_members:
+        from collections import Counter as _Counter
+        _rm_counts = _Counter(m["role"] for m in _rm_members)
+        _scene_counts = _Counter(s.role for s in scene.solids)
+        for _role, _expected in _rm_counts.items():
+            _actual = _scene_counts.get(_role, 0)
+            assert _actual == _expected, \
+                f"RENDERER BUG: scene has {_actual} {_role}(s) but resolved_model has {_expected}"
+
+    # Data-driven visibility — reads from structure.json, never hardcoded
+    _vis = structure.get("presentation", {}).get("visibility_rules", {})
+    _suppress_purlins = not _vis.get("show_purlins", True)
+    _suppress_jacks = not _vis.get("show_jack_rafters", True)
+    if is_blueprint:
+        _suppress_purlins = False
+        _suppress_jacks = False
+
+    def _should_suppress(solid) -> bool:
+        if solid.role == "purlin" and _suppress_purlins:
+            return True
+        if solid.role == "rafter" and solid.tag.startswith("J") and _suppress_jacks:
+            return True
+        return False
+
     scale = coords["scale_px_per_ft"]; cx, cy = coords["width_px"] / 2, coords["grade_y"] if "elevation" in view_type else coords["height_px"] / 2
     cam = vnorm((0,0,1) if "plan" in view_type else (0,-1,0) if "elevation" in view_type else (1,1,1))
-    
-    def _suppress_in_view(role: str) -> bool:
-        """Returns True if this member role should be hidden in simplified presentation views."""
-        in_presentation = ("perspective" in filename or "drawing" in filename and "plan" not in filename)
-        return in_presentation and role == "purlin"
 
     face_entries = []
     for solid in scene.solids:
-        if _suppress_in_view(solid.role): continue
+        if _should_suppress(solid): continue
         for face in solid.faces:
             if solid.role != "footing" and vdot(face.normal, cam) < -0.1: continue # Backface cull
             c = vcent(face.verts); depth = vdot(c, cam)
@@ -150,7 +176,7 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
     rendered_ids = set(); label_svgs = []; placed_labels: list[tuple[float, float]] = []
     for solid in scene.solids:
         if solid.tag in rendered_ids or solid.role == "footing": continue
-        if _suppress_in_view(solid.role): continue
+        if _should_suppress(solid): continue
         style = get_label_style(solid.role, view_type)
         mid = vcent([solid.p0, solid.p1]); lx, ly = proj_func(mid[0], mid[1], mid[2], scale, cx, cy)
         if solid.role == "beam": ly -= 15
