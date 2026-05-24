@@ -3,7 +3,7 @@ import pytest
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-from structure_io import (
+from structure_io import (  # type: ignore[import]
     load_structure, save_structure, seal_section,
     assert_not_sealed, compute_source_hash
 )

@@ -4,6 +4,8 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
+from geometry_engine import compute_from_structure  # type: ignore[import]
+
 STRUCTURE_SEED = {
     "meta": {
         "schema_version": "2.0", "lifecycle": "ENGINEERED",
@@ -54,7 +56,6 @@ STRUCTURE_SEED = {
 
 def test_regression_hex_4_12(tmp_path):
     """Regression anchor: hex 4:12 must produce exact canonical values."""
-    from geometry_engine import compute_from_structure
     p = tmp_path / "structure.json"
     p.write_text(json.dumps(STRUCTURE_SEED))
     compute_from_structure(str(p))
@@ -66,7 +67,6 @@ def test_regression_hex_4_12(tmp_path):
     assert geo["total_height"]["total_height_ft"] == 11.045
 
 def test_geometry_section_sealed_after_compute(tmp_path):
-    from geometry_engine import compute_from_structure
     p = tmp_path / "structure.json"
     p.write_text(json.dumps(STRUCTURE_SEED))
     compute_from_structure(str(p))
@@ -74,7 +74,6 @@ def test_geometry_section_sealed_after_compute(tmp_path):
     assert data["geometry"]["_sealed"] is True
 
 def test_lifecycle_set_to_geometry_sealed(tmp_path):
-    from geometry_engine import compute_from_structure
     p = tmp_path / "structure.json"
     p.write_text(json.dumps(STRUCTURE_SEED))
     compute_from_structure(str(p))
@@ -82,7 +81,6 @@ def test_lifecycle_set_to_geometry_sealed(tmp_path):
     assert data["meta"]["lifecycle"] == "GEOMETRY_SEALED"
 
 def test_hub_radius_gte_min(tmp_path):
-    from geometry_engine import compute_from_structure
     p = tmp_path / "structure.json"
     p.write_text(json.dumps(STRUCTURE_SEED))
     compute_from_structure(str(p))
@@ -93,7 +91,6 @@ def test_hub_radius_gte_min(tmp_path):
 def test_hub_radius_formula_gte_cross_section(tmp_path):
     """hub_r must satisfy both: >= radius_min_ft AND >= rafter cross-section (in feet).
     Uses raw inch inputs to avoid tautology with the formula itself."""
-    from geometry_engine import compute_from_structure
     p = tmp_path / "structure.json"
     p.write_text(json.dumps(STRUCTURE_SEED))
     compute_from_structure(str(p))
@@ -107,7 +104,6 @@ def test_hub_radius_formula_gte_cross_section(tmp_path):
 def test_rafter_count_invariant_enforced(tmp_path):
     """rafter count != post count must produce a warning and exit 1."""
     import copy
-    from geometry_engine import compute_from_structure
     seed = copy.deepcopy(STRUCTURE_SEED)
     seed["roof"]["primary_rafters"]["count"] = 5  # mismatch: 5 != 6 posts
     p = tmp_path / "structure.json"
@@ -119,7 +115,6 @@ def test_rafter_count_invariant_enforced(tmp_path):
 
 def test_compute_fails_on_already_sealed_geometry(tmp_path):
     import copy
-    from geometry_engine import compute_from_structure
     seed = copy.deepcopy(STRUCTURE_SEED)
     seed["geometry"]["_sealed"] = True
     p = tmp_path / "structure.json"
