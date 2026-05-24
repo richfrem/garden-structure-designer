@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "structure",
+  "type": "object",
+  "required": ["meta", "intent", "structure", "layout"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["schema_version", "lifecycle", "source_hash"],
+      "properties": {
+        "schema_version": { "type": "string" },
+        "lifecycle": {
+          "type": "string",
+          "enum": ["INTENT", "ENGINEERED", "GEOMETRY_SEALED", "CAD_SEALED", "RENDERED"]
+        },
+        "source_hash": { "type": "string" }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "required": ["jurisdiction"],
+      "properties": {
+        "jurisdiction": { "type": "string" },
+        "material_preference": { "type": "string" },
+        "joinery_style": { "type": "string" }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "required": ["type", "shape", "sides"],
+      "properties": {
+        "type": { "type": "string" },
+        "shape": { "type": "string" },
+        "sides": { "type": "integer", "minimum": 3 }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "required": ["post_count", "inscribed_radius_ft"],
+      "properties": {
+        "post_count": { "type": "integer", "minimum": 3 },
+        "inscribed_radius_ft": { "type": "number", "exclusiveMinimum": 0 },
+        "post_spacing_ft": { "type": "number" }
+      }
+    },
+    "members": {
+      "type": "object",
+      "required": ["posts", "beams"],
+      "properties": {
+        "posts": {
+          "type": "object",
+          "required": ["nominal_size", "actual_width_in", "actual_depth_in", "cut_length_ft"],
+          "properties": {
+            "nominal_size": { "type": "string" },
+            "actual_width_in": { "type": "number", "exclusiveMinimum": 0 },
+            "actual_depth_in": { "type": "number", "exclusiveMinimum": 0 },
+            "cut_length_ft": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        },
+        "beams": {
+          "type": "object",
+          "required": ["nominal_size", "actual_width_in", "actual_depth_in", "cut_length_ft"],
+          "properties": {
+            "nominal_size": { "type": "string" },
+            "actual_width_in": { "type": "number", "exclusiveMinimum": 0 },
+            "actual_depth_in": { "type": "number", "exclusiveMinimum": 0 },
+            "cut_length_ft": { "type": "number" }
+          }
+        }
+      }
+    },
+    "roof": {
+      "type": "object",
+      "required": ["type", "pitch", "primary_rafters"],
+      "properties": {
+        "type": { "type": "string" },
+        "pitch": { "type": "string", "pattern": "^\\d+:\\d+$" },
+        "pitch_defaulted": { "type": "boolean" },
+        "primary_rafters": {
+          "type": "object",
+          "required": ["count", "nominal_size", "actual_width_in", "actual_depth_in", "overhang_ft"],
+          "properties": {
+            "count": { "type": "integer", "minimum": 3 },
+            "nominal_size": { "type": "string" },
+            "actual_width_in": { "type": "number", "exclusiveMinimum": 0 },
+            "actual_depth_in": { "type": "number", "exclusiveMinimum": 0 },
+            "overhang_ft": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "hub": {
+      "type": "object",
+      "required": ["type", "radius_min_ft"],
+      "properties": {
+        "type": { "type": "string" },
+        "radius_ft": {
+          "oneOf": [
+            { "type": "number", "exclusiveMinimum": 0 },
+            { "type": "string", "const": "auto" }
+          ]
+        },
+        "radius_min_ft": { "type": "number", "exclusiveMinimum": 0 },
+        "height_ratio_to_rafter": { "type": "number", "exclusiveMinimum": 0 },
+        "clearance_ft": { "type": "number", "minimum": 0 }
+      }
+    },
+    "bracing": {
+      "type": "object",
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "layout": { "type": "string" },
+        "brace": {
+          "type": "object",
+          "required": ["actual_width_in", "actual_depth_in", "length_ft", "angle_deg", "count_per_post"],
+          "properties": {
+            "nominal_size": { "type": "string" },
+            "actual_width_in": { "type": "number", "exclusiveMinimum": 0 },
+            "actual_depth_in": { "type": "number", "exclusiveMinimum": 0 },
+            "length_ft": { "type": "number", "exclusiveMinimum": 0 },
+            "angle_deg": { "type": "number", "minimum": 0, "maximum": 90 },
+            "count_per_post": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    },
+    "footings": {
+      "type": "object",
+      "required": ["type", "diameter_in", "depth_in"],
+      "properties": {
+        "type": { "type": "string" },
+        "diameter_in": { "type": "number", "exclusiveMinimum": 0 },
+        "depth_in": { "type": "number", "exclusiveMinimum": 0 },
+        "concrete_grade": { "type": "string" }
+      }
+    },
+    "joinery": {
+      "type": "object",
+      "properties": {
+        "beam_seat_style": { "type": "string" },
+        "rafter_tail": { "type": "string" },
+        "rafter_seat_style": { "type": "string" }
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "properties": {
+        "rafter_count_equals_post_count": { "type": "boolean" },
+        "post_top_equals_beam_bottom": { "type": "boolean" },
+        "no_rafter_inside_hub_radius": { "type": "boolean" },
+        "brace_must_connect_to_surfaces": { "type": "boolean" },
+        "no_solid_intersections": { "type": "boolean" },
+        "member_counts_match_sections": { "type": "boolean" },
+        "no_zero_length_members": { "type": "boolean" },
+        "presentation_primary_counts_match": { "type": "boolean" }
+      }
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "view_mode": { "type": "string" },
+        "roof_style": { "type": "string" },
+        "visibility_rules": { "type": "object" },
+        "labeling": { "type": "object" },
+        "palette": { "type": "string" }
+      }
+    },
+    "code": { "type": "object", "additionalProperties": true },
+    "geometry": { "type": "object", "additionalProperties": true },
+    "cad": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}
