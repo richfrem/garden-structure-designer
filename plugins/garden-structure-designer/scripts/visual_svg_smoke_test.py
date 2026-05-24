@@ -640,42 +640,51 @@ def detect_spaghetti_hub(hub_density: int, sheet_key: str) -> typing.Optional[di
     return None
 
 
+
+
 def detect_brace_float(structure: dict[str, typing.Any]) -> typing.Optional[dict[str, str]]:
     """
     Returns a structured failure dict if brace geometry parameters are degenerate.
-    A zero-length or near-horizontal/vertical brace cannot make valid contact with the post face.
+    Checks resolved brace endpoints rather than raw input parameters.
     """
     bracing = structure.get("bracing", {})
     if not bracing.get("enabled"):
         return None
-    brace_s = bracing.get("brace", {})
-    # Accept either cutLength_in (legacy) or length_ft (current schema)
-    if "cutLength_in" in brace_s:
-        length_in = float(brace_s["cutLength_in"])
-    elif "length_ft" in brace_s:
-        length_in = float(brace_s["length_ft"]) * 12.0
-    else:
+    joints = structure.get("geometry", {}).get("joints", {})
+    braces = joints.get("braces", {})
+    if not braces:
+        return None
+    endpoints = braces.get("endpoints", [])
+    if not endpoints:
         return {
             "code": "BRACE_FLOAT",
             "severity": "FAIL",
-            "detail": "bracing.brace has neither cutLength_in nor length_ft — brace length unspecified",
+            "detail": "bracing is enabled but geometry.joints.braces.endpoints is empty",
         }
-    angle = float(brace_s.get("angle_deg", 45.0))
-    if length_in <= 0:
-        return {
-            "code": "BRACE_FLOAT",
-            "severity": "FAIL",
-            "detail": f"brace length={length_in:.3f} in — zero-length brace cannot contact post face",
-        }
-    if not (5.0 <= angle <= 85.0):
-        return {
-            "code": "BRACE_FLOAT",
-            "severity": "FAIL",
-            "detail": (
-                f"brace.angle_deg={angle} is outside [5°, 85°] — "
-                "degenerate brace geometry will produce floating or overlapping joints"
-            ),
-        }
+    for brace in endpoints:
+        p0 = brace["start"]
+        p1 = brace["end"]
+        dx = p1[0] - p0[0]
+        dy = p1[1] - p0[1]
+        dz = p1[2] - p0[2]
+        length_in = math.sqrt(dx*dx + dy*dy + dz*dz) * 12.0
+        run = math.sqrt(dx*dx + dy*dy)
+        if run < 1e-6:
+            angle = 90.0
+        else:
+            angle = math.degrees(math.atan2(abs(dz), run))
+        if length_in <= 1e-3:
+            return {
+                "code": "BRACE_FLOAT",
+                "severity": "FAIL",
+                "detail": f"brace {brace['id']} length={length_in:.3f} in — zero-length brace cannot contact post face",
+            }
+        if not (5.0 <= angle <= 85.0):
+            return {
+                "code": "BRACE_FLOAT",
+                "severity": "FAIL",
+                "detail": f"brace {brace['id']} angle_deg={angle:.2f} is outside [5°, 85°]",
+            }
     return None
 
 

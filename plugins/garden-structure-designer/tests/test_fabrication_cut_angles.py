@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
+import sys
 import json
 import math
 from pathlib import Path
 import pytest
-from fabrication_builder import vsub, vdot, vlen
+sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+from geometry_engine import vsub, vdot, vlen
 
 def test_fabrication_cut_list_file_exists():
     """Verify that the cut list was compiled and exists."""

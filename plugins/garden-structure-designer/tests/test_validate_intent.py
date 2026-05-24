@@ -229,53 +229,20 @@ def test_cad_precision_valid_value_passes():
 # 11. Bracing enabled, missing brace.length_ft → FAIL
 # ---------------------------------------------------------------------------
 
-def test_bracing_enabled_missing_length_fails():
+def test_bracing_enabled_missing_constraints_fails():
     s = copy.deepcopy(VALID_STRUCTURE)
-    s["bracing"] = {"enabled": True, "brace": {"angle_deg": 45.0}}
+    s["bracing"] = {"enabled": True, "brace": {"nominal_size": "4x4", "actual_width_in": 3.5, "actual_depth_in": 3.5, "count_per_post": 2}}
     errors = validate_intent(s)
-    assert any("bracing.brace.length_ft" in e for e in errors), f"Expected brace length error, got: {errors}"
-
-
-def test_bracing_enabled_zero_length_fails():
-    s = copy.deepcopy(VALID_STRUCTURE)
-    s["bracing"] = {"enabled": True, "brace": {"length_ft": 0.0, "angle_deg": 45.0}}
-    errors = validate_intent(s)
-    assert any("bracing.brace.length_ft" in e for e in errors)
-    assert any("OUT_OF_RANGE" in e for e in errors)
+    assert any("bracing.brace.constraints.start_surface" in e for e in errors), f"Expected start_surface error, got: {errors}"
+    assert any("bracing.brace.constraints.end_surface" in e for e in errors), f"Expected end_surface error, got: {errors}"
 
 
 def test_bracing_enabled_valid_brace_passes():
     s = copy.deepcopy(VALID_STRUCTURE)
-    s["bracing"] = {"enabled": True, "brace": {"length_ft": 2.5, "angle_deg": 45.0}}
+    s["bracing"] = {"enabled": True, "brace": {"nominal_size": "4x4", "actual_width_in": 3.5, "actual_depth_in": 3.5, "count_per_post": 2,
+                                               "constraints": {"start_surface": "post_face", "end_surface": "beam_soffit"}}}
     errors = validate_intent(s)
     assert not any("bracing.brace" in e for e in errors), f"Valid brace should pass, got: {errors}"
-
-
-# ---------------------------------------------------------------------------
-# 12. Bracing enabled, brace.angle_deg out of [5, 85] → FAIL
-# ---------------------------------------------------------------------------
-
-def test_bracing_enabled_angle_too_low_fails():
-    s = copy.deepcopy(VALID_STRUCTURE)
-    s["bracing"] = {"enabled": True, "brace": {"length_ft": 2.5, "angle_deg": 3.0}}
-    errors = validate_intent(s)
-    assert any("bracing.brace.angle_deg" in e for e in errors), f"Expected brace angle error, got: {errors}"
-    assert any("OUT_OF_RANGE" in e for e in errors)
-
-
-def test_bracing_enabled_angle_too_high_fails():
-    s = copy.deepcopy(VALID_STRUCTURE)
-    s["bracing"] = {"enabled": True, "brace": {"length_ft": 2.5, "angle_deg": 90.0}}
-    errors = validate_intent(s)
-    assert any("bracing.brace.angle_deg" in e for e in errors)
-
-
-def test_bracing_enabled_angle_boundary_passes():
-    for angle in (5.0, 45.0, 85.0):
-        s = copy.deepcopy(VALID_STRUCTURE)
-        s["bracing"] = {"enabled": True, "brace": {"length_ft": 2.5, "angle_deg": angle}}
-        errors = validate_intent(s)
-        assert not any("bracing.brace.angle_deg" in e for e in errors), f"angle={angle} should pass, got: {errors}"
 
 
 # ---------------------------------------------------------------------------

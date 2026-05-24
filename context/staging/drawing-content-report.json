@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/drawing-content-report/1.0",
-  "generated": "2026-05-24T19:29:37.526119+00:00",
+  "generated": "2026-05-24T20:49:56.328102+00:00",
   "status": "PASS",
   "files": [
     {
@@ -25,91 +25,91 @@
       "file": "outputs/blueprint-elevation.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 256,
-      "semantic_total": 56,
+      "total_elements": 237,
+      "semantic_total": 50,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
         "rafter": 18,
         "brace": 12,
         "footing": 6,
-        "dimension": 7,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 50
+      "text_label_count": 52
     },
     {
       "file": "outputs/blueprint-isometric.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 185,
-      "semantic_total": 59,
+      "total_elements": 188,
+      "semantic_total": 50,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
         "rafter": 18,
-        "brace": 7,
+        "brace": 12,
         "footing": 6,
-        "dimension": 15,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 56
+      "text_label_count": 53
     },
     {
       "file": "outputs/blueprint-plan.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 236,
-      "semantic_total": 53,
+      "total_elements": 227,
+      "semantic_total": 50,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
         "rafter": 18,
         "brace": 12,
         "footing": 6,
-        "dimension": 4,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 28
+      "text_label_count": 52
     },
     {
       "file": "outputs/drawing-elevation-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 265,
-      "semantic_total": 56,
+      "total_elements": 179,
+      "semantic_total": 38,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 18,
+        "rafter": 6,
         "brace": 12,
         "footing": 6,
-        "dimension": 7,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 50
+      "text_label_count": 52
     },
     {
       "file": "outputs/drawing-isometric-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 180,
-      "semantic_total": 59,
+      "total_elements": 144,
+      "semantic_total": 38,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 18,
-        "brace": 7,
+        "rafter": 6,
+        "brace": 12,
         "footing": 6,
-        "dimension": 15,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 56
+      "text_label_count": 53
     },
     {
       "file": "outputs/drawing-perspective-view.svg",
@@ -133,19 +133,19 @@
       "file": "outputs/drawing-plan-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 231,
-      "semantic_total": 53,
+      "total_elements": 227,
+      "semantic_total": 50,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
         "rafter": 18,
         "brace": 12,
         "footing": 6,
-        "dimension": 4,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 28
+      "text_label_count": 52
     }
   ]
 }

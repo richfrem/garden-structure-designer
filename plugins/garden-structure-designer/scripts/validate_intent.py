@@ -113,8 +113,8 @@ def validate_intent(structure: dict) -> list[str]:
     # Bracing: additional required fields when enabled
     if structure.get("bracing", {}).get("enabled"):
         for field, etype, valid, desc in [
-            ("bracing.brace.length_ft",  (int, float), lambda v: 0 < v <= 10,     "feet, range (0, 10]"),
-            ("bracing.brace.angle_deg",  (int, float), lambda v: 5 <= v <= 85,    "degrees, range [5, 85]"),
+            ("bracing.brace.constraints.start_surface", str, lambda v: len(v) > 0, "non-empty string"),
+            ("bracing.brace.constraints.end_surface",   str, lambda v: len(v) > 0, "non-empty string"),
         ]:
             err = _check(structure, field, etype, valid, desc)
             if err:

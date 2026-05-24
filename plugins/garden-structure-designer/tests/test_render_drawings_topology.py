@@ -53,8 +53,15 @@ _STRUCTURE: dict = {
             "enabled": True,
         },
     },
-    "hub": {"radius_min_ft": 0.6},
+    "hub": {"radius_min_ft": 0.6, "type": "polygonal"},
     "foundation": {"caisson_diameter_in": 12.0, "caisson_depth_in": 24.0},
+    "bracing": {
+        "enabled": False,
+        "brace": {
+            "actual_width_in": 3.5,
+            "actual_depth_in": 3.5
+        }
+    },
     "geometry": {
         "_sealed": True,
         "compound_cut": {"miter_deg": 28.71, "bevel_deg": 9.10,
@@ -110,6 +117,15 @@ _STRUCTURE: dict = {
 
 
 def test_svg_generation(tmp_path):
+    from geometry_engine import compute_joints
+    cuts = _STRUCTURE["geometry"]["compound_cut"]
+    rl = _STRUCTURE["geometry"]["rafter"]
+    rise = _STRUCTURE["geometry"]["roof_rise"]
+    height = _STRUCTURE["geometry"]["total_height"]
+    hub_r = _STRUCTURE["geometry"]["hub_radius_ft"]
+    svg_coords = _STRUCTURE["geometry"]["svg_coordinates"]
+    _STRUCTURE["geometry"]["joints"] = compute_joints(_STRUCTURE, cuts, rl, rise, height, hub_r, svg_coords)
+
     out = tmp_path / "plan.svg"
     generate_svg("drawing-plan-view.svg", _STRUCTURE, str(out))
     content = out.read_text()

@@ -2334,6 +2334,264 @@
       "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/visual_svg_smoke_test.py",
       "strategy": "symlink",
       "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/assembly_guide_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/assembly_guide_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/build_payload.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/build_payload.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cross_artifact_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/cross_artifact_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cut_list_engine.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/cut_list_engine.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/embed_svgs.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/embed_svgs.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/failure_to_test.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/failure_to_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/format_headers.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/format_headers.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/geometry_engine.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/geometry_engine.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/load_applicable_lessons.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/load_applicable_lessons.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/manifest_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/manifest_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/package_consistency_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/package_consistency_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/render_drawings.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/render_drawings.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/repair_orchestrator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/repair_orchestrator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/schema_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/schema_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structural_physics_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/structural_physics_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/svg_templates.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/svg_templates.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/svg_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/svg_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/bracing-model.schema.json",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/building-code.schema.json",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/cut-list.schema.json",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/design-spec.schema.json",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/geometry-calculations.schema.json",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/joinery-model.schema.json",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/manifest.schema.json",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/structural-model.schema.json",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/evidence_registry.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/evidence_registry.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend_build123d.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/cad_backend_build123d.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/cad_backend.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/run_obstacle_triage.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/lesson_curator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/lesson_curator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/update_design_run_summary.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/update_design_run_summary.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/error_classifier.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/error_classifier.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_scene.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/cad_scene.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/learning_backup.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/learning_backup.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/generate_quality_dashboard.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/generate_quality_dashboard.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_drawing_red_team.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/run_drawing_red_team.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_history.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/run_history.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/drawing_content_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/drawing_content_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/visual_svg_smoke_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_language_translator.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/cad_language_translator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/cad-constraints.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/cad-constraints.schema.json",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/schemas/structure.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/structure.schema.json",
+      "strategy": "symlink",
+      "description": ""
     }
   ]
 }
