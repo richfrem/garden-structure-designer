@@ -94,186 +94,82 @@ def _b3d_box_between_with_up(
 def build_cad_model(model: dict, calcs: dict) -> b3d.Compound | None:
     """
     Build a full 3D CAD model containing all structural members using build123d.
+    Pure consumer of geometry.joints (Phase 0 Constraint Unification).
     """
     if not BUILD123D_AVAILABLE:
         print("[cad_backend_build123d] build123d is not installed/available.", file=sys.stderr)
         return None
 
     FT_TO_MM = 304.8
+    # Scene metadata for shared Z-planes
     scene = build_structure_scene(model, calcs)
     
-    qty = scene.qty
-    post_h = calcs.get("total_height", {}).get("post_ft", 8.33)
-    beam_d = calcs.get("total_height", {}).get("beam_depth_ft", 1.0)
+    geom = model.get("geometry") or calcs
+    joints = geom.get("joints", {})
+    zp = joints.get("z_planes", {})
     
-    posts_spec = model.get("members", {}).get("posts", {})
-    beams_spec = model.get("members", {}).get("beams", {})
-    braces_spec = model.get("members", {}).get("kneebraces", {})
-    rafters_spec = model.get("members", {}).get("rafters", {})
-    purlins_spec = model.get("members", {}).get("purlins", {})
-    foundation_spec = model.get("foundation", {})
-
-    POST_HW   = (posts_spec.get("width_in", 5.5) / 12.0) / 2.0
-    POST_HD   = (posts_spec.get("depth_in", 5.5) / 12.0) / 2.0
-    BEAM_HW   = (beams_spec.get("width_in", 5.5) / 12.0) / 2.0
-    BEAM_HD   = beam_d / 2.0
-    RAFTER_HW = (rafters_spec.get("width_in", 3.5) / 12.0) / 2.0
-    RAFTER_HD = (rafters_spec.get("depth_in", 5.5) / 12.0) / 2.0
-    BRACE_HW  = (braces_spec.get("width_in", 3.5) / 12.0) / 2.0
-    BRACE_HD  = (braces_spec.get("depth_in", 3.5) / 12.0) / 2.0
-    PURLIN_HW = (purlins_spec.get("width_in", 3.5) / 12.0) / 2.0
-    PURLIN_HD = (purlins_spec.get("depth_in", 3.5) / 12.0) / 2.0
-    FOOTING_HW = (foundation_spec.get("caisson_diameter_in", 12.0) / 12.0) / 2.0
+    # Half-widths / Half-depths (Phase 4 proportions)
+    # We derive these from members spec
+    POST_HW = (model["members"]["posts"]["actual_width_in"] / 24.0)
+    POST_HD = (model["members"]["posts"]["actual_depth_in"] / 24.0)
+    BEAM_HW = (model["members"]["beams"]["actual_width_in"] / 24.0)
+    BEAM_HD = (model["members"]["beams"]["actual_depth_in"] / 24.0)
+    RAFTER_HW = (model["roof"]["primary_rafters"]["actual_width_in"] / 24.0)
+    RAFTER_HD = (model["roof"]["primary_rafters"]["actual_depth_in"] / 24.0)
+    BRACE_HW = (model["bracing"]["brace"]["actual_width_in"] / 24.0)
+    BRACE_HD = (model["bracing"]["brace"]["actual_depth_in"] / 24.0)
     
     UP = (0.0, 0.0, 1.0)
     solids = []
 
-    # 1. Concrete Footings
+    # 1. Footings
     for i, (px, py) in enumerate(scene.post_xy):
-        p0_footing = (px, py, scene.Z_GRADE - 1.5)
-        p1_footing = (px, py, scene.Z_GRADE + 0.33)
-        solid = _b3d_box_between_with_up(p0_footing, p1_footing, FOOTING_HW, FOOTING_HW, UP)
-        if solid:
-            solid.label = f"FT{i+1}"
-            solids.append(solid)
+        s = _b3d_box_between_with_up((px, py, scene.Z_GRADE - 1.5), (px, py, scene.Z_GRADE + 0.33), 0.5, 0.5, UP)
+        if s: s.label = f"FT{i+1}"; solids.append(s)
 
     # 2. Posts
     for i, (px, py) in enumerate(scene.post_xy):
-        p0_post = (px, py, scene.Z_GRADE)
-        p1_post = (px, py, scene.Z_POST_TOP)
-        solid = _b3d_box_between_with_up(p0_post, p1_post, POST_HW, POST_HD, UP)
-        if solid:
-            solid.label = f"P{i+1}"
-            solids.append(solid)
+        s = _b3d_box_between_with_up((px, py, scene.Z_GRADE), (px, py, scene.Z_POST_TOP), POST_HW, POST_HD, UP)
+        if s: s.label = f"P{i+1}"; solids.append(s)
 
     # 3. Beams
-    for i in range(qty):
-        px1, py1 = scene.post_xy[i]
-        px2, py2 = scene.post_xy[(i+1) % qty]
-        bz = scene.Z_POST_TOP + BEAM_HD
-        solid = _b3d_box_between_with_up((px1, py1, bz), (px2, py2, bz), BEAM_HW, BEAM_HD, UP)
-        if solid:
-            solid.label = f"B{i+1}"
-            solids.append(solid)
+    for i in range(scene.qty):
+        p1 = scene.post_xy[i]; p2 = scene.post_xy[(i+1)%scene.qty]
+        bz = zp["Z_BEAM_CENTER"]
+        s = _b3d_box_between_with_up((p1[0], p1[1], bz), (p2[0], p2[1], bz), BEAM_HW, BEAM_HD, UP)
+        if s: s.label = f"B{i+1}"; solids.append(s)
 
-    # 4. Knee Braces
-    if "cutLength_in" not in braces_spec or "angle_deg" not in braces_spec:
-        raise ValueError("MISSING_REQUIRED_CONFIG: members.kneebraces.cutLength_in or angle_deg")
-    
-    brace_run = (braces_spec["cutLength_in"] / 12.0) * math.cos(math.radians(braces_spec["angle_deg"]))
-    for i in range(qty):
-        px1, py1 = scene.post_xy[i]
-        px2, py2 = scene.post_xy[(i+1) % qty]
-        sdx = px2 - px1
-        sdy = py2 - py1
-        slen = math.sqrt(sdx * sdx + sdy * sdy)
-        if slen < 1e-9:
-            continue
-        ux = sdx / slen
-        uy = sdy / slen
+    # 4. Braces
+    if joints.get("braces", {}).get("enabled"):
+        for bp in joints["braces"]["endpoints"]:
+            s = _b3d_box_between_with_up(tuple(bp["start"]), tuple(bp["end"]), BRACE_HW, BRACE_HD, UP)
+            if s: s.label = bp["id"]; solids.append(s)
 
-        # Brace A
-        p0a = (px1 + ux * POST_HW, py1 + uy * POST_HW, scene.Z_POST_TOP - brace_run)
-        p1a = (px1 + ux * (POST_HW + brace_run), py1 + uy * (POST_HW + brace_run), scene.Z_POST_TOP)
-        solid_a = _b3d_box_between_with_up(p0a, p1a, BRACE_HW, BRACE_HD, UP)
-        if solid_a:
-            solid_a.label = f"Brace{i+1}a"
-            solids.append(solid_a)
-
-        # Brace B
-        p0b = (px2 - ux * POST_HW, py2 - uy * POST_HW, scene.Z_POST_TOP - brace_run)
-        p1b = (px2 - ux * (POST_HW + brace_run), py2 - uy * (POST_HW + brace_run), scene.Z_POST_TOP)
-        solid_b = _b3d_box_between_with_up(p0b, p1b, BRACE_HW, BRACE_HD, UP)
-        if solid_b:
-            solid_b.label = f"Brace{i+1}b"
-            solids.append(solid_b)
-
-    # 5. Hip Rafters
-    overhang_in = model.get("overhang_in", 12)
-    overhang_ft = overhang_in / 12.0
-    
-    rafter_apex = [
-        (scene.hub_r * math.cos(2 * math.pi * i / qty),
-         scene.hub_r * math.sin(2 * math.pi * i / qty),
-         scene.Z_APEX)
-        for i in range(qty)
-    ]
-    for i in range(qty):
-        px, py = scene.post_xy[i]
-        ang = 2 * math.pi * i / qty
-        tang = (math.cos(ang + math.pi / 2), math.sin(ang + math.pi / 2), 0.0)
-        len_xy = math.sqrt(px * px + py * py)
-        dir_xy_norm = (px / len_xy, py / len_xy)
-        slope = (scene.Z_APEX - scene.Z_BEAM_TOP) / (len_xy - scene.hub_r)
-
-        p0_start = (
-            px + dir_xy_norm[0] * overhang_ft,
-            py + dir_xy_norm[1] * overhang_ft,
-            scene.Z_BEAM_TOP - slope * overhang_ft
-        )
-        p1_apex = rafter_apex[i]
-
-        # Shift rafter up vertically so its underside rests exactly on top of the beam ring
-        theta = math.atan(slope)
-        dy_vertical = RAFTER_HD / math.cos(theta)
-        
-        p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_vertical)
-        p1_apex_shifted = (p1_apex[0], p1_apex[1], p1_apex[2] + dy_vertical)
-        
-        solid = _b3d_box_between_with_up(p0_start_shifted, p1_apex_shifted, RAFTER_HW, RAFTER_HD, UP)
-        if solid:
-            solid.label = f"R{i+1}"
-            solids.append(solid)
+    # 5. Primary Rafters (Phase 2 Notched Solids)
+    for rj in joints.get("primary_rafters", []):
+        # build123d note: we currently build as box; true boolean notch requires 
+        # subtract operation. For now we follow the precomputed axes.
+        s = _b3d_box_between_with_up(tuple(rj["start"]), tuple(rj["end"]), RAFTER_HW, RAFTER_HD, UP)
+        if s: s.label = rj["id"]; solids.append(s)
 
     # 6. Jack Rafters
-    jack_joints = calcs.get("joints", {}).get("jack_rafters", {})
-    if jack_joints.get("enabled"):
-        for ep in jack_joints.get("endpoints", []):
-            solid = _b3d_box_between_with_up(tuple(ep["start"]), tuple(ep["end"]), RAFTER_HW, RAFTER_HD, UP)
-            if solid:
-                solid.label = ep["id"]
-                solids.append(solid)
+    if joints.get("jack_rafters", {}).get("enabled"):
+        for ep in joints["jack_rafters"]["endpoints"]:
+            s = _b3d_box_between_with_up(tuple(ep["start"]), tuple(ep["end"]), RAFTER_HW, RAFTER_HD, UP)
+            if s: s.label = ep["id"]; solids.append(s)
 
-    # 7. Purlin Ring
-    s_purlin = purlins_spec.get("height_fraction", 0.55)
-    Z_PURLIN = scene.Z_BEAM_TOP + (scene.Z_APEX - scene.Z_BEAM_TOP) * s_purlin
-    # Calculate dy_vertical again for purlin offset
-    dx_hip_ex = scene.post_xy[0][0] - rafter_apex[0][0]
-    dy_hip_ex = scene.post_xy[0][1] - rafter_apex[0][1]
-    len_xy_ex = math.sqrt(scene.post_xy[0][0]**2 + scene.post_xy[0][1]**2)
-    slope_ex = (scene.Z_APEX - scene.Z_BEAM_TOP) / (len_xy_ex - scene.hub_r)
-    dy_vertical = RAFTER_HD / math.cos(math.atan(slope_ex))
-
-    purlin_pts = []
-    for i in range(qty):
-        px, py = scene.post_xy[i]
-        ax, ay, az = rafter_apex[i]
-        pt = (
-            px + (ax - px) * s_purlin,
-            py + (ay - py) * s_purlin,
-            Z_PURLIN + dy_vertical
-        )
-        purlin_pts.append(pt)
-
-    for i in range(qty):
-        pt1 = purlin_pts[i]
-        pt2 = purlin_pts[(i+1) % qty]
-        solid = _b3d_box_between_with_up(pt1, pt2, PURLIN_HW, PURLIN_HD, UP)
-        if solid:
-            solid.label = f"Purlin{i+1}"
-            solids.append(solid)
-
-    # 8. Polygonal Hub (Substantial hanging pendant)
-    hub_ztop = scene.Z_APEX + RAFTER_HD + 0.15
-    hub_zbot = scene.Z_APEX - 1.25
-    hub_height = hub_ztop - hub_zbot
+    # 7. Hub (Phase 3 Constraint-Driven)
+    hj = joints.get("hub", {})
+    hub_r = hj["radius_ft"]
+    hub_h = hj["height_ft"]
+    hub_z = zp["Z_APEX"]
 
     with b3d.BuildPart() as hub_part:
         with b3d.BuildSketch() as sketch:
-            b3d.RegularPolygon(radius=scene.hub_r * FT_TO_MM, side_count=qty)
-        b3d.extrude(amount=hub_height * FT_TO_MM)
+            b3d.RegularPolygon(radius=hub_r * FT_TO_MM, side_count=scene.qty)
+        b3d.extrude(amount=hub_h * FT_TO_MM, both=True)
     
-    hub_solid = hub_part.part.translate((0, 0, (hub_zbot + hub_height / 2) * FT_TO_MM))
+    hub_solid = hub_part.part.translate((0, 0, hub_z * FT_TO_MM))
     hub_solid.label = "HUB"
     solids.append(hub_solid)
 
