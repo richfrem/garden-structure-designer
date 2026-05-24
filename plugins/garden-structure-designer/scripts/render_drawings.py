@@ -63,8 +63,12 @@ _PALETTES: dict[str, dict[str, str]] = {
 def _get_palette(structure: dict, is_blueprint: bool) -> dict[str, str]:
     if is_blueprint:
         return _PALETTE_BLUEPRINT
-    key = structure.get("presentation", {}).get("palette", "cedar_warm")
-    return _PALETTES.get(key, _PALETTE_CEDAR_WARM)
+    if "presentation" not in structure or "palette" not in structure["presentation"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: presentation.palette")
+    key = structure["presentation"]["palette"]
+    if key not in _PALETTES:
+        raise ValueError(f"INVALID_PALETTE: {key}")
+    return _PALETTES[key]
 
 
 # --- 30/30 Isometric Projection ---
@@ -111,7 +115,9 @@ def draw_title_block(svg_list: list[str], structure: dict, dwg_name: str, is_blu
     y = height_px - TITLE_BLOCK_H - 20
     source_hash = structure["meta"]["source_hash"][:8]
     struct_type = structure["structure"]["type"].upper()
-    jurisdiction = structure["intent"].get("jurisdiction", "UNKNOWN")
+    if "intent" not in structure or "jurisdiction" not in structure["intent"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: intent.jurisdiction")
+    jurisdiction = structure["intent"]["jurisdiction"]
 
     border      = "#00ffff" if is_blueprint else _PALETTE_CEDAR_WARM["outline"]
     bg          = "#12253a" if is_blueprint else "#ffffff"
@@ -133,12 +139,16 @@ def draw_validator_anchors(svg_list: list[str], structure: dict) -> None:
     """Hidden text blocks for machine verification compliance checks."""
     geo   = structure["geometry"]
     pitch = structure["roof"]["pitch"]
-    cuts  = geo.get("compound_cut", {})
-    miter = str(round(cuts.get("miter_deg", 0), 2))
-    bevel = str(round(cuts.get("bevel_deg", 0), 2))
+    if "compound_cut" not in geo or "miter_deg" not in geo["compound_cut"] or "bevel_deg" not in geo["compound_cut"]:
+        raise ValueError("MISSING_REQUIRED_GEOMETRY: geometry.compound_cut.miter_deg or bevel_deg")
+    if "svg_coordinates" not in geo:
+        raise ValueError("MISSING_REQUIRED_GEOMETRY: geometry.svg_coordinates")
+    cuts = geo["compound_cut"]
+    miter = str(round(cuts["miter_deg"], 2))
+    bevel = str(round(cuts["bevel_deg"], 2))
     svg_list.append(f'    <!-- VALIDATOR_ANCHORS: {pitch} {miter}° {bevel}° -->')
     svg_list.append(f'    <!-- SAW_SETTINGS: {{"miter_deg": {miter}, "bevel_deg": {bevel}}} -->')
-    svg_list.append(f'    <!-- COORDINATE MAP: {json.dumps(geo.get("svg_coordinates", {}))} -->')
+    svg_list.append(f'    <!-- COORDINATE MAP: {json.dumps(geo["svg_coordinates"])} -->')
     svg_list.append(f'    <g style="visibility:hidden; display:none;">')
     svg_list.append(f'        <text>{pitch}</text>')
     svg_list.append(f'        <text>{miter}</text>')
@@ -227,10 +237,14 @@ def render_plan_view(structure: dict, filename: str) -> list[str]:
     # Diagonal = 2 * circumscribed_radius = 2 * inscribed_r / cos(pi/sides)
     span_diag = round(2 * inscribed_r / math.cos(math.pi / sides), 3)
 
-    post_nom = structure["members"]["posts"].get("nominal_size", "6x6")
-    post_material = structure.get("materials", {}).get("primary", "Cedar")
+    if "members" not in structure or "posts" not in structure["members"] or "nominal_size" not in structure["members"]["posts"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: members.posts.nominal_size")
+    post_nom = structure["members"]["posts"]["nominal_size"]
+    if "materials" not in structure or "primary" not in structure["materials"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: materials.primary")
+    post_material = structure["materials"]["primary"]
 
-    scale = 80.0
+    scale = round((coords["width_px"] * 0.55) / span_diag, 1)
     cx, cy = coords["width_px"] / 2, coords["height_px"] / 2 - 50
 
     def proj2d(pt: tuple) -> tuple:
@@ -346,7 +360,9 @@ def render_elevation_view(structure: dict, filename: str) -> list[str]:
     inscribed_r = structure["layout"]["inscribed_radius_ft"]
     sides = structure["layout"]["post_count"]
     span_diag = round(2 * inscribed_r / math.cos(math.pi / sides), 3)
-    post_nom = structure["members"]["posts"].get("nominal_size", "6x6")
+    if "members" not in structure or "posts" not in structure["members"] or "nominal_size" not in structure["members"]["posts"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: members.posts.nominal_size")
+    post_nom = structure["members"]["posts"]["nominal_size"]
     post_h    = structure["geometry"]["total_height"]["post_ft"]
     beam_d    = structure["geometry"]["total_height"]["beam_depth_ft"]
     roof_r    = structure["geometry"]["roof_rise"]["rise_ft"]
@@ -497,9 +513,13 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
     inscribed_r = structure["layout"]["inscribed_radius_ft"]
     sides = structure["layout"]["post_count"]
     span_diag = round(2 * inscribed_r / math.cos(math.pi / sides), 3)
-    post_nom = structure["members"]["posts"].get("nominal_size", "6x6")
+    if "members" not in structure or "posts" not in structure["members"] or "nominal_size" not in structure["members"]["posts"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: members.posts.nominal_size")
+    post_nom = structure["members"]["posts"]["nominal_size"]
 
-    scale = 55.0
+    approx_h = post_h + roof_r + span_diag * 0.5
+    available_h = coords["height_px"] - 250
+    scale = round(min(55.0, available_h / approx_h), 1)
     cx, cy = coords["width_px"] / 2, coords["height_px"] / 2 + 200
     r = (span_diag / 2.0) * scale
 
@@ -626,11 +646,17 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
     for role, tag in tagged:
         if role == "rafter" and not tag.startswith("R"):
             continue
-        visible_counts[role] = visible_counts.get(role, 0) + 1
+        if role not in visible_counts:
+            visible_counts[role] = 0
+        visible_counts[role] += 1
 
-    assert visible_counts.get("post", 0) == qty, f"Expected {qty} posts, got {visible_counts.get('post', 0)}"
-    assert visible_counts.get("beam", 0) == qty, f"Expected {qty} beams, got {visible_counts.get('beam', 0)}"
-    assert visible_counts.get("rafter", 0) == qty, f"Expected {qty} primary rafters, got {visible_counts.get('rafter', 0)}"
+    post_cnt = visible_counts["post"] if "post" in visible_counts else 0
+    beam_cnt = visible_counts["beam"] if "beam" in visible_counts else 0
+    rafter_cnt = visible_counts["rafter"] if "rafter" in visible_counts else 0
+
+    assert post_cnt == qty, f"Expected {qty} posts, got {post_cnt}"
+    assert beam_cnt == qty, f"Expected {qty} beams, got {beam_cnt}"
+    assert rafter_cnt == qty, f"Expected {qty} primary rafters, got {rafter_cnt}"
 
     # ── Annotation layout pass ───────────────────────────────────────────────
     # Union bbox of all projected major member faces
@@ -707,10 +733,21 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
     qty = structure["layout"]["post_count"]
 
     members = structure["members"]
-    post_nom = members["posts"].get("nominal_size", "6x6")
-    beam_nom = members["beams"].get("nominal_size", "6x12")
-    rafter_nom = structure["roof"]["primary_rafters"].get("nominal_size", "4x6")
-    brace_nom = members.get("kneebraces", {}).get("nominal_size", "4x4")
+    if "posts" not in members or "nominal_size" not in members["posts"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: members.posts.nominal_size")
+    post_nom = members["posts"]["nominal_size"]
+
+    if "beams" not in members or "nominal_size" not in members["beams"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: members.beams.nominal_size")
+    beam_nom = members["beams"]["nominal_size"]
+
+    if "roof" not in structure or "primary_rafters" not in structure["roof"] or "nominal_size" not in structure["roof"]["primary_rafters"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: roof.primary_rafters.nominal_size")
+    rafter_nom = structure["roof"]["primary_rafters"]["nominal_size"]
+
+    if "kneebraces" not in members or "nominal_size" not in members["kneebraces"]:
+        raise ValueError("MISSING_REQUIRED_CONFIG: members.kneebraces.nominal_size")
+    brace_nom = members["kneebraces"]["nominal_size"]
 
     def draw_panel(x: float, y: float, title: str, role: str) -> None:
         w, h = 450, 400
@@ -724,8 +761,12 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
         cx, cy = w/2, h/2 + 20
         if role == "post":
             ph = structure["geometry"]["total_height"]["post_ft"]
-            post_w = members["posts"].get("actual_width_in", 5.5)
-            post_material = structure.get("materials", {}).get("primary", "Cedar")
+            if "actual_width_in" not in members["posts"]:
+                raise ValueError("MISSING_REQUIRED_CONFIG: members.posts.actual_width_in")
+            post_w = members["posts"]["actual_width_in"]
+            if "materials" not in structure or "primary" not in structure["materials"]:
+                raise ValueError("MISSING_REQUIRED_CONFIG: materials.primary")
+            post_material = structure["materials"]["primary"]
             # Post outline with double lines
             svg_list.append(f'        <rect data-role="post" x="{cx-20}" y="{cy-100}" width="40" height="200" fill="{palette["post"]}" stroke="{stroke}" stroke-width="1.5" />')
             svg_list.append(f'        <line x1="{cx}" y1="{cy-110}" x2="{cx}" y2="{cy+110}" stroke="{palette["centerline"]}" stroke-width="0.8" stroke-dasharray="8,3,2,3" />')
@@ -736,8 +777,10 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
 
         elif role == "beam":
             bm = structure["geometry"]["beam_ring"]["beam_miter_deg"]
-            beam_d_val = members["beams"].get("actual_depth_in", 11.5)
-            beam_cut = members["beams"].get("cut_length_ft", 5.0)
+            if "actual_depth_in" not in members["beams"] or "cut_length_ft" not in members["beams"]:
+                raise ValueError("MISSING_REQUIRED_CONFIG: members.beams.actual_depth_in or cut_length_ft")
+            beam_d_val = members["beams"]["actual_depth_in"]
+            beam_cut = members["beams"]["cut_length_ft"]
             # Beam outline with double lines
             svg_list.append(f'        <rect data-role="beam" x="{cx-150}" y="{cy-24}" width="300" height="48" fill="{palette["beam"]}" stroke="{stroke}" stroke-width="1.5" />')
             svg_list.append(f'        <line x1="{cx-150}" y1="{cy}" x2="{cx+150}" y2="{cy}" stroke="{palette["centerline"]}" stroke-width="0.8" stroke-dasharray="8,3,2,3" />')
@@ -750,7 +793,9 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
             rl = structure["geometry"]["rafter"]["total_with_overhang_in"]
             rm = structure["geometry"]["compound_cut"]["miter_deg"]
             rb = structure["geometry"]["compound_cut"]["bevel_deg"]
-            rafter_material = structure.get("materials", {}).get("primary", "Cedar")
+            if "materials" not in structure or "primary" not in structure["materials"]:
+                raise ValueError("MISSING_REQUIRED_CONFIG: materials.primary")
+            rafter_material = structure["materials"]["primary"]
             # Rafter double line outline
             svg_list.append(f'        <polygon data-role="rafter" points="{cx-150},{cy+30} {cx+150},{cy-30} {cx+145},{cy-45} {cx-155},{cy+15}" fill="{palette["rafter"]}" stroke="{stroke}" stroke-width="1.5" />')
             svg_list.append(f'        <text x="20" y="65" font-family="monospace" font-size="11" fill="{palette["text"]}">PROFILE: {rafter_nom} {rafter_material}</text>')
@@ -758,8 +803,10 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
             draw_dimension(svg_list, cx-140, cy+40, cx+140, cy-15, f"{rl:.1f} IN", is_blueprint=is_blueprint)
 
         elif role == "brace":
-            brace_len = members.get("kneebraces", {}).get("cut_length_in", 36.0)
-            brace_ang = members.get("kneebraces", {}).get("angle_deg", 45.0)
+            if "kneebraces" not in members or "cut_length_in" not in members["kneebraces"] or "angle_deg" not in members["kneebraces"]:
+                raise ValueError("MISSING_REQUIRED_CONFIG: members.kneebraces.cut_length_in or angle_deg")
+            brace_len = members["kneebraces"]["cut_length_in"]
+            brace_ang = members["kneebraces"]["angle_deg"]
             # Brace profile outline
             svg_list.append(f'        <polygon data-role="brace" points="{cx-30},{cy+80} {cx+70},{cy-20} {cx+50},{cy-40} {cx-50},{cy+60}" fill="{palette["brace"]}" stroke="{stroke}" stroke-width="1.5" />')
             svg_list.append(f'        <text x="20" y="65" font-family="monospace" font-size="11" fill="{palette["text"]}">PROFILE: {brace_nom} Knee brace</text>')
@@ -767,9 +814,11 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
             draw_dimension(svg_list, cx-30, cy+95, cx+60, cy+5, f"{brace_len:.1f} IN", is_blueprint=is_blueprint)
 
         elif role == "footing":
-            foundation = structure.get("foundation", {})
-            footing_dia = foundation.get("caisson_diameter_in", 12.0)
-            footing_depth = foundation.get("caisson_depth_in", 24.0)
+            if "foundation" not in structure or "caisson_diameter_in" not in structure["foundation"] or "caisson_depth_in" not in structure["foundation"]:
+                raise ValueError("MISSING_REQUIRED_CONFIG: foundation.caisson_diameter_in or caisson_depth_in")
+            foundation = structure["foundation"]
+            footing_dia = foundation["caisson_diameter_in"]
+            footing_depth = foundation["caisson_depth_in"]
             # Concrete footing caisson
             svg_list.append(f'        <rect data-role="footing" x="{cx-45}" y="{cy-80}" width="90" height="160" fill="{palette["footing"]}" stroke="{stroke}" stroke-width="1.5" stroke-dasharray="4,4" />')
             svg_list.append(f'        <rect x="{cx-30}" y="{cy-95}" width="60" height="15" fill="none" stroke="{stroke}" stroke-width="1.5" />')
@@ -815,6 +864,56 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
 
     svg_list.append("    <!-- TOPOLOGY_SKIP -->")
     return svg_list
+
+
+# --- PNG Co-generation (token-efficient: no browser needed for smoke tests) ---
+
+def _generate_png(svg_path: str | Path, width_px: int, height_px: int) -> bool:
+    """
+    Render svg_path → outputs/visual-smoke/<stem>.png without launching a browser.
+
+    Strategy (in order):
+      1. qlmanage (macOS Quick Look) — fast, zero browser overhead
+      2. Playwright chromium — fallback when qlmanage is unavailable or produces
+         a zero-byte file (e.g., SVG uses features QL can't handle)
+
+    Returns True if a non-empty PNG was written.
+    """
+    import subprocess as _sp
+
+    svg_path = Path(svg_path)
+    png_dir  = svg_path.parent / "visual-smoke"
+    png_dir.mkdir(parents=True, exist_ok=True)
+    target_png = png_dir / (svg_path.stem + ".png")
+
+    # --- Strategy 1: qlmanage (macOS) ---
+    if sys.platform == "darwin":
+        _sp.run(
+            ["qlmanage", "-t", "-s", str(width_px), "-o", str(png_dir), str(svg_path)],
+            stdout=_sp.DEVNULL, stderr=_sp.DEVNULL,
+        )
+        tmp_png = png_dir / (svg_path.name + ".png")
+        if tmp_png.exists():
+            if target_png.exists():
+                target_png.unlink()
+            tmp_png.rename(target_png)
+
+    if target_png.exists() and target_png.stat().st_size > 0:
+        return True
+
+    # --- Strategy 2: Playwright (fallback) ---
+    try:
+        from playwright.sync_api import sync_playwright as _pw
+        with _pw() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page(viewport={"width": width_px, "height": height_px})
+            page.goto(svg_path.resolve().as_uri())
+            page.screenshot(path=str(target_png), full_page=False)
+            browser.close()
+    except Exception:
+        pass
+
+    return target_png.exists() and target_png.stat().st_size > 0
 
 
 # --- Main Engine Logic ---
@@ -885,6 +984,8 @@ def generate_svg(filename: str, structure: dict, output_path: str) -> None:
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(svg_full)
 
+    _generate_png(output_path, width_px, height_px)
+
 
 def main() -> None:
     if len(sys.argv) < 2:
@@ -924,7 +1025,9 @@ def main() -> None:
     for filename, output_file in drawings:
         output_path = out_dir / output_file
         generate_svg(filename, structure, str(output_path))
-        print(f"  ✓ {output_file}")
+        png_path = out_dir / "visual-smoke" / output_path.with_suffix(".png").name
+        png_ok = png_path.exists() and png_path.stat().st_size > 0
+        print(f"  ✓ {output_file}  {'[PNG ok]' if png_ok else '[PNG MISSING]'}")
 
 
 if __name__ == "__main__":

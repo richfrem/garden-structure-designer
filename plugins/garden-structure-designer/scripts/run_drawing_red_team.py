@@ -232,6 +232,7 @@ def run_review(
         str(Path(report_dir) / "structure.json"),
         str(Path(report_dir) / "schema-validation-report.json"),
         str(Path(report_dir) / "physics-validation-report.json"),
+        str(Path(report_dir) / "visual-smoke-report.json"),
     ]
     missing_artifacts = [
         a for a in required_staging_artifacts if not os.path.exists(a)
@@ -256,6 +257,22 @@ def run_review(
         _write_md_report(report, md_report_path)
         print(f"  BLOCKED: missing staging artifacts: {missing_artifacts}")
         return report
+
+    # Load and parse visual smoke test results
+    smoke_report_path = os.path.join(report_dir, "visual-smoke-report.json")
+    smoke_ok = True
+    smoke_failures = []
+    smoke_warnings = []
+    if os.path.exists(smoke_report_path):
+        try:
+            with open(smoke_report_path, "r", encoding="utf-8") as sf:
+                smoke_data = json.load(sf)
+            smoke_ok = smoke_data.get("may_claim_success", False)
+            smoke_failures = smoke_data.get("overall_failures", [])
+            smoke_warnings = smoke_data.get("overall_warnings", [])
+        except Exception as err:
+            smoke_ok = False
+            smoke_failures.append(f"Failed to load visual-smoke-report.json: {err}")
 
     # Collect SVG files
     svg_files = sorted(glob.glob(os.path.join(svg_dir, "*.svg")))
@@ -355,12 +372,13 @@ def run_review(
         })
 
     # Determine final status
-    if overall_pass and not missing_sheets:
+    if overall_pass and not missing_sheets and smoke_ok:
         report["status"] = "PASS"
         report["may_claim_success"] = True
         report["summary"] = (
-            "All SVG sheets passed deterministic machine validation and sheet-specific "
-            "content-quality checks. This executable red-team gate approves may_claim_success. "
+            "All SVG sheets passed deterministic machine validation, sheet-specific "
+            "content-quality checks, and headless browser visual smoke heuristics. "
+            "This executable red-team gate approves may_claim_success. "
             "Optional human or LLM qualitative review may still be performed for additional assurance."
         )
     elif missing_sheets:
@@ -373,8 +391,12 @@ def run_review(
         report["status"] = "FAIL"
         report["may_claim_success"] = False
         failed = [e["file"] for e in report["files"] if e["status"] == "FAIL"]
+        if not smoke_ok:
+            failed.append("visual-smoke-heuristics")
+            for f_msg in smoke_failures:
+                report["overall_required_fixes"].append(f"Visual smoke test failure: {f_msg}")
         report["summary"] = (
-            f"FAIL — {len(failed)} of {len(svg_files)} sheet(s) failed content validation. "
+            f"FAIL — {len(failed)} sheet(s) or validation layers failed content/visual validation. "
             "These drawings are not builder-meaningful. Regenerate before claiming PASS."
         )
 

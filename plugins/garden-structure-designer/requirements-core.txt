@@ -46,12 +46,15 @@ numpy==2.4.6
     #   build123d
     #   ezdxf
     #   ocp-gordon
+    #   opencv-python
     #   scipy
     #   svgpathtools
 ocp-gordon==0.2.0
     # via build123d
 ocpsvg==0.5.0
     # via build123d
+opencv-python==4.13.0.92
+    # via -r requirements-core.in
 parso==0.8.7
     # via jedi
 pexpect==4.9.0

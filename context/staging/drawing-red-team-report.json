@@ -1,9 +1,9 @@
 {
   "schema": "garden-structure-designer/drawing-red-team-report/1.0",
-  "generated": "2026-05-24T07:17:08.654483+00:00",
+  "generated": "2026-05-24T15:55:53.401827+00:00",
   "status": "PASS",
   "reviewer": "run_drawing_red_team.py",
-  "summary": "All SVG sheets passed deterministic machine validation and sheet-specific content-quality checks. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.",
+  "summary": "All SVG sheets passed deterministic machine validation, sheet-specific content-quality checks, and headless browser visual smoke heuristics. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.",
   "files": [
     {
       "file": "outputs/blueprint-component-isolation.svg",
@@ -30,7 +30,7 @@
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 7,
@@ -48,7 +48,7 @@
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 7,
         "footing": 6,
         "dimension": 3,
@@ -66,7 +66,7 @@
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 4,
@@ -84,7 +84,7 @@
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 7,
@@ -102,7 +102,7 @@
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 7,
         "footing": 6,
         "dimension": 3,
@@ -120,7 +120,7 @@
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 7,
         "footing": 6,
         "dimension": 3,
@@ -138,7 +138,7 @@
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 4,
