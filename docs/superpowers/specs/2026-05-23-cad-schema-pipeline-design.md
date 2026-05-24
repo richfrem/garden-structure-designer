@@ -133,7 +133,11 @@ The `meta.lifecycle` field tracks the current state. Validators enforce that sta
     "rafter_count_equals_post_count": true,
     "post_top_equals_beam_bottom": true,
     "no_rafter_inside_hub_radius": true,
-    "brace_must_connect_to_surfaces": true
+    "brace_must_connect_to_surfaces": true,
+    "no_solid_intersections": true,
+    "member_counts_match_sections": true,
+    "no_zero_length_members": true,
+    "presentation_primary_counts_match": true
   },
 
   "presentation": {
@@ -161,10 +165,12 @@ The `meta.lifecycle` field tracks the current state. Validators enforce that sta
   },
 
   "geometry": {
+    "_comment": "DERIVED — written by geometry_engine.py. Do not manually edit.",
     "_sealed": false
   },
 
   "cad": {
+    "_comment": "DERIVED — written by cad_scene.py. Do not manually edit.",
     "_sealed": false,
     "units": "feet",
     "coordinate_system": "right_handed_z_up",
@@ -175,12 +181,11 @@ The `meta.lifecycle` field tracks the current state. Validators enforce that sta
 
 ### Hub `radius_ft: "auto"` resolution rule
 
-When `radius_ft` is `"auto"`, `geometry_engine.py` computes:
+When `radius_ft` is `"auto"`, `geometry_engine.py` owns the resolution entirely. The spec defines only the behavioral contract:
 
-```
-rafter_half_width = actual_width_in / 2 / 12   (ft)
-hub_radius = max(radius_min_ft, rafter_half_width * sides * 0.5 / π + tolerance)
-```
+- The resolved radius must be ≥ `hub.radius_min_ft`.
+- The resolved radius must satisfy `invariants.no_rafter_inside_hub_radius` given the rafter section dimensions (`actual_width_in`, `actual_depth_in`) and the polygon roof geometry.
+- The exact formula is owned by `geometry_engine.py` and may evolve to account for hub type variants, different framing patterns, or rafter depth vs width projections without requiring a spec change.
 
 The resolved value is written into `geometry.hub_radius_ft` (sealed). The `hub.radius_ft = "auto"` marker is preserved in the input section to indicate it was computed, not user-specified.
 
@@ -315,6 +320,11 @@ The resolved value is written into `geometry.hub_radius_ft` (sealed). The `hub.r
 - Validates `structure.json` against `plugins/garden-structure-designer/schemas/structure.schema.json` (new file)
 - Enforces sealed section immutability across consecutive runs
 - Validates lifecycle state transitions
+- Enforces `member_counts_match_sections` invariant at Stage 2 and Stage 4
+
+### Coordinate system contract (all scripts)
+
+Every script that produces 3D coordinates (`geometry_engine.py`, `cad_scene.py`, `render_drawings.py`) must read `cad.units` and `cad.coordinate_system` from `structure.json` and assert they match expected values before computing. No script may assume feet or Z-up without reading these fields.
 
 ---
 
@@ -378,18 +388,37 @@ CHECKPOINT: structure.json sealed through geometry.
 
 ---
 
-## Migration plan (hard cutover)
+## Migration plan — two milestones
+
+Splitting scripts and agents prevents a total pipeline blackout if either half hits an unexpected blocker. The end state (single source of truth, legacy files deleted) is identical to a hard cutover.
+
+### Milestone 1 — Scripts-first + compatibility shim
+
+Lifecycle target: `GEOMETRY_SEALED` state reachable via `structure.json`.
 
 1. Add `structure.schema.json` to `plugins/garden-structure-designer/schemas/`
-2. Update `geometry_engine.py` to read/write `structure.json` instead of three files
-3. Update `cad_scene.py` to read from `structure.json`
-4. Update `render_drawings.py` — remove all hardcoded geometry constants, read from `structure.json`
-5. Update `schema_validator.py` to validate the new schema
+2. Update `geometry_engine.py` to read/write `structure.json`; seals `geometry` section
+3. Update `cad_scene.py` to read from `structure.json`; seals `cad.nodes`
+4. Update `render_drawings.py` — remove all hardcoded constants; read from `structure.json`
+5. Update `schema_validator.py` to validate `structure.json`
 6. Update `structural_physics_validator.py` to read from `structure.json`
-7. Update all 4 agent `.md` files with new file references and new interview questions
-8. Update all 12 skill `.md` files with new `consumes`/`produces` metadata pointing to `structure.json`
-9. Delete legacy staging artifacts: `design-spec.json`, `structural-model.json`, `geometry-calculations.json`
-10. Run full pipeline end-to-end regression test
+7. Add compatibility shim `scripts/emit_legacy_views.py`:
+   - reads `structure.json`
+   - writes `design-spec.json`, `structural-model.json`, `geometry-calculations.json` as derived read-only views
+   - this keeps validators and orchestrator references alive during M1
+8. Run regression test: hex 4:12 pitch produces values matching the regression anchor
+
+**Milestone 1 is complete when** `render_drawings.py` produces passing red-team output reading solely from `structure.json`.
+
+### Milestone 2 — Agents/skills update + legacy deletion
+
+Lifecycle target: full pipeline runs end-to-end via `structure.json` with no legacy file references.
+
+9. Update all 4 agent `.md` files: new file references, new interview questions
+10. Update all 12 skill `.md` files: `consumes`/`produces` metadata → `structure.json`
+11. Remove compatibility shim `emit_legacy_views.py`
+12. Delete legacy staging artifacts: `design-spec.json`, `structural-model.json`, `geometry-calculations.json`
+13. Run full pipeline end-to-end regression test
 
 ---
 
@@ -401,6 +430,10 @@ CHECKPOINT: structure.json sealed through geometry.
 | `post_top_equals_beam_bottom` | `cad_scene.py` | 4 |
 | `no_rafter_inside_hub_radius` | `cad_scene.py` | 4 |
 | `brace_must_connect_to_surfaces` | `cad_scene.py` | 4 |
+| `no_solid_intersections` | `cad_scene.py` — segment-to-segment checks on all node pairs | 4 |
+| `member_counts_match_sections` | `schema_validator.py` — beams==post_count, brace_total==post_count×count_per_post, `cad.nodes` array lengths match | 2 + 4 |
+| `no_zero_length_members` | `geometry_engine.py` and `cad_scene.py` — assert all member endpoint distances > precision | 2 + 4 |
+| `presentation_primary_counts_match` | `render_drawings.py` — after applying visibility_rules, assert posts/beams/primary_rafters still ≥ layout.post_count | 4 |
 
 ---
 
