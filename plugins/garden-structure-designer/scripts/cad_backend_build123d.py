@@ -157,10 +157,10 @@ def build_cad_model(model: dict, calcs: dict) -> b3d.Compound | None:
             solids.append(solid)
 
     # 4. Knee Braces
-    if "cutLength_in" in braces_spec and "angle_deg" in braces_spec:
-        brace_run = (braces_spec["cutLength_in"] / 12.0) * math.cos(math.radians(braces_spec["angle_deg"]))
-    else:
-        brace_run = 1.5
+    if "cutLength_in" not in braces_spec or "angle_deg" not in braces_spec:
+        raise ValueError("MISSING_REQUIRED_CONFIG: members.kneebraces.cutLength_in or angle_deg")
+    
+    brace_run = (braces_spec["cutLength_in"] / 12.0) * math.cos(math.radians(braces_spec["angle_deg"]))
     for i in range(qty):
         px1, py1 = scene.post_xy[i]
         px2, py2 = scene.post_xy[(i+1) % qty]
@@ -226,77 +226,13 @@ def build_cad_model(model: dict, calcs: dict) -> b3d.Compound | None:
             solids.append(solid)
 
     # 6. Jack Rafters
-    for i in range(qty):
-        px1, py1 = scene.post_xy[i]
-        px2, py2 = scene.post_xy[(i+1) % qty]
-        bx = px2 - px1
-        by = py2 - py1
-        blen = math.sqrt(bx * bx + by * by)
-        if blen < 1e-9:
-            continue
-        ux = bx / blen
-        uy = by / blen
-
-        in_x = -uy
-        in_y = ux
-
-        mx = (px1 + px2) / 2.0
-        my = (py1 + py2) / 2.0
-        apothem = math.sqrt(mx * mx + my * my)
-        
-        roof_rise = calcs.get("roof_rise", {}).get("rise_ft", 1.6)
-        slope_perp = roof_rise / (apothem - scene.hub_r * math.cos(math.pi / qty))
-
-        sec_spec = model.get("roof", {}).get("secondary_rafters", {})
-        count_per_side = sec_spec.get("count_per_side", 2)
-        fractions_list = []
-        for j in range(count_per_side):
-            fraction = (j + 1.0) / (count_per_side + 1.0)
-            tag_suffix = chr(ord('a') + j)
-            fractions_list.append((fraction, tag_suffix))
-
-        for fraction, tag_suffix in fractions_list:
-            sx = px1 + bx * fraction
-            sy = py1 + by * fraction
-
-            if fraction < 0.5:
-                px_corner, py_corner = px1, py1
-                px_apex, py_apex = rafter_apex[i][0], rafter_apex[i][1]
-            else:
-                px_corner, py_corner = px2, py2
-                px_apex, py_apex = rafter_apex[(i+1)%qty][0], rafter_apex[(i+1)%qty][1]
-
-            dx_hip = px_apex - px_corner
-            dy_hip = py_apex - py_corner
-
-            det = -dx_hip * in_y + in_x * dy_hip
-            if abs(det) > 1e-6:
-                s_val = (-(sx - px_corner) * in_y + in_x * (sy - py_corner)) / det
-                t_val = (dx_hip * (sy - py_corner) - dy_hip * (sx - px_corner)) / det
-
-                int_x = px_corner + dx_hip * s_val
-                int_y = py_corner + dy_hip * s_val
-                int_z = scene.Z_BEAM_TOP + t_val * slope_perp
-                pt_int = (int_x, int_y, int_z)
-
-                p0_start = (
-                    sx - in_x * overhang_ft,
-                    sy - in_y * overhang_ft,
-                    scene.Z_BEAM_TOP - slope_perp * overhang_ft
-                )
-
-                # Shift jack rafter up vertically so its underside rests exactly on top of the beam ring
-                theta_perp = math.atan(slope_perp)
-                dy_perp = RAFTER_HD / math.cos(theta_perp)
-                
-                p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_perp)
-                pt_int_shifted = (pt_int[0], pt_int[1], pt_int[2] + dy_perp)
-                
-                tang = (ux, uy, 0.0)
-                solid = _b3d_box_between_with_up(p0_start_shifted, pt_int_shifted, RAFTER_HW, RAFTER_HD, UP)
-                if solid:
-                    solid.label = f"Jack{i+1}{tag_suffix}"
-                    solids.append(solid)
+    jack_joints = calcs.get("joints", {}).get("jack_rafters", {})
+    if jack_joints.get("enabled"):
+        for ep in jack_joints.get("endpoints", []):
+            solid = _b3d_box_between_with_up(tuple(ep["start"]), tuple(ep["end"]), RAFTER_HW, RAFTER_HD, UP)
+            if solid:
+                solid.label = ep["id"]
+                solids.append(solid)
 
     # 7. Purlin Ring
     s_purlin = purlins_spec.get("height_fraction", 0.55)

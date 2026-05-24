@@ -46,7 +46,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 try:
-    from cad_scene import Scene, Solid  # noqa: F401 — used in type hints
+    from cad_scene import Scene, Solid, vdot, vcent, vsub, vlen, vnorm  # noqa: F401
     V3 = tuple[float, float, float]
 except ImportError:
     pass  # CLI fallback: Scene must be passed pre-built
@@ -98,6 +98,14 @@ def _post_circumradius(post: "Solid") -> float:
 # Check 1 — Beam soffit at post top
 # ---------------------------------------------------------------------------
 
+def _nearest_post_tag(posts: "list[Solid]", xy: "tuple[float, float]") -> str:
+    """Tag of the post whose base XY center is closest to xy."""
+    return min(
+        posts,
+        key=lambda p: math.sqrt((p.p0[0] - xy[0]) ** 2 + (p.p0[1] - xy[1]) ** 2),
+    ).tag
+
+
 def _check_beam_soffit_at_post_top(scene: "Scene") -> list[str]:
     """
     Each beam's bottom face min vertex Z must equal Z_POST_TOP within 1/8".
@@ -106,13 +114,18 @@ def _check_beam_soffit_at_post_top(scene: "Scene") -> list[str]:
     """
     errors: list[str] = []
     beams = [s for s in scene.solids if s.role == "beam"]
+    posts = [s for s in scene.solids if s.role == "post"]
     for beam in beams:
         soffit_z = _min_z_of_solid(beam)
         delta = abs(soffit_z - scene.Z_POST_TOP)
         if delta > _CONTACT_TOL:
+            # Report which posts this beam spans to aid diagnosis
+            post_a = _nearest_post_tag(posts, (beam.p0[0], beam.p0[1])) if posts else "?"
+            post_b = _nearest_post_tag(posts, (beam.p1[0], beam.p1[1])) if posts else "?"
             errors.append(
-                f"beam_soffit_at_post_top: beam {beam.tag} soffit Z={soffit_z:.4f} ft, "
-                f"Z_POST_TOP={scene.Z_POST_TOP:.4f} ft, gap={delta * 12:.3f}\""
+                f"beam_soffit_at_post_top: beam {beam.tag} ({post_a}→{post_b}) "
+                f"soffit Z={soffit_z:.4f} ft, Z_POST_TOP={scene.Z_POST_TOP:.4f} ft, "
+                f"gap={delta * 12:.3f}\""
             )
     return errors
 
@@ -147,7 +160,7 @@ def _check_rafter_tip_on_hub_face(scene: "Scene") -> list[str]:
         )
         if min_dist > _CONTACT_TOL:
             errors.append(
-                f"rafter_tip_on_hub_face: rafter {rafter.tag} p1="
+                f"rafter_tip_on_hub_face: rafter {rafter.tag}→{hub.tag} p1="
                 f"({pt[0]:.4f}, {pt[1]:.4f}, {pt[2]:.4f}) is "
                 f"{min_dist * 12:.3f}\" from nearest hub face plane"
             )
@@ -192,18 +205,98 @@ def _check_brace_foot_on_post_face(scene: "Scene") -> list[str]:
 
         # Find circumradius for the nearest post
         nearest_circumradius = next(
-            cr for (cx, cy), cr, tag in post_data
+            cr for _, cr, tag in post_data
             if tag == nearest_tag
         )
 
         threshold = nearest_circumradius + _CONTACT_TOL
         if nearest_dist > threshold:
             errors.append(
-                f"brace_foot_on_post_face: brace {brace.tag} lower foot XY "
+                f"brace_foot_on_post_face: brace {brace.tag}→{nearest_tag} lower foot XY "
                 f"({lower_pt[0]:.4f}, {lower_pt[1]:.4f}) is "
-                f"{nearest_dist:.4f} ft from nearest post {nearest_tag} "
+                f"{nearest_dist:.4f} ft from {nearest_tag} "
                 f"(circumradius={nearest_circumradius:.4f} ft, threshold={threshold:.4f} ft)"
             )
+    return errors
+
+
+def _check_jack_to_hip_contact(scene: "Scene") -> list[str]:
+    """
+    Each jack rafter's upper endpoint (p1) must lie on the side-face plane
+    of its target hip rafter within 1/8".
+    Distinct from rafter-to-hub checks: this checks contact with a 3D side plane.
+    Fails on gap > 1/8" or penetration > 1/8".
+    """
+    errors: list[str] = []
+    # ID scheme: J{bay}{a|b}
+    jacks = [s for s in scene.solids if s.role == "rafter" and s.tag.startswith("J")]
+    hips = [s for s in scene.solids if s.role == "rafter" and s.tag.startswith("R")]
+    
+    if not jacks or not hips:
+        return errors
+
+    # Map hip tags to solids for fast lookup
+    hip_map = {h.tag: h for h in hips}
+    
+    # Rafter dimensions (nominal HW)
+    # We use the hip rafter's actual face vertices to derive side planes.
+    
+    for jack in jacks:
+        pt = jack.p1
+        # ID scheme: J{bay}{a|b}. J1a -> R1, J1b -> R2
+        num_str = "".join([c for c in jack.tag if c.isdigit()])
+        if not num_str: continue
+        bay = int(num_str)
+        suffix = jack.tag[-1]
+        
+        target_hip_tag = f"R{bay}" if suffix == 'a' else f"R{(bay % scene.qty) + 1}"
+        target_hip = hip_map.get(target_hip_tag)
+        if not target_hip:
+            errors.append(f"jack_to_hip_contact: jack {jack.tag} target hip {target_hip_tag} missing")
+            continue
+            
+        # Hip side faces are those with normals perpendicular to hip axis and Z-up
+        hip_axis = vnorm(vsub(target_hip.p1, target_hip.p0))
+        side_faces = [
+            f for f in target_hip.faces 
+            if abs(vdot(f.normal, hip_axis)) < 0.05 and abs(f.normal[2]) < 0.1
+        ]
+        
+        if not side_faces:
+            errors.append(f"jack_to_hip_contact: hip {target_hip_tag} has no valid side faces")
+            continue
+            
+        # Signed distance to nearest side face plane
+        # plane equation: dot(P - P0, N) = d
+        # We need the correct side normal.
+        # Find the face that has a normal pointing TOWARD the jack.
+        # Vector from hip axis to jack endpoint.
+        v_offset = vsub(pt, target_hip.p0)
+        v_perp = vsub(v_offset, vscl(hip_axis, vdot(v_offset, hip_axis)))
+        if vlen(v_perp) < 1e-9:
+             errors.append(f"jack_to_hip_contact: jack {jack.tag} is on hip {target_hip_tag} axis")
+             continue
+        u_perp = vnorm(v_perp)
+        
+        # Best face is one whose normal is most opposite to u_perp (pointing toward jack)
+        # Actually, the face normal points OUT of the solid. 
+        # So we want the face whose normal matches u_perp.
+        face = max(side_faces, key=lambda f: vdot(f.normal, u_perp))
+        
+        # Signed distance: dot(pt - face_vert, face_normal)
+        # Positive = gap (pt is outside solid)
+        # Negative = penetration (pt is inside solid)
+        dist = vdot(vsub(pt, face.verts[0]), face.normal)
+        
+        if dist > _CONTACT_TOL:
+            errors.append(
+                f"jack_to_hip_contact: GAP detected at jack {jack.tag} endpoint ({dist * 12:.3f}\")"
+            )
+        elif dist < -_CONTACT_TOL:
+            errors.append(
+                f"jack_to_hip_contact: PENETRATION detected at jack {jack.tag} endpoint ({abs(dist) * 12:.3f}\")"
+            )
+            
     return errors
 
 
@@ -220,6 +313,7 @@ def validate_connections(scene: "Scene") -> list[str]:
     errors.extend(_check_beam_soffit_at_post_top(scene))
     errors.extend(_check_rafter_tip_on_hub_face(scene))
     errors.extend(_check_brace_foot_on_post_face(scene))
+    errors.extend(_check_jack_to_hip_contact(scene))
     return errors
 
 

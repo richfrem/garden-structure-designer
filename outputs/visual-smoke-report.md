@@ -1,13 +1,13 @@
 # Visual Smoke Test Report (SVG -> Browser Render)
 
 **Schema:** garden-structure-designer/visual-smoke-report/1.0  
-**Generated:** 2026-05-24T15:48:31.476196+00:00  
+**Generated:** 2026-05-24T18:53:05.325653+00:00  
 **Source Hash:** `6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61`  
 **Structure:** `context/staging/structure.json`  
 **SVG Dir:** `outputs`  
 **Out Dir:** `outputs/visual-smoke`  
 **Baseline Dir:** `None`  
-**Mode:** no-baseline  
+**Mode:** fail-on-regression  
 
 **Run Command:**
 `python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py --structure context/staging/structure.json --svg-dir outputs`
@@ -39,13 +39,13 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 440, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1846`
-- bbox_fill_ratio: `0.9524`
+- non_bg_ratio: `0.1474`
+- bbox_fill_ratio: `0.9534`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2501`
+- cv_hub_density: `1647`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 12, 'beams': 61, 'rafters': 122}`
+- detected_components: `{'posts': 6, 'beams': 46, 'rafters': 72}`
 - hub_edge_density: `0.0676`
 
 #### Failures
@@ -61,13 +61,13 @@ All sheets rendered and heuristics passed.
 **PNG:** `outputs/visual-smoke/drawing-elevation-view.png`  
 
 #### Metrics
-- non_bg_ratio: `0.1998`
-- bbox_fill_ratio: `0.9524`
+- non_bg_ratio: `0.1933`
+- bbox_fill_ratio: `0.9534`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2029`
+- cv_hub_density: `1756`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 34, 'beams': 55, 'rafters': 71}`
+- detected_components: `{'posts': 20, 'beams': 59, 'rafters': 42}`
 
 #### Failures
 - *(none)*
@@ -84,13 +84,13 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 307, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.2565`
-- bbox_fill_ratio: `0.9524`
+- non_bg_ratio: `0.2200`
+- bbox_fill_ratio: `0.9534`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2515`
+- cv_hub_density: `3250`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 31, 'beams': 69, 'rafters': 118}`
+- detected_components: `{'posts': 35, 'beams': 67, 'rafters': 66}`
 - hub_edge_density: `0.1083`
 
 #### Failures
@@ -108,13 +108,13 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 307, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.2565`
-- bbox_fill_ratio: `0.9524`
+- non_bg_ratio: `0.2325`
+- bbox_fill_ratio: `0.9534`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2515`
+- cv_hub_density: `2805`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 31, 'beams': 69, 'rafters': 118}`
+- detected_components: `{'posts': 30, 'beams': 70, 'rafters': 61}`
 - hub_edge_density: `0.1083`
 
 #### Failures
@@ -132,13 +132,13 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 440, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1844`
-- bbox_fill_ratio: `0.9524`
+- non_bg_ratio: `0.1592`
+- bbox_fill_ratio: `0.9551`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2491`
+- cv_hub_density: `1644`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 11, 'beams': 62, 'rafters': 117}`
+- detected_components: `{'posts': 6, 'beams': 48, 'rafters': 75}`
 - hub_edge_density: `0.0655`
 
 #### Failures
@@ -154,13 +154,13 @@ All sheets rendered and heuristics passed.
 **PNG:** `outputs/visual-smoke/blueprint-elevation.png`  
 
 #### Metrics
-- non_bg_ratio: `0.1074`
-- bbox_fill_ratio: `0.9524`
+- non_bg_ratio: `0.1114`
+- bbox_fill_ratio: `0.9551`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2164`
+- cv_hub_density: `1923`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 27, 'beams': 60, 'rafters': 68}`
+- detected_components: `{'posts': 21, 'beams': 53, 'rafters': 45}`
 
 #### Failures
 - *(none)*
@@ -177,13 +177,13 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 307, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1847`
-- bbox_fill_ratio: `0.9524`
+- non_bg_ratio: `0.1743`
+- bbox_fill_ratio: `0.9551`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2312`
+- cv_hub_density: `3214`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 34, 'beams': 63, 'rafters': 128}`
+- detected_components: `{'posts': 31, 'beams': 57, 'rafters': 66}`
 - hub_edge_density: `0.1076`
 
 #### Failures
@@ -199,13 +199,13 @@ All sheets rendered and heuristics passed.
 **PNG:** `outputs/visual-smoke/blueprint-component-isolation.png`  
 
 #### Metrics
-- non_bg_ratio: `0.0974`
-- bbox_fill_ratio: `0.9524`
+- non_bg_ratio: `0.1104`
+- bbox_fill_ratio: `0.9551`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2066`
+- cv_hub_density: `1690`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 14, 'beams': 125, 'rafters': 13}`
+- detected_components: `{'posts': 13, 'beams': 97, 'rafters': 17}`
 
 #### Failures
 - *(none)*

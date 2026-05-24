@@ -108,6 +108,59 @@ Enforce the strict engineering policy from `.agent/rules/data-driven-declarative
 
 ---
 
+## CAD Debuggability Requirement (HARD RULE)
+
+All generated structures MUST be debuggable with computer-aided-design-level clarity. This is a first-class architectural requirement — not a UI enhancement.
+
+### 1. Stable Unique Member IDs
+Every structural member MUST carry a stable, human-readable identifier:
+- Posts: `P1`, `P2`, … (count-sequential, matching `layout.post_count`)
+- Beams: `B1`, `B2`, … (span-sequential, same count as posts)
+- Rafters: `R1`, `R2`, … — Jack Rafters: `Jack1a`, `Jack1b`, …
+- Braces: `Brace1a`, `Brace1b`, …
+- Footings: `FT1`, `FT2`, …
+- Hub: `HUB`
+
+### 2. Cross-Layer ID Consistency
+IDs MUST be identical across ALL system layers. Any mismatch is a traceability failure:
+- `structure.json` member arrays → `geometry.joints` → CAD `Solid.tag` → SVG `data-tag` + visible label → validation reports → error messages → red-team output
+
+### 3. Mandatory Visual Labels
+Every major member in every drawing MUST carry a visible `→ {ID}` label near its axis midpoint. Missing labels on posts, beams, or rafters is a FAIL condition.
+
+### 4. ID-Referenced Validation Failures
+Every validation failure MUST name the exact member(s):
+```
+FAIL: Brace3b → Beam B4  (head gap = 1.8")
+FAIL: Beam B2 → Post P2  (soffit Z mismatch = 1.2")
+```
+Generic messages like "brace is misaligned" are prohibited.
+
+### 5. Bidirectional Debugging
+The system MUST support:
+- Drawing → identify exact member in `structure.json` (via `data-tag`)
+- `structure.json` member ID → locate exact SVG element (via `data-tag`)
+
+### 6. Machine-Readable SVG Identifiers
+Every SVG structural element MUST embed:
+```xml
+data-role="beam"  data-tag="B3"
+```
+`data-id` alone is insufficient. `data-tag` carries the stable member ID.
+
+### 7. Anonymous Geometry Prohibition
+No rendered element may be anonymous. If any element cannot be mapped back to a named member in `structure.json`, the pipeline MUST fail immediately.
+
+### 8. Connection Traceability
+Every structural connection MUST be explicitly traceable in validation reports:
+```
+R3 → HUB
+B2 → P2
+Brace4a → B4 + P4
+```
+
+---
+
 ## Updated Coding Rules
 - **Safety over aesthetics**: Structural physics calculations always override user style preferences.
 - **Semantic SVGs**: Use `data-role` tags on all drawn elements rather than relying solely on stroke colors for topology.

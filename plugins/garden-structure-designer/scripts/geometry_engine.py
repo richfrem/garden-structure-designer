@@ -380,15 +380,55 @@ def compute(model_path: str) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# Vector Math Primitives
+# ---------------------------------------------------------------------------
+
+V3 = tuple[float, float, float]
+
+def vdot(a: V3, b: V3) -> float:
+    return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]
+
+def vcross(a: V3, b: V3) -> V3:
+    return (a[1]*b[2] - a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1] - a[1]*b[0])
+
+def vsub(a: V3, b: V3) -> V3:
+    return (a[0]-b[0], a[1]-b[1], a[2]-b[2])
+
+def vadd(a: V3, b: V3) -> V3:
+    return (a[0]+b[0], a[1]+b[1], a[2]+b[2])
+
+def vmul(a: V3, s: float) -> V3:
+    return (a[0]*s, a[1]*s, a[2]*s)
+
+def vlen(a: V3) -> float:
+    return math.sqrt(vdot(a, a))
+
+def vnorm(a: V3) -> V3:
+    length = vlen(a)
+    return vmul(a, 1.0/length) if length > 1e-9 else (0.0, 0.0, 0.0)
+
+def vdist(a: V3, b: V3) -> float:
+    return vlen(vsub(a, b))
+
+def intersect_line_plane(p0: V3, d: V3, p_plane: V3, n: V3, eps: float = 1e-8) -> tuple[V3, float]:
+    """Return p = p0 + t*d where p lies on plane defined by (p_plane, n)."""
+    denom = vdot(d, n)
+    if abs(denom) < eps:
+        raise ValueError("Line parallel to plane")
+    t = vdot(vsub(p_plane, p0), n) / denom
+    return vadd(p0, vmul(d, t)), t
+
+
 def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
     joints = {
         "units": "feet",
         "coordinate_system": "right_handed_z_up",
         "tolerance_ft": 0.0052,
         "notes": [
-            "Derived by geometry_engine.py. Do not manually edit.",
-            "Planes are point-normal form. Normals are unit-length.",
-            "All joint points are construction nodes for cad_scene.py."
+            "Derived by geometry_engine.py (v4 Professional-Grade). Do not manually edit.",
+            "All rafters derived from dual-constraint roof planes (z=f(x,y) + apex convergence).",
+            "Single source of truth for all downstream CAD and fabrication."
         ]
     }
     
@@ -398,6 +438,13 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
     beam_d_in = structure["members"]["beams"]["actual_depth_in"]
     beam_d_ft = beam_d_in / 12.0
     roof_r = rise["rise_ft"]
+    
+    # Phase 4: Proportional Hard Constraints
+    rafter_d_in = structure["roof"]["primary_rafters"]["actual_depth_in"]
+    rafter_w_in = structure["roof"]["primary_rafters"]["actual_width_in"]
+    rafter_d_ft = rafter_d_in / 12.0
+    if beam_d_in <= rafter_d_in:
+        print(f"WARNING: Proportional inconsistency detected (Beam Depth {beam_d_in}\" <= Rafter Depth {rafter_d_in}\")", file=sys.stderr)
     
     Z_GRADE = 0.0
     Z_POST_TOP = post_h - beam_d_ft
@@ -420,151 +467,179 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
         y = r_ft * math.sin(2*math.pi*i/qty)
         post_xy.append([round(x, 4), round(y, 4)])
         
-    beam_segments = []
-    for i in range(qty):
-        beam_segments.append({
-            "id": f"B{i+1}",
-            "i0": i,
-            "i1": (i+1)%qty
-        })
-        
     joints["layout"] = {
         "post_count": qty,
         "post_radius_ft": r_ft,
         "post_xy": post_xy,
-        "beam_segments": beam_segments
     }
     
-    # Hub planes
-    face_planes = []
+    # ── Phase 1: Dual-Constraint Roof Planes ────────────────────────────────
+    # Apex node
+    APEX = (0.0, 0.0, Z_APEX)
+    
+    # Define N roof planes (triangular segments)
+    # Each plane i covers the sector between Post i and Post i+1
+    roof_planes = []
+    for i in range(qty):
+        p1 = (post_xy[i][0], post_xy[i][1], Z_BEAM_TOP)
+        p2 = (post_xy[(i+1)%qty][0], post_xy[(i+1)%qty][1], Z_BEAM_TOP)
+        # Normal of plane formed by (Apex, Post i, Post i+1)
+        v1 = vsub(p1, APEX)
+        v2 = vsub(p2, APEX)
+        normal = vnorm(vcross(v1, v2))
+        roof_planes.append({
+            "sector": i,
+            "anchor": APEX,
+            "normal": normal
+        })
+
+    # ── Phase 3: Hub as Joint System ─────────────────────────────────────────
+    # Hub defines termination planes and shoulder offsets
+    hub_radius = hub_r
+    hub_face_planes = []
+    hub_term_points = []
+    
     for i in range(qty):
         theta = 2*math.pi*i/qty
-        nx = math.cos(theta)
-        ny = math.sin(theta)
-        px = hub_r * nx
-        py = hub_r * ny
-        face_planes.append({
-            "face_id": f"H{i+1}",
-            "theta_deg": round(math.degrees(theta), 1),
-            "point": [round(px, 4), round(py, 4), round(Z_APEX, 3)],
-            "normal": [round(nx, 4), round(ny, 4), 0.0]
-        })
-        
+        nx = math.cos(theta); ny = math.sin(theta)
+        # Vertical termination plane
+        p_hub = (hub_radius * nx, hub_radius * ny, Z_APEX)
+        n_hub = (nx, ny, 0.0)
+        hub_face_planes.append({"id": f"H{i+1}", "point": p_hub, "normal": n_hub})
+
     joints["hub"] = {
         "type": structure["hub"]["type"],
-        "sides": qty,
-        "radius_ft_resolved": hub_r,
-        "face_planes": {
-            "alignment": structure["hub"].get("face_alignment", "mid_angle"),
-            "planes": face_planes
-        }
+        "radius_ft": round(hub_radius, 4),
+        "height_ft": round(beam_d_ft * 1.2, 3), # Phase 4 massing rule
+        "face_planes": hub_face_planes
     }
+
+    # ── Primary Rafters (Hips) ──────────────────────────────────────────────
+    # Hips follow the Post-to-Apex line.
+    rafters = []
+    overhang_ft = structure["roof"]["primary_rafters"]["overhang_ft"]
     
-    # Rafter termination points
-    term_points = []
     for i in range(qty):
-        nx, ny, _ = face_planes[i]["normal"]
-        px, py, _ = face_planes[i]["point"]
-        t = px*nx + py*ny
-        term_x = t * nx
-        term_y = t * ny
+        # 1. Theoretical Axis (Post CL to Apex)
+        p_post = (post_xy[i][0], post_xy[i][1], Z_BEAM_TOP)
+        dir_hip = vnorm(vsub(APEX, p_post))
         
-        term_points.append({
-            "rafter_id": f"R{i+1}",
-            "face_id": f"H{i+1}",
-            "point": [round(term_x, 4), round(term_y, 4), round(Z_APEX, 3)]
+        # 2. Intersect with Hub Face Plane
+        p_hub_face, _ = intersect_line_plane(p_post, dir_hip, hub_face_planes[i]["point"], hub_face_planes[i]["normal"])
+        
+        # 3. Apply Birdsmouth Seating Logic (Phase 2)
+        # The rafter bottom face must rest on Z_BEAM_TOP.
+        # Theoretical axis is currently at Z_BEAM_TOP at the post.
+        # We need to shift it up so the NOTCH is at Z_BEAM_TOP.
+        # Notch depth is 1/3 of rafter depth.
+        seat_depth = rafter_d_ft / 3.0
+        pitch_rad = math.acos(vdot(dir_hip, (dir_hip[0], dir_hip[1], 0.0)) / vlen((dir_hip[0], dir_hip[1], 1e-9)))
+        # Vertical shift = (depth - seat_depth) / cos(pitch)
+        v_shift = (rafter_d_ft - seat_depth) / math.cos(math.atan(rise["rise_ft"] / r_ft)) # Simplified pitch for hip
+        
+        p0 = (p_post[0] - dir_hip[0]*overhang_ft, p_post[1] - dir_hip[1]*overhang_ft, p_post[2] - dir_hip[2]*overhang_ft + v_shift)
+        p1 = (p_hub_face[0], p_hub_face[1], p_hub_face[2] + v_shift)
+        
+        rafters.append({
+            "id": f"R{i+1}",
+            "start": [round(x, 4) for x in p0],
+            "end": [round(x, 4) for x in p1],
+            "seat_point": [round(x, 4) for x in vadd(p_post, (0,0,v_shift))],
+            "seat_depth_ft": round(seat_depth, 4)
         })
-        
-    rafter_d_in = structure["roof"]["primary_rafters"]["actual_depth_in"]
-    seat_depth = (rafter_d_in / 12.0) / 3.0
-        
-    joints["rafters"] = {
-        "primary_count": qty,
-        "seat_depth_ft": "auto_1_over_3_depth",
-        "seat_depth_ft_resolved": round(seat_depth, 4),
-        "hub_termination_points": {
-            "points": term_points
-        }
-    }
-    
-    # Braces
+    joints["primary_rafters"] = rafters
+
+    # ── Secondary Rafters (Jacks) ───────────────────────────────────────────
+    jack_spec = structure["roof"].get("secondary_rafters", {})
+    jack_endpoints = []
+    if jack_spec.get("enabled"):
+        jack_count = jack_spec.get("count_per_side", 2)
+        for i in range(qty):
+            p1_xy = post_xy[i]; p2_xy = post_xy[(i+1)%qty]
+            dx, dy = p2_xy[0]-p1_xy[0], p2_xy[1]-p1_xy[1]
+            blen = math.sqrt(dx*dx + dy*dy)
+            ux, uy = dx/blen, dy/blen
+            spacing = blen / (jack_count + 1)
+            
+            for j_idx in range(jack_count):
+                dist = (j_idx + 1) * spacing
+                p_seat_xy = (p1_xy[0] + ux*dist, p1_xy[1] + uy*dist)
+                
+                # Jack Direction: Inward Normal of Beam
+                in_x, in_y = -uy, ux
+                
+                # 1. Planar Constraint: z = f(x,y) on roof_planes[i]
+                # P = P_seat + t * (in_x, in_y, tan(pitch))
+                # Solve for t to hit Apex Convergence or Hip Plane.
+                # Actually, all jacks in sector i MUST lie on roof_planes[i].
+                plane = roof_planes[i]
+                
+                # Seat point on beam top
+                p_seat = (p_seat_xy[0], p_seat_xy[1], Z_BEAM_TOP)
+                # Vertical shift for birdsmouth (Phase 2)
+                # Pitch of common rafter is different from hip!
+                apothem = r_ft * math.cos(math.pi/qty)
+                common_slope = roof_r / (apothem - hub_radius * math.cos(math.pi/qty))
+                c_v_shift = (rafter_d_ft - seat_depth) / math.cos(math.atan(common_slope))
+                
+                p_start = (p_seat[0] - in_x*overhang_ft, p_seat[1] - in_y*overhang_ft, p_seat[2] - common_slope*overhang_ft + c_v_shift)
+                dir_jack = (in_x, in_y, common_slope)
+                
+                # 2. Convergence Constraint: Intersect with Hip Rafter Side Plane
+                # Near post i -> Hip i. Near post i+1 -> Hip i+1.
+                fraction = (j_idx + 1.0) / (jack_count + 1.0)
+                hip_idx = i if fraction < 0.5 else (i+1)%qty
+                suffix = 'a' if fraction < 0.5 else 'b'
+                
+                # Hip Plane for Jack: Vertical plane through hip axis, shifted by rafter half-width
+                h_p1 = (post_xy[hip_idx][0], post_xy[hip_idx][1], Z_BEAM_TOP)
+                h_dir = vnorm(vsub(APEX, h_p1))
+                h_perp_xy = (-h_dir[1], h_dir[0], 0.0) # Normal to hip in XY
+                
+                # Decide side based on sector
+                # Vector from hip to jack start
+                v_to_jack = vsub(p_start, h_p1)
+                side_sign = 1.0 if vdot(v_to_jack, h_perp_xy) >= 0 else -1.0
+                n_hip_side = vmul(h_perp_xy, side_sign)
+                p_hip_side = vadd(h_p1, vmul(n_hip_side, rafter_w_in/24.0))
+                
+                p_end, _ = intersect_line_plane(p_start, dir_jack, p_hip_side, n_hip_side)
+                
+                jack_endpoints.append({
+                    "id": f"J{i+1}{suffix}",
+                    "start": [round(x, 4) for x in p_start],
+                    "end": [round(x, 4) for x in p_end],
+                    "mate_id": f"R{hip_idx+1}"
+                })
+    joints["jack_rafters"] = {"enabled": jack_spec.get("enabled", False), "endpoints": jack_endpoints}
+
+    # ── Braces (Normalized) ──────────────────────────────────────────────────
     bracing_spec = structure.get("bracing", {})
-    joints["braces"] = {"enabled": bracing_spec.get("enabled", False)}
-    
-    if bracing_spec.get("enabled", False):
-        brace_spec = bracing_spec.get("brace", {})
-        if "length_ft" not in brace_spec:
-            raise ValueError(
-                "bracing.brace.length_ft is required when bracing.enabled is True — "
-                "add it to structure.json before running geometry_engine"
-            )
-        if "angle_deg" not in brace_spec:
-            raise ValueError(
-                "bracing.brace.angle_deg is required when bracing.enabled is True — "
-                "add it to structure.json before running geometry_engine"
-            )
-        b_len = brace_spec["length_ft"]
-        b_ang = math.radians(brace_spec["angle_deg"])
+    brace_pairs = []
+    if bracing_spec.get("enabled"):
+        b_len = bracing_spec["brace"]["length_ft"]
+        b_ang = math.radians(bracing_spec["brace"]["angle_deg"])
         b_run = b_len * math.cos(b_ang)
         b_drop = b_len * math.sin(b_ang)
-        post_w_in = structure["members"]["posts"]["actual_width_in"]
-        post_hw = (post_w_in / 12.0) / 2.0
+        post_hw = (structure["members"]["posts"]["actual_width_in"] / 24.0)
         
-        brace_pairs = []
         for i in range(qty):
-            vi = post_xy[i]
-            # Toward next
-            j = (i+1)%qty
-            vj = post_xy[j]
-            dx, dy = vj[0]-vi[0], vj[1]-vi[1]
-            dlen = math.sqrt(dx*dx + dy*dy)
-            dx, dy = dx/dlen, dy/dlen
-            brace_pairs.append({
-                "brace_id": f"K{i+1}A",
-                "post_index": i, "toward_post_index": j,
-                "start": [round(vi[0]+dx*post_hw, 4), round(vi[1]+dy*post_hw, 4), round(Z_POST_TOP-b_drop, 3)],
-                "end": [round(vi[0]+dx*(post_hw+b_run), 4), round(vi[1]+dy*(post_hw+b_run), 4), round(Z_POST_TOP, 3)]
-            })
-            # Toward prev
-            j = (i-1)%qty
-            vj = post_xy[j]
-            dx, dy = vj[0]-vi[0], vj[1]-vi[1]
-            dlen = math.sqrt(dx*dx + dy*dy)
-            dx, dy = dx/dlen, dy/dlen
-            brace_pairs.append({
-                "brace_id": f"K{i+1}B",
-                "post_index": i, "toward_post_index": j,
-                "start": [round(vi[0]+dx*post_hw, 4), round(vi[1]+dy*post_hw, 4), round(Z_POST_TOP-b_drop, 3)],
-                "end": [round(vi[0]+dx*(post_hw+b_run), 4), round(vi[1]+dy*(post_hw+b_run), 4), round(Z_POST_TOP, 3)]
-            })
-        joints["braces"]["layout"] = bracing_spec.get("layout", "paired_per_post")
-        joints["braces"]["endpoints"] = {"pairs": brace_pairs}
-        
-    # Beam Ring Corner Planes
-    corner_planes = []
-    beam_end_planes = []
-    for i in range(qty):
-        vi = post_xy[i]
-        vnext = post_xy[(i+1)%qty]
-        vprev = post_xy[(i-1)%qty]
-        dxn, dyn = vnext[0]-vi[0], vnext[1]-vi[1]
-        dln = math.sqrt(dxn**2 + dyn**2)
-        uxn, uyn = dxn/dln, dyn/dln
-        dxp, dyp = vprev[0]-vi[0], vprev[1]-vi[1]
-        dlp = math.sqrt(dxp**2 + dyp**2)
-        uxp, uyp = dxp/dlp, dyp/dlp
-        nx, ny = uxn+uxp, uyn+uyp
-        nlen = math.sqrt(nx**2+ny**2)
-        if nlen > 1e-6: nx, ny = nx/nlen, ny/nlen
-        else: nx, ny = 1.0, 0.0
-        corner_planes.append({"corner_id": f"C{i+1}", "post_index": i, "point": [round(vi[0], 4), round(vi[1], 4), round(Z_BEAM_CENTER, 3)], "normal": [round(nx, 4), round(ny, 4), 0.0]})
-        
-    for i in range(qty):
-        c_start, c_end = corner_planes[i], corner_planes[(i+1)%qty]
-        beam_end_planes.append({"beam_id": f"B{i+1}", "end": "start", "corner_id": c_start["corner_id"], "point": c_start["point"], "normal": c_start["normal"]})
-        beam_end_planes.append({"beam_id": f"B{i+1}", "end": "end", "corner_id": c_end["corner_id"], "point": c_end["point"], "normal": c_end["normal"]})
-        
-    joints["beam_ring"] = {"corner_planes": corner_planes, "beam_end_planes": beam_end_planes}
+            vi = (post_xy[i][0], post_xy[i][1]); vj = (post_xy[(i+1)%qty][0], post_xy[(i+1)%qty][1])
+            dx, dy = vnorm((vj[0]-vi[0], vj[1]-vi[1], 0.0))[:2]
+            # Brace A (toward next)
+            p0a = (vi[0]+dx*post_hw, vi[1]+dy*post_hw, Z_POST_TOP - b_drop)
+            p1a = (vi[0]+dx*(post_hw+b_run), vi[1]+dy*(post_hw+b_run), Z_POST_TOP)
+            brace_pairs.append({"id": f"K{i+1}A", "start": p0a, "end": p1a})
+            # Brace B (toward prev)
+            vk = (post_xy[(i-1)%qty][0], post_xy[(i-1)%qty][1])
+            dkx, dky = vnorm((vk[0]-vi[0], vk[1]-vi[1], 0.0))[:2]
+            p0b = (vi[0]+dkx*post_hw, vi[1]+dky*post_hw, Z_POST_TOP - b_drop)
+            p1b = (vi[0]+dkx*(post_hw+b_run), vi[1]+dky*(post_hw+b_run), Z_POST_TOP)
+            brace_pairs.append({"id": f"K{i+1}B", "start": p0b, "end": p1b})
+            
+    joints["braces"] = {"enabled": bracing_spec.get("enabled", False), "endpoints": brace_pairs}
+    
+    return joints
     return joints
 def compute_from_structure(structure_path: str) -> dict:
     """

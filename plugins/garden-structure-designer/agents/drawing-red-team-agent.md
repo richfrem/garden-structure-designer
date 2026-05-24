@@ -384,6 +384,37 @@ This is not a suggestion. This is a mandatory gate. A drawing that passes data-r
 
 ---
 
+## Member Identification Requirement (HARD RULE)
+
+Every visual issue MUST identify the exact member by its stable ID from `structure.json`.
+
+If a visual defect cannot be mapped to a specific member ID, that IS the failure: the system has produced anonymous geometry — a traceability failure more severe than the visual defect itself.
+
+### Required Issue Format in Report
+```json
+{
+  "member": "R3",
+  "issue": "hub penetration — rafter extends 1.2\" past HUB face"
+}
+```
+
+### Prohibited Issue Format
+```json
+{
+  "issue": "rafter goes too far"
+}
+```
+
+### Traceability Failure Code
+If any structural element in a drawing cannot be identified by member ID:
+```
+FAIL: UNIDENTIFIABLE_COMPONENT
+```
+This failure code has the same severity as `SVG_PLACEHOLDER_GEOMETRY` and blocks `may_claim_success`.
+
+### Label Presence Check
+For each drawing, verify that every primary member (post, beam, rafter) carries a visible `→ {ID}` label. Missing labels = `SVG_MISSING_MEMBER_LABELS` (distinct from `SVG_MISSING_MEMBER_IDS`).
+
 ## Failure Codes
 
 Use these codes where applicable:
@@ -396,6 +427,7 @@ SVG_TOO_FEW_DRAWING_ELEMENTS
 SVG_MISSING_DIMENSIONS
 SVG_MISSING_TITLE_BLOCK
 SVG_MISSING_MEMBER_IDS
+SVG_MISSING_MEMBER_LABELS
 SVG_MISSING_BRACES
 SVG_MISSING_FOOTINGS
 SVG_MISSING_COMPONENT_DETAILS
@@ -404,6 +436,9 @@ SVG_VALIDATOR_TOO_WEAK
 PNG_ONLY_PRESENTATION_UPDATE
 MARKDOWN_ONLY_UPDATE
 DETERMINISTIC_ARTIFACTS_NOT_REVALIDATED
+UNIDENTIFIABLE_COMPONENT
+TRACEABILITY_FAILURE
+VALIDATOR_MESSAGE_TOO_VAGUE
 ```
 
 ---
