@@ -76,33 +76,48 @@ Write `outputs/render-prompt.txt` as two blocks: a **positive prompt** (dense fl
 
 Structured headers (`CRITICAL GEOMETRY LOCK`, `STRUCTURAL FRAME`, etc.) are read sequentially by language models that generate images. Dense prose with geometry constraints embedded naturally performs significantly better because the model parses the description holistically rather than as a checklist it can partially ignore.
 
+### What NOT to put in the positive prompt
+
+**Do not include construction specifications.** Miter angles (28.71°), bevel degrees (9.1°), actual lumber dimensions (3.5 × 5.5 inches), f-stop values (f/8), ISO values — these are meaningless to image models and dilute the visual description. Keep the language architectural and visual, not technical.
+
+**The rule:** If a carpenter needs it to cut wood, it does not belong in the prompt. If an architect needs it to describe what something looks like, it does.
+
+| Include | Exclude |
+|---------|---------|
+| `6x6 cedar posts` | `actual 5.5 × 5.5 inches` |
+| `4:12 pitch` | `18.43° slope` |
+| `9-inch rafter tail overhang` | `0.75 ft overhang` |
+| `mortise-and-tenon craftsmanship` | `28.71° miter, 9.1° bevel` |
+| `35mm lens, deep focus` | `f/8 aperture` |
+| `chamfered knee braces` | `3.5 × 3.5 actual, 45.0 degrees` |
+
 ### Positive prompt — how to write it
 
-Write 6–8 dense sentences. Each sentence covers one system and embeds its exact count directly in natural language. Do not separate counts into a separate lock block — weave them into the description.
+Write 7–8 dense sentences. Each sentence covers one system and embeds its exact count directly in natural language. Do not separate counts into a separate lock block — weave them into the description. Use nominal lumber sizes (6x6, 6x12, 4x6), not actual dimensions.
 
 **Sentence 1 — Opening + identity + material + location:**
 Open with `Ultra-realistic architectural visualization of a handcrafted [shape] [species] timber-frame [structure type]` then add the site context (location, setting). Everything flows from the model data — no defaults.
 
 **Sentence 2 — Posts + footings:**
-Describe the posts with the exact count embedded naturally: `exactly [N] evenly spaced [size] [species] posts on visible [footing type] with [hardware]`, then close with the anti-confabulation constraint in the same sentence: `one post at each vertex only, no extra supports, no doubled posts`. Include post height in feet.
+Describe the posts with the exact count embedded naturally: `exactly [N] evenly spaced [size] [species] posts on visible [footing type] with [hardware]`, then close with the anti-confabulation constraint in the same sentence: `one post at each vertex only, no extra supports, no doubled posts`.
 
 **Sentence 3 — Beam ring:**
-`Heavy [size] [species] beam ring with exactly [N] beam segments forming a closed [shape], [joinery description], [finish], [material character]`.
+`Heavy [size] [species] beam ring with exactly [N] beam segments forming a closed [shape], [joinery style], [finish], [material character]`. Joinery in plain language: `exposed timber joinery`, `mortise-and-tenon craftsmanship`.
 
 **Sentence 4 — Roof structure** (include all roof members that exist in the model):
-`Open timber-frame roof with exactly [N] primary hip rafters converging into [hub description]` — if jack rafters exist: `each roof bay containing exactly [count_per_bay] shorter jack rafters terminating into adjacent hip rafters, creating layered timber framing detail`. Include joinery: `traditional birdsmouth cuts`, `chamfered knee braces`. If purlins are absent, say so explicitly (`no purlins`).
+`Open timber-frame roof with exactly [N] primary hip rafters converging into [hub description]` — if jack rafters exist: `each roof bay containing exactly [count_per_bay] shorter jack rafters terminating into adjacent hip rafters, creating layered timber framing detail`. Include joinery in plain language: `traditional birdsmouth cuts`, `chamfered knee braces`. If purlins are absent, say so explicitly (`no purlins`).
 
-**Sentence 5 — Dimensions + what's absent:**
+**Sentence 5 — Pitch + overhang + what's absent:**
 `Roof pitch [pitch] with [overhang_in]-inch rafter tail overhangs, open sky between rafters` — then explicitly name what is NOT there: `no roofing material, no shingles, no ridge beam` and any other members absent from this design.
 
 **Sentence 6 — Camera:**
-`Camera angle: slightly elevated 3/4 corner perspective from one vertex of the [shape], [lens]mm lens, deep focus, all [N] posts fully visible and individually countable.`
+`Camera angle: slightly elevated 3/4 corner perspective from one vertex of the [shape], [focal-length]mm lens, deep focus, all [N] posts fully visible and individually countable.`
 
 **Sentence 7 — Environment:**
-Derive from `site.*` in structure.json. Include: setting type, hardscape, planting palette, lighting character. Keep it one sentence.
+Derive from `site.*` and `intent.jurisdiction` in structure.json. Include: setting type, hardscape, planting palette, lighting character. Keep it one sentence.
 
 **Sentence 8 — Style:**
-Close with style descriptors: `Photorealistic, luxury residential landscape design aesthetic, professional architectural rendering, natural proportions, realistic timber joinery, ultra-detailed wood texture, balanced composition, soft background depth of field.`
+Close with: `Photorealistic, luxury residential landscape design aesthetic, professional architectural rendering, natural proportions, realistic timber joinery, ultra-detailed wood texture, balanced composition, soft background depth of field.`
 
 ### Negative prompt — how to write it
 
