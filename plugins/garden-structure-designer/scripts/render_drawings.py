@@ -486,7 +486,7 @@ def render_perspective_view(structure: dict, filename: str) -> list[str]:
     # Under a 30/30 projection, the view axis is perfectly diagonal (X=Y=Z)
     _cam_raw = (1.0, 1.0, 1.0)
     _cam_len = math.sqrt(sum(c*c for c in _cam_raw))
-    CAM = tuple(c/_cam_len for c in _cam_raw)
+    CAM: tuple[float, float, float] = (_cam_raw[0]/_cam_len, _cam_raw[1]/_cam_len, _cam_raw[2]/_cam_len)
 
     # ── Collect all faces from all solids ────────────────────────────────────
     # Compute brace depth range for opacity normalisation
@@ -670,7 +670,6 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
     is_blueprint = "blueprint" in filename
     palette = _get_palette(structure, is_blueprint)
     stroke = palette["outline"]
-    coords = structure["geometry"]["svg_coordinates"]
     qty = structure["layout"]["post_count"]
 
     members = structure["members"]
