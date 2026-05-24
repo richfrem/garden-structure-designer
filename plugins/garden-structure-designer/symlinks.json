@@ -2292,6 +2292,48 @@
       "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/update_design_run_summary.py",
       "strategy": "symlink",
       "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/visual_svg_smoke_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/visual_svg_smoke_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/visual_svg_smoke_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/visual_svg_smoke_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/visual_svg_smoke_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/visual_svg_smoke_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/visual_svg_smoke_test.py",
+      "strategy": "symlink",
+      "description": ""
     }
   ]
 }

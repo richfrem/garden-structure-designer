@@ -27,10 +27,14 @@ STRUCTURE_SEED = {
             "count": 6, "nominal_size": "4x6",
             "actual_width_in": 3.5, "actual_depth_in": 5.5, "overhang_ft": 0.75
         },
-        "secondary_rafters": {"enabled": False}
+        "secondary_members": {
+            "jack_rafters": {"enabled": False, "count_per_side": 0},
+            "purlin_ring": {"enabled": False, "radius_ratio": 0.55}
+        }
     },
     "hub": {"type": "polygonal", "radius_ft": "auto",
-            "radius_min_ft": 0.6, "height_ratio_to_rafter": 2.5, "clearance_ft": 0.5},
+            "radius_min_ft": 0.6, "height_ratio_to_rafter": 2.5, "clearance_ft": 0.5,
+            "face_alignment": "mid_angle"},
     "bracing": {
         "enabled": True, "layout": "paired_per_post",
         "brace": {"nominal_size": "4x4", "actual_width_in": 3.5,
@@ -65,6 +69,23 @@ def test_regression_hex_4_12(tmp_path):
     assert geo["compound_cut"]["bevel_deg"] == 9.10
     assert geo["beam_ring"]["beam_miter_deg"] == 30.00
     assert geo["total_height"]["total_height_ft"] == 11.045
+
+def test_joints_payload_computed(tmp_path):
+    """Verify that the fabrication-grade joints payload is generated."""
+    p = tmp_path / "structure.json"
+    p.write_text(json.dumps(STRUCTURE_SEED))
+    compute_from_structure(str(p))
+    data = json.loads(p.read_text())
+    assert "joints" in data["geometry"]
+    joints = data["geometry"]["joints"]
+    assert "hub" in joints
+    assert "rafters" in joints
+    assert "braces" in joints
+    assert "beam_ring" in joints
+    # For a hex, we expect 6 hub face planes
+    assert len(joints["hub"]["face_planes"]["planes"]) == 6
+    # We expect rafter termination points for each post
+    assert len(joints["rafters"]["hub_termination_points"]["points"]) == 6
 
 def test_geometry_section_sealed_after_compute(tmp_path):
     p = tmp_path / "structure.json"

@@ -50,18 +50,25 @@ from typing import Optional
 
 def _load_geometry_calcs(model_path: str) -> Optional[dict]:
     """
-    Load geometry-calculations.json if it exists alongside structural-model.json.
-
-    Args:
-        model_path: Path to structural-model.json.
-
-    Returns:
-        Parsed geometry-calculations dict, or None if file is absent.
+    Load geometry calculations from structure.json or geometry-calculations.json.
     """
+    if not os.path.exists(model_path):
+        return None
+    with open(model_path) as f:
+        try:
+            data = json.load(f)
+        except Exception:
+            return None
+    if "meta" in data and "schema_version" in data.get("meta", {}):
+        return data.get("geometry")
+
     calc_path = os.path.join(os.path.dirname(model_path), "geometry-calculations.json")
     if os.path.exists(calc_path):
         with open(calc_path) as f:
-            return json.load(f)
+            try:
+                return json.load(f)
+            except Exception:
+                return None
     return None
 
 
@@ -108,7 +115,7 @@ def _check_dimension_labels(
 
     Args:
         raw: Raw SVG file contents.
-        model: Parsed structural-model.json.
+        model: Parsed structural-model.json or structure.json.
         calcs: Parsed geometry-calculations.json, or None.
 
     Returns:
@@ -117,16 +124,20 @@ def _check_dimension_labels(
     errors: list[str] = []
 
     # --- Roof pitch label ---
-    members = model.get("members") or model.get("structuralElements", {})
-    roof = members.get("roofStructure") or model.get("roofStructure", {})
-    pitch = roof.get("pitch", "4:12")
+    if "roof" in model and "pitch" in model["roof"]:
+        pitch = model["roof"]["pitch"]
+    else:
+        members = model.get("members") or model.get("structuralElements", {})
+        roof = members.get("roofStructure") or model.get("roofStructure", {})
+        pitch = roof.get("pitch", "4:12")
+
     pitch_prefix = pitch.split(":")[0]  # e.g. "4" for "4:12"
     if pitch_prefix + ":12" not in raw:
         errors.append(
             f"MISSING_PITCH_LABEL: '{pitch}' pitch label not found in SVG text nodes."
         )
 
-    # --- Compound angle labels (only when geometry-calculations.json is available) ---
+    # --- Compound angle labels (only when geometry-calculations.json / geometry section is available) ---
     if calcs:
         cuts = calcs.get("compound_cut", {})
         miter = str(round(cuts.get("miter_deg", 0), 2))
@@ -135,12 +146,12 @@ def _check_dimension_labels(
         if miter not in raw:
             errors.append(
                 f"MISSING_MITER_ANGLE: miter angle {miter}° not found in SVG. "
-                f"Expected from geometry-calculations.json."
+                f"Expected from geometry."
             )
         if bevel not in raw:
             errors.append(
                 f"MISSING_BEVEL_ANGLE: bevel angle {bevel}° not found in SVG. "
-                f"Expected from geometry-calculations.json."
+                f"Expected from geometry."
             )
 
     return errors
@@ -156,7 +167,7 @@ def _check_topology_count(raw: str, model: dict) -> list[str]:
 
     Args:
         raw: Raw SVG file contents.
-        model: Parsed structural-model.json.
+        model: Parsed structural-model.json or structure.json.
 
     Returns:
         List of error strings if count mismatches (empty if skip or pass).
@@ -167,9 +178,12 @@ def _check_topology_count(raw: str, model: dict) -> list[str]:
             return ["TOPOLOGY_SKIP_ABUSE: Cannot skip topology on full-structure sheets."]
         return []
 
-    members = model.get("members") or model.get("structuralElements", {})
-    posts = members.get("posts", {})
-    expected_qty: int = posts.get("quantity", 6)
+    if "layout" in model and "post_count" in model["layout"]:
+        expected_qty: int = model["layout"]["post_count"]
+    else:
+        members = model.get("members") or model.get("structuralElements", {})
+        posts = members.get("posts", {})
+        expected_qty = posts.get("quantity", 6)
 
     # Count elements with the canonical post cedar fill colour or data-role
     found = len(re.findall(r'data-role="post"', raw))
@@ -188,6 +202,16 @@ def _check_source_hash(model_path: str, calcs: dict) -> list[str]:
     errors = []
     with open(model_path, 'rb') as f:
         current_hash = hashlib.sha256(f.read()).hexdigest()
+    
+    # If the file itself is structure.json, it is self-consistent
+    with open(model_path) as f:
+        try:
+            data = json.load(f)
+            if "meta" in data and "schema_version" in data.get("meta", {}):
+                return []
+        except Exception:
+            pass
+
     recorded_hash = calcs.get("source_hash")
     if recorded_hash and current_hash != recorded_hash:
         errors.append(

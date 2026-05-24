@@ -90,7 +90,7 @@ Open with a `CRITICAL GEOMETRY LOCK — NON-NEGOTIABLE:` block using the CAD-SPE
 
 **2. Scene & Setting**
 
-Derive from `design-spec.json` if present. Otherwise use reasonable defaults for the project context. Include: location/climate, garden character, time of day, lighting conditions.
+Derive from `structure.json` if present. Otherwise use reasonable defaults for the project context. Include: location/climate, garden character, time of day, lighting conditions.
 
 **3. Structure (Must Be Geometrically Correct & Buildable)**
 

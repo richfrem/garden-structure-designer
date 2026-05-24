@@ -61,13 +61,6 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
 10. Call `shop-blueprint-generator` → produces heavily dimensioned carpenter drawings.
     - All angles MUST come from `structure.json` geometry section. Verify this is the case before proceeding.
     - Each SVG validated by `svg_validator.py`.
-
-After geometry_engine.py seals structure.json, run the M1 compatibility shim to keep legacy validators functional:
-```bash
-python3 plugins/garden-structure-designer/scripts/emit_legacy_views.py \
-  context/staging/structure.json
-```
-
 ### Stage 5 — Blueprint QA Gate
 11. Launch an independent sub-agent via `gemini-cli` using **gemini-3.1-pro-preview**, adopting the `validation-agent` profile, to run the full dual-channel QA pass:
     - Static XML check on all drawing outputs.
@@ -155,8 +148,13 @@ The orchestrator must **not** emit `PASS`, `READY`, or `DESIGN COMPLETE` unless 
 
 This gate exists because XML-valid SVGs can still be visually useless. Passing `svg_validator.py` alone is not sufficient.
 
-### Stage 6 — Builder Documents
-13. Call `builder-docs-generator` (new skill) to produce:
+### Stage 6 — Deterministic Fabrication Cuts & Builder Documents
+13. Run `fabrication_builder.py` to generate the exact, compound saw-cut settings and miter/bevel angles for all members:
+    ```bash
+    python3 plugins/garden-structure-designer/scripts/fabrication_builder.py context/staging/structure.json
+    ```
+    This generates the machine-readable fabrication cut list at `outputs/fabrication/cut-list.json`.
+14. Call `builder-docs-generator` (new skill) to produce:
     - `outputs/budget-estimate.md` — sourced from `structure.json` BF totals and regional material costs.
     - `outputs/lumber-purchase-list.md` — ordered by member type with standard stock lengths.
     - `outputs/assembly-guide.md` — phase-by-phase site assembly sequence.

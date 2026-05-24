@@ -49,6 +49,9 @@ _STRUCTURE: dict = {
             "actual_depth_in": 5.5,
             "overhang_ft": 0.5,
         },
+        "secondary_rafters": {
+            "enabled": True,
+        },
     },
     "hub": {"radius_min_ft": 0.6},
     "foundation": {"caisson_diameter_in": 12.0, "caisson_depth_in": 24.0},

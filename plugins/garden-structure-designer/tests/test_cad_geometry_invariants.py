@@ -179,10 +179,10 @@ def test_projected_labels_do_not_overlap_major_faces():
 
     # Render to temp file
     scripts_dir = Path(__file__).parent.parent / "scripts"
-    model_path  = Path(__file__).parent.parent.parent.parent / "context" / "staging" / "structural-model.json"
+    model_path  = Path(__file__).parent.parent.parent.parent / "context" / "staging" / "structure.json"
 
     if not model_path.exists():
-        pytest.skip("structural-model.json not present — skipping annotation layout test")
+        pytest.skip("structure.json not present — skipping annotation layout test")
 
     with tempfile.TemporaryDirectory() as tmp:
         env = os.environ.copy()
@@ -252,10 +252,10 @@ def test_isometric_has_expected_semantic_counts():
     import subprocess
 
     scripts_dir = Path(__file__).parent.parent / "scripts"
-    model_path  = Path(__file__).parent.parent.parent.parent / "context" / "staging" / "structural-model.json"
+    model_path  = Path(__file__).parent.parent.parent.parent / "context" / "staging" / "structure.json"
 
     if not model_path.exists():
-        pytest.skip("structural-model.json not present")
+        pytest.skip("structure.json not present")
 
     iso_path = model_path.parent.parent.parent / "outputs" / "drawing-isometric-view.svg"
     if not iso_path.exists():
