@@ -265,7 +265,10 @@ def test_isometric_has_expected_semantic_counts():
 
     # Count unique data-id tags per role (first-face tagging strategy)
     def count_unique(role: str) -> int:
-        return len(set(re.findall(rf'data-role="{role}" data-id="([^"]+)"', svg)))
+        ids = set(re.findall(rf'data-role="{role}" data-id="([^"]+)"', svg))
+        if role == "rafter":
+            ids = {i for i in ids if i.startswith("R")}
+        return len(ids)
 
     qty = 6   # hex pergola
     assert count_unique("post")   == qty, f"Expected {qty} posts, got {count_unique('post')}"

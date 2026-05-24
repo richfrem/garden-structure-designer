@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/visual-smoke-report/1.0",
-  "generated_at": "2026-05-24T06:45:29.179597+00:00",
+  "generated_at": "2026-05-24T07:49:33.335074+00:00",
   "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
   "structure_path": "context/staging/structure.json",
   "svg_dir": "outputs",
@@ -18,10 +18,10 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.11999791666666666,
+        "non_bg_ratio": 0.15226041666666668,
         "bbox_fill_ratio": 0.9439171875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.042869897959183674
+        "hub_edge_density": 0.058150510204081636
       },
       "failures": [],
       "warnings": [],
@@ -45,7 +45,7 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.15577916666666666,
+        "non_bg_ratio": 0.16285,
         "bbox_fill_ratio": 0.9439171875,
         "top_left_clustered": false
       },
@@ -62,10 +62,10 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.18527135416666668,
+        "non_bg_ratio": 0.20086770833333334,
         "bbox_fill_ratio": 0.9439171875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.08987244897959183
+        "hub_edge_density": 0.11072704081632653
       },
       "failures": [],
       "warnings": [],
@@ -89,10 +89,10 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.18538385416666667,
+        "non_bg_ratio": 0.20098020833333333,
         "bbox_fill_ratio": 0.9439171875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.08987244897959183
+        "hub_edge_density": 0.11072704081632653
       },
       "failures": [],
       "warnings": [],
@@ -116,10 +116,10 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.12445625,
+        "non_bg_ratio": 0.156746875,
         "bbox_fill_ratio": 0.9467546875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.05714285714285714
+        "hub_edge_density": 0.07139030612244898
       },
       "failures": [],
       "warnings": [],
@@ -143,7 +143,7 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.08905885416666667,
+        "non_bg_ratio": 0.10009583333333333,
         "bbox_fill_ratio": 0.9467546875,
         "top_left_clustered": false
       },
@@ -160,10 +160,10 @@
           1600,
           1200
         ],
-        "non_bg_ratio": 0.14230052083333333,
+        "non_bg_ratio": 0.153309375,
         "bbox_fill_ratio": 0.9467546875,
         "top_left_clustered": false,
-        "hub_edge_density": 0.08655612244897959
+        "hub_edge_density": 0.11071428571428571
       },
       "failures": [],
       "warnings": [],

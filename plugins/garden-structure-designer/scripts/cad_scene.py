@@ -477,7 +477,15 @@ def _build_scene_legacy(
         apothem = math.sqrt(mx*mx + my*my)
         slope_perp = roof_r / (apothem - hub_r * math.cos(math.pi / qty))
         
-        for fraction, tag_suffix in [(1.0/3.0, "a"), (2.0/3.0, "b")]:
+        sec_spec = model.get("roof", {}).get("secondary_rafters", {})
+        count_per_side = sec_spec.get("count_per_side", 2)
+        fractions_list = []
+        for j in range(count_per_side):
+            fraction = (j + 1.0) / (count_per_side + 1.0)
+            tag_suffix = chr(ord('a') + j)
+            fractions_list.append((fraction, tag_suffix))
+
+        for fraction, tag_suffix in fractions_list:
             # Seat point on the beam
             sx = px1 + bx * fraction
             sy = py1 + by * fraction
@@ -535,9 +543,9 @@ def _build_scene_legacy(
 
     # Purlin Ring — horizontal collar/purlin timbers connecting the hip rafters
     if model.get("members", {}).get("purlins", {}).get("enabled", False):
-        s_purlin = 0.55
-        Z_PURLIN = Z_BEAM_TOP + roof_r * s_purlin
         purlins_spec = model.get("members", {}).get("purlins", {})
+        s_purlin = purlins_spec.get("height_fraction", 0.55)
+        Z_PURLIN = Z_BEAM_TOP + roof_r * s_purlin
         PURLIN_HW = (purlins_spec.get("width_in", 3.5) / 12.0) / 2.0
         PURLIN_HD = (purlins_spec.get("depth_in", 3.5) / 12.0) / 2.0
     
@@ -810,7 +818,11 @@ def _build_scene_from_structure(
             apothem = math.sqrt(mx*mx + my*my)
             slope_perp = roof_r / (apothem - hub_r * math.cos(math.pi / qty))
 
-            for fraction, tag_suffix in [(1.0/3.0, "a"), (2.0/3.0, "b")]:
+            sec_spec = roof.get("secondary_rafters", {})
+            count_per_side = sec_spec.get("count_per_side", 2)
+            for j in range(count_per_side):
+                fraction = (j + 1.0) / (count_per_side + 1.0)
+                tag_suffix = chr(ord('a') + j)
                 sx = px1 + bx * fraction
                 sy = py1 + by * fraction
 
@@ -853,7 +865,7 @@ def _build_scene_from_structure(
                     ))
 
     # Purlin Ring — horizontal collar/purlin timbers connecting the hip rafters
-    s_purlin = 0.55
+    s_purlin = purlins_spec.get("height_fraction", 0.55)
     Z_PURLIN = Z_BEAM_TOP + roof_r * s_purlin
     PURLIN_HW = (purlins_spec.get("width_in", 3.5) / 12.0) / 2.0
     PURLIN_HD = (purlins_spec.get("depth_in", 3.5) / 12.0) / 2.0

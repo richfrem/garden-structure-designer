@@ -4,7 +4,7 @@
     "lifecycle": "GEOMETRY_SEALED",
     "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
     "created_at": "2026-05-24T05:00:22.487718+00:00",
-    "updated_at": "2026-05-24T06:45:28.879549+00:00"
+    "updated_at": "2026-05-24T07:28:31.100243+00:00"
   },
   "intent": {
     "jurisdiction": "BC_SAANICH",
@@ -33,6 +33,13 @@
       "actual_width_in": 6.0,
       "actual_depth_in": 12.0,
       "cut_length_ft": 5.0
+    },
+    "purlins": {
+      "enabled": true,
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "height_fraction": 0.55
     }
   },
   "roof": {
@@ -47,7 +54,12 @@
       "overhang_ft": 0.75
     },
     "secondary_rafters": {
-      "enabled": false
+      "enabled": true,
+      "count": 6,
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "count_per_side": 2
     }
   },
   "hub": {

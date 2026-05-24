@@ -1,13 +1,13 @@
 # Visual Smoke Test Report (SVG -> Browser Render)
 
 **Schema:** garden-structure-designer/visual-smoke-report/1.0  
-**Generated:** 2026-05-24T06:45:29.179597+00:00  
+**Generated:** 2026-05-24T07:49:33.335074+00:00  
 **Source Hash:** `6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61`  
 **Structure:** `context/staging/structure.json`  
 **SVG Dir:** `outputs`  
 **Out Dir:** `outputs/visual-smoke`  
 **Baseline Dir:** `None`  
-**Mode:** no-baseline  
+**Mode:** fail-on-regression  
 
 **Run Command:**
 `python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py --structure context/staging/structure.json --svg-dir outputs`
@@ -39,10 +39,10 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 440, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1200`
+- non_bg_ratio: `0.1523`
 - bbox_fill_ratio: `0.9439`
 - top_left_clustered: `False`
-- hub_edge_density: `0.0429`
+- hub_edge_density: `0.0582`
 
 #### Failures
 - *(none)*
@@ -57,7 +57,7 @@ All sheets rendered and heuristics passed.
 **PNG:** `outputs/visual-smoke/drawing-elevation-view.png`  
 
 #### Metrics
-- non_bg_ratio: `0.1558`
+- non_bg_ratio: `0.1628`
 - bbox_fill_ratio: `0.9439`
 - top_left_clustered: `False`
 
@@ -76,10 +76,10 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 307, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1853`
+- non_bg_ratio: `0.2009`
 - bbox_fill_ratio: `0.9439`
 - top_left_clustered: `False`
-- hub_edge_density: `0.0899`
+- hub_edge_density: `0.1107`
 
 #### Failures
 - *(none)*
@@ -96,10 +96,10 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 307, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1854`
+- non_bg_ratio: `0.2010`
 - bbox_fill_ratio: `0.9439`
 - top_left_clustered: `False`
-- hub_edge_density: `0.0899`
+- hub_edge_density: `0.1107`
 
 #### Failures
 - *(none)*
@@ -116,10 +116,10 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 440, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1245`
+- non_bg_ratio: `0.1567`
 - bbox_fill_ratio: `0.9468`
 - top_left_clustered: `False`
-- hub_edge_density: `0.0571`
+- hub_edge_density: `0.0714`
 
 #### Failures
 - *(none)*
@@ -134,7 +134,7 @@ All sheets rendered and heuristics passed.
 **PNG:** `outputs/visual-smoke/blueprint-elevation.png`  
 
 #### Metrics
-- non_bg_ratio: `0.0891`
+- non_bg_ratio: `0.1001`
 - bbox_fill_ratio: `0.9468`
 - top_left_clustered: `False`
 
@@ -153,10 +153,10 @@ All sheets rendered and heuristics passed.
 **Hub Clip (px):** `[660, 307, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1423`
+- non_bg_ratio: `0.1533`
 - bbox_fill_ratio: `0.9468`
 - top_left_clustered: `False`
-- hub_edge_density: `0.0866`
+- hub_edge_density: `0.1107`
 
 #### Failures
 - *(none)*

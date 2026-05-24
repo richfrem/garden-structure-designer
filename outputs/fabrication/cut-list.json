@@ -1,0 +1,2315 @@
+{
+  "schema": "garden-structure-designer/fabrication-cut-list/1.0",
+  "generated_at": "2026-05-24T07:31:27.225845+00:00",
+  "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
+  "structure_path": "context/staging/structure.json",
+  "units": "feet",
+  "angle_units": "deg",
+  "assumptions": [
+    "Saw convention: miter=rotation about board z-axis; bevel=tilt introducing z component in cut normal.",
+    "Board local frame derived from member axis and global up; z-axis aligns with member depth axis."
+  ],
+  "tolerances": {
+    "length_ft": 0.01,
+    "angle_deg": 0.1,
+    "plane_offset_ft": 0.0052,
+    "kerf_in": 0.125
+  },
+  "members": [
+    {
+      "id": "P1",
+      "role": "post",
+      "nominal_size": "6x6",
+      "actual_width_in": 5.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          4.875,
+          0.0,
+          0.0
+        ],
+        "end": [
+          4.875,
+          0.0,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 7.42,
+        "order_length_ft": 8
+      },
+      "cuts": [
+        {
+          "cut_id": "P1-START",
+          "end": "start",
+          "type": "square_cut",
+          "mates_to": "grade_footing",
+          "plane": {
+            "point": [
+              4.875,
+              0.0,
+              0.0
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              -1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "P1-END",
+          "end": "end",
+          "type": "square_cut",
+          "mates_to": "beam_soffit",
+          "plane": {
+            "point": [
+              4.875,
+              0.0,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "P2",
+      "role": "post",
+      "nominal_size": "6x6",
+      "actual_width_in": 5.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          2.4375,
+          4.2219,
+          0.0
+        ],
+        "end": [
+          2.4375,
+          4.2219,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 7.42,
+        "order_length_ft": 8
+      },
+      "cuts": [
+        {
+          "cut_id": "P2-START",
+          "end": "start",
+          "type": "square_cut",
+          "mates_to": "grade_footing",
+          "plane": {
+            "point": [
+              2.4375,
+              4.2219,
+              0.0
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              -1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "P2-END",
+          "end": "end",
+          "type": "square_cut",
+          "mates_to": "beam_soffit",
+          "plane": {
+            "point": [
+              2.4375,
+              4.2219,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "P3",
+      "role": "post",
+      "nominal_size": "6x6",
+      "actual_width_in": 5.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          -2.4375,
+          4.2219,
+          0.0
+        ],
+        "end": [
+          -2.4375,
+          4.2219,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 7.42,
+        "order_length_ft": 8
+      },
+      "cuts": [
+        {
+          "cut_id": "P3-START",
+          "end": "start",
+          "type": "square_cut",
+          "mates_to": "grade_footing",
+          "plane": {
+            "point": [
+              -2.4375,
+              4.2219,
+              0.0
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              -1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "P3-END",
+          "end": "end",
+          "type": "square_cut",
+          "mates_to": "beam_soffit",
+          "plane": {
+            "point": [
+              -2.4375,
+              4.2219,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "P4",
+      "role": "post",
+      "nominal_size": "6x6",
+      "actual_width_in": 5.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          -4.875,
+          0.0,
+          0.0
+        ],
+        "end": [
+          -4.875,
+          0.0,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 7.42,
+        "order_length_ft": 8
+      },
+      "cuts": [
+        {
+          "cut_id": "P4-START",
+          "end": "start",
+          "type": "square_cut",
+          "mates_to": "grade_footing",
+          "plane": {
+            "point": [
+              -4.875,
+              0.0,
+              0.0
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              -1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "P4-END",
+          "end": "end",
+          "type": "square_cut",
+          "mates_to": "beam_soffit",
+          "plane": {
+            "point": [
+              -4.875,
+              0.0,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "P5",
+      "role": "post",
+      "nominal_size": "6x6",
+      "actual_width_in": 5.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          -2.4375,
+          -4.2219,
+          0.0
+        ],
+        "end": [
+          -2.4375,
+          -4.2219,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 7.42,
+        "order_length_ft": 8
+      },
+      "cuts": [
+        {
+          "cut_id": "P5-START",
+          "end": "start",
+          "type": "square_cut",
+          "mates_to": "grade_footing",
+          "plane": {
+            "point": [
+              -2.4375,
+              -4.2219,
+              0.0
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              -1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "P5-END",
+          "end": "end",
+          "type": "square_cut",
+          "mates_to": "beam_soffit",
+          "plane": {
+            "point": [
+              -2.4375,
+              -4.2219,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "P6",
+      "role": "post",
+      "nominal_size": "6x6",
+      "actual_width_in": 5.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          2.4375,
+          -4.2219,
+          0.0
+        ],
+        "end": [
+          2.4375,
+          -4.2219,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 7.42,
+        "order_length_ft": 8
+      },
+      "cuts": [
+        {
+          "cut_id": "P6-START",
+          "end": "start",
+          "type": "square_cut",
+          "mates_to": "grade_footing",
+          "plane": {
+            "point": [
+              2.4375,
+              -4.2219,
+              0.0
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              -1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "P6-END",
+          "end": "end",
+          "type": "square_cut",
+          "mates_to": "beam_soffit",
+          "plane": {
+            "point": [
+              2.4375,
+              -4.2219,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "role": "beam",
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "axis": {
+        "start": [
+          4.875,
+          0.0,
+          7.92
+        ],
+        "end": [
+          2.4375,
+          4.2219,
+          7.92
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 4.875,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "B1-START",
+          "end": "start",
+          "type": "beam_miter",
+          "mates_to": "beam_B6",
+          "plane": {
+            "point": [
+              4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              -1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "B1-END",
+          "end": "end",
+          "type": "beam_miter",
+          "mates_to": "beam_B2",
+          "plane": {
+            "point": [
+              2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "role": "beam",
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "axis": {
+        "start": [
+          2.4375,
+          4.2219,
+          7.92
+        ],
+        "end": [
+          -2.4375,
+          4.2219,
+          7.92
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 4.875,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "B2-START",
+          "end": "start",
+          "type": "beam_miter",
+          "mates_to": "beam_B1",
+          "plane": {
+            "point": [
+              2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "B2-END",
+          "end": "end",
+          "type": "beam_miter",
+          "mates_to": "beam_B3",
+          "plane": {
+            "point": [
+              -2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "B3",
+      "role": "beam",
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "axis": {
+        "start": [
+          -2.4375,
+          4.2219,
+          7.92
+        ],
+        "end": [
+          -4.875,
+          0.0,
+          7.92
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 4.875,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "B3-START",
+          "end": "start",
+          "type": "beam_miter",
+          "mates_to": "beam_B2",
+          "plane": {
+            "point": [
+              -2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "B3-END",
+          "end": "end",
+          "type": "beam_miter",
+          "mates_to": "beam_B4",
+          "plane": {
+            "point": [
+              -4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "B4",
+      "role": "beam",
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "axis": {
+        "start": [
+          -4.875,
+          0.0,
+          7.92
+        ],
+        "end": [
+          -2.4375,
+          -4.2219,
+          7.92
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 4.875,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "B4-START",
+          "end": "start",
+          "type": "beam_miter",
+          "mates_to": "beam_B3",
+          "plane": {
+            "point": [
+              -4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "B4-END",
+          "end": "end",
+          "type": "beam_miter",
+          "mates_to": "beam_B5",
+          "plane": {
+            "point": [
+              -2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "B5",
+      "role": "beam",
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "axis": {
+        "start": [
+          -2.4375,
+          -4.2219,
+          7.92
+        ],
+        "end": [
+          2.4375,
+          -4.2219,
+          7.92
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 4.875,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "B5-START",
+          "end": "start",
+          "type": "beam_miter",
+          "mates_to": "beam_B4",
+          "plane": {
+            "point": [
+              -2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "B5-END",
+          "end": "end",
+          "type": "beam_miter",
+          "mates_to": "beam_B6",
+          "plane": {
+            "point": [
+              2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "B6",
+      "role": "beam",
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "axis": {
+        "start": [
+          2.4375,
+          -4.2219,
+          7.92
+        ],
+        "end": [
+          4.875,
+          0.0,
+          7.92
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 4.875,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "B6-START",
+          "end": "start",
+          "type": "beam_miter",
+          "mates_to": "beam_B5",
+          "plane": {
+            "point": [
+              2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        },
+        {
+          "cut_id": "B6-END",
+          "end": "end",
+          "type": "beam_miter",
+          "mates_to": "beam_B1",
+          "plane": {
+            "point": [
+              4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              -1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 30.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "R1",
+      "role": "rafter_primary",
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          5.625,
+          0.0,
+          8.371
+        ],
+        "end": [
+          0.75,
+          0.0,
+          10.291
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 5.24,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "R1-END-HUB",
+          "end": "end",
+          "type": "compound_miter",
+          "mates_to": "hub_face_H1",
+          "plane": {
+            "point": [
+              0.75,
+              0.0,
+              10.045
+            ],
+            "normal": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 28.71,
+            "bevel_deg": 9.1
+          }
+        },
+        {
+          "cut_id": "R1-SEAT-BIRDSMOUTH",
+          "end": "start",
+          "type": "birdsmouth",
+          "mates_to": "beam_top_B1",
+          "seat_depth_ft": 0.1528,
+          "subcuts": [
+            {
+              "name": "plumb_cut",
+              "plane": {
+                "point": [
+                  4.875,
+                  0.0,
+                  8.666
+                ],
+                "normal": [
+                  1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 21.5
+              }
+            },
+            {
+              "name": "seat_cut",
+              "plane": {
+                "point": [
+                  4.875,
+                  0.0,
+                  8.514
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 68.5
+              }
+            }
+          ]
+        },
+        {
+          "cut_id": "R1-TAIL",
+          "end": "start",
+          "type": "plumb_tail",
+          "style": "square_cut",
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "role": "rafter_primary",
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          2.8125,
+          4.8714,
+          8.371
+        ],
+        "end": [
+          0.375,
+          0.6495,
+          10.291
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 5.24,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "R2-END-HUB",
+          "end": "end",
+          "type": "compound_miter",
+          "mates_to": "hub_face_H2",
+          "plane": {
+            "point": [
+              0.375,
+              0.6495,
+              10.045
+            ],
+            "normal": [
+              0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 28.71,
+            "bevel_deg": 9.1
+          }
+        },
+        {
+          "cut_id": "R2-SEAT-BIRDSMOUTH",
+          "end": "start",
+          "type": "birdsmouth",
+          "mates_to": "beam_top_B2",
+          "seat_depth_ft": 0.1528,
+          "subcuts": [
+            {
+              "name": "plumb_cut",
+              "plane": {
+                "point": [
+                  2.4375,
+                  4.2219,
+                  8.666
+                ],
+                "normal": [
+                  0.5,
+                  0.866,
+                  0.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 21.5
+              }
+            },
+            {
+              "name": "seat_cut",
+              "plane": {
+                "point": [
+                  2.4375,
+                  4.2219,
+                  8.514
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 68.5
+              }
+            }
+          ]
+        },
+        {
+          "cut_id": "R2-TAIL",
+          "end": "start",
+          "type": "plumb_tail",
+          "style": "square_cut",
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "role": "rafter_primary",
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          -2.8125,
+          4.8714,
+          8.371
+        ],
+        "end": [
+          -0.375,
+          0.6495,
+          10.291
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 5.24,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "R3-END-HUB",
+          "end": "end",
+          "type": "compound_miter",
+          "mates_to": "hub_face_H3",
+          "plane": {
+            "point": [
+              -0.375,
+              0.6495,
+              10.045
+            ],
+            "normal": [
+              -0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 28.71,
+            "bevel_deg": 9.1
+          }
+        },
+        {
+          "cut_id": "R3-SEAT-BIRDSMOUTH",
+          "end": "start",
+          "type": "birdsmouth",
+          "mates_to": "beam_top_B3",
+          "seat_depth_ft": 0.1528,
+          "subcuts": [
+            {
+              "name": "plumb_cut",
+              "plane": {
+                "point": [
+                  -2.4375,
+                  4.2219,
+                  8.666
+                ],
+                "normal": [
+                  -0.5,
+                  0.866,
+                  0.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 21.5
+              }
+            },
+            {
+              "name": "seat_cut",
+              "plane": {
+                "point": [
+                  -2.4375,
+                  4.2219,
+                  8.514
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 68.5
+              }
+            }
+          ]
+        },
+        {
+          "cut_id": "R3-TAIL",
+          "end": "start",
+          "type": "plumb_tail",
+          "style": "square_cut",
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "R4",
+      "role": "rafter_primary",
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          -5.625,
+          0.0,
+          8.371
+        ],
+        "end": [
+          -0.75,
+          0.0,
+          10.291
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 5.24,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "R4-END-HUB",
+          "end": "end",
+          "type": "compound_miter",
+          "mates_to": "hub_face_H4",
+          "plane": {
+            "point": [
+              -0.75,
+              0.0,
+              10.045
+            ],
+            "normal": [
+              -1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 28.71,
+            "bevel_deg": 9.1
+          }
+        },
+        {
+          "cut_id": "R4-SEAT-BIRDSMOUTH",
+          "end": "start",
+          "type": "birdsmouth",
+          "mates_to": "beam_top_B4",
+          "seat_depth_ft": 0.1528,
+          "subcuts": [
+            {
+              "name": "plumb_cut",
+              "plane": {
+                "point": [
+                  -4.875,
+                  0.0,
+                  8.666
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 21.5
+              }
+            },
+            {
+              "name": "seat_cut",
+              "plane": {
+                "point": [
+                  -4.875,
+                  0.0,
+                  8.514
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 68.5
+              }
+            }
+          ]
+        },
+        {
+          "cut_id": "R4-TAIL",
+          "end": "start",
+          "type": "plumb_tail",
+          "style": "square_cut",
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "R5",
+      "role": "rafter_primary",
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          -2.8125,
+          -4.8714,
+          8.371
+        ],
+        "end": [
+          -0.375,
+          -0.6495,
+          10.291
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 5.24,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "R5-END-HUB",
+          "end": "end",
+          "type": "compound_miter",
+          "mates_to": "hub_face_H5",
+          "plane": {
+            "point": [
+              -0.375,
+              -0.6495,
+              10.045
+            ],
+            "normal": [
+              -0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 28.71,
+            "bevel_deg": 9.1
+          }
+        },
+        {
+          "cut_id": "R5-SEAT-BIRDSMOUTH",
+          "end": "start",
+          "type": "birdsmouth",
+          "mates_to": "beam_top_B5",
+          "seat_depth_ft": 0.1528,
+          "subcuts": [
+            {
+              "name": "plumb_cut",
+              "plane": {
+                "point": [
+                  -2.4375,
+                  -4.2219,
+                  8.666
+                ],
+                "normal": [
+                  -0.5,
+                  -0.866,
+                  0.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 21.5
+              }
+            },
+            {
+              "name": "seat_cut",
+              "plane": {
+                "point": [
+                  -2.4375,
+                  -4.2219,
+                  8.514
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 68.5
+              }
+            }
+          ]
+        },
+        {
+          "cut_id": "R5-TAIL",
+          "end": "start",
+          "type": "plumb_tail",
+          "style": "square_cut",
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "R6",
+      "role": "rafter_primary",
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "axis": {
+        "start": [
+          2.8125,
+          -4.8714,
+          8.371
+        ],
+        "end": [
+          0.375,
+          -0.6495,
+          10.291
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 5.24,
+        "order_length_ft": 6
+      },
+      "cuts": [
+        {
+          "cut_id": "R6-END-HUB",
+          "end": "end",
+          "type": "compound_miter",
+          "mates_to": "hub_face_H6",
+          "plane": {
+            "point": [
+              0.375,
+              -0.6495,
+              10.045
+            ],
+            "normal": [
+              0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 28.71,
+            "bevel_deg": 9.1
+          }
+        },
+        {
+          "cut_id": "R6-SEAT-BIRDSMOUTH",
+          "end": "start",
+          "type": "birdsmouth",
+          "mates_to": "beam_top_B6",
+          "seat_depth_ft": 0.1528,
+          "subcuts": [
+            {
+              "name": "plumb_cut",
+              "plane": {
+                "point": [
+                  2.4375,
+                  -4.2219,
+                  8.666
+                ],
+                "normal": [
+                  0.5,
+                  -0.866,
+                  0.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 21.5
+              }
+            },
+            {
+              "name": "seat_cut",
+              "plane": {
+                "point": [
+                  2.4375,
+                  -4.2219,
+                  8.514
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "angles": {
+                "miter_deg": 0.0,
+                "bevel_deg": 68.5
+              }
+            }
+          ]
+        },
+        {
+          "cut_id": "R6-TAIL",
+          "end": "start",
+          "type": "plumb_tail",
+          "style": "square_cut",
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K1A",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          4.7604,
+          0.1985,
+          5.652
+        ],
+        "end": [
+          3.8765,
+          1.7294,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K1A-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P1",
+          "plane": {
+            "point": [
+              4.7604,
+              0.1985,
+              5.652
+            ],
+            "normal": [
+              0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 90.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K1A-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B1",
+          "plane": {
+            "point": [
+              3.8765,
+              1.7294,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K1B",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          4.7604,
+          -0.1985,
+          5.652
+        ],
+        "end": [
+          3.8765,
+          -1.7294,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K1B-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P1",
+          "plane": {
+            "point": [
+              4.7604,
+              -0.1985,
+              5.652
+            ],
+            "normal": [
+              0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 90.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K1B-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B1",
+          "plane": {
+            "point": [
+              3.8765,
+              -1.7294,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K2A",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          2.2083,
+          4.2219,
+          5.652
+        ],
+        "end": [
+          0.4406,
+          4.2219,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K2A-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P2",
+          "plane": {
+            "point": [
+              2.2083,
+              4.2219,
+              5.652
+            ],
+            "normal": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K2A-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B2",
+          "plane": {
+            "point": [
+              0.4406,
+              4.2219,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K2B",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          2.5521,
+          4.0234,
+          5.652
+        ],
+        "end": [
+          3.436,
+          2.4925,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K2B-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P2",
+          "plane": {
+            "point": [
+              2.5521,
+              4.0234,
+              5.652
+            ],
+            "normal": [
+              -0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 90.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K2B-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B2",
+          "plane": {
+            "point": [
+              3.436,
+              2.4925,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K3A",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          -2.5521,
+          4.0234,
+          5.652
+        ],
+        "end": [
+          -3.436,
+          2.4925,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K3A-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P3",
+          "plane": {
+            "point": [
+              -2.5521,
+              4.0234,
+              5.652
+            ],
+            "normal": [
+              0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 90.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K3A-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B3",
+          "plane": {
+            "point": [
+              -3.436,
+              2.4925,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K3B",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          -2.2083,
+          4.2219,
+          5.652
+        ],
+        "end": [
+          -0.4406,
+          4.2219,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K3B-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P3",
+          "plane": {
+            "point": [
+              -2.2083,
+              4.2219,
+              5.652
+            ],
+            "normal": [
+              -1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K3B-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B3",
+          "plane": {
+            "point": [
+              -0.4406,
+              4.2219,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K4A",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          -4.7604,
+          -0.1985,
+          5.652
+        ],
+        "end": [
+          -3.8765,
+          -1.7294,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K4A-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P4",
+          "plane": {
+            "point": [
+              -4.7604,
+              -0.1985,
+              5.652
+            ],
+            "normal": [
+              -0.5,
+              0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 90.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K4A-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B4",
+          "plane": {
+            "point": [
+              -3.8765,
+              -1.7294,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K4B",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          -4.7604,
+          0.1985,
+          5.652
+        ],
+        "end": [
+          -3.8765,
+          1.7294,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K4B-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P4",
+          "plane": {
+            "point": [
+              -4.7604,
+              0.1985,
+              5.652
+            ],
+            "normal": [
+              -0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 90.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K4B-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B4",
+          "plane": {
+            "point": [
+              -3.8765,
+              1.7294,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K5A",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          -2.2083,
+          -4.2219,
+          5.652
+        ],
+        "end": [
+          -0.4406,
+          -4.2219,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K5A-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P5",
+          "plane": {
+            "point": [
+              -2.2083,
+              -4.2219,
+              5.652
+            ],
+            "normal": [
+              -1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K5A-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B5",
+          "plane": {
+            "point": [
+              -0.4406,
+              -4.2219,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K5B",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          -2.5521,
+          -4.0234,
+          5.652
+        ],
+        "end": [
+          -3.436,
+          -2.4925,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K5B-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P5",
+          "plane": {
+            "point": [
+              -2.5521,
+              -4.0234,
+              5.652
+            ],
+            "normal": [
+              0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 90.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K5B-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B5",
+          "plane": {
+            "point": [
+              -3.436,
+              -2.4925,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K6A",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          2.5521,
+          -4.0234,
+          5.652
+        ],
+        "end": [
+          3.436,
+          -2.4925,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K6A-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P6",
+          "plane": {
+            "point": [
+              2.5521,
+              -4.0234,
+              5.652
+            ],
+            "normal": [
+              -0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 90.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K6A-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B6",
+          "plane": {
+            "point": [
+              3.436,
+              -2.4925,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "K6B",
+      "role": "brace",
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "axis": {
+        "start": [
+          2.2083,
+          -4.2219,
+          5.652
+        ],
+        "end": [
+          0.4406,
+          -4.2219,
+          7.42
+        ]
+      },
+      "stock": {
+        "cut_length_ft": 2.5,
+        "order_length_ft": 4
+      },
+      "cuts": [
+        {
+          "cut_id": "K6B-START-POST",
+          "end": "start",
+          "type": "brace_miter",
+          "mates_to": "post_P6",
+          "plane": {
+            "point": [
+              2.2083,
+              -4.2219,
+              5.652
+            ],
+            "normal": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        },
+        {
+          "cut_id": "K6B-END-BEAM",
+          "end": "end",
+          "type": "brace_miter",
+          "mates_to": "beam_B6",
+          "plane": {
+            "point": [
+              0.4406,
+              -4.2219,
+              7.42
+            ],
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "angles": {
+            "miter_deg": 0.0,
+            "bevel_deg": 45.0
+          }
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "counts": {
+      "posts": 6,
+      "beams": 6,
+      "rafters_primary": 6,
+      "braces": 12
+    },
+    "cut_counts": {
+      "post_crosscut": 12,
+      "beam_miter": 12,
+      "compound_miter": 6,
+      "birdsmouth": 6,
+      "brace_miter": 24
+    }
+  }
+}
