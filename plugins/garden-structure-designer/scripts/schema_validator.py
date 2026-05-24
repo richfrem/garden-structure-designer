@@ -1,10 +1,36 @@
 #!/usr/bin/env python3
 """
-schema_validator.py
+schema_validator.py (CLI)
 =====================================
+
 Purpose:
-    Core logic for schema_validator.py functionality within garden-structure-designer pipeline.
+    schema_validator.py =====================================
+
 Layer: Execution
+
+Usage Examples:
+    python schema_validator.py [args]
+
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
 """
 import json
 import sys
@@ -74,6 +100,42 @@ def main():
             overall_status = "FAIL"
             
         report["files"].append(file_report)
+
+    # --- Cross-section member count invariant check ---
+    structure_file = target_path / "structure.json"
+    if structure_file.exists():
+        try:
+            s = load_json(structure_file)
+            post_count = s.get("layout", {}).get("post_count")
+            inv = s.get("invariants", {})
+            if inv.get("member_counts_match_sections") and post_count:
+                rafter_count = s.get("roof", {}).get("primary_rafters", {}).get("count")
+                if rafter_count is not None and rafter_count != post_count:
+                    overall_status = "FAIL"
+                    report["files"].append({
+                        "path": str(structure_file),
+                        "check": "member_counts_match_sections",
+                        "status": "FAIL",
+                        "detail": f"rafter count {rafter_count} != post_count {post_count}"
+                    })
+                cad_nodes = s.get("cad", {}).get("nodes", {})
+                if cad_nodes:
+                    for key, expected in [
+                        ("post_bases", post_count),
+                        ("post_tops", post_count),
+                        ("beam_ring", post_count),
+                    ]:
+                        actual = len(cad_nodes.get(key, []))
+                        if actual and actual != expected:
+                            overall_status = "FAIL"
+                            report["files"].append({
+                                "path": str(structure_file),
+                                "check": "member_counts_match_sections",
+                                "status": "FAIL",
+                                "detail": f"cad.nodes.{key} length {actual} != post_count {expected}"
+                            })
+        except Exception:
+            pass  # schema validation already caught structural issues
 
     report["status"] = overall_status
 
