@@ -965,6 +965,8 @@ def validate_scene_geometry(scene: Scene) -> None:
     6. all member axis lengths > 0
     7. all coordinates finite
     8. member counts match qty
+    9. beam endpoints are on post positions (±1/8")
+    10. brace lower foot XY is on a post face (≤1 ft); brace upper head within beam span (≤3 ft)
     """
     qty = scene.qty
 
@@ -1068,6 +1070,49 @@ def validate_scene_geometry(scene: Scene) -> None:
             raise GeometryError(
                 f"Invariant 8 violated: expected {expected_count} '{role}' solids, "
                 f"got {actual}"
+            )
+
+    # 9 — Beam endpoints must lie on post positions (beams are constructed from post_xy)
+    _BEAM_POST_SNAP = 1.0 / 96.0   # 1/8 inch in feet
+    for b in beams:
+        for end_pt, end_label in ((b.p0, "p0"), (b.p1, "p1")):
+            nearest_dist = min(
+                math.sqrt((end_pt[0]-px)**2 + (end_pt[1]-py)**2)
+                for px, py in scene.post_xy
+            )
+            if nearest_dist > _BEAM_POST_SNAP:
+                raise GeometryError(
+                    f"Invariant 9 violated: beam {b.tag} {end_label} XY "
+                    f"({end_pt[0]:.4f}, {end_pt[1]:.4f}) is {nearest_dist:.4f} ft "
+                    f"from nearest post — beam endpoint disconnected from post grid"
+                )
+
+    # 10 — Brace foot (lower Z endpoint) must contact a post face;
+    #       brace head (upper Z endpoint) must be within a credible beam-span distance.
+    _BRACE_FOOT_MAX = 1.0   # ft: covers POST_HW for posts up to ~10"
+    _BRACE_HEAD_MAX = 3.0   # ft: covers POST_HW + brace_run for any reasonable brace
+    for b in braces:
+        lower_pt = b.p0 if b.p0[2] <= b.p1[2] else b.p1
+        upper_pt = b.p1 if b.p0[2] <= b.p1[2] else b.p0
+        lower_dist = min(
+            math.sqrt((lower_pt[0]-px)**2 + (lower_pt[1]-py)**2)
+            for px, py in scene.post_xy
+        )
+        upper_dist = min(
+            math.sqrt((upper_pt[0]-px)**2 + (upper_pt[1]-py)**2)
+            for px, py in scene.post_xy
+        )
+        if lower_dist > _BRACE_FOOT_MAX:
+            raise GeometryError(
+                f"Invariant 10 violated: brace {b.tag} lower foot XY "
+                f"({lower_pt[0]:.4f}, {lower_pt[1]:.4f}) is {lower_dist:.4f} ft "
+                f"from nearest post (max {_BRACE_FOOT_MAX} ft) — brace foot is floating"
+            )
+        if upper_dist > _BRACE_HEAD_MAX:
+            raise GeometryError(
+                f"Invariant 10 violated: brace {b.tag} upper head XY "
+                f"({upper_pt[0]:.4f}, {upper_pt[1]:.4f}) is {upper_dist:.4f} ft "
+                f"from nearest post (max {_BRACE_HEAD_MAX} ft) — brace head is floating"
             )
 
 

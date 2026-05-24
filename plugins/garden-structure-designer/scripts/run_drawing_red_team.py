@@ -243,6 +243,8 @@ def run_review(
             "generated": datetime.now(timezone.utc).isoformat(),
             "status": "BLOCKED",
             "reviewer": REVIEWER,
+            "failure_classification": ["MISSING_STAGING_ARTIFACT"],
+            "recommended_next_action": "RERUN_REPORTS_FIRST",
             "summary": (
                 f"BLOCKED: {len(missing_artifacts)} required staging artifact(s) missing. "
                 "Run the full structural pipeline before the drawing red-team gate."
@@ -258,11 +260,68 @@ def run_review(
         print(f"  BLOCKED: missing staging artifacts: {missing_artifacts}")
         return report
 
+    # --- Source hash integrity check ---
+    # Every derived staging artifact must carry the same source_hash as structure.json.
+    # A mismatch means reports were generated from a different run — stale evidence.
+    _current_source_hash: str | None = None
+    _structure_json_path = Path(report_dir) / "structure.json"
+    if _structure_json_path.exists():
+        try:
+            with open(_structure_json_path, encoding="utf-8") as _sf:
+                _struct_data = json.load(_sf)
+            _current_source_hash = _struct_data.get("meta", {}).get("source_hash")
+        except Exception:
+            pass
+
+    _hash_checked_artifacts = [
+        str(Path(report_dir) / "schema-validation-report.json"),
+        str(Path(report_dir) / "physics-validation-report.json"),
+        str(Path(report_dir) / "visual-smoke-report.json"),
+    ]
+    _hash_mismatches: list[str] = []
+    if _current_source_hash:
+        for _art_path in _hash_checked_artifacts:
+            if not os.path.exists(_art_path):
+                continue
+            try:
+                with open(_art_path, encoding="utf-8") as _af:
+                    _art_data = json.load(_af)
+                _art_hash = _art_data.get("source_hash")
+                if _art_hash and _art_hash != _current_source_hash:
+                    _hash_mismatches.append(
+                        f"{os.path.basename(_art_path)}: "
+                        f"hash {_art_hash!r} != current {_current_source_hash!r}"
+                    )
+            except Exception:
+                pass
+
+    if _hash_mismatches:
+        report = {
+            "schema": "garden-structure-designer/drawing-red-team-report/1.0",
+            "generated": datetime.now(timezone.utc).isoformat(),
+            "status": "BLOCKED",
+            "reviewer": REVIEWER,
+            "failure_classification": ["SOURCE_HASH_MISMATCH"],
+            "recommended_next_action": "RERUN_REPORTS_FIRST",
+            "summary": (
+                f"BLOCKED: {len(_hash_mismatches)} staging artifact(s) carry a stale source_hash. "
+                "Re-run the structural pipeline so all reports are derived from the same model."
+            ),
+            "files": [],
+            "overall_required_fixes": _hash_mismatches,
+            "may_claim_success": False,
+        }
+        _write_json_report(report, red_team_report_path)
+        _write_md_report(report, md_report_path)
+        print(f"  BLOCKED: source_hash mismatches: {_hash_mismatches}")
+        return report
+
     # Load and parse visual smoke test results
     smoke_report_path = os.path.join(report_dir, "visual-smoke-report.json")
     smoke_ok = True
-    smoke_failures = []
-    smoke_warnings = []
+    smoke_failures: list[str] = []
+    smoke_warnings: list[str] = []
+    smoke_data: dict = {}
     if os.path.exists(smoke_report_path):
         try:
             with open(smoke_report_path, "r", encoding="utf-8") as sf:
@@ -273,6 +332,34 @@ def run_review(
         except Exception as err:
             smoke_ok = False
             smoke_failures.append(f"Failed to load visual-smoke-report.json: {err}")
+
+    # Timestamp freshness check: smoke report must be newer than all SVGs it covers.
+    # A stale report means the drawings changed after the last smoke run — untrusted evidence.
+    if smoke_ok and os.path.exists(smoke_report_path):
+        try:
+            _smoke_generated_at = smoke_data.get("generated_at", "")
+            if _smoke_generated_at:
+                _smoke_dt = datetime.fromisoformat(_smoke_generated_at)
+                if _smoke_dt.tzinfo is None:
+                    _smoke_dt = _smoke_dt.replace(tzinfo=timezone.utc)
+                _svg_mtimes = [
+                    os.path.getmtime(os.path.join(svg_dir, s))
+                    for s in REQUIRED_SHEETS
+                    if os.path.exists(os.path.join(svg_dir, s))
+                ]
+                if _svg_mtimes:
+                    _latest_svg_dt = datetime.fromtimestamp(
+                        max(_svg_mtimes), tz=timezone.utc
+                    )
+                    if _smoke_dt < _latest_svg_dt:
+                        smoke_ok = False
+                        smoke_failures.append(
+                            f"STALE_SMOKE_REPORT: generated_at {_smoke_generated_at!r} "
+                            f"is older than latest SVG mtime {_latest_svg_dt.isoformat()!r} — "
+                            "re-run visual_svg_smoke_test.py"
+                        )
+        except Exception:
+            pass
 
     # Collect SVG files
     svg_files = sorted(glob.glob(os.path.join(svg_dir, "*.svg")))
@@ -399,6 +486,9 @@ def run_review(
             f"FAIL — {len(failed)} sheet(s) or validation layers failed content/visual validation. "
             "These drawings are not builder-meaningful. Regenerate before claiming PASS."
         )
+
+    if smoke_warnings:
+        report.setdefault("overall_warnings", []).extend(smoke_warnings)
 
     _write_json_report(report, red_team_report_path)
     _write_md_report(report, md_report_path)
