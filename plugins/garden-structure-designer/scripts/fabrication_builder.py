@@ -81,453 +81,166 @@ def main() -> None:
         sys.exit(1)
 
     qty = structure["layout"]["post_count"]
-    r_ft = structure["layout"]["inscribed_radius_ft"]
+    source_hash = structure["meta"]["source_hash"]
     
     # Retrieve Z coordinates from joint contract
     z_planes = joints["z_planes"]
-    Z_GRADE = z_planes["Z_GRADE"]
-    Z_POST_TOP = z_planes["Z_POST_TOP"]
     Z_BEAM_TOP = z_planes["Z_BEAM_TOP"]
-    Z_APEX = z_planes["Z_APEX"]
-
-    post_xy = joints["layout"]["post_xy"]
-    source_hash = structure["meta"]["source_hash"]
 
     # Member Specs
     posts_spec = structure["members"]["posts"]
     beams_spec = structure["members"]["beams"]
     rafters_spec = structure["roof"]["primary_rafters"]
+    secondary_spec = structure["roof"].get("secondary_rafters", {})
     bracing_spec = structure.get("bracing", {})
     brace_spec = bracing_spec.get("brace", {}) if bracing_spec.get("enabled") else {}
-
-    # Standard Dimensions
-    POST_HW = (posts_spec["actual_width_in"] / 12.0) / 2.0
-    POST_HD = (posts_spec["actual_depth_in"] / 12.0) / 2.0
-    BEAM_HW = (beams_spec["actual_width_in"] / 12.0) / 2.0
-    BEAM_HD = (beams_spec["actual_depth_in"] / 12.0) / 2.0
-    RAFTER_HW = (rafters_spec["actual_width_in"] / 12.0) / 2.0
-    RAFTER_HD = (rafters_spec["actual_depth_in"] / 12.0) / 2.0
-
-    hub_r = joints["hub"]["radius_ft_resolved"]
-    overhang_ft = rafters_spec["overhang_ft"]
 
     UP = (0.0, 0.0, 1.0)
     cut_list: list[dict[str, Any]] = []
 
-    # ── 1. structural Posts (P1 to P6) ──────────────────────────────────────
-    for i in range(qty):
-        px, py = post_xy[i]
-        start_pt = (px, py, Z_GRADE)
-        end_pt = (px, py, Z_POST_TOP)
-        axis_len = Z_POST_TOP - Z_GRADE
-
-        # Standard orthogonal local basis
-        x_axis = UP
-        y_axis = (1.0, 0.0, 0.0)
-        z_axis = (0.0, 1.0, 0.0)
+    # ── 1. Posts (P1 to P6) ──────────────────────────────────────────────────
+    # Axis: (px, py, Z_GRADE) to (px, py, Z_POST_TOP)
+    for i, p_xy in enumerate(joints["layout"]["post_xy"]):
+        bid = f"P{i+1}"
+        p0 = (p_xy[0], p_xy[1], z_planes["Z_GRADE"])
+        p1 = (p_xy[0], p_xy[1], z_planes["Z_POST_TOP"])
+        axis_len = vdist(p0, p1)
 
         cut_list.append({
-            "id": f"P{i+1}",
-            "role": "post",
-            "nominal_size": posts_spec["nominal_size"],
-            "actual_width_in": posts_spec["actual_width_in"],
-            "actual_depth_in": posts_spec["actual_depth_in"],
-            "axis": {
-                "start": [round(px, 4), round(py, 4), round(Z_GRADE, 3)],
-                "end": [round(px, 4), round(py, 4), round(Z_POST_TOP, 3)]
-            },
-            "stock": {
-                "cut_length_ft": round(axis_len, 3),
-                "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)
-            },
+            "id": bid, "role": "post", "nominal_size": posts_spec["nominal_size"],
+            "actual_width_in": posts_spec["actual_width_in"], "actual_depth_in": posts_spec["actual_depth_in"],
+            "axis": {"start": list(p0), "end": list(p1)},
+            "stock": {"cut_length_ft": round(axis_len, 3), "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)},
             "cuts": [
-                {
-                    "cut_id": f"P{i+1}-START",
-                    "end": "start",
-                    "type": "square_cut",
-                    "mates_to": "grade_footing",
-                    "plane": {
-                        "point": [round(px, 4), round(py, 4), round(Z_GRADE, 3)],
-                        "normal": [0.0, 0.0, -1.0]
-                    },
-                    "angles": {"miter_deg": 0.0, "bevel_deg": 0.0}
-                },
-                {
-                    "cut_id": f"P{i+1}-END",
-                    "end": "end",
-                    "type": "square_cut",
-                    "mates_to": "beam_soffit",
-                    "plane": {
-                        "point": [round(px, 4), round(py, 4), round(Z_POST_TOP, 3)],
-                        "normal": [0.0, 0.0, 1.0]
-                    },
-                    "angles": {"miter_deg": 0.0, "bevel_deg": 0.0}
-                }
+                {"cut_id": f"{bid}-START", "end": "start", "type": "square_cut", "mates_to": "grade_footing", "plane": {"point": list(p0), "normal": [0,0,-1]}, "angles": {"miter_deg": 0.0, "bevel_deg": 0.0}},
+                {"cut_id": f"{bid}-END", "end": "end", "type": "square_cut", "mates_to": "beam_soffit", "plane": {"point": list(p1), "normal": [0,0,1]}, "angles": {"miter_deg": 0.0, "bevel_deg": 0.0}}
             ]
         })
 
-    # ── 2. Ring Beams (B1 to B6) ───────────────────────────────────────────
+    # ── 2. Ring Beams (B1 to B6) ──────────────────────────────────────────────
+    # Axis from geometry.beam_ring (using B-prefixed IDs)
     for i in range(qty):
-        px1, py1 = post_xy[i]
-        px2, py2 = post_xy[(i+1) % qty]
-        bz = Z_POST_TOP + BEAM_HD
-
-        p0 = (px1, py1, bz)
-        p1 = (px2, py2, bz)
+        bid = f"B{i+1}"
+        p1_xy = joints["layout"]["post_xy"][i]
+        p2_xy = joints["layout"]["post_xy"][(i+1)%qty]
+        bz = z_planes["Z_BEAM_CENTER"]
+        p0 = (p1_xy[0], p1_xy[1], bz)
+        p1 = (p2_xy[0], p2_xy[1], bz)
         axis = vsub(p1, p0)
         axis_len = vlen(axis)
-
-        # Local coordinate frame
-        x_axis = vnorm(axis)
-        y_axis = vnorm(vcross(UP, x_axis))
-        z_axis = vnorm(vcross(x_axis, y_axis))
-
-        # Retrieve beam corner planes
-        corner_planes = joints["beam_ring"]["corner_planes"]
-        c_start = corner_planes[i]
-        c_end = corner_planes[(i+1) % qty]
-
-        miter_start, bevel_start = get_compound_cuts(c_start["normal"], x_axis, y_axis, z_axis)
-        miter_end, bevel_end = get_compound_cuts(c_end["normal"], x_axis, y_axis, z_axis)
-
-        # Standard flat beam layout: bevel is effectively zero, miter is exactly half-angle (e.g. 30.0)
-        cut_list.append({
-            "id": f"B{i+1}",
-            "role": "beam",
-            "nominal_size": beams_spec["nominal_size"],
-            "actual_width_in": beams_spec["actual_width_in"],
-            "actual_depth_in": beams_spec["actual_depth_in"],
-            "axis": {
-                "start": [round(px1, 4), round(py1, 4), round(bz, 3)],
-                "end": [round(px2, 4), round(py2, 4), round(bz, 3)]
-            },
-            "stock": {
-                "cut_length_ft": round(axis_len, 3),
-                "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)
-            },
-            "cuts": [
-                {
-                    "cut_id": f"B{i+1}-START",
-                    "end": "start",
-                    "type": "beam_miter",
-                    "mates_to": f"beam_B{((i-1)%qty)+1}",
-                    "plane": {
-                        "point": c_start["point"],
-                        "normal": c_start["normal"]
-                    },
-                    "angles": {"miter_deg": abs(miter_start), "bevel_deg": abs(bevel_start)}
-                },
-                {
-                    "cut_id": f"B{i+1}-END",
-                    "end": "end",
-                    "type": "beam_miter",
-                    "mates_to": f"beam_B{((i+1)%qty)+1}",
-                    "plane": {
-                        "point": c_end["point"],
-                        "normal": c_end["normal"]
-                    },
-                    "angles": {"miter_deg": abs(miter_end), "bevel_deg": abs(bevel_end)}
-                }
-            ]
-        })
-
-    # ── 3. Hip Rafters (R1 to R6) ──────────────────────────────────────────
-    rafter_apex = []
-    for i in range(qty):
-        ang = 2*math.pi*i/qty
-        rafter_apex.append((hub_r * math.cos(ang), hub_r * math.sin(ang), Z_APEX))
-
-    for i in range(qty):
-        px, py = post_xy[i]
-        p1_apex = rafter_apex[i]
-        len_xy = math.sqrt(px*px + py*py)
-        dir_xy_norm = (px / len_xy, py / len_xy)
-
-        slope = (Z_APEX - Z_BEAM_TOP) / (len_xy - hub_r)
-        theta = math.atan(slope)
-        dy_vertical = RAFTER_HD / math.cos(theta)
-
-        # Construct actual start (overhang tail) and end (hub apex)
-        p0_start = (
-            px + dir_xy_norm[0] * overhang_ft,
-            py + dir_xy_norm[1] * overhang_ft,
-            Z_BEAM_TOP - slope * overhang_ft
-        )
-
-        p0_start_shifted = (p0_start[0], p0_start[1], p0_start[2] + dy_vertical)
-        p1_apex_shifted = (p1_apex[0], p1_apex[1], p1_apex[2] + dy_vertical)
-
-        axis = vsub(p1_apex_shifted, p0_start_shifted)
-        axis_len = vlen(axis)
-
-        # Local coordinate frame: Board wide face flat on table, depth axis is table normal (z_axis)
-        x_axis = vnorm(axis)
-        y_axis = vnorm(vcross(UP, x_axis))
-        z_axis = vnorm(vcross(x_axis, y_axis))
-
-        # Calculate saw angles for Hub Face compound cheek cut (regression matched)
-        hub_plane = joints["hub"]["face_planes"]["planes"][i]
-        pitch_angle = math.atan(4.0 / 12.0)
-        plan_half_rad = math.radians(360.0 / (2.0 * qty))
-        miter_hub_val = math.degrees(math.atan(math.cos(pitch_angle) * math.tan(plan_half_rad)))
-        bevel_hub_val = math.degrees(math.asin(math.sin(pitch_angle) * math.sin(plan_half_rad)))
-        miter_hub = round(miter_hub_val, 2)
-        bevel_hub = round(bevel_hub_val, 2)
-
-        # Birdsmouth Seat & Plumb Cuts
-        seat_depth_ft = joints["rafters"]["seat_depth_ft_resolved"]
-
-        # Seat cut normal is along global vertical (UP), plumb cut normal is horizontal (along dir_xy_norm)
-        seat_cut_plane_pt = (px, py, Z_BEAM_TOP - seat_depth_ft + dy_vertical)
-        plumb_cut_plane_pt = (px, py, Z_BEAM_TOP + dy_vertical)
-
-        miter_seat, bevel_seat = get_compound_cuts(UP, x_axis, y_axis, z_axis)
-        miter_plumb, bevel_plumb = get_compound_cuts((dir_xy_norm[0], dir_xy_norm[1], 0.0), x_axis, y_axis, z_axis)
-
-        cut_list.append({
-            "id": f"R{i+1}",
-            "role": "rafter_primary",
-            "nominal_size": rafters_spec["nominal_size"],
-            "actual_width_in": rafters_spec["actual_width_in"],
-            "actual_depth_in": rafters_spec["actual_depth_in"],
-            "axis": {
-                "start": [round(p0_start_shifted[0], 4), round(p0_start_shifted[1], 4), round(p0_start_shifted[2], 3)],
-                "end": [round(p1_apex_shifted[0], 4), round(p1_apex_shifted[1], 4), round(p1_apex_shifted[2], 3)]
-            },
-            "stock": {
-                "cut_length_ft": round(axis_len, 3),
-                "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)
-            },
-            "cuts": [
-                {
-                    "cut_id": f"R{i+1}-END-HUB",
-                    "end": "end",
-                    "type": "compound_miter",
-                    "mates_to": f"hub_face_{hub_plane['face_id']}",
-                    "plane": {
-                        "point": hub_plane["point"],
-                        "normal": hub_plane["normal"]
-                    },
-                    "angles": {"miter_deg": abs(miter_hub), "bevel_deg": abs(bevel_hub)}
-                },
-                {
-                    "cut_id": f"R{i+1}-SEAT-BIRDSMOUTH",
-                    "end": "start",
-                    "type": "birdsmouth",
-                    "mates_to": f"beam_top_B{i+1}",
-                    "seat_depth_ft": round(seat_depth_ft, 4),
-                    "subcuts": [
-                        {
-                            "name": "plumb_cut",
-                            "plane": {
-                                "point": [round(plumb_cut_plane_pt[0], 4), round(plumb_cut_plane_pt[1], 4), round(plumb_cut_plane_pt[2], 3)],
-                                "normal": [round(dir_xy_norm[0], 4), round(dir_xy_norm[1], 4), 0.0]
-                            },
-                            "angles": {"miter_deg": abs(miter_plumb), "bevel_deg": abs(bevel_plumb)}
-                        },
-                        {
-                            "name": "seat_cut",
-                            "plane": {
-                                "point": [round(seat_cut_plane_pt[0], 4), round(seat_cut_plane_pt[1], 4), round(seat_cut_plane_pt[2], 3)],
-                                "normal": [0.0, 0.0, 1.0]
-                            },
-                            "angles": {"miter_deg": abs(miter_seat), "bevel_deg": abs(bevel_seat)}
-                        }
-                    ]
-                },
-                {
-                    "cut_id": f"R{i+1}-TAIL",
-                    "end": "start",
-                    "type": "plumb_tail",
-                    "style": "square_cut",
-                    "angles": {"miter_deg": 0.0, "bevel_deg": 0.0}
-                }
-            ]
-        })
-
-    # ── 4. Knee Braces (K1A to K6B) ────────────────────────────────────────
-    if bracing_spec.get("enabled", False):
-        endpoints = joints["braces"]["endpoints"]["pairs"]
-        for brace in endpoints:
-            bid = brace["brace_id"]
-            p0 = tuple(brace["start"])
-            p1 = tuple(brace["end"])
-
-            axis = vsub(p1, p0)
-            axis_len = vlen(axis)
-
-            # Local coordinate frame
-            x_axis = vnorm(axis)
-            y_axis = vnorm(vcross(UP, x_axis))
-            z_axis = vnorm(vcross(x_axis, y_axis))
-
-            # Brace post end cut (seats to vertical post face)
-            # Plane normal: horizontal direction back to post
-            post_idx = brace["post_index"]
-            px, py = post_xy[post_idx]
-            dir_to_post = vnorm(vsub((px, py, p0[2]), p0))
-            post_plane_normal = (dir_to_post[0], dir_to_post[1], 0.0)
-
-            miter_post, bevel_post = get_compound_cuts(post_plane_normal, x_axis, y_axis, z_axis)
-
-            # Brace beam end cut (seats to horizontal beam soffit)
-            # Plane normal: global vertical UP
-            miter_beam, bevel_beam = get_compound_cuts(UP, x_axis, y_axis, z_axis)
-
-            cut_list.append({
-                "id": bid,
-                "role": "brace",
-                "nominal_size": brace_spec["nominal_size"],
-                "actual_width_in": brace_spec["actual_width_in"],
-                "actual_depth_in": brace_spec["actual_depth_in"],
-                "axis": {
-                    "start": [round(p0[0], 4), round(p0[1], 4), round(p0[2], 3)],
-                    "end": [round(p1[0], 4), round(p1[1], 4), round(p1[2], 3)]
-                },
-                "stock": {
-                    "cut_length_ft": round(axis_len, 3),
-                    "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)
-                },
-                "cuts": [
-                    {
-                        "cut_id": f"{bid}-START-POST",
-                        "end": "start",
-                        "type": "brace_miter",
-                        "mates_to": f"post_P{post_idx+1}",
-                        "plane": {
-                            "point": [round(p0[0], 4), round(p0[1], 4), round(p0[2], 3)],
-                            "normal": [round(post_plane_normal[0], 4), round(post_plane_normal[1], 4), 0.0]
-                        },
-                        "angles": {"miter_deg": abs(miter_post), "bevel_deg": abs(bevel_post)}
-                    },
-                    {
-                        "cut_id": f"{bid}-END-BEAM",
-                        "end": "end",
-                        "type": "brace_miter",
-                        "mates_to": f"beam_B{post_idx+1}",
-                        "plane": {
-                            "point": [round(p1[0], 4), round(p1[1], 4), round(p1[2], 3)],
-                            "normal": [0.0, 0.0, 1.0]
-                        },
-                        "angles": {"miter_deg": abs(miter_beam), "bevel_deg": abs(bevel_beam)}
-                    }
-                ]
-            })
-
-    # ── 5. Secondary / Jack Rafters ─────────────────────────────────────────
-    jack_joints = structure["geometry"].get("joints", {}).get("jack_rafters", {})
-    if jack_joints.get("enabled", False):
-        sec_w = secondary_spec.get("actual_width_in", 3.5)
-        sec_d = secondary_spec.get("actual_depth_in", 3.5)
+        x_axis = vnorm(axis); y_axis = vnorm(vcross(UP, x_axis)); z_axis = vnorm(vcross(x_axis, y_axis))
         
-        for ep in jack_joints.get("endpoints", []):
-            bid = ep["id"]
-            p0 = tuple(ep["start"])
-            p1 = tuple(ep["end"])
+        # End planes
+        planes = joints["beam_ring"]["beam_end_planes"]
+        pl_start = next(p for p in planes if p["beam_id"] == bid and p["end"] == "start")
+        pl_end = next(p for p in planes if p["beam_id"] == bid and p["end"] == "end")
+        
+        miter_start, bevel_start = get_compound_cuts(pl_start["normal"], x_axis, y_axis, z_axis)
+        miter_end, bevel_end = get_compound_cuts(pl_end["normal"], x_axis, y_axis, z_axis)
+
+        cut_list.append({
+            "id": bid, "role": "beam", "nominal_size": beams_spec["nominal_size"],
+            "actual_width_in": beams_spec["actual_width_in"], "actual_depth_in": beams_spec["actual_depth_in"],
+            "axis": {"start": list(p0), "end": list(p1)},
+            "stock": {"cut_length_ft": round(axis_len, 3), "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)},
+            "cuts": [
+                {"cut_id": f"{bid}-START", "end": "start", "type": "beam_miter", "mates_to": f"beam_B{((i-1)%qty)+1}", "plane": {"point": pl_start["point"], "normal": pl_start["normal"]}, "angles": {"miter_deg": abs(miter_start), "bevel_deg": abs(bevel_start)}},
+                {"cut_id": f"{bid}-END", "end": "end", "type": "beam_miter", "mates_to": f"beam_B{((i+1)%qty)+1}", "plane": {"point": pl_end["point"], "normal": pl_end["normal"]}, "angles": {"miter_deg": abs(miter_end), "bevel_deg": abs(bevel_end)}}
+            ]
+        })
+
+    # ── 3. Hip Rafters (R1 to R6) ─────────────────────────────────────────────
+    # Axis from geometry.joints.primary_rafters
+    seat_depth_ft = joints["rafters"]["seat_depth_ft_resolved"]
+    for rj in joints.get("primary_rafters", []):
+        bid = rj["id"]
+        p0 = tuple(rj["start"]); p1 = tuple(rj["end"])
+        axis = vsub(p1, p0); axis_len = vlen(axis)
+        x_axis = vnorm(axis); y_axis = vnorm(vcross(UP, x_axis)); z_axis = vnorm(vcross(x_axis, y_axis))
+        
+        # Hub Face Cut
+        idx = int(bid[1:]) - 1
+        hub_plane = joints["hub"]["face_planes"][idx]
+        miter_hub, bevel_hub = get_compound_cuts(hub_plane["normal"], x_axis, y_axis, z_axis)
+        
+        # Birdsmouth Seat (Bearing Face)
+        p_seat = tuple(rj["seat_point"])
+        miter_seat, bevel_seat = get_compound_cuts(UP, x_axis, y_axis, z_axis)
+        
+        cut_list.append({
+            "id": bid, "role": "rafter_primary", "nominal_size": rafters_spec["nominal_size"],
+            "actual_width_in": rafters_spec["actual_width_in"], "actual_depth_in": rafters_spec["actual_depth_in"],
+            "axis": {"start": list(p0), "end": list(p1)},
+            "stock": {"cut_length_ft": round(axis_len, 3), "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)},
+            "cuts": [
+                {"cut_id": f"{bid}-END-HUB", "end": "end", "type": "compound_miter", "mates_to": f"hub_face_{hub_plane['id']}", "plane": {"point": hub_plane["point"], "normal": hub_plane["normal"]}, "angles": {"miter_deg": abs(miter_hub), "bevel_deg": abs(bevel_hub)}},
+                {"cut_id": f"{bid}-SEAT", "end": "start", "type": "birdsmouth", "mates_to": f"beam_top_B{idx+1}", "seat_depth_ft": round(seat_depth_ft, 4), "subcuts": [{"name": "seat_cut", "plane": {"point": list(p_seat), "normal": [0,0,1]}, "angles": {"miter_deg": abs(miter_seat), "bevel_deg": abs(bevel_seat)}}]}
+            ]
+        })
+
+    # ── 4. Knee Braces (K1A to K6B) ───────────────────────────────────────────
+    if joints.get("braces", {}).get("enabled"):
+        for bj in joints["braces"]["endpoints"]:
+            bid = bj["id"]; p0 = tuple(bj["start"]); p1 = tuple(bj["end"])
+            axis = vsub(p1, p0); axis_len = vlen(axis)
+            x_axis = vnorm(axis); y_axis = vnorm(vcross(UP, x_axis)); z_axis = vnorm(vcross(x_axis, y_axis))
             
-            # Re-derive local vectors for cut angles
-            axis = vsub(p1, p0)
-            axis_len = vlen(axis)
-            x_axis = vnorm(axis)
-            y_axis = vnorm(vcross(UP, x_axis))
-            z_axis = vnorm(vcross(x_axis, y_axis))
+            # Post End
+            post_idx = int("".join([c for c in bid if c.isdigit()])) - 1
+            pxy = joints["layout"]["post_xy"][post_idx]
+            dir_to_post = vnorm(vsub((pxy[0], pxy[1], p0[2]), p0))
+            miter_post, bevel_post = get_compound_cuts(dir_to_post, x_axis, y_axis, z_axis)
             
-            # Find the hip it mates to
-            # Tag is J{i}{suffix}, hip is R{i} or R{i+1}
-            # For J1a, hip is R1. For J1b, hip is R2.
-            # ID scheme: J{bay}{a|b}
-            bay_num = int("".join([c for c in bid if c.isdigit()]))
-            suffix = bid[-1]
-            hip_id = bay_num if suffix == 'a' else (bay_num % qty) + 1
-            
-            # Mating hip axis for plane normal
-            px_corner, py_corner = post_xy[hip_id - 1]
-            px_apex, py_apex = rafter_apex[hip_id - 1][0], rafter_apex[hip_id - 1][1]
-            dx_hip = px_apex - px_corner
-            dy_hip = py_apex - py_corner
-            len_hip = math.sqrt(dx_hip**2 + dy_hip**2)
-            N_hip_side = (-dy_hip / len_hip, dx_hip / len_hip, 0.0)
-            
-            miter_cheek, bevel_cheek = get_compound_cuts(N_hip_side, x_axis, y_axis, z_axis)
-            
-            # Birdsmouth Seat & Plumb Cuts for Jack Rafter
-            # Seat point is p0. Plumb cut normal is perpendicular to beam.
-            # Beam segment for J1a is B1.
-            beam_id = bay_num
-            p_beam1 = post_xy[beam_id - 1]
-            p_beam2 = post_xy[beam_id % qty]
-            bdx, bdy = p_beam2[0]-p_beam1[0], p_beam2[1]-p_beam1[1]
-            blen = math.sqrt(bdx**2 + bdy**2)
-            bin_x, bin_y = -bdy/blen, bdx/blen
-            
-            plumb_cut_plane_pt = p0
-            seat_cut_plane_pt = (p0[0], p0[1], p0[2] - seat_depth_ft)
-            
-            miter_seat, bevel_seat = get_compound_cuts(UP, x_axis, y_axis, z_axis)
-            miter_plumb, bevel_plumb = get_compound_cuts((bin_x, bin_y, 0.0), x_axis, y_axis, z_axis)
+            # Beam End
+            miter_beam, bevel_beam = get_compound_cuts(UP, x_axis, y_axis, z_axis)
             
             cut_list.append({
-                "id": bid,
-                "role": "rafter_secondary",
-                "nominal_size": secondary_spec["nominal_size"],
-                "actual_width_in": sec_w,
-                "actual_depth_in": sec_d,
-                "axis": {
-                    "start": [round(p0[0], 4), round(p0[1], 4), round(p0[2], 3)],
-                    "end": [round(p1[0], 4), round(p1[1], 4), round(p1[2], 3)]
-                },
-                "stock": {
-                    "cut_length_ft": round(axis_len, 3),
-                    "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)
-                },
+                "id": bid, "role": "brace", "nominal_size": brace_spec["nominal_size"],
+                "actual_width_in": brace_spec["actual_width_in"], "actual_depth_in": brace_spec["actual_depth_in"],
+                "axis": {"start": list(p0), "end": list(p1)},
+                "stock": {"cut_length_ft": round(axis_len, 3), "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)},
                 "cuts": [
-                    {
-                        "cut_id": f"{bid}-END-HIP",
-                        "end": "end",
-                        "type": "compound_miter",
-                        "mates_to": f"rafter_primary_R{hip_id}",
-                        "plane": {
-                            "point": [round(p1[0], 4), round(p1[1], 4), round(p1[2], 3)],
-                            "normal": [round(N_hip_side[0], 4), round(N_hip_side[1], 4), 0.0]
-                        },
-                        "angles": {"miter_deg": abs(miter_cheek), "bevel_deg": abs(bevel_cheek)}
-                    },
-                    {
-                        "cut_id": f"{bid}-SEAT-BIRDSMOUTH",
-                        "end": "start",
-                        "type": "birdsmouth",
-                        "mates_to": f"beam_top_B{beam_id}",
-                        "seat_depth_ft": round(seat_depth_ft, 4),
-                        "subcuts": [
-                            {
-                                "name": "plumb_cut",
-                                "plane": {
-                                    "point": [round(plumb_cut_plane_pt[0], 4), round(plumb_cut_plane_pt[1], 4), round(plumb_cut_plane_pt[2], 3)],
-                                    "normal": [round(bin_x, 4), round(bin_y, 4), 0.0]
-                                },
-                                "angles": {"miter_deg": abs(miter_plumb), "bevel_deg": abs(bevel_plumb)}
-                            },
-                            {
-                                "name": "seat_cut",
-                                "plane": {
-                                    "point": [round(seat_cut_plane_pt[0], 4), round(seat_cut_plane_pt[1], 4), round(seat_cut_plane_pt[2], 3)],
-                                    "normal": [0.0, 0.0, 1.0]
-                                },
-                                "angles": {"miter_deg": abs(miter_seat), "bevel_deg": abs(bevel_seat)}
-                            }
-                        ]
-                    },
-                    {
-                        "cut_id": f"{bid}-TAIL",
-                        "end": "start",
-                        "type": "plumb_tail",
-                        "style": "square_cut",
-                        "angles": {"miter_deg": 0.0, "bevel_deg": 0.0}
-                    }
+                    {"cut_id": f"{bid}-START-POST", "end": "start", "type": "brace_miter", "mates_to": f"post_P{post_idx+1}", "angles": {"miter_deg": abs(miter_post), "bevel_deg": abs(bevel_post)}},
+                    {"cut_id": f"{bid}-END-BEAM", "end": "end", "type": "brace_miter", "mates_to": f"beam_B{post_idx+1}", "angles": {"miter_deg": abs(miter_beam), "bevel_deg": abs(bevel_beam)}}
                 ]
             })
 
-    # ── 6. Collar Purlins ───────────────────────────────────────────────────
+    # ── 5. Secondary / Jack Rafters ──────────────────────────────────────────
+    if joints.get("jack_rafters", {}).get("enabled"):
+        for ep in joints["jack_rafters"]["endpoints"]:
+            bid = ep["id"]; p0 = tuple(ep["start"]); p1 = tuple(ep["end"])
+            axis = vsub(p1, p0); axis_len = vlen(axis)
+            x_axis = vnorm(axis); y_axis = vnorm(vcross(UP, x_axis)); z_axis = vnorm(vcross(x_axis, y_axis))
+            
+            # Hip Side Cut
+            m_id = ep["mate_id"]
+            idx = int(m_id[1:]) - 1
+            px_corner, py_corner = joints["layout"]["post_xy"][idx]
+            dx_hip = -px_corner; dy_hip = -py_corner # Toward Apex (0,0)
+            len_hip = math.sqrt(dx_hip**2 + dy_hip**2)
+            n_side = (-dy_hip/len_hip, dx_hip/len_hip, 0.0)
+            miter_hip, bevel_hip = get_compound_cuts(n_side, x_axis, y_axis, z_axis)
+            
+            cut_list.append({
+                "id": bid, "role": "rafter_secondary", "nominal_size": secondary_spec["nominal_size"],
+                "actual_width_in": secondary_spec["actual_width_in"], "actual_depth_in": secondary_spec["actual_depth_in"],
+                "axis": {"start": list(p0), "end": list(p1)},
+                "stock": {"cut_length_ft": round(axis_len, 3), "order_length_ft": int(math.ceil(axis_len / 2.0) * 2)},
+                "cuts": [{"cut_id": f"{bid}-END-HIP", "end": "end", "type": "compound_miter", "mates_to": m_id, "angles": {"miter_deg": abs(miter_hip), "bevel_deg": abs(bevel_hip)}}]
+            })
+
+    # Final counts and output
+    out_payload = {
+        "schema": "garden-structure-designer/fabrication-cut-list/1.0",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "source_hash": source_hash,
+        "members": cut_list,
+        "summary": {"counts": {"posts": qty, "beams": qty, "rafters_primary": qty, "rafters_secondary": len([m for m in cut_list if m["role"] == "rafter_secondary"])}}
+    }
+
+    out_dir = Path("outputs/fabrication").resolve(); out_dir.mkdir(parents=True, exist_ok=True)
+    with open(out_dir / "cut-list.json", "w", encoding="utf-8") as f: json.dump(out_payload, f, indent=2)
+    print(f"  ✓ Compiled fabrication cut list -> outputs/fabrication/cut-list.json")
     purlins_spec = structure["members"].get("purlins", {})
     if purlins_spec.get("enabled", False):
         pur_w = purlins_spec.get("actual_width_in", 3.5)

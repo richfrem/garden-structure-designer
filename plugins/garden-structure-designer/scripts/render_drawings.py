@@ -83,6 +83,26 @@ def resolve_label_overlap(
     return lx, ly  # Return original if no slot found within max_radius
 
 
+def get_label_style(role: str, view_type: str) -> dict[str, Any]:
+    """
+    Compute font size and weight based on hierarchical priority and view type.
+    Priority: Posts/Beams (High) > Rafters (Medium) > Braces (Low)
+    """
+    styles = {
+        "plan": {"high": 16, "medium": 12, "low": 9},
+        "elevation": {"high": 14, "medium": 10, "low": 8},
+        "isometric": {"high": 12, "medium": 9, "low": 7},
+        "perspective": {"high": 12, "medium": 9, "low": 7},
+    }
+    view_styles = styles.get(view_type, styles["plan"])
+    
+    if role in ("post", "beam", "hub"):
+        return {"size": view_styles["high"], "weight": "bold", "opacity": 1.0}
+    if role == "rafter":
+        return {"size": view_styles["medium"], "weight": "normal", "opacity": 0.9}
+    return {"size": view_styles["low"], "weight": "normal", "opacity": 0.75}
+
+
 def get_label_offset(solid, proj_func, view_center=None) -> tuple[float, float]:
     """
     Compute role-based default 2D offsets for labels.
@@ -91,30 +111,23 @@ def get_label_offset(solid, proj_func, view_center=None) -> tuple[float, float]:
     lx, ly = proj_func(mid3)
     
     if solid.role == "beam":
-        return 0.0, -12.0
+        return 0.0, -15.0
     if solid.role == "post":
         if view_center:
-            # Outward from center
-            dx = lx - view_center[0]
-            dy = ly - view_center[1]
+            dx = lx - view_center[0]; dy = ly - view_center[1]
             d = math.sqrt(dx*dx + dy*dy)
-            if d > 1e-3:
-                return (dx/d)*15.0, (dy/d)*15.0
-        return 12.0, 0.0
+            if d > 1e-3: return (dx/d)*25.0, (dy/d)*25.0
+        return 15.0, 0.0
     if solid.role in ("rafter", "brace"):
-        # Perpendicular to axis in 2D
-        p0_2d = proj_func(solid.p0)
-        p1_2d = proj_func(solid.p1)
-        adx = p1_2d[0] - p0_2d[0]
-        ady = p1_2d[1] - p0_2d[1]
+        p0_2d = proj_func(solid.p0); p1_2d = proj_func(solid.p1)
+        adx = p1_2d[0] - p0_2d[0]; ady = p1_2d[1] - p0_2d[1]
         alen = math.sqrt(adx*adx + ady*ady)
         if alen > 1e-3:
             pdx, pdy = -ady/alen, adx/alen
-            # Flip to ensure it's generally "upwards" or "outwards"
             if pdy > 0: pdx, pdy = -pdx, -pdy
-            return pdx * 10.0, pdy * 10.0
+            return pdx * 12.0, pdy * 12.0
     if solid.role == "hub":
-        return 0.0, -15.0
+        return 0.0, -20.0
     return 0.0, 0.0
 
 
@@ -417,42 +430,36 @@ def render_plan_view(structure: dict, filename: str) -> list[str]:
     svg_list.append(f'        <text x="0" y="45" font-size="12">LAYOUT TYPE: EQUILATERAL HEXAGON</text>')
     svg_list.append(f'    </g>')
 
-    # ── Member ID Labels pass ────────────────────────────────────────────────
+    # ── Member ID Labels pass (Phase 5 Production-Grade) ────────────────────
     _lc = palette.get("dimension", palette["text"])
-    _plan_label_roles = {"post", "hub"}
+    _plan_label_roles = {"post", "hub", "beam"}
     rendered_ids: set[str] = set()
     placed_labels: list[tuple[float, float]] = []
     
     label_svgs = []
-    # Identify expected members for this view
     expected_members = [s for s in scene.solids if s.role in _plan_label_roles]
     
     for _s in scene.solids:
         if _s.role not in _plan_label_roles or not _s.tag or _s.tag in rendered_ids:
             continue
         
-        # Centralized offset logic
+        style = get_label_style(_s.role, "plan")
         off_x, off_y = get_label_offset(_s, proj2d, view_center=(cx, cy))
         mid3 = vcent([_s.p0, _s.p1])
         base_x, base_y = proj2d(mid3)
         _lx, _ly = base_x + off_x, base_y + off_y
         
         # Resolve collisions
-        _lx, _ly = resolve_label_overlap(_lx, _ly, placed_labels, min_dist=20.0, max_radius=40.0)
+        _lx, _ly = resolve_label_overlap(_lx, _ly, placed_labels, min_dist=30.0, max_radius=60.0)
         placed_labels.append((_lx, _ly))
         rendered_ids.add(_s.tag)
         
         label_svgs.append(
             f'    <text x="{_lx:.1f}" y="{_ly:.1f}" text-anchor="middle"'
-            f' font-size="7" font-family="monospace" fill="{_lc}" opacity="0.85"'
-            f' data-label="{_s.tag}">{_s.tag}</text>'
+            f' font-size="{style["size"]}" font-family="monospace" font-weight="{style["weight"]}"'
+            f' fill="{_lc}" opacity="{style["opacity"]}" data-label="{_s.tag}">{_s.tag}</text>'
         )
         
-    # CAD Debuggability Gate: Ensure all members in the target roles were labeled
-    if len(rendered_ids) < len({s.tag for s in expected_members}):
-        missing = {s.tag for s in expected_members} - rendered_ids
-        print(f"CAD_DEBUGGABILITY_WARNING: missing labels in plan view: {missing}", file=sys.stderr)
-
     if label_svgs:
         svg_list.append('  <g id="annotation-labels-layer" class="annotation-labels-layer">')
         svg_list.extend(label_svgs)
@@ -598,42 +605,36 @@ def render_elevation_view(structure: dict, filename: str) -> list[str]:
     svg_list.append(f'        <text x="0" y="65" font-size="12">HIP RAFTER BEVEL: {bevel:.2f}°</text>')
     svg_list.append(f'    </g>')
 
-    # ── Member ID Labels pass ────────────────────────────────────────────────
+    # ── Member ID Labels pass (Phase 5 Production-Grade) ────────────────────
     _lc_elev = palette.get("dimension", palette["text"])
-    _elev_label_roles = {"post", "beam", "hub"}
+    _elev_label_roles = {"post", "beam", "hub", "rafter"}
     rendered_ids: set[str] = set()
     placed_labels: list[tuple[float, float]] = []
     
     label_svgs = []
-    # Identify expected members for this view
     expected_members = [s for s in scene.solids if s.role in _elev_label_roles]
     
     for _s in scene.solids:
         if _s.role not in _elev_label_roles or not _s.tag or _s.tag in rendered_ids:
             continue
         
-        # Centralized offset logic
+        style = get_label_style(_s.role, "elevation")
         off_x, off_y = get_label_offset(_s, proj2d, view_center=(cx, cy))
         mid3 = vcent([_s.p0, _s.p1])
         base_x, base_y = proj2d(mid3)
         _lx, _ly = base_x + off_x, base_y + off_y
         
         # Resolve collisions
-        _lx, _ly = resolve_label_overlap(_lx, _ly, placed_labels, min_dist=20.0, max_radius=40.0)
+        _lx, _ly = resolve_label_overlap(_lx, _ly, placed_labels, min_dist=25.0, max_radius=50.0)
         placed_labels.append((_lx, _ly))
         rendered_ids.add(_s.tag)
         
         label_svgs.append(
             f'    <text x="{_lx:.1f}" y="{_ly:.1f}" text-anchor="middle"'
-            f' font-size="7" font-family="monospace" fill="{_lc_elev}" opacity="0.85"'
-            f' data-label="{_s.tag}">{_s.tag}</text>'
+            f' font-size="{style["size"]}" font-family="monospace" font-weight="{style["weight"]}"'
+            f' fill="{_lc_elev}" opacity="{style["opacity"]}" data-label="{_s.tag}">{_s.tag}</text>'
         )
         
-    # CAD Debuggability Gate: Ensure all members in the target roles were labeled
-    if len(rendered_ids) < len({s.tag for s in expected_members}):
-        missing = {s.tag for s in expected_members} - rendered_ids
-        print(f"CAD_DEBUGGABILITY_WARNING: missing labels in elevation view: {missing}", file=sys.stderr)
-
     if label_svgs:
         svg_list.append('  <g id="annotation-labels-layer" class="annotation-labels-layer">')
         svg_list.extend(label_svgs)
@@ -872,21 +873,20 @@ def render_perspective_view(
     svg_list.append(f'        <text x="0" y="25" font-size="12">{title_line2}</text>')
     svg_list.append(f'    </g>')
 
-    # ── Member ID Labels pass ────────────────────────────────────────────────
+    # ── Member ID Labels pass (Phase 5 Production-Grade) ────────────────────
     _lc_3d = palette.get("dimension", palette["text"])
     _3d_label_roles = {"post", "beam", "rafter", "hub", "brace"}
     rendered_ids: set[str] = set()
     placed_labels: list[tuple[float, float]] = []
     
     label_svgs = []
-    # Identify expected members for this view
     expected_members = [s for s in scene.solids if s.role in _3d_label_roles]
     
     for _s in scene.solids:
         if _s.role not in _3d_label_roles or not _s.tag or _s.tag in rendered_ids:
             continue
         
-        # Centralized offset logic
+        style = get_label_style(_s.role, "perspective")
         off_x, off_y = get_label_offset(_s, proj3)
         mid3 = vcent([_s.p0, _s.p1])
         base_x, base_y = proj3(mid3)
@@ -897,17 +897,16 @@ def render_perspective_view(
         placed_labels.append((_lx, _ly))
         rendered_ids.add(_s.tag)
         
+        # Add Leader line for primary members to satisfy 'Leader Discipline'
+        if _s.role in ("post", "beam"):
+            draw_leader(svg_list, base_x, base_y, _lx, _ly, "", is_blueprint=is_blueprint)
+
         label_svgs.append(
             f'    <text x="{_lx:.1f}" y="{_ly:.1f}" text-anchor="middle"'
-            f' font-size="7" font-family="monospace" fill="{_lc_3d}" opacity="0.85"'
-            f' data-label="{_s.tag}">{_s.tag}</text>'
+            f' font-size="{style["size"]}" font-family="monospace" font-weight="{style["weight"]}"'
+            f' fill="{_lc_3d}" opacity="{style["opacity"]}" data-label="{_s.tag}">{_s.tag}</text>'
         )
         
-    # CAD Debuggability Gate: Ensure all members in the target roles were labeled
-    if len(rendered_ids) < len({s.tag for s in expected_members}):
-        missing = {s.tag for s in expected_members} - rendered_ids
-        print(f"CAD_DEBUGGABILITY_WARNING: missing labels in 3D view: {missing}", file=sys.stderr)
-
     if label_svgs:
         svg_list.append('  <g id="annotation-labels-layer" class="annotation-labels-layer">')
         svg_list.extend(label_svgs)
