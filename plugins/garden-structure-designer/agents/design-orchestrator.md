@@ -1,6 +1,6 @@
 ---
 name: design-orchestrator
-description: Pipeline controller agent for the garden structure designer. Receives the structured design spec JSON from the interactive-designer session and orchestrates the serial execution of the structural pipeline and compilation skills. Use after intake-normalizer has produced design-spec.json.
+description: Pipeline controller agent for the garden structure designer. Receives the structured design spec from the interactive-designer session and orchestrates the serial execution of the structural pipeline and compilation skills. Use after intake-normalizer has produced structure.json.
 model: inherit
 tools: ["Read", "Write", "Bash"]
 ---
@@ -15,7 +15,8 @@ Before starting Stage 1, read the session dashboard and dispatch strategy:
 cat context/design-dashboard.md
 ```
 
-1. Confirm `context/staging/design-spec.json` is present (written by intake-normalizer).
+1. Confirm `context/staging/structure.json` is present (written by intake-normalizer).
+   - Confirm `meta.lifecycle` is `INTENT` or `ENGINEERED`.
 2. Read `**Dispatch Strategy:**` from the dashboard. Use this to determine how to invoke the independent validation agents in Stage 3 and Stage 5:
    - `copilot-cli` → `gh copilot suggest` with claude-sonnet-4.6
    - `gemini-cli` → `gemini` with gemini-3.1-pro-preview
@@ -30,46 +31,53 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
 3. Make all active lessons available as hard constraints to downstream skills.
 
 ### Stage 1 — Structural Foundation
-1. Verify `context/staging/design-spec.json` is present and complete.
+1. Verify `context/staging/structure.json` is present and complete.
+   - Confirm `meta.lifecycle` is `INTENT` or `ENGINEERED`.
 2. Call `building-code-validator` → writes `context/staging/building-code.json`.
-3. Call `structural-engine` → writes `context/staging/structural-model.json`.
+3. Call `structural-engine` → writes `context/staging/structure.json`.
    - **The structural-engine MUST run `geometry_engine.py` as part of its execution.**
-   - Verify `context/staging/geometry-calculations.json` exists after this step. If missing, halt and re-run.
-   - If `geometry-calculations.json` contains warnings (height limit breach, etc.), halt and resolve before proceeding.
-4. Set `structural-model.json → _locked: true` to prevent drift.
+   - Verify `structure.json → geometry._sealed = true` after this step. If missing, halt and re-run.
+   - If geometry section contains warnings (height limit breach, etc.), halt and resolve before proceeding.
+4. Verify `structure.json → members._sealed = true` after `structural-engine` completes.
 
 ### Stage 2 — Joinery & Bracing
-5. Call `joinery-designer` → reads structural model → writes `context/staging/joinery-model.json`.
-6. Call `bracing-system-designer` → writes brace geometry to `context/staging/bracing-model.json`.
-   - **Re-run `geometry_engine.py`** if bracing affects geometry (pass bracing-model.json as second arg).
-   - Verify `structural-model.json` hash has NOT changed since Stage 1 lock.
-   - Verify `geometry-calculations.json` source_hash still matches `structural-model.json`.
+5. Call `joinery-designer` → reads structure model → writes joinery details to `context/staging/structure.json`.
+6. Call `bracing-system-designer` → writes brace geometry to `context/staging/structure.json`.
+   - **Re-run `geometry_engine.py`** if bracing affects geometry (pass structure.json as input).
+   - Verify `structure.json → members._sealed = true` has NOT changed since Stage 1 lock.
+   - Verify `structure.json → geometry._sealed = true` is still intact.
 
 ### Stage 3 — Independent Structural Physics QA
 7. Launch an independent sub-agent via `gemini-cli` using **gemini-3.1-pro-preview**, adopting the `validation-agent` profile, to audit structural physics. This agent:
-   - Verifies height constraints against design-spec.
+   - Verifies height constraints against structure.json design specification.
    - Checks spans/loads/slenderness ratios.
-   - Confirms compound angles in geometry-calculations.json are correct.
+   - Confirms compound angles in structure.json geometry section are correct.
    - If `gemini-cli` unavailable, falls back to Claude self-review (see validation-agent.md §7).
 8. If validation returns `FAIL`, read `context/staging/drift_report.json` and re-invoke the specific failing skills. Then re-run this Stage 3 gate.
 
 ### Stage 4 — Drawing & Blueprint Generation
-9. Call `drawing-generator` → produces architectural SVGs.
+9. Call `drawing-generator` → produces architectural SVGs from `structure.json` geometry.
    - Each SVG must be validated by `svg_validator.py` before this stage is considered complete.
 10. Call `shop-blueprint-generator` → produces heavily dimensioned carpenter drawings.
-    - All angles MUST come from `geometry-calculations.json`. Verify this is the case before proceeding.
+    - All angles MUST come from `structure.json` geometry section. Verify this is the case before proceeding.
     - Each SVG validated by `svg_validator.py`.
+
+After geometry_engine.py seals structure.json, run the M1 compatibility shim to keep legacy validators functional:
+```bash
+python3 plugins/garden-structure-designer/scripts/emit_legacy_views.py \
+  context/staging/structure.json
+```
 
 ### Stage 5 — Blueprint QA Gate
 11. Launch an independent sub-agent via `gemini-cli` using **gemini-3.1-pro-preview**, adopting the `validation-agent` profile, to run the full dual-channel QA pass:
     - Static XML check on all drawing outputs.
     - Human vision proxy request for any PNG renders.
-    - Dimension drift check (SVG labels vs. geometry-calculations.json values).
+    - Dimension drift check (SVG labels vs. structure.json geometry values).
 12. If validation returns `FAIL`, read `drift_report.json`, re-invoke failing drawing skills, then re-run Stage 5.
 
 ### Stage 5.5 — Cross-Artifact Reconciliation
 12b. Run `scripts/cross_artifact_validator.py context/staging outputs`.
-     - Validates paths, SAW_SETTINGS metadata, and ensures that beam miters ≠ rafter miters appropriately across all MD and SVG artifacts.
+     - Validates paths, SAW_SETTINGS metadata against structure.json source hash, and ensures that beam miters ≠ rafter miters appropriately across all MD and SVG artifacts.
 
 ### Stage 5.75 — Adversarial Drawing Red-Team Gate
 
@@ -89,7 +97,7 @@ Authoritative gate command:
 ```bash
 python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
   --svg-dir outputs \
-  --model context/staging/structural-model.json \
+  --model context/staging/structure.json \
   --report-dir context/staging \
   --md-dir outputs
 ```
@@ -120,7 +128,7 @@ This gate exists because XML-valid SVGs can still be visually useless. Passing `
 
 ### Stage 6 — Builder Documents
 13. Call `builder-docs-generator` (new skill) to produce:
-    - `outputs/budget-estimate.md` — sourced from `structural-model.json` BF totals and regional material costs.
+    - `outputs/budget-estimate.md` — sourced from `structure.json` BF totals and regional material costs.
     - `outputs/lumber-purchase-list.md` — ordered by member type with standard stock lengths.
     - `outputs/assembly-guide.md` — phase-by-phase site assembly sequence.
 
@@ -174,11 +182,8 @@ ls -la context/staging/ || true
 Then check:
 
 ```bash
-cat context/staging/structural-model.json 2>/dev/null || true
-cat plugins/garden-structure-designer/context/staging/structural-model.json 2>/dev/null || true
-
-cat context/staging/geometry-calculations.json 2>/dev/null || true
-cat plugins/garden-structure-designer/context/staging/geometry-calculations.json 2>/dev/null || true
+cat context/staging/structure.json 2>/dev/null || true
+cat plugins/garden-structure-designer/context/staging/structure.json 2>/dev/null || true
 
 cat context/staging/drawing-red-team-report.json 2>/dev/null || true
 cat plugins/garden-structure-designer/context/staging/drawing-red-team-report.json 2>/dev/null || true
@@ -233,9 +238,14 @@ If reports disagree, do not continue until the report source-of-truth is reconci
 
 ## Context Checkpoint Protocol
 
-After Stage 3 passes (structural model locked and validated), summarize the locked parameters in a short context note:
+After Stage 3 passes (structure.json sealed and validated), summarize the locked parameters in a short context note:
 ```
-CHECKPOINT: structural-model locked. Posts=6×6@8.33ft, pitch=4:12, miter=28.71°, bevel=9.10°, total_height=9.94ft. Proceeding to drawing stage.
+CHECKPOINT: structure.json sealed through geometry.
+  posts={members.posts.nominal_size}@{members.posts.cut_length_ft}ft,
+  pitch={roof.pitch},
+  miter={geometry.compound_cut.miter_deg}°,
+  total_height={geometry.total_height.total_height_ft}ft.
+  lifecycle={meta.lifecycle}
 ```
 This summary allows the drawing-stage agents to operate from a tight, clean context without re-deriving the engineering math.
 
@@ -261,8 +271,8 @@ outputs/drawing-red-team-report.md
 
 Markdown files, render prompts, and PNG concept images are **secondary presentation artifacts**. They are never sufficient proof that the package has been revised.
 
-- **Aesthetic-only change:** preserve locked structural model; re-run/revalidate drawings against existing geometry.
-- **Geometry change** (post count, span, pitch, height, members, bracing, cut lengths): route through the structural pipeline; regenerate `geometry-calculations.json` via `geometry_engine.py`. **Never hand-edit deterministic geometry artifacts.**
+- **Aesthetic-only change:** preserve locked structure.json; re-run/revalidate drawings against existing geometry section.
+- **Geometry change** (post count, span, pitch, height, members, bracing, cut lengths): route through the structural pipeline; regenerate `structure.json` geometry section via `geometry_engine.py`. **Never hand-edit deterministic geometry artifacts.**
 
 Before reporting success, always run:
 
@@ -272,10 +282,10 @@ python3 plugins/garden-structure-designer/scripts/schema_validator.py \
   --strict --json-output context/staging/schema-validation-report.json
 
 python3 plugins/garden-structure-designer/scripts/structural_physics_validator.py \
-  context/staging/structural-model.json
+  context/staging/structure.json
 
 python3 plugins/garden-structure-designer/scripts/render_drawings.py \
-  context/staging/structural-model.json
+  context/staging/structure.json
 
 python3 plugins/garden-structure-designer/scripts/generate_quality_dashboard.py
 ```
