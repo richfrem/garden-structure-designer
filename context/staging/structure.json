@@ -1,0 +1,899 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "lifecycle": "GEOMETRY_SEALED",
+    "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
+    "created_at": "2026-05-24T05:00:22.487718+00:00",
+    "updated_at": "2026-05-24T06:45:28.879549+00:00"
+  },
+  "intent": {
+    "jurisdiction": "BC_SAANICH",
+    "material_preference": "Western Red Cedar",
+    "joinery_style": "Traditional timber framing"
+  },
+  "structure": {
+    "type": "pergola",
+    "shape": "hexagon",
+    "sides": 6
+  },
+  "layout": {
+    "post_count": 6,
+    "inscribed_radius_ft": 4.875,
+    "post_spacing_ft": 4.875
+  },
+  "members": {
+    "posts": {
+      "nominal_size": "6x6",
+      "actual_width_in": 5.5,
+      "actual_depth_in": 5.5,
+      "cut_length_ft": 8.42
+    },
+    "beams": {
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "cut_length_ft": 5.0
+    }
+  },
+  "roof": {
+    "type": "hip",
+    "pitch": "4:12",
+    "pitch_defaulted": false,
+    "primary_rafters": {
+      "count": 6,
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "overhang_ft": 0.75
+    },
+    "secondary_rafters": {
+      "enabled": false
+    }
+  },
+  "hub": {
+    "type": "polygonal",
+    "radius_ft": "auto",
+    "radius_min_ft": 0.6,
+    "height_ratio_to_rafter": 2.5,
+    "clearance_ft": 0.5
+  },
+  "bracing": {
+    "enabled": true,
+    "layout": "paired_per_post",
+    "brace": {
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "length_ft": 2.5,
+      "angle_deg": 45,
+      "count_per_post": 2
+    }
+  },
+  "footings": {
+    "type": "concrete_caisson",
+    "diameter_in": 12.0,
+    "depth_in": 24.0,
+    "concrete_grade": "3000 PSI",
+    "center_on_post": true
+  },
+  "joinery": {
+    "beam_seat_style": "exposed_tenon",
+    "rafter_seat_style": "birds_mouth",
+    "rafter_tail": "square_cut",
+    "joints": {
+      "beam_ring": {
+        "corner_joint": "miter",
+        "miter_reference": "regular_polygon",
+        "kerf_allowance_in": 0.125
+      },
+      "post_to_beam": {
+        "joint_type": "seat_on_top",
+        "seat_depth_in": 0.0,
+        "tolerance_in": 0.0625
+      },
+      "rafter_to_beam": {
+        "joint_type": "birds_mouth",
+        "seat_depth_in": 1.5,
+        "heel_cut_plumb": true,
+        "tail_cut_plumb": true,
+        "tolerance_in": 0.0625
+      },
+      "rafter_to_hub": {
+        "joint_type": "miter_to_face",
+        "termination": "hub_face_plane",
+        "tolerance_in": 0.0625
+      },
+      "brace_to_post_beam": {
+        "joint_type": "knee_brace",
+        "end_cut": "miter",
+        "angle_deg": 45,
+        "seat_offset_in": 0.0,
+        "tolerance_in": 0.0625
+      }
+    }
+  },
+  "invariants": {
+    "rafter_count_equals_post_count": true,
+    "post_top_equals_beam_bottom": true,
+    "no_rafter_inside_hub_radius": true,
+    "brace_must_connect_to_surfaces": true,
+    "no_solid_intersections": true,
+    "member_counts_match_sections": true,
+    "no_zero_length_members": true,
+    "presentation_primary_counts_match": true
+  },
+  "presentation": {
+    "view_mode": "presentation",
+    "roof_style": "open_rafter",
+    "visibility_rules": {
+      "primary_members_only": true,
+      "fade_secondary": true,
+      "suppress_internal_roof_framing": true,
+      "max_visible_braces_per_post": 1
+    },
+    "labeling": {
+      "avoid_geometry_overlap": true,
+      "use_leaders_when_colliding": true
+    },
+    "palette": "cedar_warm"
+  },
+  "code": {
+    "_sealed": false,
+    "wind_load_kPa": null,
+    "snow_load_kPa": null,
+    "height_limit_ft": null,
+    "permit_required": null
+  },
+  "geometry": {
+    "_comment": "DERIVED \u2014 written by geometry_engine.py. Do not manually edit.",
+    "_sealed": true,
+    "compound_cut": {
+      "miter_deg": 28.71,
+      "bevel_deg": 9.1,
+      "pitch_angle_deg": 18.43,
+      "plan_half_angle_deg": 30.0
+    },
+    "beam_ring": {
+      "beam_miter_deg": 30.0,
+      "interior_angle_deg": 120.0
+    },
+    "rafter": {
+      "structural_length_ft": 5.139,
+      "total_with_overhang_ft": 5.929,
+      "total_with_overhang_in": 71.15
+    },
+    "roof_rise": {
+      "rise_ft": 1.625,
+      "rise_in": 19.5
+    },
+    "total_height": {
+      "post_ft": 8.42,
+      "beam_depth_ft": 1.0,
+      "roof_rise_ft": 1.625,
+      "total_height_ft": 11.045,
+      "total_height_in": 132.54
+    },
+    "hub_radius_ft": 0.75,
+    "svg_coordinates": {
+      "viewBox": "0 0 1600 1200",
+      "width_px": 1600,
+      "height_px": 1200,
+      "margin_top_px": 80,
+      "margin_bottom_px": 120,
+      "grade_y": 1080,
+      "scale_px_per_ft": 42.0,
+      "content_height_px": 464,
+      "content_width_px": 610,
+      "post_top_y": 726,
+      "beam_soffit_y": 726,
+      "beam_top_y": 684,
+      "hub_apex_y": 616,
+      "rise_px": 68,
+      "beam_px": 42,
+      "post_px": 354
+    },
+    "warnings": [],
+    "joints": {
+      "units": "feet",
+      "coordinate_system": "right_handed_z_up",
+      "tolerance_ft": 0.0052,
+      "notes": [
+        "Derived by geometry_engine.py. Do not manually edit.",
+        "Planes are point-normal form. Normals are unit-length.",
+        "All joint points are construction nodes for cad_scene.py."
+      ],
+      "z_planes": {
+        "Z_GRADE": 0.0,
+        "Z_POST_TOP": 7.42,
+        "Z_BEAM_TOP": 8.42,
+        "Z_BEAM_CENTER": 7.92,
+        "Z_APEX": 10.045,
+        "Z_BEAM_SOFFIT": 7.42
+      },
+      "layout": {
+        "post_count": 6,
+        "post_radius_ft": 4.875,
+        "post_xy": [
+          [
+            4.875,
+            0.0
+          ],
+          [
+            2.4375,
+            4.2219
+          ],
+          [
+            -2.4375,
+            4.2219
+          ],
+          [
+            -4.875,
+            0.0
+          ],
+          [
+            -2.4375,
+            -4.2219
+          ],
+          [
+            2.4375,
+            -4.2219
+          ]
+        ],
+        "beam_segments": [
+          {
+            "id": "B1",
+            "i0": 0,
+            "i1": 1
+          },
+          {
+            "id": "B2",
+            "i0": 1,
+            "i1": 2
+          },
+          {
+            "id": "B3",
+            "i0": 2,
+            "i1": 3
+          },
+          {
+            "id": "B4",
+            "i0": 3,
+            "i1": 4
+          },
+          {
+            "id": "B5",
+            "i0": 4,
+            "i1": 5
+          },
+          {
+            "id": "B6",
+            "i0": 5,
+            "i1": 0
+          }
+        ]
+      },
+      "hub": {
+        "type": "polygonal",
+        "sides": 6,
+        "radius_ft_resolved": 0.75,
+        "face_planes": {
+          "alignment": "mid_angle",
+          "planes": [
+            {
+              "face_id": "H1",
+              "theta_deg": 0.0,
+              "point": [
+                0.75,
+                0.0,
+                10.045
+              ],
+              "normal": [
+                1.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "face_id": "H2",
+              "theta_deg": 60.0,
+              "point": [
+                0.375,
+                0.6495,
+                10.045
+              ],
+              "normal": [
+                0.5,
+                0.866,
+                0.0
+              ]
+            },
+            {
+              "face_id": "H3",
+              "theta_deg": 120.0,
+              "point": [
+                -0.375,
+                0.6495,
+                10.045
+              ],
+              "normal": [
+                -0.5,
+                0.866,
+                0.0
+              ]
+            },
+            {
+              "face_id": "H4",
+              "theta_deg": 180.0,
+              "point": [
+                -0.75,
+                0.0,
+                10.045
+              ],
+              "normal": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "face_id": "H5",
+              "theta_deg": 240.0,
+              "point": [
+                -0.375,
+                -0.6495,
+                10.045
+              ],
+              "normal": [
+                -0.5,
+                -0.866,
+                0.0
+              ]
+            },
+            {
+              "face_id": "H6",
+              "theta_deg": 300.0,
+              "point": [
+                0.375,
+                -0.6495,
+                10.045
+              ],
+              "normal": [
+                0.5,
+                -0.866,
+                0.0
+              ]
+            }
+          ]
+        }
+      },
+      "rafters": {
+        "primary_count": 6,
+        "seat_depth_ft": "auto_1_over_3_depth",
+        "seat_depth_ft_resolved": 0.1528,
+        "hub_termination_points": {
+          "points": [
+            {
+              "rafter_id": "R1",
+              "face_id": "H1",
+              "point": [
+                0.75,
+                0.0,
+                10.045
+              ]
+            },
+            {
+              "rafter_id": "R2",
+              "face_id": "H2",
+              "point": [
+                0.375,
+                0.6495,
+                10.045
+              ]
+            },
+            {
+              "rafter_id": "R3",
+              "face_id": "H3",
+              "point": [
+                -0.375,
+                0.6495,
+                10.045
+              ]
+            },
+            {
+              "rafter_id": "R4",
+              "face_id": "H4",
+              "point": [
+                -0.75,
+                0.0,
+                10.045
+              ]
+            },
+            {
+              "rafter_id": "R5",
+              "face_id": "H5",
+              "point": [
+                -0.375,
+                -0.6495,
+                10.045
+              ]
+            },
+            {
+              "rafter_id": "R6",
+              "face_id": "H6",
+              "point": [
+                0.375,
+                -0.6495,
+                10.045
+              ]
+            }
+          ]
+        }
+      },
+      "braces": {
+        "enabled": true,
+        "layout": "paired_per_post",
+        "endpoints": {
+          "pairs": [
+            {
+              "brace_id": "K1A",
+              "post_index": 0,
+              "toward_post_index": 1,
+              "start": [
+                4.7604,
+                0.1985,
+                5.652
+              ],
+              "end": [
+                3.8765,
+                1.7294,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K1B",
+              "post_index": 0,
+              "toward_post_index": 5,
+              "start": [
+                4.7604,
+                -0.1985,
+                5.652
+              ],
+              "end": [
+                3.8765,
+                -1.7294,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K2A",
+              "post_index": 1,
+              "toward_post_index": 2,
+              "start": [
+                2.2083,
+                4.2219,
+                5.652
+              ],
+              "end": [
+                0.4406,
+                4.2219,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K2B",
+              "post_index": 1,
+              "toward_post_index": 0,
+              "start": [
+                2.5521,
+                4.0234,
+                5.652
+              ],
+              "end": [
+                3.436,
+                2.4925,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K3A",
+              "post_index": 2,
+              "toward_post_index": 3,
+              "start": [
+                -2.5521,
+                4.0234,
+                5.652
+              ],
+              "end": [
+                -3.436,
+                2.4925,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K3B",
+              "post_index": 2,
+              "toward_post_index": 1,
+              "start": [
+                -2.2083,
+                4.2219,
+                5.652
+              ],
+              "end": [
+                -0.4406,
+                4.2219,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K4A",
+              "post_index": 3,
+              "toward_post_index": 4,
+              "start": [
+                -4.7604,
+                -0.1985,
+                5.652
+              ],
+              "end": [
+                -3.8765,
+                -1.7294,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K4B",
+              "post_index": 3,
+              "toward_post_index": 2,
+              "start": [
+                -4.7604,
+                0.1985,
+                5.652
+              ],
+              "end": [
+                -3.8765,
+                1.7294,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K5A",
+              "post_index": 4,
+              "toward_post_index": 5,
+              "start": [
+                -2.2083,
+                -4.2219,
+                5.652
+              ],
+              "end": [
+                -0.4406,
+                -4.2219,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K5B",
+              "post_index": 4,
+              "toward_post_index": 3,
+              "start": [
+                -2.5521,
+                -4.0234,
+                5.652
+              ],
+              "end": [
+                -3.436,
+                -2.4925,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K6A",
+              "post_index": 5,
+              "toward_post_index": 0,
+              "start": [
+                2.5521,
+                -4.0234,
+                5.652
+              ],
+              "end": [
+                3.436,
+                -2.4925,
+                7.42
+              ]
+            },
+            {
+              "brace_id": "K6B",
+              "post_index": 5,
+              "toward_post_index": 4,
+              "start": [
+                2.2083,
+                -4.2219,
+                5.652
+              ],
+              "end": [
+                0.4406,
+                -4.2219,
+                7.42
+              ]
+            }
+          ]
+        }
+      },
+      "beam_ring": {
+        "corner_planes": [
+          {
+            "corner_id": "C1",
+            "post_index": 0,
+            "point": [
+              4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              -1.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "corner_id": "C2",
+            "post_index": 1,
+            "point": [
+              2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          {
+            "corner_id": "C3",
+            "post_index": 2,
+            "point": [
+              -2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          {
+            "corner_id": "C4",
+            "post_index": 3,
+            "point": [
+              -4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "corner_id": "C5",
+            "post_index": 4,
+            "point": [
+              -2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              0.866,
+              0.0
+            ]
+          },
+          {
+            "corner_id": "C6",
+            "post_index": 5,
+            "point": [
+              2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              0.866,
+              0.0
+            ]
+          }
+        ],
+        "beam_end_planes": [
+          {
+            "beam_id": "B1",
+            "end": "start",
+            "corner_id": "C1",
+            "point": [
+              4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              -1.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B1",
+            "end": "end",
+            "corner_id": "C2",
+            "point": [
+              2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B2",
+            "end": "start",
+            "corner_id": "C2",
+            "point": [
+              2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B2",
+            "end": "end",
+            "corner_id": "C3",
+            "point": [
+              -2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B3",
+            "end": "start",
+            "corner_id": "C3",
+            "point": [
+              -2.4375,
+              4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              -0.866,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B3",
+            "end": "end",
+            "corner_id": "C4",
+            "point": [
+              -4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B4",
+            "end": "start",
+            "corner_id": "C4",
+            "point": [
+              -4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B4",
+            "end": "end",
+            "corner_id": "C5",
+            "point": [
+              -2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              0.866,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B5",
+            "end": "start",
+            "corner_id": "C5",
+            "point": [
+              -2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              0.5,
+              0.866,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B5",
+            "end": "end",
+            "corner_id": "C6",
+            "point": [
+              2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              0.866,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B6",
+            "end": "start",
+            "corner_id": "C6",
+            "point": [
+              2.4375,
+              -4.2219,
+              7.92
+            ],
+            "normal": [
+              -0.5,
+              0.866,
+              0.0
+            ]
+          },
+          {
+            "beam_id": "B6",
+            "end": "end",
+            "corner_id": "C1",
+            "point": [
+              4.875,
+              0.0,
+              7.92
+            ],
+            "normal": [
+              -1.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "cad": {
+    "_comment": "DERIVED \u2014 written by cad_scene.py.",
+    "_sealed": false,
+    "units": "feet",
+    "coordinate_system": "right_handed_z_up",
+    "precision": 0.001
+  }
+}

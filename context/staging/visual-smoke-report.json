@@ -1,0 +1,202 @@
+{
+  "schema": "garden-structure-designer/visual-smoke-report/1.0",
+  "generated_at": "2026-05-24T06:45:29.179597+00:00",
+  "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
+  "structure_path": "context/staging/structure.json",
+  "svg_dir": "outputs",
+  "out_dir": "outputs/visual-smoke",
+  "baseline_dir": null,
+  "status": "PASS",
+  "summary": "All sheets rendered and heuristics passed.",
+  "files": [
+    {
+      "sheet": "drawing-plan-view",
+      "svg": "outputs/drawing-plan-view.svg",
+      "png": "outputs/visual-smoke/drawing-plan-view.png",
+      "metrics": {
+        "viewport_px": [
+          1600,
+          1200
+        ],
+        "non_bg_ratio": 0.11999791666666666,
+        "bbox_fill_ratio": 0.9439171875,
+        "top_left_clustered": false,
+        "hub_edge_density": 0.042869897959183674
+      },
+      "failures": [],
+      "warnings": [],
+      "hub_crop_png": "outputs/visual-smoke/drawing-plan-view.hub.png",
+      "clip": {
+        "hub_box_px": [
+          660,
+          440,
+          280,
+          280
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "sheet": "drawing-elevation-view",
+      "svg": "outputs/drawing-elevation-view.svg",
+      "png": "outputs/visual-smoke/drawing-elevation-view.png",
+      "metrics": {
+        "viewport_px": [
+          1600,
+          1200
+        ],
+        "non_bg_ratio": 0.15577916666666666,
+        "bbox_fill_ratio": 0.9439171875,
+        "top_left_clustered": false
+      },
+      "failures": [],
+      "warnings": [],
+      "status": "PASS"
+    },
+    {
+      "sheet": "drawing-isometric-view",
+      "svg": "outputs/drawing-isometric-view.svg",
+      "png": "outputs/visual-smoke/drawing-isometric-view.png",
+      "metrics": {
+        "viewport_px": [
+          1600,
+          1200
+        ],
+        "non_bg_ratio": 0.18527135416666668,
+        "bbox_fill_ratio": 0.9439171875,
+        "top_left_clustered": false,
+        "hub_edge_density": 0.08987244897959183
+      },
+      "failures": [],
+      "warnings": [],
+      "hub_crop_png": "outputs/visual-smoke/drawing-isometric-view.hub.png",
+      "clip": {
+        "hub_box_px": [
+          660,
+          307,
+          280,
+          280
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "sheet": "drawing-perspective-view",
+      "svg": "outputs/drawing-perspective-view.svg",
+      "png": "outputs/visual-smoke/drawing-perspective-view.png",
+      "metrics": {
+        "viewport_px": [
+          1600,
+          1200
+        ],
+        "non_bg_ratio": 0.18538385416666667,
+        "bbox_fill_ratio": 0.9439171875,
+        "top_left_clustered": false,
+        "hub_edge_density": 0.08987244897959183
+      },
+      "failures": [],
+      "warnings": [],
+      "hub_crop_png": "outputs/visual-smoke/drawing-perspective-view.hub.png",
+      "clip": {
+        "hub_box_px": [
+          660,
+          307,
+          280,
+          280
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "sheet": "blueprint-plan",
+      "svg": "outputs/blueprint-plan.svg",
+      "png": "outputs/visual-smoke/blueprint-plan.png",
+      "metrics": {
+        "viewport_px": [
+          1600,
+          1200
+        ],
+        "non_bg_ratio": 0.12445625,
+        "bbox_fill_ratio": 0.9467546875,
+        "top_left_clustered": false,
+        "hub_edge_density": 0.05714285714285714
+      },
+      "failures": [],
+      "warnings": [],
+      "hub_crop_png": "outputs/visual-smoke/blueprint-plan.hub.png",
+      "clip": {
+        "hub_box_px": [
+          660,
+          440,
+          280,
+          280
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "sheet": "blueprint-elevation",
+      "svg": "outputs/blueprint-elevation.svg",
+      "png": "outputs/visual-smoke/blueprint-elevation.png",
+      "metrics": {
+        "viewport_px": [
+          1600,
+          1200
+        ],
+        "non_bg_ratio": 0.08905885416666667,
+        "bbox_fill_ratio": 0.9467546875,
+        "top_left_clustered": false
+      },
+      "failures": [],
+      "warnings": [],
+      "status": "PASS"
+    },
+    {
+      "sheet": "blueprint-isometric",
+      "svg": "outputs/blueprint-isometric.svg",
+      "png": "outputs/visual-smoke/blueprint-isometric.png",
+      "metrics": {
+        "viewport_px": [
+          1600,
+          1200
+        ],
+        "non_bg_ratio": 0.14230052083333333,
+        "bbox_fill_ratio": 0.9467546875,
+        "top_left_clustered": false,
+        "hub_edge_density": 0.08655612244897959
+      },
+      "failures": [],
+      "warnings": [],
+      "hub_crop_png": "outputs/visual-smoke/blueprint-isometric.hub.png",
+      "clip": {
+        "hub_box_px": [
+          660,
+          307,
+          280,
+          280
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "sheet": "blueprint-component-isolation",
+      "svg": "outputs/blueprint-component-isolation.svg",
+      "png": "outputs/visual-smoke/blueprint-component-isolation.png",
+      "metrics": {
+        "viewport_px": [
+          1600,
+          1200
+        ],
+        "non_bg_ratio": 0.10128489583333333,
+        "bbox_fill_ratio": 0.9467546875,
+        "top_left_clustered": false
+      },
+      "failures": [],
+      "warnings": [],
+      "status": "PASS"
+    }
+  ],
+  "overall_failures": [],
+  "overall_warnings": [],
+  "may_claim_success": true
+}

@@ -1,44 +1,36 @@
 #!/usr/bin/env python3
 """
-run_drawing_red_team.py
+run_drawing_red_team.py (CLI)
 =====================================
 
 Purpose:
-    Executable launcher for the adversarial drawing red-team review.
-    Enumerates outputs/*.svg, runs svg_validator.py and
-    drawing_content_validator.py against each file, inspects semantic
-    role counts and text labels, then writes:
-
-        context/staging/drawing-red-team-report.json
-        outputs/drawing-red-team-report.md
-
-    Sets `may_claim_success: false` if any SVG fails.
-
-    This script makes the red-team gate enforceable outside a sub-agent
-    environment. It does NOT replace the qualitative judgment of the
-    drawing-red-team-agent — it provides the deterministic foundation
-    that the agent uses as evidence.
+    run_drawing_red_team.py =====================================
 
 Layer: Execution
 
 Usage Examples:
-    # Standard run from repo root:
-    python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py
+    python run_drawing_red_team.py [args]
 
-    # Explicit paths:
-    python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \\
-        --svg-dir outputs \\
-        --model context/staging/structural-model.json \\
-        --report-dir context/staging \\
-        --md-dir outputs
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
 
 Script Dependencies:
-    Standard library: argparse, glob, json, os, subprocess, sys, datetime
-    Peer script (same directory): drawing_content_validator.py, svg_validator.py
+    Standard library json, os, sys, math, hashlib, etc.
 
 Consumed by:
-    design-orchestrator Stage 5.75, adversarial-drawing-reviewer skill,
-    generate_quality_dashboard.py
+    design-orchestrator, various skills in the pipeline.
 """
 from __future__ import annotations
 
@@ -237,8 +229,7 @@ def run_review(
 
     # --- Pre-flight: check required deterministic staging artifacts ---
     required_staging_artifacts = [
-        str(Path(report_dir) / "structural-model.json"),
-        str(Path(report_dir) / "geometry-calculations.json"),
+        str(Path(report_dir) / "structure.json"),
         str(Path(report_dir) / "schema-validation-report.json"),
         str(Path(report_dir) / "physics-validation-report.json"),
     ]
@@ -412,8 +403,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--model",
-        default=str(_STAGING / "structural-model.json"),
-        help="Path to structural-model.json.",
+        default=str(_STAGING / "structure.json"),
+        help="Path to structure.json.",
     )
     parser.add_argument(
         "--report-dir",

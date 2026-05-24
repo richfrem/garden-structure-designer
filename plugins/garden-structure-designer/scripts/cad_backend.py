@@ -144,10 +144,15 @@ def build_cad_model(model: dict, calcs: dict) -> object | None:
     beam_d = scene.Z_BEAM_TOP - scene.Z_POST_TOP
     hub_r  = scene.hub_r
 
-    POST_HW   = (5.5 / 12.0) / 2.0
-    BEAM_HW   = (5.5 / 12.0) / 2.0
-    RAFTER_HW = (3.5 / 12.0) / 2.0
-    RAFTER_HD = (5.5 / 12.0) / 2.0
+    posts_spec = model.get("members", {}).get("posts", {})
+    beams_spec = model.get("members", {}).get("beams", {})
+    rafters_spec = model.get("members", {}).get("rafters", {})
+
+    POST_HW   = (posts_spec.get("width_in", 5.5) / 12.0) / 2.0
+    POST_HD   = (posts_spec.get("depth_in", 5.5) / 12.0) / 2.0
+    BEAM_HW   = (beams_spec.get("width_in", 5.5) / 12.0) / 2.0
+    RAFTER_HW = (rafters_spec.get("width_in", 3.5) / 12.0) / 2.0
+    RAFTER_HD = (rafters_spec.get("depth_in", 5.5) / 12.0) / 2.0
 
     parts: list = []
 
@@ -162,7 +167,7 @@ def build_cad_model(model: dict, calcs: dict) -> object | None:
         box = _b3d_box_between(
             (px, py, scene.Z_GRADE),
             (px, py, scene.Z_POST_TOP),
-            POST_HW*2, POST_HW*2,
+            POST_HW*2, POST_HD*2,
         )
         if box:
             parts.append(box)

@@ -4,7 +4,7 @@ assembly_guide_validator.py (CLI)
 =====================================
 
 Purpose:
-    Validates assembly-guide.md against structural constraints. Checks for mandatory construction sequences based on structure type.
+    assembly_guide_validator.py (CLI) =====================================
 
 Layer: Execution
 

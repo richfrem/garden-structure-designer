@@ -8,7 +8,7 @@
       "status": "WARNING",
       "errors": [],
       "warnings": [
-        "Unknown keys in design-spec: {'materials', 'style', 'dimensions', 'site', 'project'}"
+        "Unknown keys in design-spec: {'project', 'style', 'materials', 'site', 'dimensions'}"
       ]
     },
     {

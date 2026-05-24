@@ -1500,6 +1500,798 @@
       "dst": "plugins/garden-structure-designer/skills/structural-engine/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/evidence_registry.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/evidence_registry.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend_build123d.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/cad_backend_build123d.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/cad_backend.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/run_obstacle_triage.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/lesson_curator.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/lesson_curator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/update_design_run_summary.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/update_design_run_summary.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/error_classifier.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/error_classifier.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_scene.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/cad_scene.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/learning_backup.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/learning_backup.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/generate_quality_dashboard.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/generate_quality_dashboard.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_drawing_red_team.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/run_drawing_red_team.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_history.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/run_history.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/drawing_content_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/drawing_content_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/assembly_guide_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/assembly_guide_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/svg_templates.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/svg_templates.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/evidence_registry.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/evidence_registry.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/schema_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/schema_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cross_artifact_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/cross_artifact_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend_build123d.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/cad_backend_build123d.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/cad_backend.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/embed_svgs.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/embed_svgs.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/run_obstacle_triage.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/render_drawings.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/render_drawings.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/format_headers.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/format_headers.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/lesson_curator.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/lesson_curator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structural_physics_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/structural_physics_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/update_design_run_summary.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/update_design_run_summary.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/failure_to_test.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/failure_to_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/error_classifier.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/error_classifier.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_scene.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/cad_scene.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/svg_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/svg_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/repair_orchestrator.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/repair_orchestrator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/learning_backup.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/learning_backup.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cut_list_engine.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/cut_list_engine.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/manifest_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/manifest_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/build_payload.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/build_payload.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/generate_quality_dashboard.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/generate_quality_dashboard.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/load_applicable_lessons.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/load_applicable_lessons.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/package_consistency_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/package_consistency_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_drawing_red_team.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/run_drawing_red_team.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/geometry_engine.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/geometry_engine.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_history.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/run_history.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/drawing_content_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/drawing_content_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/evidence_registry.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/evidence_registry.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend_build123d.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/cad_backend_build123d.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/cad_backend.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/run_obstacle_triage.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/lesson_curator.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/lesson_curator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/update_design_run_summary.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/update_design_run_summary.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/error_classifier.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/error_classifier.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_scene.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/cad_scene.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/learning_backup.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/learning_backup.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/generate_quality_dashboard.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/generate_quality_dashboard.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_drawing_red_team.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/run_drawing_red_team.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_history.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/run_history.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/drawing_content_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/drawing_content_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/evidence_registry.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/evidence_registry.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend_build123d.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cad_backend_build123d.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cad_backend.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/run_obstacle_triage.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/lesson_curator.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/lesson_curator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/update_design_run_summary.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/update_design_run_summary.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/error_classifier.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/error_classifier.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_scene.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cad_scene.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/learning_backup.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/learning_backup.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/generate_quality_dashboard.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/generate_quality_dashboard.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_drawing_red_team.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/run_drawing_red_team.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/assembly_guide_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/assembly_guide_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/build_payload.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/build_payload.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cad_backend.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend_build123d.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cad_backend_build123d.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_scene.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cad_scene.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cross_artifact_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cross_artifact_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cut_list_engine.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cut_list_engine.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/drawing_content_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/drawing_content_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/embed_svgs.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/embed_svgs.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/error_classifier.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/error_classifier.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/evidence_registry.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/evidence_registry.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/failure_to_test.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/failure_to_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/format_headers.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/format_headers.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/generate_quality_dashboard.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/generate_quality_dashboard.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/geometry_engine.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/geometry_engine.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/learning_backup.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/learning_backup.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/lesson_curator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/lesson_curator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/load_applicable_lessons.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/load_applicable_lessons.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/manifest_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/manifest_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/package_consistency_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/package_consistency_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/render_drawings.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/render_drawings.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/repair_orchestrator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/repair_orchestrator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_drawing_red_team.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/run_drawing_red_team.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_history.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/run_history.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/run_obstacle_triage.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/schema_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/schema_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structural_physics_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/structural_physics_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/svg_templates.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/svg_templates.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/svg_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/svg_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/update_design_run_summary.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/update_design_run_summary.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/assembly_guide_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/assembly_guide_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/build_payload.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/build_payload.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/cad_backend.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_backend_build123d.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/cad_backend_build123d.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_scene.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/cad_scene.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cross_artifact_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/cross_artifact_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cut_list_engine.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/cut_list_engine.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/drawing_content_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/drawing_content_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/embed_svgs.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/embed_svgs.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/error_classifier.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/error_classifier.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/evidence_registry.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/evidence_registry.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/failure_to_test.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/failure_to_test.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/format_headers.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/format_headers.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/generate_quality_dashboard.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/generate_quality_dashboard.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/geometry_engine.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/geometry_engine.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/learning_backup.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/learning_backup.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/lesson_curator.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/lesson_curator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/load_applicable_lessons.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/load_applicable_lessons.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/manifest_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/manifest_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/package_consistency_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/package_consistency_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/render_drawings.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/render_drawings.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/repair_orchestrator.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/repair_orchestrator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_drawing_red_team.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/run_drawing_red_team.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_history.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/run_history.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/run_obstacle_triage.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/run_obstacle_triage.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/schema_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/schema_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structural_physics_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/structural_physics_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/svg_templates.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/svg_templates.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/svg_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/svg_validator.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/update_design_run_summary.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/update_design_run_summary.py",
+      "strategy": "symlink",
+      "description": ""
     }
   ]
 }

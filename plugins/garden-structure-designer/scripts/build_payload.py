@@ -4,7 +4,7 @@ build_payload.py (CLI)
 =====================================
 
 Purpose:
-    
+    build_payload.py (CLI) =====================================
 
 Layer: Execution
 
@@ -40,8 +40,7 @@ from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent
 
 
 files_to_merge = {
-    "SOURCE INTENT (design-spec.json)": "context/staging/design-spec.json",
-    "ENGINEERED PHYSICS (structural-model.json)": "context/staging/structural-model.json",
+    "SEALED MANIFEST (structure.json)": "context/staging/structure.json",
     "GENERATED OUTPUT 1 (blueprint-plan.svg)": "outputs/blueprint-plan.svg",
     "GENERATED OUTPUT 2 (blueprint-isometric.svg)": "outputs/blueprint-isometric.svg"
 }

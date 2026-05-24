@@ -5,21 +5,20 @@ allowed-tools: Read, Write, Bash
 ---
 
 ## Expected Inputs
-- `context/staging/structural-model.json`
-- `context/staging/geometry-calculations.json` (produced by geometry_engine.py)
+- `context/staging/structure.json` (produced by structural-engine; includes members, roof, hub, footings, geometry sections)
 - `context/staging/joinery-model.json`
 
 ## Pre-Flight: Run Geometry Engine If Not Present
 ```bash
 python3 scripts/geometry_engine.py \
-    context/staging/structural-model.json
+    context/staging/structure.json
 ```
 
 ## CRITICAL: Source of Truth for All Angles and Dimensions
 
 **You are FORBIDDEN from computing any angle or dimension internally.**
 
-Read all fabrication values from `context/staging/geometry-calculations.json`:
+Read all fabrication values from `context/staging/structure.json` (geometry section):
 
 | Blueprint Field         | JSON Path                                    |
 |:------------------------|:---------------------------------------------|
@@ -45,14 +44,13 @@ Shop blueprints are fabrication artifacts, not concept art.
 
 For every revision, all blueprint dimensions, angles, and saw settings MUST be sourced from:
 ```
-context/staging/geometry-calculations.json
-context/staging/structural-model.json
+context/staging/structure.json
 outputs/shop-blueprint/SB01-cut-list.json
 ```
 
 Do **not** infer, estimate, or copy angles from images, render prompts, or visual references.
 
-If blueprint values differ from `geometry-calculations.json`, **stop and create a drift report** rather than publishing the output. Every blueprint must include a test-cut warning for compound cuts.
+If blueprint values differ from `structure.json` (geometry section), **stop and create a drift report** rather than publishing the output. Every blueprint must include a test-cut warning for compound cuts.
 
 ## SVG XML Hard Rules (mandatory — same as drawing-generator)
 
@@ -65,7 +63,7 @@ If blueprint values differ from `geometry-calculations.json`, **stop and create 
 4. Then run the full validator:
    ```bash
    python3 scripts/svg_validator.py \
-       outputs/<sheet>.svg context/staging/structural-model.json
+       outputs/<sheet>.svg context/staging/structure.json
    ```
 
 ## Behavior
@@ -79,7 +77,7 @@ Produce output files:
 ## Cut List Rules
 
 When generating the cut list table:
-- Copy `miter_deg` and `bevel_deg` verbatim from `geometry-calculations.json`.
+- Copy `miter_deg` and `bevel_deg` verbatim from `structure.json` (geometry section).
 - Format as: `Miter: XX.X° / Bevel: X.X°`
 - Include a note: `⚠ Test cut on scrap before cutting all [N] pieces.`
 - Never include a "Derived by" note — all values come from the geometry engine.
@@ -88,7 +86,7 @@ Always prioritize fabrication clarity over visual aesthetics. Dense dimensions, 
 
 ## Gotchas
 
-- **Miter angle ≠ pitch angle — the most common failure mode.** For a hexagonal hip rafter at 4:12, pitch_angle=18.43° but miter_deg=28.71°. Any blueprint showing miter ≈ pitch angle will produce cuts that fail at the hub. Copy `miter_deg` verbatim from geometry-calculations.json every time.
+- **Miter angle ≠ pitch angle — the most common failure mode.** For a hexagonal hip rafter at 4:12, pitch_angle=18.43° but miter_deg=28.71°. Any blueprint showing miter ≈ pitch angle will produce cuts that fail at the hub. Copy `miter_deg` verbatim from `structure.json` (geometry section) every time.
 - **"Test cut on scrap" warning is non-negotiable.** It must appear in every cut list that includes compound angles. Omitting it exposes the builder to waste on an expensive timber run.
 - **Isometric is parallel projection, not perspective.** No foreshortening, no vanishing points. Compute SVG polygon paths from the coordinate map. Any visual foreshortening indicates a calculation error.
 - **SB01-cut-list.json must be written as a build artifact.** builder-docs-generator reads board-foot totals from this file to generate the budget estimate. If the JSON is not written, the downstream builder documents will be incomplete.
@@ -96,7 +94,7 @@ Always prioritize fabrication clarity over visual aesthetics. Dense dimensions, 
 
 ## Smoke Test
 
-1. **Angle accuracy gate:** Given geometry-calculations.json with miter_deg=28.71: all blueprint text labels show miter=28.71° exactly; no sheet shows miter≈18.43°. ✓
+1. **Angle accuracy gate:** Given `structure.json` geometry section with miter_deg=28.71: all blueprint text labels show miter=28.71° exactly; no sheet shows miter≈18.43°. ✓
 2. **SB01-cut-list.json presence:** After skill completes: `outputs/shop-blueprint/SB01-cut-list.json` exists with board-foot totals populated. ✓
 3. **Validator gate:** All four output SVGs pass `svg_validator.py` before skill signals completion. ✓
 
@@ -132,7 +130,7 @@ Blueprint generation ends at SVG + cut-list production. The stage is NOT complet
    ```bash
    python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
      --svg-dir outputs \
-     --model context/staging/structural-model.json \
+     --model context/staging/structure.json \
      --report-dir context/staging \
      --md-dir outputs
    ```
@@ -149,7 +147,7 @@ First determine whether the failure is caused by:
 
 - path split between `context/staging` and `plugins/garden-structure-designer/context/staging`;
 - stale quality dashboard;
-- missing `geometry-calculations.json`;
+- missing geometry section in `structure.json`;
 - missing `schema-validation-report.json`;
 - missing `physics-validation-report.json`;
 - red-team/content validator correctly rejecting placeholder drawings;
@@ -158,7 +156,7 @@ First determine whether the failure is caused by:
 Only rewrite `render_drawings.py` after confirming:
 
 1. the active staging path is known;
-2. the model and geometry files are current;
+2. `structure.json` is current and its geometry section is populated;
 3. the quality dashboard reads the same staging path;
 4. the red-team/content validator is running against current SVGs;
 5. the failure is genuinely renderer output quality.

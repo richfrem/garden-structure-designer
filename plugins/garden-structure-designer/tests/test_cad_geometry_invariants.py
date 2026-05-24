@@ -270,7 +270,7 @@ def test_isometric_has_expected_semantic_counts():
     qty = 6   # hex pergola
     assert count_unique("post")   == qty, f"Expected {qty} posts, got {count_unique('post')}"
     assert count_unique("beam")   == qty, f"Expected {qty} beams, got {count_unique('beam')}"
-    assert count_unique("rafter") == qty * 3, f"Expected {qty * 3} rafters, got {count_unique('rafter')}"
+    assert count_unique("rafter") == qty, f"Expected {qty} primary rafters, got {count_unique('rafter')}"
 
     # Hub appears as one logical member
     hub_count = svg.count('data-role="hub"')
@@ -324,3 +324,31 @@ def test_validator_passes_on_valid_scene():
     """validate_scene_geometry must not raise on a correctly built scene."""
     scene = build_structure_scene(MODEL, CALCS)
     validate_scene_geometry(scene)   # must not raise
+
+
+# ---------------------------------------------------------------------------
+# 8. Rafters sit flush ON TOP of support beams (no beam penetration)
+# ---------------------------------------------------------------------------
+
+def test_rafters_supported_on_beams(scene):
+    """
+    KEY TIMBER-FRAME INVARIANT:
+    Rafters must sit entirely ON TOP of the beam ring, not penetrating into the
+    beams or posts. Inside the beam perimeter, the rafter bottom faces must be
+    at or above Z_BEAM_TOP.
+    """
+    for s in scene.solids:
+        if s.role != "rafter":
+            continue
+        for face in s.faces:
+            # Look for bottom-facing surfaces of the rafter
+            if face.normal[2] < -0.1:
+                for v in face.verts:
+                    xy_r = v2_radius(v)
+                    # Within the beam ring perimeter (radius <= 5.0 ft)
+                    if xy_r <= scene.post_xy[0][0] + 0.1:
+                        assert v[2] >= scene.Z_BEAM_TOP - 1e-3, (
+                            f"Rafter {s.tag} underside vertex {v} penetrates beam! "
+                            f"Z={v[2]:.4f} ft, expected >= Z_BEAM_TOP={scene.Z_BEAM_TOP:.4f} ft"
+                        )
+

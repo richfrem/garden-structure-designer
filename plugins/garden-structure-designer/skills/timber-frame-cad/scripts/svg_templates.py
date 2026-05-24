@@ -1,0 +1,1 @@
+../../../scripts/svg_templates.py

@@ -1,0 +1,1 @@
+../../../scripts/lesson_curator.py

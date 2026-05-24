@@ -4,7 +4,7 @@ load_applicable_lessons.py (CLI)
 =====================================
 
 Purpose:
-    load_applicable_lessons.py Filters learning-registry.json to return only lessons that apply to the current design spec.
+    load_applicable_lessons.py (CLI) =====================================
 
 Layer: Execution
 

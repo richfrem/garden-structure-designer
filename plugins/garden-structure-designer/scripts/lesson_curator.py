@@ -1,10 +1,36 @@
 #!/usr/bin/env python3
 """
-lesson_curator.py
+lesson_curator.py (CLI)
 =====================================
+
 Purpose:
-    Core logic for lesson_curator.py functionality within garden-structure-designer pipeline.
+    lesson_curator.py =====================================
+
 Layer: Execution
+
+Usage Examples:
+    python lesson_curator.py [args]
+
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
 """
 import json
 import sys

@@ -1,0 +1,8 @@
+{
+  "pythonVersion": "3.11",
+  "extraPaths": [
+    "plugins/garden-structure-designer/scripts",
+    "plugins/garden-structure-designer/tests"
+  ],
+  "reportMissingImports": "warning"
+}

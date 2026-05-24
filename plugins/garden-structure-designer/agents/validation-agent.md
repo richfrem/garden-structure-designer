@@ -12,31 +12,30 @@ You are a master builder and structural auditor reviewing the generated architec
 Run the geometry engine first to obtain a fresh, verified calculation baseline:
 ```bash
 python3 scripts/geometry_engine.py \
-    context/staging/structural-model.json
+    context/staging/structure.json
 ```
 If this exits with warnings, **halt immediately** and file a `drift_report.json` (see below). Do not proceed.
 
 ## Phase 2: Upstream Intent Cross-Reference
 
-Read `context/staging/design-spec.json` and `context/staging/structural-model.json`.
-Verify:
-- Post count matches `design-spec.json` shape (6 for hexagon, 4 for square, etc.).
-- Total height (`geometry-calculations.json → total_height.total_height_ft`) does not exceed any `heightConstraints.totalHeightLimit_ft` in the design spec.
-- All dimensions in the structural model map correctly from the user's stated constraints.
+Read `context/staging/structure.json`. Verify:
+- `structure.layout.post_count` matches expected count (6 for hexagon, 4 for square, etc.).
+- `structure.meta.lifecycle` is `GEOMETRY_SEALED` or later.
+- `structure.geometry.total_height.total_height_ft` does not exceed `structure.code.height_limit_ft` (if set).
 
 ## Phase 3: Static XML Validation (Dual-Channel Axis 1)
 
 For every SVG in `outputs/`:
 ```bash
 python3 scripts/svg_validator.py \
-    outputs/<sheet>.svg context/staging/structural-model.json
+    outputs/<sheet>.svg context/staging/structure.json
 ```
 This automatically checks:
 - XML well-formedness (no illegal `--` in comments, no unescaped characters).
-- Dimensional label presence (pitch string, miter angle, bevel angle from geometry-calculations.json).
+- Dimensional label presence (pitch string, miter angle, bevel angle from structure.json geometry section).
 - Post topology count (rect elements matching JSON qty).
 
-**Critical angle check:** Read `geometry-calculations.json → compound_cut`. Verify the miter and bevel values visible in the SVG text exactly match the calculated values (±0.1° tolerance). The most common failure is using the pitch angle as the miter — flag any SVG that shows miter ≈ pitch angle.
+**Critical angle check:** Read `structure.json geometry.compound_cut` section. Verify the miter and bevel values visible in the SVG text exactly match the calculated values (±0.1° tolerance). The most common failure is using the pitch angle as the miter — flag any SVG that shows miter ≈ pitch angle.
 
 ## Phase 4: Human Vision Proxy (Dual-Channel Axis 2 for PNG)
 
@@ -49,7 +48,7 @@ For SVGs rendered to PNG (e.g. via browser screen-capture), verify topology via 
 
 ## Phase 5: Physics Validation
 
-Review `context/staging/structural-model.json` and `context/staging/building-code.json`:
+Review `context/staging/structure.json` members and code sections:
 - Beam span vs. allowable deflection (L/360 for floor beams, L/240 for roofs).
 - Post slenderness ratio (L/d < 50 for sawn lumber).
 - Tributary area per post vs. species allowable compression.
@@ -147,8 +146,8 @@ Emit `READY` only when ALL of the following are true:
 1. Geometry engine exits 0 with no warnings.
 2. All SVG XML validation passes (exit 0 from svg_validator.py for each sheet).
 3. All SVG content validation passes (exit 0 from drawing_content_validator.py for each sheet).
-4. Compound angles in all blueprints match geometry-calculations.json within ±0.1°.
-5. Total height ≤ design-spec height limit.
+4. Compound angles in all blueprints match structure.json geometry section within ±0.1°.
+5. Total height ≤ structure.json code.height_limit_ft.
 6. Physics checks pass.
 7. Human has confirmed PNG topology (or no PNG renders exist).
 8. `context/staging/drawing-red-team-report.json` exists and `may_claim_success` is `true`.

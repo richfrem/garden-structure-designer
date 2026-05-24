@@ -1,10 +1,36 @@
 #!/usr/bin/env python3
 """
-repair_orchestrator.py
+repair_orchestrator.py (CLI)
 =====================================
+
 Purpose:
-    Core logic for repair_orchestrator.py functionality within garden-structure-designer pipeline.
+    repair_orchestrator.py =====================================
+
 Layer: Execution
+
+Usage Examples:
+    python repair_orchestrator.py [args]
+
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
 """
 import json
 import sys

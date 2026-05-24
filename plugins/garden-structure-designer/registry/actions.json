@@ -14,8 +14,8 @@
       "name": "compute-geometry",
       "stage": "structural-foundation",
       "script": "scripts/geometry_engine.py",
-      "inputs": ["context/staging/structural-model.json"],
-      "outputs": ["context/staging/geometry-calculations.json"],
+      "inputs": ["context/staging/structure.json"],
+      "outputs": [],
       "validators": ["scripts/schema_validator.py"],
       "repair_axes": ["geometry_warning", "source_hash_mismatch"]
     },
@@ -24,8 +24,7 @@
       "stage": "drawing-generation",
       "script": "scripts/render_drawings.py",
       "inputs": [
-        "context/staging/structural-model.json",
-        "context/staging/geometry-calculations.json"
+        "context/staging/structure.json"
       ],
       "outputs": [
         "outputs/drawing-plan-view.svg",

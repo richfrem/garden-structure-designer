@@ -1,10 +1,36 @@
 #!/usr/bin/env python3
 """
-failure_to_test.py
+failure_to_test.py (CLI)
 =====================================
+
 Purpose:
-    Core logic for failure_to_test.py functionality within garden-structure-designer pipeline.
+    failure_to_test.py =====================================
+
 Layer: Execution
+
+Usage Examples:
+    python failure_to_test.py [args]
+
+Supported Object Types:
+    JSON, SVG, Markdown
+
+CLI Arguments:
+    Varies per script, typically input file paths.
+
+Input Files:
+    context/staging/ *.json outputs/ *.svg
+
+Output:
+    Validation codes (0 or 1), generated JSON or SVG files.
+
+Key Functions:
+    Refer to module docstring or inner functions.
+
+Script Dependencies:
+    Standard library json, os, sys, math, hashlib, etc.
+
+Consumed by:
+    design-orchestrator, various skills in the pipeline.
 """
 import json
 import os
@@ -43,7 +69,7 @@ def main():
             f.write(f"sys.path.append(str(Path(__file__).parent.parent.parent / 'plugins' / 'garden-structure-designer' / 'scripts'))\n\n")
             
             if cls["classification"] == "compound_cut_mismatch" or cls["repair_stage"] == "structural-engine":
-                f.write(f"from geometry_engine import compound_cut, beam_ring_miter\\n\\n")
+                f.write(f"from geometry_engine import compute, compound_cut, beam_ring_miter\\n\\n")
                 f.write(f"def test_{cls['classification']}_regression():\\n")
                 f.write(f"    # Invariant test generated for {axis}\\n")
                 f.write(f"    res = compound_cut(4, 12, 6)\\n")
