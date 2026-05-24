@@ -40,12 +40,35 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
    - If geometry section contains warnings (height limit breach, etc.), halt and resolve before proceeding.
 4. Verify `structure.json → members._sealed = true` after `structural-engine` completes.
 
+### Stage 1.5 — CAD Language Translation (MANDATORY)
+
+After `structural-engine` completes and before `joinery-designer` runs:
+
+1. Run `python3 plugins/garden-structure-designer/scripts/cad_language_translator.py context/staging/structure.json`
+2. Verify `cad_constraints` key exists in `structure.json`.
+3. Verify every member in `cad_constraints.member_constraints` has a `constraints` object.
+4. Verify NO member retains `length_ft` or `angle_deg` as primary definition.
+5. Verify `cad_constraints.global_constraints.roof_planes` is populated.
+6. Verify `cad_constraints.global_constraints.proportion_rules` is populated.
+7. Verify `meta.lifecycle = "CONSTRAINTS_DEFINED"`.
+
+**FAIL CONDITIONS (halt immediately):**
+- Any member missing `constraints` → BLOCKED
+- Missing `roof_planes` → BLOCKED
+- Missing `proportion_rules` → BLOCKED
+- `meta.lifecycle` ≠ `"CONSTRAINTS_DEFINED"` → BLOCKED
+
 ### Stage 2 — Joinery & Bracing
 5. Call `joinery-designer` → reads structure model → writes joinery details to `context/staging/structure.json`.
 6. Call `bracing-system-designer` → writes brace geometry to `context/staging/structure.json`.
    - **Re-run `geometry_engine.py`** if bracing affects geometry (pass structure.json as input).
    - Verify `structure.json → members._sealed = true` has NOT changed since Stage 1 lock.
    - Verify `structure.json → geometry._sealed = true` is still intact.
+7. Run topology compiler to build the connection graph:
+   ```bash
+   python3 plugins/garden-structure-designer/scripts/topology_compiler.py context/staging/structure.json
+   ```
+   Verify the output reports expected member and connection counts matching `layout.post_count`.
 
 ### Stage 3 — Independent Structural Physics QA
 7. Launch an independent sub-agent via `gemini-cli` using **gemini-3.1-pro-preview**, adopting the `validation-agent` profile, to audit structural physics. This agent:

@@ -9,6 +9,7 @@ Layer: Execution (Pure Translation)
 """
 from __future__ import annotations
 import math
+import warnings
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -66,73 +67,86 @@ class Scene:
 # Scene Builder — The Pure Translator
 # ---------------------------------------------------------------------------
 
+def _build_scene_legacy(model: dict, calcs: dict) -> tuple[dict, dict]:
+    """DEPRECATED: Builds (resolved_model, joints) from old dual-dict (model, calcs) format.
+
+    Called only when build_structure_scene() receives a dict as second argument.
+    Use compute_from_structure() + build_structure_scene(structure) instead.
+    """
+    warnings.warn(
+        "build_structure_scene(model, calcs) is DEPRECATED. "
+        "Pass a single structure.json dict that contains resolved_model. "
+        "Call compute_from_structure() first to populate it.",
+        DeprecationWarning,
+        stacklevel=3,
+    )
+    qty = model.get("members", {}).get("posts", {}).get("quantity", 6)
+    r_ft = model.get("dimensions", {}).get("max_diagonal_ft", 10.0) / 2.0
+    post_h = calcs.get("total_height", {}).get("post_ft", 8.33)
+    beam_d = calcs.get("total_height", {}).get("beam_depth_ft", 0.604)
+    roof_r = calcs.get("roof_rise", {}).get("rise_ft", 1.667)
+
+    structure_dict = {
+        "layout": {
+            "post_count": qty,
+            "inscribed_radius_ft": r_ft
+        },
+        "members": {
+            "posts": {
+                "nominal_size": "6x6",
+                "actual_width_in": 5.5,
+                "actual_depth_in": 5.5,
+                "cut_length_ft": post_h
+            },
+            "beams": {
+                "nominal_size": "6x12",
+                "actual_width_in": 6.0,
+                "actual_depth_in": beam_d * 12.0
+            }
+        },
+        "roof": {
+            "pitch": f"{roof_r * 12.0 / r_ft:.6f}:12",
+            "primary_rafters": {
+                "count": qty,
+                "nominal_size": "4x6",
+                "actual_width_in": 3.5,
+                "actual_depth_in": 5.5,
+                "overhang_ft": 0.75
+            }
+        },
+        "hub": {
+            "type": "polygonal",
+            "radius_min_ft": 0.6
+        },
+        "bracing": {
+            "enabled": model.get("bracing", {}).get("enabled", True),
+            "brace": {
+                "nominal_size": "4x4",
+                "actual_width_in": 3.5,
+                "actual_depth_in": 3.5,
+                "count_per_post": 2,
+                "constraints": {"start_surface": "post_face", "end_surface": "beam_soffit", "run_ft": 1.5}
+            }
+        }
+    }
+    from geometry_engine import compute_joints, rafter_length, svg_layout
+    cuts = {"miter_deg": 28.71, "bevel_deg": 9.1}
+    rl = rafter_length(r_ft, 4, 12, 0.75)
+    rise = {"rise_ft": roof_r}
+    height = {"total_height_ft": post_h + beam_d + roof_r}
+    hr = 0.75
+    svg = svg_layout(height["total_height_ft"], r_ft, qty)
+    joints = compute_joints(structure_dict, cuts, rl, rise, height, hr, svg)
+    return joints["resolved_model"], joints
+
+
 def build_structure_scene(structure: dict, is_blueprint: bool = False) -> Scene:
     """
     Build the scene by strictly translating the resolved_model from Step 2.
     NO MATH ALLOWED. (Phase 1 Purge)
     """
     if isinstance(is_blueprint, dict):
-        model = structure
-        calcs = is_blueprint
-        qty = model.get("members", {}).get("posts", {}).get("quantity", 6)
-        r_ft = model.get("dimensions", {}).get("max_diagonal_ft", 10.0) / 2.0
-        post_h = calcs.get("total_height", {}).get("post_ft", 8.33)
-        beam_d = calcs.get("total_height", {}).get("beam_depth_ft", 0.604)
-        roof_r = calcs.get("roof_rise", {}).get("rise_ft", 1.667)
-        
-        structure_dict = {
-            "layout": {
-                "post_count": qty,
-                "inscribed_radius_ft": r_ft
-            },
-            "members": {
-                "posts": {
-                    "nominal_size": "6x6",
-                    "actual_width_in": 5.5,
-                    "actual_depth_in": 5.5,
-                    "cut_length_ft": post_h
-                },
-                "beams": {
-                    "nominal_size": "6x12",
-                    "actual_width_in": 6.0,
-                    "actual_depth_in": beam_d * 12.0
-                }
-            },
-            "roof": {
-                "pitch": f"{roof_r * 12.0 / r_ft:.6f}:12",
-                "primary_rafters": {
-                    "count": qty,
-                    "nominal_size": "4x6",
-                    "actual_width_in": 3.5,
-                    "actual_depth_in": 5.5,
-                    "overhang_ft": 0.75
-                }
-            },
-            "hub": {
-                "type": "polygonal",
-                "radius_min_ft": 0.6
-            },
-            "bracing": {
-                "enabled": model.get("bracing", {}).get("enabled", True),
-                "brace": {
-                    "nominal_size": "4x4",
-                    "actual_width_in": 3.5,
-                    "actual_depth_in": 3.5,
-                    "count_per_post": 2,
-                    "constraints": {"start_surface": "post_face", "end_surface": "beam_soffit"}
-                }
-            }
-        }
-        from geometry_engine import compute_joints, beam_ring_miter, rafter_length, total_height, svg_layout
-        cuts = {"miter_deg": 28.71, "bevel_deg": 9.1}
-        rl = rafter_length(r_ft, 4, 12, 0.75)
-        rise = {"rise_ft": roof_r}
-        height = {"total_height_ft": post_h + beam_d + roof_r}
-        hr = 0.75
-        svg = svg_layout(height["total_height_ft"], r_ft, qty)
-        
-        joints = compute_joints(structure_dict, cuts, rl, rise, height, hr, svg)
-        resolved = joints["resolved_model"]
+        resolved, joints = _build_scene_legacy(structure, is_blueprint)
         is_blueprint = False
     else:
         geom = structure.get("geometry", {})

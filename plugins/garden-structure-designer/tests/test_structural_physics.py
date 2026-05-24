@@ -94,3 +94,28 @@ def test_roof_pitch_geometry():
     qty = 6
     flat_miter_angle = 360.0 / (2.0 * qty)
     assert flat_miter_angle == 30.0, f"Hexagonal flat miter should be exactly 30 degrees, got {flat_miter_angle}"
+
+
+# ---------------------------------------------------------------------------
+# New-path: load_path_alignment using constraint-based pipeline
+# ---------------------------------------------------------------------------
+
+def test_load_path_alignment_new_path(tmp_path):
+    """Structural load path alignment must hold on the constraint-based pipeline."""
+    import copy, json
+    from test_geometry_engine import STRUCTURE_SEED
+    from geometry_engine import compute_from_structure
+    p = tmp_path / "structure.json"
+    p.write_text(json.dumps(copy.deepcopy(STRUCTURE_SEED)))
+    compute_from_structure(str(p))
+    s = json.loads(p.read_text())
+    scene = build_structure_scene(s)
+    validate_scene_geometry(scene)
+    posts = [sol for sol in scene.solids if sol.role == "post"]
+    beams = [sol for sol in scene.solids if sol.role == "beam"]
+    assert posts, "New-path scene must have posts"
+    assert beams, "New-path scene must have beams"
+    for post in posts:
+        assert max(post.p0[2], post.p1[2]) <= scene.Z_BEAM_TOP + 1e-3, (
+            f"Post {post.tag} top exceeds beam top Z"
+        )

@@ -348,7 +348,7 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
     
     bs = structure.get("bracing", {}); bp = []
     if bs.get("enabled"):
-        phw = (structure["members"]["posts"]["actual_width_in"] / 24.0); run_t = bs["brace"].get("run_ft", 1.5)
+        phw = (structure["members"]["posts"]["actual_width_in"] / 24.0); run_t = bs["brace"]["constraints"]["run_ft"]
         for i in range(qty):
             p1 = post_xy[i]; p2 = post_xy[(i+1)%qty]; dx = p2[0]-p1[0]; dy = p2[1]-p1[1]; bl = math.sqrt(dx*dx + dy*dy); ux, uy = dx/bl, dy/bl; run = min(run_t, bl * 0.3)
             p0_A, p1_A = solve_brace_endpoints_geometric(p1[0], p1[1], ux, uy, phw, Z_POST_TOP, run)

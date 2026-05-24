@@ -310,18 +310,82 @@ def _brace_endpoints_on_planes(structure: dict) -> ConstraintResult:
 
 
 def _cad_scene_zero_drift(structure: dict) -> ConstraintResult:
-    """Verify that downstream CAD scene uses pre-solved geometry without modification."""
+    """Verify CAD scene solid endpoints match resolved_model exactly (zero downstream math)."""
     resolved = structure.get("geometry", {}).get("joints", {}).get("resolved_model", {})
     if not resolved:
         return {
             "name": "cad_scene_zero_drift",
             "status": "SKIP",
-            "detail": "No resolved_model found",
+            "detail": "No resolved_model found — run geometry_engine first",
+        }
+    try:
+        from cad_scene import build_structure_scene
+        scene = build_structure_scene(structure)
+    except Exception as e:
+        return {
+            "name": "cad_scene_zero_drift",
+            "status": "FAIL",
+            "detail": f"Cannot build scene for drift check: {e}",
+        }
+
+    member_map = {m["id"]: m for m in resolved.get("members", [])}
+    violations: list[str] = []
+    for solid in scene.solids:
+        if solid.tag not in member_map:
+            violations.append(f"{solid.tag}: not in resolved_model")
+            continue
+        rm = member_map[solid.tag]
+        for coord, label in ((solid.p0, "p0"), (solid.p1, "p1")):
+            expected = tuple(rm[label])
+            dist = sum((a - b) ** 2 for a, b in zip(coord, expected)) ** 0.5
+            if dist > 1e-6:
+                violations.append(
+                    f"{solid.tag} {label} drifted {dist * 12:.4f}\" "
+                    f"(scene={coord}, resolved={expected})"
+                )
+
+    if violations:
+        return {
+            "name": "cad_scene_zero_drift",
+            "status": "FAIL",
+            "detail": "; ".join(violations),
         }
     return {
         "name": "cad_scene_zero_drift",
         "status": "PASS",
-        "detail": "CAD scene uses pre-solved geometry with zero downstream math",
+        "detail": f"All {len(member_map)} members match resolved_model endpoints",
+    }
+
+
+def _rafter_on_roof_planes(structure: dict) -> ConstraintResult:
+    """All rafter solved points must lie on their assigned roof plane (per constraints_satisfied)."""
+    resolved = structure.get("geometry", {}).get("joints", {}).get("resolved_model", {})
+    if not resolved:
+        return {
+            "name": "rafter_on_roof_planes",
+            "status": "SKIP",
+            "detail": "No resolved_model found — run geometry_engine first",
+        }
+
+    violations: list[str] = []
+    for m in resolved.get("members", []):
+        if m.get("role") != "rafter":
+            continue
+        cs = m.get("constraints_satisfied", {})
+        for key in ("tail_on_roof_plane", "hub_on_roof_plane", "seat_on_roof_plane"):
+            if key in cs and not cs[key]:
+                violations.append(f"{m['id']}: {key} = False")
+
+    if violations:
+        return {
+            "name": "rafter_on_roof_planes",
+            "status": "FAIL",
+            "detail": "; ".join(violations),
+        }
+    return {
+        "name": "rafter_on_roof_planes",
+        "status": "PASS",
+        "detail": f"All rafter members satisfy roof plane constraints",
     }
 
 
@@ -337,6 +401,7 @@ _ALL_CONSTRAINTS = [
     _beam_span_matches_post_chord,
     _brace_endpoints_on_planes,
     _cad_scene_zero_drift,
+    _rafter_on_roof_planes,
 ]
 
 

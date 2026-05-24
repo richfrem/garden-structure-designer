@@ -40,7 +40,7 @@ STRUCTURE_SEED = {
         "enabled": True, "layout": "paired_per_post",
         "brace": {"nominal_size": "4x4", "actual_width_in": 3.5,
                   "actual_depth_in": 3.5, "count_per_post": 2,
-                  "constraints": {"start_surface": "post_face", "end_surface": "beam_soffit"}}
+                  "constraints": {"start_surface": "post_face", "end_surface": "beam_soffit", "run_ft": 1.5}}
     },
     "footings": {"type": "sonotube", "diameter_in": 12, "depth_in": 24,
                  "concrete_grade": "20MPa"},

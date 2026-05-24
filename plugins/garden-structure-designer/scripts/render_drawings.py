@@ -128,7 +128,22 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
         svg_list.append(f'    <polygon{attr} points="{pts_str}" fill="{face.color}" stroke="{palette["outline"]}" stroke-width="{"3.0" if is_blueprint else "1.2"}" />')
 
     # Annotations pass (Top Layer)
-    rendered_ids = set(); label_svgs = []
+    def _resolve_label_overlap(x: float, y: float, placed: list[tuple[float, float]], min_dist: float = 14, max_radius: float = 40, step: float = 5) -> tuple[float, float]:
+        def dist(a: tuple[float, float], b: tuple[float, float]) -> float:
+            return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+        if not any(dist((x, y), p) < min_dist for p in placed):
+            return x, y
+        r = step
+        while r <= max_radius:
+            for angle in range(0, 360, 30):
+                cx2 = x + r * math.cos(math.radians(angle))
+                cy2 = y + r * math.sin(math.radians(angle))
+                if not any(dist((cx2, cy2), p) < min_dist for p in placed):
+                    return cx2, cy2
+            r += step
+        return x, y
+
+    rendered_ids = set(); label_svgs = []; placed_labels: list[tuple[float, float]] = []
     for solid in scene.solids:
         if solid.tag in rendered_ids or solid.role == "footing": continue
         style = get_label_style(solid.role, view_type)
@@ -136,6 +151,8 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
         if solid.role == "beam": ly -= 15
         elif solid.role == "post": lx += 15
         elif solid.role == "hub": ly -= 20
+        lx, ly = _resolve_label_overlap(lx, ly, placed_labels)
+        placed_labels.append((lx, ly))
         label_svgs.append(f'    <text x="{lx:.1f}" y="{ly:.1f}" text-anchor="middle" font-size="{style["size"]}" font-weight="{style["weight"]}" fill="{palette["text"]}" opacity="{style["opacity"]}" data-label="{solid.tag}">{solid.tag}</text>')
         rendered_ids.add(solid.tag)
         

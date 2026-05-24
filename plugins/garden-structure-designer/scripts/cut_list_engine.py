@@ -2,6 +2,10 @@
 """
 cut_list_engine.py (CLI)
 =====================================
+DEPRECATED: This script reads the old dual-dict format (model + calcs as separate files)
+which predates the constraint-based architecture. Use fabrication_builder.py instead —
+it reads cut lengths and angles directly from the resolved_model produced by
+geometry_engine.py, with zero silent defaults.
 
 Purpose:
     cut_list_engine.py (CLI) =====================================
@@ -36,7 +40,15 @@ import json
 import math
 import os
 import sys
+import warnings
 from pathlib import Path
+
+warnings.warn(
+    "cut_list_engine.py is DEPRECATED. Use fabrication_builder.py instead — "
+    "it reads cut lengths from the resolved_model produced by geometry_engine.py.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 sys.path.append(str(Path(__file__).parent.resolve()))
 from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
 

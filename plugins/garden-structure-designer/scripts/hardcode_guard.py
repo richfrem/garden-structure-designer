@@ -47,6 +47,10 @@ import typing
 # Files to strictly scan by default
 DEFAULT_TARGETS: list[Path] = [
     Path(__file__).parent / "render_drawings.py",
+    Path(__file__).parent / "cad_scene.py",
+    Path(__file__).parent / "geometry_engine.py",
+    Path(__file__).parent / "cad_language_translator.py",
+    Path(__file__).parent / "fabrication_builder.py",
 ]
 
 # External Comment: AST NodeVisitor that inspects dictionary lookups and assignments.

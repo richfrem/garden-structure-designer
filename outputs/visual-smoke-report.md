@@ -1,16 +1,16 @@
 # Visual Smoke Test Report (SVG -> Browser Render)
 
 **Schema:** garden-structure-designer/visual-smoke-report/1.0  
-**Generated:** 2026-05-24T20:49:50.845092+00:00  
+**Generated:** 2026-05-24T22:33:48.823720+00:00  
 **Source Hash:** `6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61`  
-**Structure:** `context/staging/structure.json`  
-**SVG Dir:** `outputs`  
-**Out Dir:** `outputs/visual-smoke`  
+**Structure:** `/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/structure.json`  
+**SVG Dir:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs`  
+**Out Dir:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke`  
 **Baseline Dir:** `None`  
-**Mode:** fail-on-regression  
+**Mode:** no-baseline  
 
 **Run Command:**
-`python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py --structure context/staging/structure.json --svg-dir outputs`
+`python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py --structure /Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/structure.json --svg-dir /Users/richardfremmerlid/Projects/garden-structure-designer/outputs`
 
 ---
 
@@ -33,8 +33,8 @@ All sheets rendered and heuristics passed.
 # Per-Sheet Results
 ### drawing-plan-view
 **Status:** **PASS**  
-**SVG:** `outputs/drawing-plan-view.svg`  
-**PNG:** `outputs/visual-smoke/drawing-plan-view.png`  
+**SVG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-plan-view.svg`  
+**PNG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-plan-view.png`  
 
 #### Metrics
 - non_bg_ratio: `0.0501`
@@ -55,17 +55,17 @@ All sheets rendered and heuristics passed.
 ---
 ### drawing-elevation-view
 **Status:** **PASS**  
-**SVG:** `outputs/drawing-elevation-view.svg`  
-**PNG:** `outputs/visual-smoke/drawing-elevation-view.png`  
+**SVG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-elevation-view.svg`  
+**PNG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-elevation-view.png`  
 
 #### Metrics
-- non_bg_ratio: `0.0576`
+- non_bg_ratio: `0.0580`
 - bbox_fill_ratio: `0.4215`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
 - cv_hub_density: `0`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 14, 'beams': 6, 'rafters': 35}`
+- detected_components: `{'posts': 14, 'beams': 9, 'rafters': 31}`
 
 #### Failures
 - *(none)*
@@ -76,8 +76,8 @@ All sheets rendered and heuristics passed.
 ---
 ### drawing-isometric-view
 **Status:** **PASS**  
-**SVG:** `outputs/drawing-isometric-view.svg`  
-**PNG:** `outputs/visual-smoke/drawing-isometric-view.png`  
+**SVG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-isometric-view.svg`  
+**PNG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-isometric-view.png`  
 
 #### Metrics
 - non_bg_ratio: `0.1307`
@@ -86,7 +86,7 @@ All sheets rendered and heuristics passed.
 - cv_content_ratio: `1.0000`
 - cv_hub_density: `2162`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 30, 'beams': 18, 'rafters': 70}`
+- detected_components: `{'posts': 31, 'beams': 19, 'rafters': 67}`
 
 #### Failures
 - *(none)*
@@ -98,8 +98,8 @@ All sheets rendered and heuristics passed.
 ---
 ### drawing-perspective-view
 **Status:** **PASS**  
-**SVG:** `outputs/drawing-perspective-view.svg`  
-**PNG:** `outputs/visual-smoke/drawing-perspective-view.png`  
+**SVG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-perspective-view.svg`  
+**PNG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-perspective-view.png`  
 
 #### Metrics
 - non_bg_ratio: `0.2509`
@@ -119,8 +119,8 @@ All sheets rendered and heuristics passed.
 ---
 ### blueprint-plan
 **Status:** **PASS**  
-**SVG:** `outputs/blueprint-plan.svg`  
-**PNG:** `outputs/visual-smoke/blueprint-plan.png`  
+**SVG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-plan.svg`  
+**PNG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-plan.png`  
 
 #### Metrics
 - non_bg_ratio: `0.0544`
@@ -141,17 +141,17 @@ All sheets rendered and heuristics passed.
 ---
 ### blueprint-elevation
 **Status:** **PASS**  
-**SVG:** `outputs/blueprint-elevation.svg`  
-**PNG:** `outputs/visual-smoke/blueprint-elevation.png`  
+**SVG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-elevation.svg`  
+**PNG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-elevation.png`  
 
 #### Metrics
-- non_bg_ratio: `0.0271`
+- non_bg_ratio: `0.0277`
 - bbox_fill_ratio: `0.4220`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
 - cv_hub_density: `0`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 19, 'beams': 10, 'rafters': 37}`
+- detected_components: `{'posts': 19, 'beams': 12, 'rafters': 37}`
 
 #### Failures
 - *(none)*
@@ -162,8 +162,8 @@ All sheets rendered and heuristics passed.
 ---
 ### blueprint-isometric
 **Status:** **PASS**  
-**SVG:** `outputs/blueprint-isometric.svg`  
-**PNG:** `outputs/visual-smoke/blueprint-isometric.png`  
+**SVG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-isometric.svg`  
+**PNG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-isometric.png`  
 
 #### Metrics
 - non_bg_ratio: `0.1110`
@@ -172,7 +172,7 @@ All sheets rendered and heuristics passed.
 - cv_content_ratio: `1.0000`
 - cv_hub_density: `2267`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 31, 'beams': 29, 'rafters': 101}`
+- detected_components: `{'posts': 30, 'beams': 28, 'rafters': 102}`
 
 #### Failures
 - *(none)*
@@ -184,8 +184,8 @@ All sheets rendered and heuristics passed.
 ---
 ### blueprint-component-isolation
 **Status:** **PASS**  
-**SVG:** `outputs/blueprint-component-isolation.svg`  
-**PNG:** `outputs/visual-smoke/blueprint-component-isolation.png`  
+**SVG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-component-isolation.svg`  
+**PNG:** `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-component-isolation.png`  
 
 #### Metrics
 - non_bg_ratio: `0.1104`
@@ -205,6 +205,6 @@ All sheets rendered and heuristics passed.
 ---
 
 ## Artifacts Produced
-- JSON report: `context/staging/visual-smoke-report.json`
+- JSON report: `/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/visual-smoke-report.json`
 - This report: `outputs/visual-smoke-report.md`
-- Screenshots: `outputs/visual-smoke/<sheet>.png`
+- Screenshots: `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/<sheet>.png`

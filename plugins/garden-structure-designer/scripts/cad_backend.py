@@ -2,6 +2,10 @@
 """
 cad_backend.py
 ==============
+DEPRECATED: This file uses the old geometry pipeline with hardcoded defaults.
+Use cad_backend_build123d.py instead — it reads from the resolved_model produced
+by geometry_engine.py and performs zero geometry math of its own.
+
 Optional build123d / CadQuery CAD geometry backend for garden-structure-designer.
 
 Architecture
@@ -24,7 +28,15 @@ from __future__ import annotations
 
 import math
 import sys
+import warnings
 from pathlib import Path
+
+warnings.warn(
+    "cad_backend.py is DEPRECATED. Use cad_backend_build123d.py instead — "
+    "it reads from the resolved_model produced by geometry_engine.py.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 sys.path.append(str(Path(__file__).parent))
 from cad_scene import Scene, build_structure_scene, validate_scene_geometry

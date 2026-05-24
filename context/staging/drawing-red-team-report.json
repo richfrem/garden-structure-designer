@@ -1,12 +1,12 @@
 {
   "schema": "garden-structure-designer/drawing-red-team-report/1.0",
-  "generated": "2026-05-24T20:49:56.212483+00:00",
+  "generated": "2026-05-24T22:34:01.529877+00:00",
   "status": "PASS",
   "reviewer": "run_drawing_red_team.py",
   "summary": "All SVG sheets passed deterministic machine validation, sheet-specific content-quality checks, and headless browser visual smoke heuristics. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.",
   "files": [
     {
-      "file": "outputs/blueprint-component-isolation.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-component-isolation.svg",
       "status": "PASS",
       "failure_codes": [],
       "semantic_counts": {
@@ -24,7 +24,7 @@
       "required_fixes": []
     },
     {
-      "file": "outputs/blueprint-elevation.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-elevation.svg",
       "status": "PASS",
       "failure_codes": [],
       "semantic_counts": {
@@ -42,7 +42,7 @@
       "required_fixes": []
     },
     {
-      "file": "outputs/blueprint-isometric.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-isometric.svg",
       "status": "PASS",
       "failure_codes": [],
       "semantic_counts": {
@@ -60,7 +60,7 @@
       "required_fixes": []
     },
     {
-      "file": "outputs/blueprint-plan.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-plan.svg",
       "status": "PASS",
       "failure_codes": [],
       "semantic_counts": {
@@ -78,7 +78,7 @@
       "required_fixes": []
     },
     {
-      "file": "outputs/drawing-elevation-view.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-elevation-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "semantic_counts": {
@@ -96,7 +96,7 @@
       "required_fixes": []
     },
     {
-      "file": "outputs/drawing-isometric-view.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-isometric-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "semantic_counts": {
@@ -114,7 +114,7 @@
       "required_fixes": []
     },
     {
-      "file": "outputs/drawing-perspective-view.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-perspective-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "semantic_counts": {
@@ -132,7 +132,7 @@
       "required_fixes": []
     },
     {
-      "file": "outputs/drawing-plan-view.svg",
+      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-plan-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "semantic_counts": {
