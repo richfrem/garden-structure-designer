@@ -3,7 +3,7 @@
 **Status:** PASS  
 **May claim success:** true  
 **Reviewer:** run_drawing_red_team.py  
-**Generated:** 2026-05-24T22:34:01.529877+00:00  
+**Generated:** 2026-05-24T22:48:55.066502+00:00  
 
 > All SVG sheets passed deterministic machine validation, sheet-specific content-quality checks, and headless browser visual smoke heuristics. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.
 
@@ -11,7 +11,7 @@
 
 ## Per-Sheet Results
 
-### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-component-isolation.svg` — PASS
+### ✅ `outputs/blueprint-component-isolation.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 7
@@ -27,7 +27,7 @@
 
 ---
 
-### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-elevation.svg` — PASS
+### ✅ `outputs/blueprint-elevation.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -43,7 +43,7 @@
 
 ---
 
-### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-isometric.svg` — PASS
+### ✅ `outputs/blueprint-isometric.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -59,7 +59,7 @@
 
 ---
 
-### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-plan.svg` — PASS
+### ✅ `outputs/blueprint-plan.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -75,12 +75,12 @@
 
 ---
 
-### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-elevation-view.svg` — PASS
+### ✅ `outputs/drawing-elevation-view.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 6
+- `data-role="rafter"`: 18
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 1
@@ -91,12 +91,12 @@
 
 ---
 
-### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-isometric-view.svg` — PASS
+### ✅ `outputs/drawing-isometric-view.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 6
+- `data-role="rafter"`: 18
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 1
@@ -107,7 +107,7 @@
 
 ---
 
-### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-perspective-view.svg` — PASS
+### ✅ `outputs/drawing-perspective-view.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6
@@ -123,7 +123,7 @@
 
 ---
 
-### ✅ `/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-plan-view.svg` — PASS
+### ✅ `outputs/drawing-plan-view.svg` — PASS
 
 **Semantic counts:**
 - `data-role="post"`: 6

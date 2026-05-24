@@ -157,7 +157,9 @@
       "primary_members_only": true,
       "fade_secondary": true,
       "suppress_internal_roof_framing": true,
-      "max_visible_braces_per_post": 1
+      "max_visible_braces_per_post": 1,
+      "show_jack_rafters": true,
+      "show_purlins": false
     },
     "labeling": {
       "avoid_geometry_overlap": true,

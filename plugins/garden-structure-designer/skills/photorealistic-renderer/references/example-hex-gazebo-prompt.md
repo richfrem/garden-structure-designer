@@ -1,36 +1,14 @@
-# Example: Hexagonal Cedar Gazebo (Vancouver Island)
+# Example: Hexagonal Cedar Pergola (Vancouver Island)
 
-This is a fully worked example of the `render-prompt.txt` output produced by the
-`photorealistic-renderer` skill for the hexagonal western red cedar gazebo project.
+Fully worked example of `outputs/render-prompt.txt` for a hexagonal western red cedar pergola,
+Saanich BC. Includes jack rafters (2 per bay), no purlins.
 
-**This is an example of the level of detail expected — not a template to copy.**
-Every garden structure is different. A pergola, shed, arbour, or fence would produce
-completely different sections derived from its own structural model.
-
----
-
-## Why this prompt is structured this way
-
-Image models don't count — they pattern-match. Iterations with progressively stronger
-prompts produced these results:
-
-| Attempt | Prompt approach | Result |
-|---------|----------------|--------|
-| 1 | Simple count statement ("exactly 6 posts") mid-paragraph | 7 posts |
-| 2 | Front-loaded GEOMETRY LOCK + stop-sign analogy + rafter pairing | 8 posts |
-| 3 | CAD-SPEC approach (perimeter rule + system parity + anti-failure section + raised camera) | **6 posts ✓** |
-
-**What the CAD-SPEC approach adds that earlier attempts lacked:**
-- Perimeter rule: explicit turn count (6 turns at 120°) and interior angle — gives the model a geometric definition it can parse
-- System parity: "6 posts = 6 beam segments = 6 roof edges = 6 hip rafters" — cross-locks all member counts
-- Names the failure shape explicitly: "NOT an octagon — never 8 sides, never 8 posts"
-- Plan geometry construction logic: posts on a circumscribed circle at 60° increments
-- Camera raised to 6–7 ft (helps viewer count perimeter members without foreshortening)
-- Dedicated Anti-Failure Constraints section that explicitly forbids octagonal geometry
+**This shows the expected section structure and level of detail — not a template to copy verbatim.**
+Every structure produces different content derived from its own model data.
 
 ---
 
-## Working prompt (produced correct 6-post image)
+## Working prompt
 
 ```
 HEXAGONAL TIMBER FRAME — CAD-SPEC PROMPT (MAX ENFORCEMENT)
@@ -64,7 +42,7 @@ System parity constraint:
 PLAN GEOMETRY (EXPLICIT CONSTRUCTION LOGIC)
 
 Shape: regular hexagon
-Size: 10 feet point-to-point diameter
+Size: 9'9" flat-to-flat span (approx 11'3" point-to-point diameter)
 Posts positioned on a perfect circumscribed circle
 Post spacing: exactly 60° increments
 
@@ -72,59 +50,56 @@ Post spacing: exactly 60° increments
 STRUCTURAL FRAME
 
 Posts
-- 6x6 western red cedar
+- 6x6 warm cedar timber
 - Quantity: EXACTLY 6
-- Height: 8.33 ft to beam soffit
-- Mounted on concrete pier blocks with standoff bases
+- Height: 8'5" to beam soffit
+- Mounted on visible white concrete pier footings with black metal standoffs
 - Perfect vertical alignment
 
-Primary Beam Ring
+Heavy Primary Beam Ring
 - 6 segments (one between each pair of posts)
-- Material: 4x8 cedar
+- Material: heavy 6x12 cedar timber
 - Each segment connects post-to-post only
-- Joints: precise compound miter (~28.71°)
 - Forms a closed 6-sided ring — no extra segments
 
 Roof Structure (OPEN FRAME — NO ROOFING)
-- 6 hip rafters (4x6 cedar)
+- 6 exposed hip rafters (4x6 cedar)
 - One rafter per post
-- Rafters converge into a central 6x6 king post hub
+- Decorative rafter tails extending 9 inches past the beam ring
+- Rafters converge into a central polygonal cedar hub block at the apex
 - Pitch: 4:12
-- Rafters define 6 roof planes ONLY
-- No intermediate rafters, no secondary rafters
-
-Purlin Ring
-- Continuous horizontal ring inside roof
-- Follows hexagonal symmetry — no added segmentation beyond 6-sided logic
+- Each roof bay contains exactly 2 jack rafters (4x4 cedar)
+- Jack rafters terminate into adjacent hip rafters — do not reach the hub
+- Creates layered timber framing detail in each bay
 
 Knee Bracing
-- 12 total braces
+- 12 total diagonal knee braces
 - 2 per post
 - Material: 4x4 cedar
-- Curved profile, ~45° angle
+- Curved or chamfered profile, ~45° angle
 - Symmetrical and evenly distributed
 
 Joinery
 - Traditional mortise-and-tenon
-- No metal hardware visible anywhere
+- Visible joinery / connector detailing at post-to-beam and brace intersections
+- No modern metal hardware visible anywhere
 
 
 MATERIAL + FINISH
 
-Wood: western red cedar
+Wood: warm cedar timber appearance
 Finish: transparent amber oil
 Visible grain, tonal variation, subtle tool marks
-Realistic, professional-grade timber frame appearance
+Realistic, professional-grade timber frame presentation
 
 
 SCENE + ENVIRONMENT
 
-Photorealistic setting in a Pacific Northwest coastal garden (Vancouver Island, BC):
-- Ferns, moss, rhododendrons
-- Mature coastal Douglas fir trees
-- Soft overcast daylight
-- Slight atmospheric moisture
-- Natural diffuse shadows
+Photorealistic setting in a Vancouver Island residential garden (Saanich, BC):
+- Irregular flagstone patio beneath the structure
+- Ferns, hostas, rhododendrons, ornamental grasses, mossy stone borders
+- Cedar privacy fence, mature Douglas fir backdrop
+- Soft overcast Pacific Northwest daylight with warm cedar tones
 
 
 CAMERA + VISUAL VERIFICATION (CRITICAL)
@@ -155,9 +130,10 @@ FINAL VALIDATION CHECK (MANDATORY)
 
 The generated image is ONLY correct if:
 - The perimeter is a true hexagon (6 edges)
-- There are exactly 6 posts
-- There are exactly 6 rafters meeting at center
-- There are exactly 12 knee braces
+- There are exactly 6 posts on white concrete pier footings
+- There are exactly 6 exposed hip rafters with 9-inch decorative tails
+- There are exactly 12 jack rafters (2 per bay, visible between hip rafters)
+- There are exactly 12 diagonal knee braces
 - The structure is symmetrical and physically believable
 
 If any of these conditions fail, the image is incorrect.
@@ -169,6 +145,24 @@ cartoon, illustration, watercolor, blueprint overlay, distorted perspective, fis
 people, animals, cars, shadows too dark, overexposed sky, clipping, grain noise,
 JPEG artifacts, octagonal geometry, 7 posts, 8 posts, extra post, 5 posts,
 doubled posts, closely spaced posts, decorative posts, asymmetric posts,
-uneven post spacing, extra vertical members, railings, partial walls
+uneven post spacing, extra vertical members, railings, partial walls,
+roofing panels, shingles, solid roof, walls, purlin ring, ridge beam,
+missing jack rafters
 ```
 
+---
+
+## What changed from the old example
+
+The old example in this repo had several values that did not match the current model:
+
+| Field | Old (wrong) | Current (correct) |
+|-------|-------------|-------------------|
+| Beam size | 4x8 | 6x12 |
+| Jack rafters | "No intermediate rafters" | 2 per bay (12 total) |
+| Purlins | Purlin Ring section included | Omitted (show_purlins=false) |
+| Hub | "6x6 king post" | "polygonal cedar hub block" |
+| Post height | 8'6" | 8'5" (8.42 ft) |
+| Footing | "concrete footing pads" | "white concrete pier footings with black metal standoffs" |
+
+Always read the current `structure.json` — never copy values from this example.

@@ -1,10 +1,10 @@
 {
   "schema": "garden-structure-designer/drawing-content-report/1.0",
-  "generated": "2026-05-24T22:34:01.609449+00:00",
+  "generated": "2026-05-24T22:48:55.141268+00:00",
   "status": "PASS",
   "files": [
     {
-      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-component-isolation.svg",
+      "file": "outputs/blueprint-component-isolation.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 77,
@@ -22,7 +22,7 @@
       "text_label_count": 35
     },
     {
-      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-elevation.svg",
+      "file": "outputs/blueprint-elevation.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 237,
@@ -40,7 +40,7 @@
       "text_label_count": 52
     },
     {
-      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-isometric.svg",
+      "file": "outputs/blueprint-isometric.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 188,
@@ -58,7 +58,7 @@
       "text_label_count": 53
     },
     {
-      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-plan.svg",
+      "file": "outputs/blueprint-plan.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 227,
@@ -76,15 +76,15 @@
       "text_label_count": 52
     },
     {
-      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-elevation-view.svg",
+      "file": "outputs/drawing-elevation-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 179,
-      "semantic_total": 38,
+      "total_elements": 237,
+      "semantic_total": 50,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 1,
@@ -94,15 +94,15 @@
       "text_label_count": 52
     },
     {
-      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-isometric-view.svg",
+      "file": "outputs/drawing-isometric-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 144,
-      "semantic_total": 38,
+      "total_elements": 188,
+      "semantic_total": 50,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 6,
+        "rafter": 18,
         "brace": 12,
         "footing": 6,
         "dimension": 1,
@@ -112,7 +112,7 @@
       "text_label_count": 53
     },
     {
-      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-perspective-view.svg",
+      "file": "outputs/drawing-perspective-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 179,
@@ -130,7 +130,7 @@
       "text_label_count": 56
     },
     {
-      "file": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-plan-view.svg",
+      "file": "outputs/drawing-plan-view.svg",
       "status": "PASS",
       "failure_codes": [],
       "total_elements": 227,

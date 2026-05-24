@@ -237,44 +237,44 @@
     <text x="917.4" y="924.2" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P2">P2</text>
     <text x="712.6" y="924.2" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P3">P3</text>
     <text x="610.2" y="924.2" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P4">P4</text>
-    <text x="712.6" y="924.2" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P5">P5</text>
-    <text x="917.4" y="924.2" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P6">P6</text>
+    <text x="727.6" y="924.2" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P5">P5</text>
+    <text x="932.4" y="924.2" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P6">P6</text>
     <text x="953.6" y="732.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B1">B1</text>
     <text x="800.0" y="732.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B2">B2</text>
     <text x="646.4" y="732.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B3">B3</text>
-    <text x="646.4" y="732.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B4">B4</text>
-    <text x="800.0" y="732.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B5">B5</text>
-    <text x="953.6" y="732.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B6">B6</text>
+    <text x="661.4" y="732.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B4">B4</text>
+    <text x="815.0" y="732.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B5">B5</text>
+    <text x="968.6" y="732.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B6">B6</text>
     <text x="984.6" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K1A">K1A</text>
     <text x="922.5" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K1B">K1B</text>
     <text x="862.0" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K2A">K2A</text>
     <text x="738.0" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K2B">K2B</text>
     <text x="677.5" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K3A">K3A</text>
     <text x="615.4" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K3B">K3B</text>
-    <text x="615.4" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K4A">K4A</text>
-    <text x="677.5" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K4B">K4B</text>
-    <text x="738.0" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K5A">K5A</text>
-    <text x="862.0" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K5B">K5B</text>
-    <text x="922.5" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K6A">K6A</text>
-    <text x="984.6" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K6B">K6B</text>
+    <text x="630.4" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K4A">K4A</text>
+    <text x="692.5" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K4B">K4B</text>
+    <text x="753.0" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K5A">K5A</text>
+    <text x="877.0" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K5B">K5B</text>
+    <text x="937.5" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K6A">K6A</text>
+    <text x="999.6" y="799.1" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K6B">K6B</text>
     <text x="931.8" y="690.4" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R1">R1</text>
     <text x="865.9" y="690.4" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R2">R2</text>
     <text x="734.1" y="690.4" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R3">R3</text>
     <text x="668.2" y="690.4" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R4">R4</text>
-    <text x="734.1" y="690.4" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R5">R5</text>
-    <text x="865.9" y="690.4" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R6">R6</text>
-    <text x="938.1" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J1a">J1a</text>
+    <text x="749.1" y="690.4" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R5">R5</text>
+    <text x="880.9" y="690.4" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R6">R6</text>
+    <text x="943.1" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J1a">J1a</text>
     <text x="904.0" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J1b">J1b</text>
     <text x="834.1" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J2a">J2a</text>
     <text x="765.9" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J2b">J2b</text>
     <text x="696.0" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J3a">J3a</text>
-    <text x="661.9" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J3b">J3b</text>
-    <text x="661.9" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J4a">J4a</text>
-    <text x="696.0" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J4b">J4b</text>
-    <text x="765.9" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J5a">J5a</text>
-    <text x="834.1" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J5b">J5b</text>
-    <text x="904.0" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J6a">J6a</text>
-    <text x="938.1" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J6b">J6b</text>
+    <text x="664.4" y="704.6" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J3b">J3b</text>
+    <text x="653.2" y="695.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J4a">J4a</text>
+    <text x="711.0" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J4b">J4b</text>
+    <text x="780.9" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J5a">J5a</text>
+    <text x="849.1" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J5b">J5b</text>
+    <text x="919.0" y="700.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J6a">J6a</text>
+    <text x="938.1" y="715.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="J6b">J6b</text>
     <text x="800.0" y="638.1" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="HUB">HUB</text>
   </g>
     <g data-role="dimension">
