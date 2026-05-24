@@ -4,7 +4,7 @@ geometry_engine.py (CLI)
 =====================================
 
 Purpose:
-    geometry_engine.py =====================================
+    geometry_engine.py (CLI) =====================================
 
 Layer: Execution
 
@@ -375,31 +375,159 @@ def compute(model_path: str) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
+# M1+ entry point: structure.json in-place geometry computation
+# ---------------------------------------------------------------------------
+
+
+def compute_from_structure(structure_path: str) -> dict:
+    """
+    Read structure.json, compute all geometry, seal geometry section, write back.
+    This is the new M1+ entry point. The old compute() is kept for compat.
+    """
+    import os as _os
+    import sys as _sys
+    _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+    from structure_io import load_structure, save_structure, assert_not_sealed
+
+    structure = load_structure(structure_path)
+
+    # Coordinate system contract
+    cad_meta = structure.get("cad", {})
+    assert cad_meta.get("units", "feet") == "feet", "cad.units must be 'feet'"
+    assert cad_meta.get("coordinate_system", "right_handed_z_up") == "right_handed_z_up", \
+        "cad.coordinate_system must be 'right_handed_z_up'"
+
+    assert_not_sealed(structure, "geometry")
+
+    layout   = structure["layout"]
+    members  = structure["members"]
+    roof     = structure["roof"]
+    hub_spec = structure["hub"]
+    inv      = structure.get("invariants", {})
+    precision = cad_meta.get("precision", 0.001)
+
+    sides      = layout["post_count"]
+    span_ft    = layout["inscribed_radius_ft"]
+    pitch      = roof["pitch"]
+    pr, rr     = [int(x) for x in pitch.split(":")]
+    overhang_ft = roof["primary_rafters"]["overhang_ft"]
+    beam_depth_in = members["beams"]["actual_depth_in"]
+    post_cut_ft   = members["posts"]["cut_length_ft"]
+    rafter_w_in   = roof["primary_rafters"]["actual_width_in"]
+    rafter_d_in   = roof["primary_rafters"]["actual_depth_in"]
+
+    # Compute geometry (unchanged math functions)
+    cuts   = compound_cut(pr, rr, sides)
+    rl     = rafter_length(span_ft, pr, rr, overhang_ft)
+    rise   = roof_rise(span_ft, pr, rr)
+    height = total_height(post_cut_ft, beam_depth_in, span_ft, pr, rr)
+
+    # Hub radius: geometry_engine owns the formula.
+    # Contract: hub_r >= radius_min_ft AND satisfies no_rafter_inside_hub_radius.
+    radius_min = hub_spec.get("radius_min_ft", 0.6)
+    hub_r = max(radius_min, (rafter_w_in + rafter_d_in) / 12.0)
+
+    warnings: list = []
+
+    # Invariant: rafter_count_equals_post_count
+    if inv.get("rafter_count_equals_post_count"):
+        rafter_count = roof["primary_rafters"]["count"]
+        if rafter_count != sides:
+            warnings.append(
+                f"INVARIANT FAIL: rafter_count={rafter_count} != post_count={sides}"
+            )
+
+    # Invariant: no_zero_length_members
+    if inv.get("no_zero_length_members") and rl["structural_length_ft"] < precision:
+        warnings.append(
+            f"INVARIANT FAIL: rafter structural_length_ft={rl['structural_length_ft']}"
+            f" < precision={precision}"
+        )
+
+    # Height limit check from code section
+    height_limit = structure.get("code", {}).get("height_limit_ft")
+    if height_limit and height["total_height_ft"] > height_limit:
+        warnings.append(
+            f"FAIL: total_height_ft={height['total_height_ft']:.3f} "
+            f"exceeds code limit of {height_limit} ft."
+        )
+
+    layout_result = svg_layout(height["total_height_ft"], span_ft, sides)
+    scale   = layout_result["scale_px_per_ft"]
+    grade_y = layout_result["grade_y"]
+    post_px = post_cut_ft * scale
+    beam_px = (beam_depth_in / 12.0) * scale
+    rise_px = span_ft * (pr / rr) * scale
+
+    svg_coords = {
+        **layout_result,
+        "post_top_y":    round(grade_y - post_px),
+        "beam_soffit_y": round(grade_y - post_px),
+        "beam_top_y":    round(grade_y - post_px - beam_px),
+        "hub_apex_y":    round(grade_y - post_px - beam_px - rise_px),
+        "rise_px":       round(rise_px),
+        "beam_px":       round(beam_px),
+        "post_px":       round(post_px),
+    }
+
+    structure["geometry"] = {
+        "_comment": "DERIVED — written by geometry_engine.py. Do not manually edit.",
+        "_sealed":     True,
+        "compound_cut": cuts,
+        "beam_ring":    beam_ring_miter(sides),
+        "rafter":       rl,
+        "roof_rise":    rise,
+        "total_height": height,
+        "hub_radius_ft": round(hub_r, 4),
+        "svg_coordinates": svg_coords,
+        "warnings":     warnings,
+    }
+    structure["meta"]["lifecycle"] = "GEOMETRY_SEALED"
+
+    save_structure(structure, structure_path)
+
+    if warnings:
+        for w in warnings:
+            print(f"WARNING: {w}", file=sys.stderr)
+        sys.exit(1)
+
+    return structure
+
+
+# ---------------------------------------------------------------------------
 # CLI entry point
 # ---------------------------------------------------------------------------
 
 
 def main() -> None:
-    """Parse CLI arguments, compute geometry, write output file, exit."""
     if len(sys.argv) < 2:
         print(
-            "Usage: python3 scripts/geometry_engine.py "
-            "<path-to-structural-model.json>",
+            "Usage: python3 geometry_engine.py <structure.json | structural-model.json>",
             file=sys.stderr,
         )
         sys.exit(1)
 
-    model_path = sys.argv[1]
-    result = compute(model_path)
+    path = sys.argv[1]
 
-    out_path = os.path.join(os.path.dirname(model_path), "geometry-calculations.json")
+    # Detect new vs legacy invocation by checking file content
+    import json as _json
+    with open(path) as _f:
+        _data = _json.load(_f)
+
+    if "meta" in _data and "schema_version" in _data.get("meta", {}):
+        # New: structure.json
+        compute_from_structure(path)
+        return
+
+    # Legacy: structural-model.json → write geometry-calculations.json
+    result = compute(path)
+    out_path = os.path.join(os.path.dirname(path), "geometry-calculations.json")
     with open(out_path, "w") as f:
-        json.dump(result, f, indent=2)
-
+        import json as _json2
+        _json2.dump(result, f, indent=2)
     print(json.dumps(result, indent=2))
-
     if result.get("warnings"):
-        print("\n⚠️  WARNINGS:", file=sys.stderr)
+        print("\nWARNINGS:", file=sys.stderr)
         for w in result["warnings"]:
             print(f"  {w}", file=sys.stderr)
         sys.exit(1)
