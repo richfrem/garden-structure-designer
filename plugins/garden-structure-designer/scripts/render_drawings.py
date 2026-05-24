@@ -104,10 +104,14 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
     scale = coords["scale_px_per_ft"]; cx, cy = coords["width_px"] / 2, coords["grade_y"] if "elevation" in view_type else coords["height_px"] / 2
     cam = vnorm((0,0,1) if "plan" in view_type else (0,-1,0) if "elevation" in view_type else (1,1,1))
     
+    def _suppress_in_view(role: str) -> bool:
+        """Returns True if this member role should be hidden in simplified presentation views."""
+        in_presentation = ("perspective" in filename or "drawing" in filename and "plan" not in filename)
+        return in_presentation and role == "purlin"
+
     face_entries = []
     for solid in scene.solids:
-        # Visibility filtering
-        if ("perspective" in filename or "drawing" in filename and "plan" not in filename) and (solid.role == "purlin" or (solid.role == "rafter" and solid.tag.startswith("J"))): continue
+        if _suppress_in_view(solid.role): continue
         for face in solid.faces:
             if solid.role != "footing" and vdot(face.normal, cam) < -0.1: continue # Backface cull
             c = vcent(face.verts); depth = vdot(c, cam)
@@ -146,6 +150,7 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
     rendered_ids = set(); label_svgs = []; placed_labels: list[tuple[float, float]] = []
     for solid in scene.solids:
         if solid.tag in rendered_ids or solid.role == "footing": continue
+        if _suppress_in_view(solid.role): continue
         style = get_label_style(solid.role, view_type)
         mid = vcent([solid.p0, solid.p1]); lx, ly = proj_func(mid[0], mid[1], mid[2], scale, cx, cy)
         if solid.role == "beam": ly -= 15
