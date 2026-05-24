@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/visual-smoke-report/1.0",
-  "generated_at": "2026-05-24T19:29:36.160712+00:00",
+  "generated_at": "2026-05-24T20:49:50.845092+00:00",
   "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
   "structure_path": "context/staging/structure.json",
   "svg_dir": "outputs",
@@ -16,10 +16,10 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.17404895833333334,
-        "bbox_fill_ratio": 0.9534177083333333,
+        "non_bg_ratio": 0.050112109375,
+        "bbox_fill_ratio": 0.34954921875,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -29,15 +29,16 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 9,
-          "beams": 53,
-          "rafters": 113
+          "posts": 4,
+          "beams": 15,
+          "rafters": 67
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2049
+        "cv_hub_density": 2736
       },
       "failures": [],
       "warnings": [
+        "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-plan-view.svg \u2014 re-rendered",
         "Could not compute hub crop window."
       ],
       "status": "PASS"
@@ -49,10 +50,10 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.19758958333333335,
-        "bbox_fill_ratio": 0.9534177083333333,
+        "non_bg_ratio": 0.057646484375,
+        "bbox_fill_ratio": 0.421475,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -62,15 +63,17 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 27,
-          "beams": 53,
-          "rafters": 60
+          "posts": 14,
+          "beams": 6,
+          "rafters": 35
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 1756
+        "cv_hub_density": 0
       },
       "failures": [],
-      "warnings": [],
+      "warnings": [
+        "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-elevation-view.svg \u2014 re-rendered"
+      ],
       "status": "PASS"
     },
     {
@@ -80,10 +83,10 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.23896145833333332,
-        "bbox_fill_ratio": 0.9534177083333333,
+        "non_bg_ratio": 0.13066015625,
+        "bbox_fill_ratio": 0.577416015625,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -93,15 +96,16 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 34,
-          "beams": 74,
-          "rafters": 91
+          "posts": 30,
+          "beams": 18,
+          "rafters": 70
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 3281
+        "cv_hub_density": 2162
       },
       "failures": [],
       "warnings": [
+        "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-isometric-view.svg \u2014 re-rendered",
         "Could not compute hub crop window."
       ],
       "status": "PASS"
@@ -146,10 +150,10 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.18656302083333334,
-        "bbox_fill_ratio": 0.9550572916666666,
+        "non_bg_ratio": 0.05435,
+        "bbox_fill_ratio": 0.35029296875,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -159,15 +163,16 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 9,
-          "beams": 53,
-          "rafters": 114
+          "posts": 6,
+          "beams": 17,
+          "rafters": 68
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2048
+        "cv_hub_density": 3160
       },
       "failures": [],
       "warnings": [
+        "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-plan.svg \u2014 re-rendered",
         "Could not compute hub crop window."
       ],
       "status": "PASS"
@@ -179,10 +184,10 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.11996041666666667,
-        "bbox_fill_ratio": 0.9550572916666666,
+        "non_bg_ratio": 0.027083203125,
+        "bbox_fill_ratio": 0.42204765625,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -192,15 +197,17 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 27,
-          "beams": 56,
-          "rafters": 64
+          "posts": 19,
+          "beams": 10,
+          "rafters": 37
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 1923
+        "cv_hub_density": 0
       },
       "failures": [],
-      "warnings": [],
+      "warnings": [
+        "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-elevation.svg \u2014 re-rendered"
+      ],
       "status": "PASS"
     },
     {
@@ -210,10 +217,10 @@
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.190196875,
-        "bbox_fill_ratio": 0.9550572916666666,
+        "non_bg_ratio": 0.11096484375,
+        "bbox_fill_ratio": 0.57781015625,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -223,15 +230,16 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 32,
-          "beams": 74,
-          "rafters": 99
+          "posts": 31,
+          "beams": 29,
+          "rafters": 101
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 3252
+        "cv_hub_density": 2267
       },
       "failures": [],
       "warnings": [
+        "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-isometric.svg \u2014 re-rendered",
         "Could not compute hub crop window."
       ],
       "status": "PASS"

@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/drawing-red-team-report/1.0",
-  "generated": "2026-05-24T19:29:37.439621+00:00",
+  "generated": "2026-05-24T20:49:56.212483+00:00",
   "status": "PASS",
   "reviewer": "run_drawing_red_team.py",
   "summary": "All SVG sheets passed deterministic machine validation, sheet-specific content-quality checks, and headless browser visual smoke heuristics. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.",
@@ -33,11 +33,11 @@
         "rafter": 18,
         "brace": 12,
         "footing": 6,
-        "dimension": 7,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 50,
+      "text_label_count": 52,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -49,13 +49,13 @@
         "post": 6,
         "beam": 6,
         "rafter": 18,
-        "brace": 7,
+        "brace": 12,
         "footing": 6,
-        "dimension": 15,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 56,
+      "text_label_count": 53,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -69,11 +69,11 @@
         "rafter": 18,
         "brace": 12,
         "footing": 6,
-        "dimension": 4,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 28,
+      "text_label_count": 52,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -84,14 +84,14 @@
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 18,
+        "rafter": 6,
         "brace": 12,
         "footing": 6,
-        "dimension": 7,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 50,
+      "text_label_count": 52,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -102,14 +102,14 @@
       "semantic_counts": {
         "post": 6,
         "beam": 6,
-        "rafter": 18,
-        "brace": 7,
+        "rafter": 6,
+        "brace": 12,
         "footing": 6,
-        "dimension": 15,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 56,
+      "text_label_count": 53,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -141,11 +141,11 @@
         "rafter": 18,
         "brace": 12,
         "footing": 6,
-        "dimension": 4,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 28,
+      "text_label_count": 52,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     }

@@ -12,7 +12,7 @@
 - Reviewer: run_drawing_red_team.py
 - Status: PASS
 - May claim success: true
-- Summary: All SVG sheets passed deterministic machine validation and sheet-specific content-quality checks. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.
+- Summary: All SVG sheets passed deterministic machine validation, sheet-specific content-quality checks, and headless browser visual smoke heuristics. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.
 
 ## Drawing Content Validation (Stage 5.75)
 - ✅ `outputs/blueprint-component-isolation.svg`: PASS — codes: none

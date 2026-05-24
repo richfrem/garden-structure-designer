@@ -11,7 +11,7 @@
         "schema_version": { "type": "string" },
         "lifecycle": {
           "type": "string",
-          "enum": ["INTENT", "ENGINEERED", "GEOMETRY_SEALED", "CAD_SEALED", "RENDERED"]
+          "enum": ["INTENT", "CONSTRAINTS_DEFINED", "ENGINEERED", "GEOMETRY_SEALED", "CAD_SEALED", "RENDERED"]
         },
         "source_hash": { "type": "string" }
       }
@@ -24,6 +24,13 @@
         "material_preference": { "type": "string" },
         "joinery_style": { "type": "string" }
       }
+    },
+    "materials": {
+      "type": "object",
+      "properties": {
+        "primary": { "type": "string" }
+      },
+      "additionalProperties": true
     },
     "structure": {
       "type": "object",
@@ -132,14 +139,24 @@
         "layout": { "type": "string" },
         "brace": {
           "type": "object",
-          "required": ["actual_width_in", "actual_depth_in", "length_ft", "angle_deg", "count_per_post"],
+          "required": ["actual_width_in", "actual_depth_in", "count_per_post", "constraints"],
           "properties": {
             "nominal_size": { "type": "string" },
             "actual_width_in": { "type": "number", "exclusiveMinimum": 0 },
             "actual_depth_in": { "type": "number", "exclusiveMinimum": 0 },
-            "length_ft": { "type": "number", "exclusiveMinimum": 0 },
-            "angle_deg": { "type": "number", "minimum": 0, "maximum": 90 },
-            "count_per_post": { "type": "integer", "minimum": 1 }
+            "count_per_post": { "type": "integer", "minimum": 1 },
+            "constraints": {
+              "type": "object",
+              "required": ["start_surface", "end_surface"],
+              "properties": {
+                "start_surface": { "type": "string" },
+                "end_surface": { "type": "string" },
+                "run_ft": {
+                  "type": "number",
+                  "description": "Optional horizontal run. Default: min(1.5, beam_chord * 0.3)"
+                }
+              }
+            }
           }
         }
       }
@@ -187,7 +204,65 @@
     },
     "code": { "type": "object", "additionalProperties": true },
     "geometry": { "type": "object", "additionalProperties": true },
-    "cad": { "type": "object", "additionalProperties": true }
+    "cad": { "type": "object", "additionalProperties": true },
+    "cad_constraints": {
+      "type": "object",
+      "properties": {
+        "reference_planes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type", "point", "normal"],
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "enum": ["beam_top", "beam_soffit", "post_face", "roof_plane", "hub_face", "footing_top"] },
+              "point": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+              "normal": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 }
+            }
+          }
+        },
+        "member_constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["member_id", "constraints"],
+            "properties": {
+              "member_id": { "type": "string" },
+              "constraints": { "type": "object" }
+            }
+          }
+        },
+        "global_constraints": {
+          "type": "object",
+          "required": ["roof_planes", "proportion_rules"],
+          "properties": {
+            "roof_planes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "defined_by", "pitch"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "defined_by": { "type": "array", "items": { "type": "string" } },
+                  "pitch": { "type": "string" }
+                }
+              }
+            },
+            "proportion_rules": {
+              "type": "object",
+              "required": ["beam_depth_gt_rafter_depth", "hub_height_lte_beam_depth_x1.2", "brace_length_lte_post_height_x0.4"],
+              "properties": {
+                "beam_depth_gt_rafter_depth": { "type": "boolean" },
+                "hub_height_lte_beam_depth_x1.2": { "type": "boolean" },
+                "brace_length_lte_post_height_x0.4": { "type": "boolean" }
+              }
+            },
+            "symmetry": { "type": "string" }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }

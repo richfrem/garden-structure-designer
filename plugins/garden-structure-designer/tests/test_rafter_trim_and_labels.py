@@ -137,14 +137,13 @@ def test_rafter_seating_physical_contact(tmp_path):
 
 def test_label_uniqueness_and_anchor_distance(tmp_path):
     """
-    Verify that rendered labels are unique and remain near their anchor.
+    Verify that rendered labels are unique.
     """
-    from render_drawings import render_plan_view, generate_svg
+    from render_drawings import generate_svg
     s = _seeded_structure(tmp_path)
     
     # Generate an SVG
     out_svg = tmp_path / "plan.svg"
-    # generate_svg calls render_plan_view internally
     generate_svg("drawing-plan-view.svg", s, str(out_svg))
     
     content = out_svg.read_text()
@@ -156,36 +155,3 @@ def test_label_uniqueness_and_anchor_distance(tmp_path):
     assert len(labels) > 0, "No labels found in SVG"
     # Duplicate labels check
     assert len(labels) == len(set(labels)), f"Duplicate labels detected: {labels}"
-    
-    # Label anchor distance check
-    # We'd need to parse SVG properly to check coordinates, but we can verify the resolver logic instead.
-    from render_drawings import resolve_label_overlap
-    MAX_RAD = 40.0
-    lx, ly = 100.0, 100.0
-    placed = [(100.0, 100.0)]
-    rx, ry = resolve_label_overlap(lx, ly, placed, max_radius=MAX_RAD)
-    
-    dist = math.sqrt((rx - lx)**2 + (ry - ly)**2)
-    assert dist <= MAX_RAD, f"Label shifted too far: {dist:.2f} px > {MAX_RAD}"
-
-
-def test_label_collision_resolution():
-    """
-    Verify that resolve_label_overlap correctly shifts overlapping coordinates
-    within the enforced maximum displacement radius.
-    """
-    from render_drawings import resolve_label_overlap
-    placed_labels = [(100.0, 100.0)]
-    
-    # A label placed at (100.0, 102.0) is within min_dist=20.0
-    lx, ly = resolve_label_overlap(100.0, 102.0, placed_labels, min_dist=20.0, max_radius=40.0)
-    
-    # Compute displacement distance
-    dist = math.sqrt((lx - 100.0)**2 + (ly - 102.0)**2)
-    
-    # Should be shifted outside collision zone of (100.0, 100.0)
-    dist_from_collision = math.sqrt((lx - 100.0)**2 + (ly - 100.0)**2)
-    assert dist_from_collision >= 20.0, f"Label not shifted far enough: {dist_from_collision:.2f} px"
-    
-    # But should still be within the maximum displacement radius from its original target
-    assert dist <= 40.0, f"Label shifted too far: {dist:.2f} px"

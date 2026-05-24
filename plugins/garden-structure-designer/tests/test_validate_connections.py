@@ -161,12 +161,12 @@ def test_rafter_tip_passes_on_valid_hub_contact(valid_scene):
 
 def test_brace_foot_fails_when_displaced_far_from_post(valid_scene):
     # Move brace lower foot 50 ft away from any post
-    broken = _displace_brace_foot(valid_scene, "Brace0a", new_xy=(50.0, 50.0))
+    broken = _displace_brace_foot(valid_scene, "K1A", new_xy=(50.0, 50.0))
     errors = validate_connections(broken)
     assert any("brace_foot" in e for e in errors), (
         f"Expected brace_foot error, got: {errors}"
     )
-    assert any("Brace0a" in e for e in errors)
+    assert any("K1A" in e for e in errors)
 
 
 def test_brace_foot_passes_on_valid_scene(valid_scene):

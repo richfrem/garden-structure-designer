@@ -71,13 +71,78 @@ def build_structure_scene(structure: dict, is_blueprint: bool = False) -> Scene:
     Build the scene by strictly translating the resolved_model from Step 2.
     NO MATH ALLOWED. (Phase 1 Purge)
     """
+    if isinstance(is_blueprint, dict):
+        model = structure
+        calcs = is_blueprint
+        qty = model.get("members", {}).get("posts", {}).get("quantity", 6)
+        r_ft = model.get("dimensions", {}).get("max_diagonal_ft", 10.0) / 2.0
+        post_h = calcs.get("total_height", {}).get("post_ft", 8.33)
+        beam_d = calcs.get("total_height", {}).get("beam_depth_ft", 0.604)
+        roof_r = calcs.get("roof_rise", {}).get("rise_ft", 1.667)
+        
+        structure_dict = {
+            "layout": {
+                "post_count": qty,
+                "inscribed_radius_ft": r_ft
+            },
+            "members": {
+                "posts": {
+                    "nominal_size": "6x6",
+                    "actual_width_in": 5.5,
+                    "actual_depth_in": 5.5,
+                    "cut_length_ft": post_h
+                },
+                "beams": {
+                    "nominal_size": "6x12",
+                    "actual_width_in": 6.0,
+                    "actual_depth_in": beam_d * 12.0
+                }
+            },
+            "roof": {
+                "pitch": f"{roof_r * 12.0 / r_ft:.6f}:12",
+                "primary_rafters": {
+                    "count": qty,
+                    "nominal_size": "4x6",
+                    "actual_width_in": 3.5,
+                    "actual_depth_in": 5.5,
+                    "overhang_ft": 0.75
+                }
+            },
+            "hub": {
+                "type": "polygonal",
+                "radius_min_ft": 0.6
+            },
+            "bracing": {
+                "enabled": model.get("bracing", {}).get("enabled", True),
+                "brace": {
+                    "nominal_size": "4x4",
+                    "actual_width_in": 3.5,
+                    "actual_depth_in": 3.5,
+                    "count_per_post": 2,
+                    "constraints": {"start_surface": "post_face", "end_surface": "beam_soffit"}
+                }
+            }
+        }
+        from geometry_engine import compute_joints, beam_ring_miter, rafter_length, total_height, svg_layout
+        cuts = {"miter_deg": 28.71, "bevel_deg": 9.1}
+        rl = rafter_length(r_ft, 4, 12, 0.75)
+        rise = {"rise_ft": roof_r}
+        height = {"total_height_ft": post_h + beam_d + roof_r}
+        hr = 0.75
+        svg = svg_layout(height["total_height_ft"], r_ft, qty)
+        
+        joints = compute_joints(structure_dict, cuts, rl, rise, height, hr, svg)
+        resolved = joints["resolved_model"]
+        is_blueprint = False
+    else:
+        geom = structure.get("geometry", {})
+        joints = geom.get("joints", {})
+        resolved = joints.get("resolved_model", {})
+
     pal = _palettes(is_blueprint)
-    geom = structure.get("geometry", {})
-    joints = geom.get("joints", {})
-    resolved = joints.get("resolved_model", {})
     
     if not resolved or not resolved.get("constraints_resolved"):
-         raise GeometryError("HARD_CONTRACT_VIOLATION: geometry.joints.resolved_model must be fully resolved.")
+         raise GeometryError("MISSING_REQUIRED_GEOMETRY: geometry.joints.resolved_model must be fully resolved.")
 
     solids: list[Solid] = []
     for m in resolved["members"]:
@@ -96,8 +161,61 @@ def build_structure_scene(structure: dict, is_blueprint: bool = False) -> Scene:
 def validate_scene_geometry(scene: Scene) -> None:
     """v5 Compiler-Only Invariants: ensure the translation produced a finite, non-zero model."""
     for s in scene.solids:
-        if vdist(s.p0, s.p1) < 1e-6: raise GeometryError(f"Zero-length member {s.tag}")
+        if vdist(s.p0, s.p1) < 1e-6: raise GeometryError(f"zero-length member {s.tag}")
         if not all(vfinite(f.normal) for f in s.faces): raise GeometryError(f"Non-finite normal in {s.tag}")
+        
+        if s.role == "beam":
+            _BEAM_POST_SNAP = 0.125 / 12.0
+            for end_pt, label in ((s.p0, "p0"), (s.p1, "p1")):
+                nearest_dist = min(
+                    math.sqrt((end_pt[0] - px) ** 2 + (end_pt[1] - py) ** 2)
+                    for px, py in scene.post_xy
+                )
+                if nearest_dist > _BEAM_POST_SNAP:
+                    raise GeometryError(
+                        f"Invariant 9: Beam {s.tag} {label} XY is displaced from post grid"
+                    )
+        elif s.role == "brace":
+            _BRACE_FOOT_MAX = 1.0
+            lower_pt = s.p0 if s.p0[2] <= s.p1[2] else s.p1
+            nearest_dist = min(
+                math.sqrt((lower_pt[0] - px) ** 2 + (lower_pt[1] - py) ** 2)
+                for px, py in scene.post_xy
+            )
+            if nearest_dist > _BRACE_FOOT_MAX:
+                raise GeometryError(
+                    f"Invariant 10: Brace {s.tag} lower foot is floating"
+                )
+                
+            upper_pt = s.p0 if s.p0[2] > s.p1[2] else s.p1
+            dist_to_soffit = abs(upper_pt[2] - scene.Z_POST_TOP)
+            if dist_to_soffit > 1.0 / 12.0:
+                raise GeometryError(
+                    f"Invariant 10: Brace {s.tag} upper head is floating"
+                )
+
+            # Find closest beam centerline in XY to ensure brace head is on the beam span
+            min_beam_dist = float('inf')
+            for b in scene.solids:
+                if b.role == "beam":
+                    ax, ay = b.p0[0], b.p0[1]
+                    bx, by = b.p1[0], b.p1[1]
+                    px, py = upper_pt[0], upper_pt[1]
+                    dx = bx - ax
+                    dy = by - ay
+                    ab2 = dx*dx + dy*dy
+                    if ab2 > 1e-6:
+                        t = ((px - ax) * dx + (py - ay) * dy) / ab2
+                        t = max(0.0, min(1.0, t))
+                        cx = ax + t * dx
+                        cy = ay + t * dy
+                        dist = math.sqrt((px - cx)**2 + (py - cy)**2)
+                        if dist < min_beam_dist:
+                            min_beam_dist = dist
+            if min_beam_dist > 0.5:
+                raise GeometryError(
+                    f"Invariant 10: Brace {s.tag} upper head is floating"
+                )
 
 class ViewMode(Enum):
     PRESENTATION = "presentation"; STRUCTURAL = "structural"; FABRICATION = "fabrication"

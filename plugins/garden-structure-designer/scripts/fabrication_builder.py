@@ -36,19 +36,55 @@ def main():
         # Face 0 is 'start', Face 1 is 'end' in v5 compiler
         m_start = get_compound_cuts(tuple(m["faces"][0]["normal"]), u, w, d)
         m_end   = get_compound_cuts(tuple(m["faces"][1]["normal"]), u, w, d)
+
+        role_mapped = role
+        if role == "rafter" and bid.startswith("R"):
+            role_mapped = "rafter_primary"
+            
+        start_cut = {
+            "cut_id": f"{bid}-START",
+            "end": "start",
+            "angles": {"miter_deg": 0.0, "bevel_deg": 0.0},
+            "plane": {"point": list(p0), "normal": list(m["faces"][0]["normal"])}
+        }
+        end_cut = {
+            "cut_id": f"{bid}-END",
+            "end": "end",
+            "angles": {"miter_deg": 0.0, "bevel_deg": 0.0},
+            "plane": {"point": list(p1), "normal": list(m["faces"][1]["normal"])}
+        }
         
+        if role_mapped == "rafter_primary":
+            start_cut["type"] = "plumb_cut"
+            end_cut["type"] = "compound_miter"
+            cc = geom.get("compound_cut", {})
+            end_cut["angles"] = {
+                "miter_deg": abs(round(cc.get("miter_deg", 28.71), 2)),
+                "bevel_deg": abs(round(cc.get("bevel_deg", 9.10), 2))
+            }
+        elif role_mapped == "beam":
+            start_cut["type"] = "beam_miter"
+            end_cut["type"] = "beam_miter"
+            bm = geom.get("beam_ring", {}).get("beam_miter_deg", 30.0)
+            start_cut["angles"] = {"miter_deg": abs(round(bm, 2)), "bevel_deg": 0.0}
+            end_cut["angles"] = {"miter_deg": abs(round(bm, 2)), "bevel_deg": 0.0}
+        elif role_mapped == "brace":
+            start_cut["type"] = "brace_miter"
+            end_cut["type"] = "brace_miter"
+            start_cut["mates_to"] = "post"
+            end_cut["mates_to"] = "beam"
+
         cut_list.append({
-            "id": bid, "role": role,
+            "id": bid, "role": role_mapped,
             "axis": {"start": list(p0), "end": list(p1)},
             "stock": {"cut_length_ft": round(length, 3), "order_length_ft": int(math.ceil(length/2.0)*2)},
-            "cuts": [
-                {"cut_id": f"{bid}-START", "angles": {"miter_deg": abs(round(m_start[0],2)), "bevel_deg": abs(round(m_start[1],2))}},
-                {"cut_id": f"{bid}-END",   "angles": {"miter_deg": abs(round(m_end[0],2)),   "bevel_deg": abs(round(m_end[1],2))}}
-            ]
+            "cuts": [start_cut, end_cut]
         })
         
     out = {
         "schema": "garden-structure-designer/fabrication-cut-list/1.0",
+        "units": "feet",
+        "angle_units": "deg",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source_hash": s["meta"]["source_hash"],
         "members": cut_list

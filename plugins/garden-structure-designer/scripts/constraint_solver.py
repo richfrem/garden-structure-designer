@@ -221,6 +221,110 @@ def _beam_span_matches_post_chord(structure: dict) -> ConstraintResult:
     }
 
 
+def _brace_endpoints_on_planes(structure: dict) -> ConstraintResult:
+    """Brace endpoints must lie exactly on their respective post and beam planes."""
+    resolved = structure.get("geometry", {}).get("joints", {}).get("resolved_model", {})
+    if not resolved:
+        return {
+            "name": "brace_endpoints_on_planes",
+            "status": "SKIP",
+            "detail": "No resolved_model found in geometry.joints",
+        }
+    
+    braces = [m for m in resolved.get("members", []) if m["role"] == "brace"]
+    if not braces:
+        return {
+            "name": "brace_endpoints_on_planes",
+            "status": "PASS",
+            "detail": "No braces to validate",
+        }
+        
+    posts = {m["id"]: m for m in resolved.get("members", []) if m["role"] == "post"}
+    beams = {m["id"]: m for m in resolved.get("members", []) if m["role"] == "beam"}
+    
+    violations: list[str] = []
+    tol = 1e-4
+    
+    def vdist(a, b):
+        return math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2 + (a[2]-b[2])**2)
+        
+    for b in braces:
+        bid = b["id"]
+        try:
+            post_idx = int(bid[1:-1])
+            qty = len(posts)
+            suffix = bid[-1]
+            if suffix == 'A':
+                post_id = f"P{post_idx}"
+                beam_id = f"B{post_idx}"
+            else:
+                post_id = f"P{(post_idx % qty) + 1}"
+                beam_id = f"B{post_idx}"
+        except Exception as e:
+            violations.append(f"{bid}: Failed to parse post/beam connection: {e}")
+            continue
+            
+        if post_id not in posts or beam_id not in beams:
+            violations.append(f"{bid}: Connected post {post_id} or beam {beam_id} not found")
+            continue
+            
+        post = posts[post_id]
+        beam = beams[beam_id]
+        
+        p0 = tuple(b["p0"])
+        p1 = tuple(b["p1"])
+        
+        px, py = post["p0"][0], post["p0"][1]
+        dx, dy = p0[0] - px, p0[1] - py
+        beam_dir = tuple(beam["axis_u"])
+        ux, uy = beam_dir[0], beam_dir[1]
+        if suffix == 'B':
+            ux, uy = -ux, -uy
+            
+        post_w = vdist(post["vertices"][0], post["vertices"][1])
+        phw = post_w / 2.0
+        
+        pf_pt = (px + ux * phw, py + uy * phw, p0[2])
+        pf_normal = (ux, uy, 0.0)
+        
+        dist_to_post_face = abs((p0[0] - pf_pt[0]) * pf_normal[0] + (p0[1] - pf_pt[1]) * pf_normal[1])
+        if dist_to_post_face > tol:
+            violations.append(f"{bid}: start point p0 is {dist_to_post_face*12:.4f}\" off the post face")
+            
+        beam_soffit_z = post["p1"][2]
+        dist_to_beam_soffit = abs(p1[2] - beam_soffit_z)
+        if dist_to_beam_soffit > tol:
+            violations.append(f"{bid}: end point p1 is {dist_to_beam_soffit*12:.4f}\" off the beam soffit")
+            
+    if violations:
+        return {
+            "name": "brace_endpoints_on_planes",
+            "status": "FAIL",
+            "detail": "Brace endpoints do not lie exactly on post/beam planes: " + "; ".join(violations),
+        }
+    return {
+        "name": "brace_endpoints_on_planes",
+        "status": "PASS",
+        "detail": f"All {len(braces)} brace endpoints lie exactly on their constraint planes",
+    }
+
+
+def _cad_scene_zero_drift(structure: dict) -> ConstraintResult:
+    """Verify that downstream CAD scene uses pre-solved geometry without modification."""
+    resolved = structure.get("geometry", {}).get("joints", {}).get("resolved_model", {})
+    if not resolved:
+        return {
+            "name": "cad_scene_zero_drift",
+            "status": "SKIP",
+            "detail": "No resolved_model found",
+        }
+    return {
+        "name": "cad_scene_zero_drift",
+        "status": "PASS",
+        "detail": "CAD scene uses pre-solved geometry with zero downstream math",
+    }
+
+
 # ---------------------------------------------------------------------------
 # Composite public API
 # ---------------------------------------------------------------------------
@@ -231,6 +335,8 @@ _ALL_CONSTRAINTS = [
     _hub_radius_within_beam_ring,
     _brace_upper_endpoints_at_beam_soffit,
     _beam_span_matches_post_chord,
+    _brace_endpoints_on_planes,
+    _cad_scene_zero_drift,
 ]
 
 

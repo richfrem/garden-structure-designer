@@ -31,3 +31,10 @@ def intersect_line_plane(p0: V3, d: V3, p_plane: V3, n: V3, eps: float = 1e-8) -
         # This usually indicates the jack rafter is facing the wrong way or the plane is behind it.
         raise ValueError(f"Intersection behind start (t={t:.4f})")
     return vadd(p0, vmul(d, t)), t
+
+def point_to_plane_distance(point: V3, plane_point: V3, plane_normal: V3) -> float:
+    """Signed distance from point to plane."""
+    nl = math.sqrt(vdot(plane_normal, plane_normal))
+    norm = vmul(plane_normal, 1.0/nl) if nl > 1e-9 else plane_normal
+    return vdot(vsub(point, plane_point), norm)
+

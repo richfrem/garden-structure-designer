@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CAD Constraints Schema",
+  "type": "object",
+  "required": ["reference_planes", "member_constraints", "global_constraints"],
+  "properties": {
+    "reference_planes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "point", "normal"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "enum": ["beam_top", "beam_soffit", "post_face", "roof_plane", "hub_face", "footing_top"] },
+          "point": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+          "normal": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 }
+        }
+      }
+    },
+    "member_constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["member_id", "constraints"],
+        "properties": {
+          "member_id": { "type": "string" },
+          "constraints": { "type": "object" }
+        }
+      }
+    },
+    "global_constraints": {
+      "type": "object",
+      "required": ["roof_planes", "proportion_rules"],
+      "properties": {
+        "roof_planes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "defined_by", "pitch"],
+            "properties": {
+              "id": { "type": "string" },
+              "defined_by": { "type": "array", "items": { "type": "string" } },
+              "pitch": { "type": "string" }
+            }
+          }
+        },
+        "proportion_rules": {
+          "type": "object",
+          "required": ["beam_depth_gt_rafter_depth", "hub_height_lte_beam_depth_x1.2", "brace_length_lte_post_height_x0.4"],
+          "properties": {
+            "beam_depth_gt_rafter_depth": { "type": "boolean" },
+            "hub_height_lte_beam_depth_x1.2": { "type": "boolean" },
+            "brace_length_lte_post_height_x0.4": { "type": "boolean" }
+          }
+        },
+        "symmetry": { "type": "string" }
+      }
+    }
+  }
+}
