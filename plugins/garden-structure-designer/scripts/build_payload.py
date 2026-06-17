@@ -45,7 +45,8 @@ files_to_merge = {
     "GENERATED OUTPUT 2 (blueprint-isometric.svg)": "outputs/blueprint-isometric.svg"
 }
 
-with open("validation_payload.md", "w") as out:
+os.makedirs("temp", exist_ok=True)
+with open("temp/validation_payload.md", "w") as out:
     for title, path in files_to_merge.items():
         out.write(f"--- {title} ---\n")
         try:
@@ -54,4 +55,4 @@ with open("validation_payload.md", "w") as out:
         except FileNotFoundError:
             out.write(f"Error: {path} not found.\n\n")
 
-print("Created validation_payload.md")
+print("Created temp/validation_payload.md")
