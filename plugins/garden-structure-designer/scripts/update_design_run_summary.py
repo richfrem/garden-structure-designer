@@ -53,25 +53,25 @@ def main():
     roof = structure.get("roof", {})
     geom = structure.get("geometry", {})
     
-    structure_type = structure.get("structure", {}).get("type", "Unknown")
-    plan_shape = structure.get("structure", {}).get("shape", "Unknown")
-    jurisdiction = intent.get("jurisdiction", "Unknown")
-    post_count = layout.get("post_count", "Unknown")
-    pitch = roof.get("pitch", "Unknown")
+    structure_type = structure.get("structure", {}).get("type") or "Unknown"
+    plan_shape = structure.get("structure", {}).get("shape") or "Unknown"
+    jurisdiction = intent.get("jurisdiction") or "Unknown"
+    post_count = layout.get("post_count") or "Unknown"
+    pitch = roof.get("pitch") or "Unknown"
     
-    cuts = geom.get("compound_cut", {})
-    miter = cuts.get("miter_deg", "Unknown")
-    bevel = cuts.get("bevel_deg", "Unknown")
+    cuts = geom.get("compound_cut") or {}
+    miter = cuts.get("miter_deg") or "Unknown"
+    bevel = cuts.get("bevel_deg") or "Unknown"
     
-    beam_ring = geom.get("beam_ring", {})
-    beam_miter = beam_ring.get("beam_miter_deg", "Unknown")
+    beam_ring = geom.get("beam_ring") or {}
+    beam_miter = beam_ring.get("beam_miter_deg") or "Unknown"
     
-    total_height = geom.get("total_height", {}).get("total_height_ft", "Unknown")
+    total_height = (geom.get("total_height") or {}).get("total_height_ft") or "Unknown"
     
-    source_hash = meta.get("source_hash", "Unknown")
-    svg_coords = geom.get("svg_coordinates", {})
-    viewbox = svg_coords.get("viewBox", "Unknown")
-    grade_y = svg_coords.get("grade_y", "Unknown")
+    source_hash = meta.get("source_hash") or "Unknown"
+    svg_coords = geom.get("svg_coordinates") or {}
+    viewbox = svg_coords.get("viewBox") or "Unknown"
+    grade_y = svg_coords.get("grade_y") or "Unknown"
     
     summary = f"""# Design Run Summary
  

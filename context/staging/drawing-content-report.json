@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/drawing-content-report/1.0",
-  "generated": "2026-05-24T22:48:55.141268+00:00",
+  "generated": "2026-08-15T19:16:52.971227+00:00",
   "status": "PASS",
   "files": [
     {
@@ -115,19 +115,19 @@
       "file": "outputs/drawing-perspective-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 179,
-      "semantic_total": 59,
+      "total_elements": 188,
+      "semantic_total": 50,
       "semantic_counts": {
         "post": 6,
         "beam": 6,
         "rafter": 18,
-        "brace": 7,
+        "brace": 12,
         "footing": 6,
-        "dimension": 15,
+        "dimension": 1,
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 56
+      "text_label_count": 53
     },
     {
       "file": "outputs/drawing-plan-view.svg",

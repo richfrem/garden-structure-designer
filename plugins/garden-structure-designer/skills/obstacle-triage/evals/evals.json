@@ -1,0 +1,41 @@
+{
+  "skill": "obstacle-triage",
+  "eval_cases": [
+    {
+      "id": "E001",
+      "input": "The quality dashboard says COMPLETED but the red-team report failed. Triage system state and classify the obstacle.",
+      "should_trigger": true,
+      "notes": "Core trigger: conflicting pipeline state / report discrepancy"
+    },
+    {
+      "id": "E002",
+      "input": "Check if there is a path split between context/staging and plugins/garden-structure-designer/context/staging.",
+      "should_trigger": true,
+      "notes": "Path split diagnostic inspection"
+    },
+    {
+      "id": "E003",
+      "input": "Calculate the miter and bevel angles for hip rafters at 4:12 pitch.",
+      "should_trigger": false,
+      "notes": "Geometry computation — routes to structural-engine"
+    },
+    {
+      "id": "E004",
+      "input": "Stop the pipeline and write context/staging/obstacle-triage-report.json before attempting code rewrites.",
+      "should_trigger": true,
+      "notes": "Explicit stop-and-diagnose invocation"
+    },
+    {
+      "id": "E005",
+      "input": "Compile the final PDF construction packet with embedded SVGs.",
+      "should_trigger": false,
+      "notes": "Document compilation — routes to document-compiler"
+    },
+    {
+      "id": "E006",
+      "input": "Identify why drawings in outputs/ are placeholder quality without regenerating them.",
+      "should_trigger": true,
+      "notes": "Renderer failure triage without jumping to generation"
+    }
+  ]
+}

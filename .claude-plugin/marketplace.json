@@ -8,14 +8,13 @@
   "plugins": [
     {
       "name": "garden-structure-designer",
-      "description": "Multi-agent design pipeline producing professional PDF construction packages for garden structures. v1.1 includes geometry_engine.py hardening, dual-channel SVG validation, drift correction, builder-docs-generator, and ADR-compliant plugin structure.",
+      "description": "Multi-agent design pipeline producing professional PDF construction packages for garden structures. v1.3 features deterministic CAD kernel math, structure.json single data bus, independent adversarial drawing red-team QA, and end-to-end PDF packet compilation.",
       "source": "./plugins/garden-structure-designer",
       "strict": true,
-      "version": "1.1.0",
-      "tags": ["construction", "structural", "garden", "pergola", "gazebo", "blueprints"],
+      "version": "1.3.0",
+      "tags": ["construction", "structural", "garden", "pergola", "gazebo", "blueprints", "cad"],
       "requires": {
-        "python": ">=3.8",
-        "gemini-cli": ">=0.38.2"
+        "python": ">=3.10"
       }
     }
   ]

@@ -26,14 +26,20 @@ metadata:
    - Beams based on post-to-post span, tributary width, and species/grade.
    - Rafters based on roof span, pitch, and specified spacing.
 2. Write structural parameters into `context/staging/structure.json` (members, roof, hub, footings sections).
-3. **MANDATORY — Run the Geometry Engine:**
+3. **MANDATORY — Pre-Flight Intent Validation:**
    ```bash
-   python3 scripts/geometry_engine.py \
+   python3 plugins/garden-structure-designer/scripts/validate_intent.py context/staging/structure.json
+   ```
+   Ensures all 15 required structural fields exist and are within physically valid ranges before computing geometry.
+
+4. **MANDATORY — Run the Geometry Engine:**
+   ```bash
+   python3 plugins/garden-structure-designer/scripts/geometry_engine.py \
        context/staging/structure.json
    ```
    This enriches `context/staging/structure.json` with the geometry section. All compound cut angles, SVG pixel coordinates, rafter lengths, and total height values MUST be read from this file. **You are forbidden from computing these values internally.**
 
-4. Verify the `structure.json` geometry section contains no warnings array entries. If `warnings` is non-empty, re-adjust post cut length or pitch to resolve the height constraint violation before proceeding.
+5. Verify the `structure.json` geometry section contains no warnings array entries. If `warnings` is non-empty, re-adjust post cut length or pitch to resolve the height constraint violation before proceeding.
 
 ## Compound Cut Reference (read-only — use geometry_engine.py to compute)
 

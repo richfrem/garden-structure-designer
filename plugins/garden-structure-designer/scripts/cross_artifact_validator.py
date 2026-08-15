@@ -60,9 +60,9 @@ def validate(staging_dir: str, outputs_dir: str) -> list[str]:
         model = json.load(f)
     calcs = model.get("geometry", {})
         
-    miter = str(round(calcs.get("compound_cut", {}).get("miter_deg", 0), 2))
-    bevel = str(round(calcs.get("compound_cut", {}).get("bevel_deg", 0), 2))
-    beam_miter = str(round(calcs.get("beam_ring", {}).get("beam_miter_deg", 0), 2))
+    miter = str(round(calcs.get("compound_cut", {}).get("miter_deg") or 0, 2))
+    bevel = str(round(calcs.get("compound_cut", {}).get("bevel_deg") or 0, 2))
+    beam_miter = str(round((calcs.get("beam_ring") or {}).get("beam_miter_deg") or 0, 2))
     
     # Scan all .md and .svg
     files = glob.glob(os.path.join(outputs_dir, "**", "*.md"), recursive=True) + \
@@ -88,9 +88,9 @@ def validate(staging_dir: str, outputs_dir: str) -> list[str]:
         if saw_match:
             try:
                 saw_settings = json.loads(saw_match.group(1))
-                if str(saw_settings.get("miter_deg", "")) != miter:
+                if str(saw_settings.get("miter_deg") or "") != miter:
                     errors.append(f"{fpath}: SAW_SETTINGS miter mismatch.")
-                if str(saw_settings.get("bevel_deg", "")) != bevel:
+                if str(saw_settings.get("bevel_deg") or "") != bevel:
                     errors.append(f"{fpath}: SAW_SETTINGS bevel mismatch.")
             except json.JSONDecodeError:
                 errors.append(f"{fpath}: Invalid SAW_SETTINGS JSON.")
@@ -98,14 +98,10 @@ def validate(staging_dir: str, outputs_dir: str) -> list[str]:
     return errors
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python3 cross_artifact_validator.py <staging_dir> <outputs_dir>")
-        sys.exit(1)
-        
-    staging_dir = sys.argv[1]
-    outputs_dir = sys.argv[2]
+    s_dir = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir())
+    o_dir = sys.argv[2] if len(sys.argv) > 2 else str(outputs_dir())
     
-    errors = validate(staging_dir, outputs_dir)
+    errors = validate(s_dir, o_dir)
     if errors:
         print("CROSS-ARTIFACT VALIDATION FAILED:")
         for e in errors:

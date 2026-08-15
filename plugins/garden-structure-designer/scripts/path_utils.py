@@ -66,3 +66,13 @@ def ensure_dirs() -> None:
               agent_workspace_dir(), agent_workspace_dir() / "learned-patterns", 
               agent_workspace_dir() / "generated-tests", agent_workspace_dir() / ".backups"]:
         d.mkdir(parents=True, exist_ok=True)
+
+if __name__ == "__main__":
+    ensure_dirs()
+    print(f"Repo Root:       {find_repo_root()}")
+    print(f"Plugin Root:     {plugin_root()}")
+    print(f"Staging Dir:     {staging_dir()}")
+    print(f"Outputs Dir:     {outputs_dir()}")
+    print(f"Schemas Dir:     {schemas_dir()}")
+    print(f"Scripts Dir:     {scripts_dir()}")
+    print(f"Agent Workspace: {agent_workspace_dir()}")

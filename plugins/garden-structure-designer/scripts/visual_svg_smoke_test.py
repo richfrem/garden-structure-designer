@@ -213,7 +213,7 @@ def compute_hub_crop(structure: dict[str, typing.Any], sheet_name: str) -> typin
         coords = geom["svg_coordinates"]
         joints = geom["joints"]
         
-        scale = coords.get("scale_px_per_ft", 55.0)
+        scale = coords.get("scale_px_per_ft") or 55.0
         cx = coords["width_px"] / 2
         
         post_h = geom["total_height"]["post_ft"]
@@ -225,7 +225,7 @@ def compute_hub_crop(structure: dict[str, typing.Any], sheet_name: str) -> typin
             span_diag = round(2 * inscribed_r / math.cos(math.pi / sides), 3)
             approx_h = post_h + roof_r + span_diag * 0.5
             available_h = coords["height_px"] - 250
-            scale = min(55.0, available_h / approx_h)
+            scale = min(scale, available_h / approx_h)
             cy = coords["height_px"] - 200
         else:
             cy = coords["height_px"] / 2 - 20
@@ -243,8 +243,8 @@ def compute_hub_crop(structure: dict[str, typing.Any], sheet_name: str) -> typin
             return None
             
         max_r = 0.0
-        for pt_dict in term_pts:
-            pt = pt_dict["point"]
+        for pt_item in term_pts:
+            pt = pt_item["point"] if isinstance(pt_item, dict) and "point" in pt_item else pt_item
             if "perspective" in sheet_name or "isometric" in sheet_name:
                 p_tip = project_iso(pt[0], pt[1], pt[2], scale, cx, cy)
             else:
@@ -350,7 +350,7 @@ def evaluate_hub_crop(img_path: str, sheet_key: str) -> tuple[dict[str, typing.A
         edge_density = np.sum(edge_mask) / (arr.shape[0] * arr.shape[1])
         metrics["hub_edge_density"] = float(edge_density)
         
-        max_thresh = HUB_EDGE_DENSITY_MAX.get(sheet_key, 0.4)
+        max_thresh = HUB_EDGE_DENSITY_MAX.get(sheet_key) or 0.4
         min_thresh = 0.005
         
         if edge_density > max_thresh:
@@ -384,12 +384,14 @@ def extract_expected_topology(structure: dict[str, typing.Any]) -> dict[str, int
     if count_per_post is None:
         count_per_post = 2 if bracing.get("layout") == "paired_per_post" else 1
 
+    post_cnt = layout.get("post_count") or 0
+    primary_cnt = (roof.get("primary_rafters") or {}).get("count") or 0
     return {
-        "posts": layout.get("post_count", 0),
-        "beams": layout.get("post_count", 0),
-        "rafters": roof.get("primary_rafters", {}).get("count", 0),
+        "posts": post_cnt,
+        "beams": post_cnt,
+        "rafters": primary_cnt,
         "hub": 1 if hub.get("type") and hub.get("type") != "none" else 0,
-        "braces": layout.get("post_count", 0) * count_per_post if bracing.get("enabled") else 0
+        "braces": (post_cnt * count_per_post) if bracing.get("enabled") else 0
     }
 
 # External Comment: Use Canny edges and Hough lines to detect posts, beams, rafters
@@ -705,8 +707,8 @@ def detect_beam_gap(structure: dict[str, typing.Any]) -> typing.Optional[dict[st
             "severity": "FAIL",
             "detail": f"beam_span_ft={beam_span} — zero beam span in geometry.spans",
         }
-    inscribed = float(structure.get("layout", {}).get("inscribed_radius_ft", 0.0))
-    qty = int(structure.get("layout", {}).get("post_count", 0))
+    inscribed = float(structure.get("layout", {}).get("inscribed_radius_ft") or 0.0)
+    qty = int(structure.get("layout", {}).get("post_count") or 0)
     if inscribed > 0 and qty > 2:
         expected_span = 2.0 * inscribed * math.sin(math.pi / qty)
         delta = abs(beam_span - expected_span)
@@ -723,16 +725,21 @@ def detect_beam_gap(structure: dict[str, typing.Any]) -> typing.Optional[dict[st
 
 
 # External Comment: Parse CLI parameters, spawn Playwright web instance, run smoke checks
+from path_utils import staging_dir, outputs_dir
+
 def main() -> None:
     """
     Command line interface entry point orchestrating screenshots and visual assertions.
     """
+    _STAGING = staging_dir()
+    _OUTPUTS = outputs_dir()
+    
     parser = argparse.ArgumentParser()
-    parser.add_argument("--structure", required=True)
-    parser.add_argument("--svg-dir", required=True)
-    parser.add_argument("--out-dir", required=True)
-    parser.add_argument("--report-json", required=True)
-    parser.add_argument("--report-md", required=True)
+    parser.add_argument("--structure", default=str(_STAGING / "structure.json"))
+    parser.add_argument("--svg-dir", default=str(_OUTPUTS))
+    parser.add_argument("--out-dir", default=str(_OUTPUTS / "visual-smoke"))
+    parser.add_argument("--report-json", default=str(_STAGING / "visual-smoke-report.json"))
+    parser.add_argument("--report-md", default=str(_OUTPUTS / "visual-smoke-report.md"))
     parser.add_argument("--baseline-dir")
     parser.add_argument("--fail-on-regression", action="store_true")
     parser.add_argument("--headed", action="store_true", help="Run browser in headed mode for visual debugging")
@@ -745,7 +752,7 @@ def main() -> None:
     with open(args.structure) as f:
         structure = json.load(f)
 
-    if not structure.get("geometry", {}).get("_sealed", False):
+    if not bool(structure.get("geometry", {}).get("_sealed")):
         print("GEOMETRY_NOT_SEALED: Cannot run visual tests on unsealed geometry.")
         sys.exit(1)
 
@@ -777,8 +784,8 @@ def main() -> None:
     }
 
     overall_failures: list[str] = []
-    width = structure["geometry"]["svg_coordinates"].get("width_px", 1600)
-    height = structure["geometry"]["svg_coordinates"].get("height_px", 1200)
+    width = structure["geometry"]["svg_coordinates"]["width_px"]
+    height = structure["geometry"]["svg_coordinates"]["height_px"]
 
     try:
         for sheet in all_sheets:
@@ -992,9 +999,9 @@ def main() -> None:
             
         md.append("")
         md.append("#### Metrics")
-        md.append(f"- non_bg_ratio: `{fr['metrics'].get('non_bg_ratio', 0):.4f}`")
-        md.append(f"- bbox_fill_ratio: `{fr['metrics'].get('bbox_fill_ratio', 0):.4f}`")
-        md.append(f"- top_left_clustered: `{fr['metrics'].get('top_left_clustered', False)}`")
+        md.append(f"- non_bg_ratio: `{fr['metrics'].get('non_bg_ratio') or 0.0:.4f}`")
+        md.append(f"- bbox_fill_ratio: `{fr['metrics'].get('bbox_fill_ratio') or 0.0:.4f}`")
+        md.append(f"- top_left_clustered: `{bool(fr['metrics'].get('top_left_clustered'))}`")
         
         if "cv_content_ratio" in fr["metrics"]:
             md.append(f"- cv_content_ratio: `{fr['metrics']['cv_content_ratio']:.4f}`")

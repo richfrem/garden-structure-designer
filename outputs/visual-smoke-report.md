@@ -1,11 +1,11 @@
 # Visual Smoke Test Report (SVG -> Browser Render)
 
 **Schema:** garden-structure-designer/visual-smoke-report/1.0  
-**Generated:** 2026-05-24T22:48:46.507176+00:00  
+**Generated:** 2026-08-15T19:16:50.059639+00:00  
 **Source Hash:** `6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61`  
 **Structure:** `context/staging/structure.json`  
 **SVG Dir:** `outputs`  
-**Out Dir:** `outputs`  
+**Out Dir:** `outputs/smoke-screens`  
 **Baseline Dir:** `None`  
 **Mode:** no-baseline  
 
@@ -34,7 +34,7 @@ All sheets rendered and heuristics passed.
 ### drawing-plan-view
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-plan-view.svg`  
-**PNG:** `outputs/drawing-plan-view.png`  
+**PNG:** `outputs/smoke-screens/drawing-plan-view.png`  
 
 #### Metrics
 - non_bg_ratio: `0.0501`
@@ -55,7 +55,7 @@ All sheets rendered and heuristics passed.
 ### drawing-elevation-view
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-elevation-view.svg`  
-**PNG:** `outputs/drawing-elevation-view.png`  
+**PNG:** `outputs/smoke-screens/drawing-elevation-view.png`  
 
 #### Metrics
 - non_bg_ratio: `0.0597`
@@ -76,7 +76,7 @@ All sheets rendered and heuristics passed.
 ### drawing-isometric-view
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-isometric-view.svg`  
-**PNG:** `outputs/drawing-isometric-view.png`  
+**PNG:** `outputs/smoke-screens/drawing-isometric-view.png`  
 
 #### Metrics
 - non_bg_ratio: `0.1402`
@@ -97,16 +97,16 @@ All sheets rendered and heuristics passed.
 ### drawing-perspective-view
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-perspective-view.svg`  
-**PNG:** `outputs/drawing-perspective-view.png`  
+**PNG:** `outputs/smoke-screens/drawing-perspective-view.png`  
 
 #### Metrics
-- non_bg_ratio: `0.2484`
-- bbox_fill_ratio: `0.9524`
+- non_bg_ratio: `0.1402`
+- bbox_fill_ratio: `0.5774`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2538`
+- cv_hub_density: `2162`
 - expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 36, 'beams': 65, 'rafters': 118}`
+- detected_components: `{'posts': 30, 'beams': 33, 'rafters': 89}`
 
 #### Failures
 - *(none)*
@@ -118,7 +118,7 @@ All sheets rendered and heuristics passed.
 ### blueprint-plan
 **Status:** **PASS**  
 **SVG:** `outputs/blueprint-plan.svg`  
-**PNG:** `outputs/blueprint-plan.png`  
+**PNG:** `outputs/smoke-screens/blueprint-plan.png`  
 
 #### Metrics
 - non_bg_ratio: `0.0544`
@@ -139,7 +139,7 @@ All sheets rendered and heuristics passed.
 ### blueprint-elevation
 **Status:** **PASS**  
 **SVG:** `outputs/blueprint-elevation.svg`  
-**PNG:** `outputs/blueprint-elevation.png`  
+**PNG:** `outputs/smoke-screens/blueprint-elevation.png`  
 
 #### Metrics
 - non_bg_ratio: `0.0277`
@@ -160,7 +160,7 @@ All sheets rendered and heuristics passed.
 ### blueprint-isometric
 **Status:** **PASS**  
 **SVG:** `outputs/blueprint-isometric.svg`  
-**PNG:** `outputs/blueprint-isometric.png`  
+**PNG:** `outputs/smoke-screens/blueprint-isometric.png`  
 
 #### Metrics
 - non_bg_ratio: `0.1110`
@@ -181,7 +181,7 @@ All sheets rendered and heuristics passed.
 ### blueprint-component-isolation
 **Status:** **PASS**  
 **SVG:** `outputs/blueprint-component-isolation.svg`  
-**PNG:** `outputs/blueprint-component-isolation.png`  
+**PNG:** `outputs/smoke-screens/blueprint-component-isolation.png`  
 
 #### Metrics
 - non_bg_ratio: `0.0974`
@@ -203,4 +203,4 @@ All sheets rendered and heuristics passed.
 ## Artifacts Produced
 - JSON report: `context/staging/visual-smoke-report.json`
 - This report: `outputs/visual-smoke-report.md`
-- Screenshots: `outputs/<sheet>.png`
+- Screenshots: `outputs/smoke-screens/<sheet>.png`

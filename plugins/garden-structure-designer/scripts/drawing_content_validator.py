@@ -289,7 +289,7 @@ def _check_sheet(svg_path: str, raw: str, model: dict) -> tuple[list[str], dict]
 
     # Required roles
     for role in req.get("required_roles", []):
-        if roles.get(role, 0) == 0:
+        if (roles.get(role) or 0) == 0:
             errors.append(
                 f"SVG_MISSING_REQUIRED_ROLE: data-role=\"{role}\" not found on sheet '{sheet}'."
             )
@@ -322,7 +322,7 @@ def _check_sheet(svg_path: str, raw: str, model: dict) -> tuple[list[str], dict]
         errors.append("SVG_MISSING_FOOTINGS: No footing/caisson elements found.")
 
     # Component isolation panels
-    min_components = req.get("min_components", 0)
+    min_components = req.get("min_components") or 0
     if min_components > 0:
         panel_count = _count_component_panels(raw, model)
         # Add 1 required component if hub is present
@@ -408,10 +408,10 @@ def _update_report(
         "file": svg_path,
         "status": sheet_status,
         "failure_codes": failure_codes,
-        "total_elements": counts.get("total_elements", 0),
-        "semantic_total": counts.get("semantic_total", 0),
+        "total_elements": counts.get("total_elements") or 0,
+        "semantic_total": counts.get("semantic_total") or 0,
         "semantic_counts": counts.get("semantic_counts", {}),
-        "text_label_count": counts.get("text_label_count", 0),
+        "text_label_count": counts.get("text_label_count") or 0,
     })
 
     # Always recompute overall status from all entries — never leave stale state

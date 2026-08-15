@@ -50,17 +50,15 @@ def save_registry(data):
         json.dump(data, f, indent=2)
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python3 lesson_curator.py <status|pin|archive|restore|backup> [lesson-id]")
-        sys.exit(1)
-        
-    cmd = sys.argv[1]
+    cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     reg = load_registry()
     
     if cmd == "status":
         print(f"Total Lessons: {len(reg['active_lessons'])}")
         for l in reg['active_lessons']:
-            print(f"- {l.get('id', 'unknown')} [{l.get('state', 'active')}] pinned: {l.get('pinned', False)}")
+            lid = l.get('id') or 'unknown'
+            st = l.get('state') or 'active'
+            print(f"- {lid} [{st}] pinned: {bool(l.get('pinned'))}")
             
     elif cmd in ["pin", "archive", "restore"]:
         if len(sys.argv) < 3:

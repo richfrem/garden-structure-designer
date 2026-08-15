@@ -17,9 +17,19 @@ the geometry compiler can solve deterministically.
 
 You do NOT compute geometry. You define the RULES that geometry must satisfy.
 
-## Input
+## Input & Execution
 
 Read `context/staging/structure.json` after intake-normalizer has populated it.
+
+Execute the deterministic translator CLI:
+```bash
+python3 plugins/garden-structure-designer/scripts/cad_language_translator.py context/staging/structure.json
+```
+
+After `geometry_engine.py` seals the geometry, compile the explicit topology graph:
+```bash
+python3 plugins/garden-structure-designer/scripts/topology_compiler.py context/staging/structure.json
+```
 
 ## Output
 

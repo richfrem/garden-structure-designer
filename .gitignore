@@ -8,3 +8,7 @@ old-outputs/
 inputs/sawmills and lumber/
 inputs/builder-contacts/
 inputs/yard/
+docs/superpowers/
+__pycache__/
+*.pyc
+.backups/

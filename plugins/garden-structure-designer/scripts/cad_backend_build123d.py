@@ -6,6 +6,7 @@ Pure Translator of the JSON Geometry Compiler output into build123d solids.
 NO MATH ALLOWED. (Phase 1 Purge)
 """
 from __future__ import annotations
+import json
 import math
 import sys
 from pathlib import Path
@@ -48,14 +49,14 @@ def build_cad_model(structure: dict) -> b3d.Compound | None:
         length = math.sqrt(sum((p1[i]-p0[i])**2 for i in range(3)))
         # Profile from structure members
         role = m["role"]
-        if role == "post": spec = structure["members"]["posts"]
-        elif role == "beam": spec = structure["members"]["beams"]
-        elif role == "rafter": spec = structure["roof"]["primary_rafters"]
-        elif role == "brace": spec = structure["bracing"]["brace"]
+        if role == "post": spec = structure.get("members", {}).get("posts", {})
+        elif role == "beam": spec = structure.get("members", {}).get("beams", {})
+        elif role in ("rafter", "jack_rafter"): spec = structure.get("roof", {}).get("primary_rafters", {})
+        elif role == "brace": spec = structure.get("bracing", {}).get("brace", {})
         else: continue
         
-        width = spec["actual_width_in"] / 12.0 * FT_TO_MM
-        depth = spec["actual_depth_in"] / 12.0 * FT_TO_MM
+        width = (spec.get("actual_width_in") or 3.5) / 12.0 * FT_TO_MM
+        depth = (spec.get("actual_depth_in") or 5.5) / 12.0 * FT_TO_MM
         
         plane = b3d.Plane(origin=p0, x_dir=u, z_dir=d)
         with b3d.BuildPart(plane) as part:

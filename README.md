@@ -71,18 +71,46 @@ Built using strict separation-of-concerns, this plugin is completely loosely cou
 
 ---
 
-### Installation
+## 🚪 Main Entry Point: Where to Start
+
+### For End Users & Clients
+Start your design journey by talking to the **`interactive-designer`** agent:
+> *"I want to design a 14ft hexagonal cedar gazebo with steep roof, decorative knee braces, and sonotube footings in Victoria, BC."*
+
+The **`interactive-designer`** acts as your personal master timber framer. It conducts a conversational interview using progressive disclosure, translates your colloquial words into structured CAD constraints, and automatically triggers the backend engineering pipeline.
+
+```mermaid
+flowchart TD
+    User([👤 User Request]) -->|1. Plain English Description| ID[🎯 interactive-designer Agent]
+    ID -->|Progressive Interview & Spec Normalization| Struct[context/staging/structure.json]
+    Struct -->|2. Automated Hand-off| DO[⚙️ design-orchestrator Agent]
+    DO --> Stages[Stages 0–8: Deterministic Math, CAD Translator, Drawings & QA]
+    Stages --> PDF([📄 outputs/pergola_plan.pdf Construction Package])
+```
+
+### For Engineers & Automated Workflows
+If you already have a completed `context/staging/structure.json`, you can invoke the backend engine directly:
+- **Agent**: `design-orchestrator` (drives fail-closed Stages 0 to 8 autonomously).
+- **CLI Compilation**: `python3 plugins/garden-structure-designer/scripts/compile_package.py`
+
+---
+
+## 📦 Installation
 
 This plugin adheres to strict Agentic OS boundaries and requires zero external framework dependencies natively.
 
+### 1. Install via `uvx` (Antigravity / CLI environments)
+Install all plugins and skills from the central catalog:
+```bash
+uvx --from git+https://github.com/richfrem/agent-plugins-skills plugin-add plugins/ --all -y
+```
+Or install the specific garden structure plugin:
 ```bash
 uvx --from git+https://github.com/richfrem/garden-structure-designer plugin-add richfrem/garden-structure-designer
 ```
 
-### Claude Code Installation
-
-If you are using Claude Code directly, you can install via the plugin marketplace:
-
+### 2. Install via Claude Code Marketplace
+If you are using Claude Code directly:
 ```bash
 # Add this repository to your known marketplaces
 /plugin marketplace add richfrem/garden-structure-designer
@@ -93,6 +121,8 @@ If you are using Claude Code directly, you can install via the plugin marketplac
 # Or install the specific plugin directly
 /plugin install garden-structure-designer
 ```
+
+---
 
 ## 📐 CAD Solid Geometry Renderer
 
@@ -109,7 +139,7 @@ This geometry model features:
 To regenerate all 8 architectural SVG sheets and shop blueprints using this exact CAD engine:
 
 ```bash
-python3 plugins/garden-structure-designer/scripts/render_drawings.py context/staging/structural-model.json
+python3 plugins/garden-structure-designer/scripts/render_drawings.py context/staging/structure.json
 ```
 
 This updates the entire visual drawing package in `outputs/` including:

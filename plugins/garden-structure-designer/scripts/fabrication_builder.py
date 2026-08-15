@@ -17,9 +17,11 @@ from typing import Any
 sys.path.append(str(Path(__file__).parent))
 from geometry_engine import get_compound_cuts, V3, vlen, vnorm, vsub
 
+from path_utils import staging_dir, outputs_dir
+
 def main():
-    if len(sys.argv) < 2: sys.exit(1)
-    with open(sys.argv[1]) as f: s = json.load(f)
+    struct_path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")
+    with open(struct_path) as f: s = json.load(f)
     geom = s.get("geometry", {})
     resolved = geom.get("joints", {}).get("resolved_model", {})
     if not resolved or not resolved.get("constraints_resolved"): sys.exit(1)
@@ -59,13 +61,13 @@ def main():
             end_cut["type"] = "compound_miter"
             cc = geom.get("compound_cut", {})
             end_cut["angles"] = {
-                "miter_deg": abs(round(cc.get("miter_deg", 28.71), 2)),
-                "bevel_deg": abs(round(cc.get("bevel_deg", 9.10), 2))
+                "miter_deg": abs(round(cc.get("miter_deg") or 28.71, 2)),
+                "bevel_deg": abs(round(cc.get("bevel_deg") or 9.10, 2))
             }
         elif role_mapped == "beam":
             start_cut["type"] = "beam_miter"
             end_cut["type"] = "beam_miter"
-            bm = geom.get("beam_ring", {}).get("beam_miter_deg", 30.0)
+            bm = (geom.get("beam_ring") or {}).get("beam_miter_deg") or 30.0
             start_cut["angles"] = {"miter_deg": abs(round(bm, 2)), "bevel_deg": 0.0}
             end_cut["angles"] = {"miter_deg": abs(round(bm, 2)), "bevel_deg": 0.0}
         elif role_mapped == "brace":
@@ -89,8 +91,10 @@ def main():
         "source_hash": s["meta"]["source_hash"],
         "members": cut_list
     }
-    Path("outputs/fabrication").mkdir(parents=True, exist_ok=True)
-    with open("outputs/fabrication/cut-list.json", "w") as f: json.dump(out, f, indent=2)
-    print("  ✓ outputs/fabrication/cut-list.json")
+    fab_dir = outputs_dir() / "fabrication"
+    fab_dir.mkdir(parents=True, exist_ok=True)
+    out_file = fab_dir / "cut-list.json"
+    with open(out_file, "w") as f: json.dump(out, f, indent=2)
+    print(f"  ✓ {out_file}")
 
 if __name__ == "__main__": main()

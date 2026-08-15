@@ -32,6 +32,7 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
 
 ### Stage 1 — Structural Foundation
 1. Verify `context/staging/structure.json` is present and complete.
+   - Run `python3 plugins/garden-structure-designer/scripts/validate_intent.py context/staging/structure.json`
    - Confirm `meta.lifecycle` is `INTENT` or `ENGINEERED`.
 2. Call `building-code-validator` → writes `context/staging/building-code.json`.
 3. Call `structural-engine` → writes `context/staging/structure.json`.
@@ -199,17 +200,24 @@ Reason: <which check failed and which member/element>
     python3 plugins/garden-structure-designer/scripts/fabrication_builder.py context/staging/structure.json
     ```
     This generates the machine-readable fabrication cut list at `outputs/fabrication/cut-list.json`.
-14. Call `builder-docs-generator` (new skill) to produce:
+14. Run `builder_docs_compiler.py` (or call `builder-docs-generator` skill) to produce:
+    ```bash
+    python3 plugins/garden-structure-designer/scripts/builder_docs_compiler.py
+    ```
     - `outputs/budget-estimate.md` — sourced from `structure.json` BF totals and regional material costs.
     - `outputs/lumber-purchase-list.md` — ordered by member type with standard stock lengths.
-    - `outputs/assembly-guide.md` — phase-by-phase site assembly sequence.
+    - `outputs/assembly-guide.md` — phase-by-phase site assembly sequence (tripod-first).
 
 ### Stage 6.5 — Package Consistency QA
 13b. Run `scripts/package_consistency_validator.py`.
      - Ensure required SVGs, the JSON cut-list, and the photorealistic renders in `outputs/high-resolution-image/` exist before compilation.
 
 ### Stage 7 — Compilation
-14. Call `document-compiler` to aggregate all sheets, builder documents, and photorealistic renders into the final PDF packet in `outputs/pdf/`. Ensure the first photorealistic render is placed at the top of the plan document directly under the title.
+14. Run `compile_package.py` (or call `document-compiler` skill) to validate preflight gates, embed SVGs/PNGs, and compile the final PDF packet:
+    ```bash
+    python3 plugins/garden-structure-designer/scripts/compile_package.py
+    ```
+    Ensures all 8 sheets, builder documents, and photorealistic renders are aggregated into the final PDF packet in `outputs/`.
 
 ### Stage 8 — Learning Capture and Self-Healing
 15. Read validation reports and the package consistency report.
@@ -351,6 +359,7 @@ Markdown files, render prompts, and PNG concept images are **secondary presentat
 Before reporting success, always run:
 
 ```bash
+# 1. Structural & Geometric Compilation
 python3 plugins/garden-structure-designer/scripts/schema_validator.py \
   context/staging plugins/garden-structure-designer/schemas \
   --strict --json-output context/staging/schema-validation-report.json
@@ -358,9 +367,14 @@ python3 plugins/garden-structure-designer/scripts/schema_validator.py \
 python3 plugins/garden-structure-designer/scripts/structural_physics_validator.py \
   context/staging/structure.json
 
+# 2. Rendering Drawings & Fabrication Cuts
 python3 plugins/garden-structure-designer/scripts/render_drawings.py \
   context/staging/structure.json
 
+python3 plugins/garden-structure-designer/scripts/fabrication_builder.py \
+  context/staging/structure.json
+
+# 3. Visual Smoke & Adversarial Red-Team Gates
 python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py \
   --structure context/staging/structure.json \
   --svg-dir outputs \
@@ -368,6 +382,23 @@ python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py \
   --report-json context/staging/visual-smoke-report.json \
   --report-md outputs/visual-smoke-report.md
 
+python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
+  --svg-dir outputs \
+  --model context/staging/structure.json \
+  --report-dir context/staging \
+  --md-dir outputs
+
+# 4. Builder Docs & PDF Master Plan Compilation
+# (Embeds all SVGs and PNGs in outputs/pergola_plan_embedded.md and compiles outputs/pergola_plan.pdf)
+python3 plugins/garden-structure-designer/scripts/package_consistency_validator.py
+
+python3 plugins/garden-structure-designer/scripts/embed_svgs.py \
+  outputs/pergola_plan.md \
+  outputs/pergola_plan_embedded.md
+
+npx -y md-to-pdf outputs/pergola_plan_embedded.md && cp outputs/pergola_plan_embedded.pdf outputs/pergola_plan.pdf
+
+# 5. Quality Dashboard
 python3 plugins/garden-structure-designer/scripts/generate_quality_dashboard.py
 ```
 

@@ -7,10 +7,11 @@ script_dir = Path(__file__).parent.absolute()
 sys.path.insert(0, str(script_dir))
 
 from structure_io import load_structure, save_structure
+from path_utils import staging_dir
 
 def main():
     parser = argparse.ArgumentParser(description="Reset derived sections of structure.json")
-    parser.add_argument("model_path", help="Path to structure.json")
+    parser.add_argument("model_path", nargs="?", default=str(staging_dir() / "structure.json"), help="Path to structure.json")
     parser.add_argument("--geometry", action="store_true", help="Reset geometry section")
     parser.add_argument("--cad", action="store_true", help="Reset cad section")
     parser.add_argument("--lifecycle", default="ENGINEERED", help="Reset lifecycle to this state")

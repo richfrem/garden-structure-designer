@@ -53,8 +53,8 @@ def load_lessons(category: str, design_path: str, registry_path: str) -> dict:
         with open(design_path) as f:
             design = json.load(f)
             
-    shape = design.get("planShape", "hexagon")
-    roof = design.get("roofType", "hub-and-hip-rafter")
+    shape = (design.get("layout") or {}).get("shape") or design.get("planShape") or "hexagon"
+    roof = (design.get("roof") or {}).get("type") or design.get("roofType") or "hub-and-hip-rafter"
     
     applicable = []
     for lesson in registry.get("active_lessons", []):
@@ -78,9 +78,9 @@ def load_lessons(category: str, design_path: str, registry_path: str) -> dict:
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--category", required=True)
-    parser.add_argument("--design", required=True)
-    parser.add_argument("--registry", required=True)
+    parser.add_argument("--category", default="structural")
+    parser.add_argument("--design", default=str(staging_dir() / "structure.json"))
+    parser.add_argument("--registry", default=str(staging_dir() / "learning-registry.json"))
     args = parser.parse_args()
     
     result = load_lessons(args.category, args.design, args.registry)

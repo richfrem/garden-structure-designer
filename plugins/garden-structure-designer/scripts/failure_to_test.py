@@ -69,12 +69,12 @@ def main():
             f.write(f"sys.path.append(str(Path(__file__).parent.parent.parent / 'plugins' / 'garden-structure-designer' / 'scripts'))\n\n")
             
             if cls["classification"] == "compound_cut_mismatch" or cls["repair_stage"] == "structural-engine":
-                f.write(f"from geometry_engine import compute, compound_cut, beam_ring_miter\\n\\n")
-                f.write(f"def test_{cls['classification']}_regression():\\n")
-                f.write(f"    # Invariant test generated for {axis}\\n")
-                f.write(f"    res = compound_cut(4, 12, 6)\\n")
-                f.write(f"    assert round(res['miter_deg'], 2) == 28.71, 'Miter regression'\\n")
-                f.write(f"    assert round(res['bevel_deg'], 2) == 9.10, 'Bevel regression'\\n")
+                f.write("from geometry_engine import compute, compound_cut, beam_ring_miter\n\n")
+                f.write(f"def test_{cls['classification']}_regression():\n")
+                f.write(f"    # Invariant test generated for {axis}\n")
+                f.write("    res = compound_cut(4, 12, 6)\n")
+                f.write("    assert round(res['miter_deg'], 2) == 28.71, 'Miter regression'\n")
+                f.write("    assert round(res['bevel_deg'], 2) == 9.10, 'Bevel regression'\n")
             elif cls["repair_stage"] == "drawing-generator":
                 f.write(f"from svg_validator import validate\n\n")
                 f.write(f"def test_{cls['classification']}_regression():\n")

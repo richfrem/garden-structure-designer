@@ -83,17 +83,20 @@ def validate_connections(scene: Scene, structure: dict | None = None) -> list[st
                 if m["role"] == "brace":
                     p0 = tuple(m["p0"])
                     d_cl = v2_radius(p0)
-                    expected_r = (structure["layout"]["inscribed_radius_ft"] - (5.5/24.0))
+                    post_hw_ft = (structure["members"]["posts"]["actual_width_in"] / 24.0)
+                    expected_r = (structure["layout"]["inscribed_radius_ft"] - post_hw_ft)
                     if abs(d_cl - expected_r) > 0.5:
                         warnings.append(f"brace_foot: {m['id']} foot at {d_cl*12:.1f}\" radius")
         return errors, warnings
         
     return errors
 
+from path_utils import staging_dir
+
 def main():
-    if len(sys.argv) < 2: sys.exit(1)
+    struct_path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")
     from cad_scene import build_structure_scene
-    with open(sys.argv[1]) as f: structure = json.load(f)
+    with open(struct_path) as f: structure = json.load(f)
     scene = build_structure_scene(structure, False)
     res = validate_connections(scene, structure)
     if isinstance(res, tuple):
@@ -108,7 +111,7 @@ def main():
         for e in errors: print(f"  ✗ {e}")
         sys.exit(1)
     else:
-        print("PHYSICAL CONTACT VALIDATION PASSED")
+        print("PHYSICAL CONTACT VALIDATION PASSED ✓")
         sys.exit(0)
 
 if __name__ == "__main__": main()

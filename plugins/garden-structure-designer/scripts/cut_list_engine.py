@@ -79,30 +79,30 @@ def compute_cut_list(model_path: str, calcs_path: str, bracing_path: str = None)
     beams_data = members.get("beams") or members.get("ringBeams", {})
     roof_data = members.get("roofStructure") or model.get("roofStructure", {})
 
-    qty = posts_data.get("quantity", 4)
-    post_cut_ft = posts_data.get("cutLength_ft", 8.33)
-    span_ft = posts_data.get("spanDistance_ft", 5.0)
+    qty = posts_data.get("quantity") or posts_data.get("count") or (model.get("layout") or {}).get("post_count") or 4
+    post_cut_ft = posts_data.get("cutLength_ft") or posts_data.get("cut_length_ft") or 8.33
+    span_ft = posts_data.get("spanDistance_ft") or (model.get("layout") or {}).get("inscribed_radius_ft") or 5.0
 
     # Calculate actual lengths
-    rafter_len_ft = calcs.get("rafter", {}).get("total_with_overhang_ft", 0)
+    rafter_len_ft = (calcs.get("rafter") or {}).get("total_with_overhang_ft") or 0.0
     if rafter_len_ft == 0:
         # Fallback if geometry calc was missing something
-        pitch = roof_data.get("pitch", "4:12")
+        pitch = roof_data.get("pitch") or "4:12"
         pr, rr = [float(x) for x in pitch.split(":")]
         slope_factor = math.sqrt(1 + (pr / rr) ** 2)
-        overhang_ft = model.get("overhang_in", 12.0) / 12.0
+        overhang_ft = (float(model.get("overhang_in") or 12.0)) / 12.0
         rafter_len_ft = (span_ft + overhang_ft) * slope_factor
 
     # Beams (assume perimeter approximation)
     interior_angle = (qty - 2) * 180.0 / qty
     beam_len_ft = 2 * span_ft * math.tan(math.radians(180/qty)) if qty > 4 else span_ft
 
-    post_w = float(posts_data.get("width_in", 6))
-    post_d = float(posts_data.get("depth_in", 6))
-    beam_w = float(beams_data.get("width_in", 4))
-    beam_d = float(beams_data.get("depth_in", 8))
-    rafter_w = float(roof_data.get("rafters", {}).get("width_in", 4))
-    rafter_d = float(roof_data.get("rafters", {}).get("depth_in", 6))
+    post_w = float(posts_data.get("width_in") or posts_data.get("actual_width_in") or 6.0)
+    post_d = float(posts_data.get("depth_in") or posts_data.get("actual_depth_in") or 6.0)
+    beam_w = float(beams_data.get("width_in") or beams_data.get("actual_width_in") or 4.0)
+    beam_d = float(beams_data.get("depth_in") or beams_data.get("actual_depth_in") or 8.0)
+    rafter_w = float((roof_data.get("rafters") or roof_data.get("primary_rafters") or {}).get("width_in") or (roof_data.get("rafters") or roof_data.get("primary_rafters") or {}).get("actual_width_in") or 4.0)
+    rafter_d = float((roof_data.get("rafters") or roof_data.get("primary_rafters") or {}).get("depth_in") or (roof_data.get("rafters") or roof_data.get("primary_rafters") or {}).get("actual_depth_in") or 6.0)
 
     results = []
 
@@ -180,9 +180,10 @@ def compute_cut_list(model_path: str, calcs_path: str, bracing_path: str = None)
 
     # 5. Bracing
     if bracing:
-        brace_qty = bracing.get("total_qty", qty * 2)
-        brace_len = bracing.get("braces", [{}])[0].get("length_in", 36) / 12.0
-        brace_mat = bracing.get("braces", [{}])[0].get("material", "4x4")
+        brace_qty = bracing.get("total_qty") or (qty * 2)
+        first_brace = (bracing.get("braces") or [{}])[0]
+        brace_len = float(first_brace.get("length_in") or 36.0) / 12.0
+        brace_mat = first_brace.get("material") or "4x4"
         if "x" in brace_mat:
             bw, bd = brace_mat.split(" ")[0].split("x")
             bw, bd = float(bw), float(bd)
@@ -214,7 +215,7 @@ def compute_cut_list(model_path: str, calcs_path: str, bracing_path: str = None)
 
     return {
         "schema": "garden-structure-designer/cut-list/1.0",
-        "source_hash": calcs.get("source_hash", ""),
+        "source_hash": calcs.get("source_hash") or (calcs.get("meta") or {}).get("source_hash") or "",
         "members": results,
         "totals": {
             "bf_net": round(total_net, 1),
@@ -225,12 +226,8 @@ def compute_cut_list(model_path: str, calcs_path: str, bracing_path: str = None)
     }
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python3 cut_list_engine.py <model.json> <calcs.json> [bracing.json]")
-        sys.exit(1)
-    
-    model_path = sys.argv[1]
-    calcs_path = sys.argv[2]
+    model_path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")
+    calcs_path = sys.argv[2] if len(sys.argv) > 2 else model_path
     bracing_path = sys.argv[3] if len(sys.argv) > 3 else None
     
     result = compute_cut_list(model_path, calcs_path, bracing_path)

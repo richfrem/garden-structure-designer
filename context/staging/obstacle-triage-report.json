@@ -2,16 +2,14 @@
   "schema": "garden-structure-designer/obstacle-triage-report/1.0",
   "status": "ACTION_REQUIRED",
   "failure_classification": [
-    "DASHBOARD_STALE_OR_WRONG_PATH",
-    "RENDERER_PLACEHOLDER_OUTPUT"
+    "UNKNOWN_OBSTACLE"
   ],
   "active_staging_path": "/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging",
   "conflicting_staging_paths": [],
   "evidence": [
-    "quality-dashboard.md says COMPLETED while red-team report does not approve (or is missing)",
-    "Generated SVGs are extremely small (likely placeholder stubs)"
+    "No specific obstacle pattern matched"
   ],
-  "recommended_next_action": "RERUN_REPORTS_FIRST",
+  "recommended_next_action": "BLOCK_AND_REPORT",
   "do_not_do": [
     "Do not weaken validators",
     "Do not claim PASS",

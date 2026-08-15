@@ -141,11 +141,16 @@ def assert_intent_valid(structure: dict) -> None:
 # CLI entry point
 # ---------------------------------------------------------------------------
 
+import os
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.resolve()))
+from path_utils import staging_dir
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Validate a structure.json is ready for geometry computation."
     )
-    parser.add_argument("structure", help="Path to structure.json")
+    parser.add_argument("structure", nargs="?", default=str(staging_dir() / "structure.json"), help="Path to structure.json")
     args = parser.parse_args()
 
     with open(args.structure, encoding="utf-8") as f:

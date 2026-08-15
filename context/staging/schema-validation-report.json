@@ -1,40 +1,24 @@
 {
   "schema": "garden-structure-designer/schema-validation-report/1.0",
-  "status": "WARNING",
+  "status": "PASS",
   "files": [
     {
-      "path": "context/staging/design-spec.json",
-      "schema": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "status": "WARNING",
-      "errors": [],
-      "warnings": [
-        "Unknown keys in design-spec: {'project', 'style', 'materials', 'site', 'dimensions'}"
-      ]
-    },
-    {
-      "path": "context/staging/geometry-calculations.json",
-      "schema": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
+      "path": "/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/structure.json",
+      "schema": "/Users/richardfremmerlid/Projects/garden-structure-designer/plugins/garden-structure-designer/schemas/structure.schema.json",
       "status": "PASS",
       "errors": [],
       "warnings": []
     },
     {
-      "path": "context/staging/building-code.json",
-      "schema": "plugins/garden-structure-designer/schemas/building-code.schema.json",
+      "path": "/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/building-code.json",
+      "schema": "/Users/richardfremmerlid/Projects/garden-structure-designer/plugins/garden-structure-designer/schemas/building-code.schema.json",
       "status": "PASS",
       "errors": [],
       "warnings": []
     },
     {
-      "path": "context/staging/joinery-model.json",
-      "schema": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "status": "PASS",
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "path": "context/staging/structural-model.json",
-      "schema": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
+      "path": "/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/joinery-model.json",
+      "schema": "/Users/richardfremmerlid/Projects/garden-structure-designer/plugins/garden-structure-designer/schemas/joinery-model.schema.json",
       "status": "PASS",
       "errors": [],
       "warnings": []

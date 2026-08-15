@@ -113,14 +113,16 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
         _rm_counts = _Counter(m["role"] for m in _rm_members)
         _scene_counts = _Counter(s.role for s in scene.solids)
         for _role, _expected in _rm_counts.items():
-            _actual = _scene_counts.get(_role, 0)
+            _actual = _scene_counts[_role] if _role in _scene_counts else 0
             assert _actual == _expected, \
                 f"RENDERER BUG: scene has {_actual} {_role}(s) but resolved_model has {_expected}"
 
     # Data-driven visibility — reads from structure.json, never hardcoded
     _vis = structure.get("presentation", {}).get("visibility_rules", {})
-    _suppress_purlins = not _vis.get("show_purlins", True)
-    _suppress_jacks = not _vis.get("show_jack_rafters", True)
+    _show_p = _vis["show_purlins"] if "show_purlins" in _vis else True
+    _show_j = _vis["show_jack_rafters"] if "show_jack_rafters" in _vis else True
+    _suppress_purlins = not _show_p
+    _suppress_jacks = not _show_j
     if is_blueprint:
         _suppress_purlins = False
         _suppress_jacks = False
@@ -136,13 +138,14 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
     cam = vnorm((0,0,1) if "plan" in view_type else (0,-1,0) if "elevation" in view_type else (1,1,1))
 
     face_entries = []
+    _role_biases = {"hub":0.05, "rafter":0.04, "beam":0.03, "brace":0.02, "post":0.01, "footing":-10.0}
     for solid in scene.solids:
         if _should_suppress(solid): continue
         for face in solid.faces:
             if solid.role != "footing" and vdot(face.normal, cam) < -0.1: continue # Backface cull
             c = vcent(face.verts); depth = vdot(c, cam)
             # Use fixed tiny biases for painter's algorithm
-            bias = {"hub":0.05, "rafter":0.04, "beam":0.03, "brace":0.02, "post":0.01, "footing":-10.0}.get(solid.role, 0)
+            bias = _role_biases[solid.role] if solid.role in _role_biases else 0.0
             face_entries.append((depth + bias, face, solid))
     face_entries.sort(key=lambda t: t[0])
     
@@ -221,11 +224,24 @@ def generate_svg(filename: str, structure: dict, output_path: str) -> None:
     draw_validator_anchors(content, structure)
     with open(output_path, "w") as f: f.write("\n".join(header + content + ["</svg>"]))
 
+from path_utils import staging_dir, outputs_dir
+
 def main():
-    if len(sys.argv) < 2: sys.exit(1)
-    with open(sys.argv[1]) as f: s = json.load(f)
-    out_dir = Path("outputs")
-    for f in ["drawing-plan-view.svg", "drawing-elevation-view.svg", "drawing-isometric-view.svg", "blueprint-plan.svg", "blueprint-elevation.svg", "blueprint-isometric.svg"]:
-        generate_svg(f, s, out_dir / f); print(f"  ✓ {f}")
+    struct_path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")
+    with open(struct_path) as f: s = json.load(f)
+    out_dir = outputs_dir()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    sheets = [
+        "drawing-plan-view.svg",
+        "drawing-elevation-view.svg",
+        "drawing-isometric-view.svg",
+        "drawing-perspective-view.svg",
+        "blueprint-plan.svg",
+        "blueprint-elevation.svg",
+        "blueprint-isometric.svg",
+    ]
+    for f in sheets:
+        generate_svg(f, s, str(out_dir / f))
+        print(f"  ✓ {f}")
 
 if __name__ == "__main__": main()

@@ -1,10 +1,10 @@
 {
   "meta": {
     "schema_version": "2.0",
-    "lifecycle": "GEOMETRY_SEALED",
+    "lifecycle": "CONSTRAINTS_DEFINED",
     "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
     "created_at": "2026-05-24T05:00:22.487718+00:00",
-    "updated_at": "2026-05-24T20:48:21.877908+00:00"
+    "updated_at": "2026-08-15T19:01:18.496419+00:00"
   },
   "intent": {
     "jurisdiction": "BC_SAANICH",
@@ -99,10 +99,6 @@
     "depth_in": 24.0,
     "concrete_grade": "3000 PSI",
     "center_on_post": true
-  },
-  "foundation": {
-    "caisson_diameter_in": 12.0,
-    "caisson_depth_in": 24.0
   },
   "joinery": {
     "beam_seat_style": "exposed_tenon",

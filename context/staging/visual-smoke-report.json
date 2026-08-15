@@ -1,10 +1,10 @@
 {
   "schema": "garden-structure-designer/visual-smoke-report/1.0",
-  "generated_at": "2026-05-24T22:48:46.507176+00:00",
+  "generated_at": "2026-08-15T19:16:50.059639+00:00",
   "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
   "structure_path": "context/staging/structure.json",
   "svg_dir": "outputs",
-  "out_dir": "outputs",
+  "out_dir": "outputs/smoke-screens",
   "baseline_dir": null,
   "status": "PASS",
   "summary": "All sheets rendered and heuristics passed.",
@@ -12,7 +12,7 @@
     {
       "sheet": "drawing-plan-view",
       "svg": "outputs/drawing-plan-view.svg",
-      "png": "outputs/drawing-plan-view.png",
+      "png": "outputs/smoke-screens/drawing-plan-view.png",
       "metrics": {
         "viewport_px": [
           1600,
@@ -45,7 +45,7 @@
     {
       "sheet": "drawing-elevation-view",
       "svg": "outputs/drawing-elevation-view.svg",
-      "png": "outputs/drawing-elevation-view.png",
+      "png": "outputs/smoke-screens/drawing-elevation-view.png",
       "metrics": {
         "viewport_px": [
           1600,
@@ -76,7 +76,7 @@
     {
       "sheet": "drawing-isometric-view",
       "svg": "outputs/drawing-isometric-view.svg",
-      "png": "outputs/drawing-isometric-view.png",
+      "png": "outputs/smoke-screens/drawing-isometric-view.png",
       "metrics": {
         "viewport_px": [
           1600,
@@ -109,14 +109,14 @@
     {
       "sheet": "drawing-perspective-view",
       "svg": "outputs/drawing-perspective-view.svg",
-      "png": "outputs/drawing-perspective-view.png",
+      "png": "outputs/smoke-screens/drawing-perspective-view.png",
       "metrics": {
         "viewport_px": [
           1600,
           1600
         ],
-        "non_bg_ratio": 0.248353515625,
-        "bbox_fill_ratio": 0.95239296875,
+        "non_bg_ratio": 0.14016796875,
+        "bbox_fill_ratio": 0.577416015625,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -126,12 +126,12 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 36,
-          "beams": 65,
-          "rafters": 118
+          "posts": 30,
+          "beams": 33,
+          "rafters": 89
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2538
+        "cv_hub_density": 2162
       },
       "failures": [],
       "warnings": [
@@ -142,7 +142,7 @@
     {
       "sheet": "blueprint-plan",
       "svg": "outputs/blueprint-plan.svg",
-      "png": "outputs/blueprint-plan.png",
+      "png": "outputs/smoke-screens/blueprint-plan.png",
       "metrics": {
         "viewport_px": [
           1600,
@@ -175,7 +175,7 @@
     {
       "sheet": "blueprint-elevation",
       "svg": "outputs/blueprint-elevation.svg",
-      "png": "outputs/blueprint-elevation.png",
+      "png": "outputs/smoke-screens/blueprint-elevation.png",
       "metrics": {
         "viewport_px": [
           1600,
@@ -206,7 +206,7 @@
     {
       "sheet": "blueprint-isometric",
       "svg": "outputs/blueprint-isometric.svg",
-      "png": "outputs/blueprint-isometric.png",
+      "png": "outputs/smoke-screens/blueprint-isometric.png",
       "metrics": {
         "viewport_px": [
           1600,
@@ -239,7 +239,7 @@
     {
       "sheet": "blueprint-component-isolation",
       "svg": "outputs/blueprint-component-isolation.svg",
-      "png": "outputs/blueprint-component-isolation.png",
+      "png": "outputs/smoke-screens/blueprint-component-isolation.png",
       "metrics": {
         "viewport_px": [
           1600,

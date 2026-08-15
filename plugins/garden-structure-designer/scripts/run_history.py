@@ -97,8 +97,14 @@ def should_halt(script: str, failure_class: str, max_repeats: int = 3) -> bool:
 
 def repeated_identical_artifact(path: str, repeats: int = 2) -> bool:
     history = get_history()
-    hashes = [h.get("artifact_hashes", {}).get(path) for h in history if path in h.get("artifact_hashes", {})]
+    hashes = [(h.get("artifact_hashes") or {}).get(path) for h in history if path in (h.get("artifact_hashes") or {})]
     hashes = [h for h in hashes if h]
     if len(hashes) >= repeats and len(set(hashes[-repeats:])) == 1:
         return True
     return False
+
+if __name__ == "__main__":
+    hist = get_history()
+    print(f"Recorded runs in history: {len(hist)}")
+    for h in hist[-5:]:
+        print(f"  - {h.get('timestamp')}: {h.get('script')} (exit {h.get('exit_code')})")

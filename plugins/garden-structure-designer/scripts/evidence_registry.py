@@ -83,3 +83,16 @@ def validate_evidence_links() -> List[str]:
         if not Path(ev["artifact"]).exists():
             broken.append(f"Broken artifact: {ev['artifact']} in {ev['evidence_id']}")
     return broken
+
+if __name__ == "__main__":
+    import sys
+    broken = validate_evidence_links()
+    if broken:
+        print(f"EVIDENCE REGISTRY VALIDATION FAILED: {len(broken)} broken links")
+        for b in broken:
+            print(f"  ✗ {b}")
+        sys.exit(1)
+    else:
+        reg = load_registry()
+        print(f"EVIDENCE REGISTRY: {len(reg.get('evidence', []))} valid evidence items recorded ✓")
+        sys.exit(0)

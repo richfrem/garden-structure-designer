@@ -86,3 +86,9 @@ def classify_failure(failure: Dict[str, Any] | str) -> Dict[str, Any]:
         "repair_stage": repair_stage,
         "requires_human_review": requires_human_review
     }
+
+if __name__ == "__main__":
+    import sys
+    inp = sys.argv[1] if len(sys.argv) > 1 else "schema error in member definitions"
+    res = classify_failure(inp)
+    print(json.dumps(res, indent=2))

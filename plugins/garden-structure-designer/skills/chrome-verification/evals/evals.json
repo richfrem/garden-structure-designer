@@ -1,0 +1,41 @@
+{
+  "skill": "chrome-verification",
+  "eval_cases": [
+    {
+      "id": "E001",
+      "input": "Run headless Chromium visual smoke test on generated SVG drawings and check bounding box fills.",
+      "should_trigger": true,
+      "notes": "Core trigger: headless browser visual smoke test"
+    },
+    {
+      "id": "E002",
+      "input": "Audit outputs/visual-smoke/*.png for edge pixel density at the central hub junction.",
+      "should_trigger": true,
+      "notes": "Hub density / spaghetti hub visual verification"
+    },
+    {
+      "id": "E003",
+      "input": "Map design-spec.json to localized building code requirements for BC Coastal.",
+      "should_trigger": false,
+      "notes": "Building code lookup — routes to building-code-validator"
+    },
+    {
+      "id": "E004",
+      "input": "Execute visual_svg_smoke_test.py and write context/staging/visual-smoke-report.json.",
+      "should_trigger": true,
+      "notes": "Explicit script runner invocation"
+    },
+    {
+      "id": "E005",
+      "input": "Check if any SVG sheets have blank or mostly-empty canvases under Chromium rendering.",
+      "should_trigger": true,
+      "notes": "Blank sheet visual heuristic detection"
+    },
+    {
+      "id": "E006",
+      "input": "Format timber cut list into markdown and estimate required board feet.",
+      "should_trigger": false,
+      "notes": "Builder docs generation — routes to builder-docs-generator"
+    }
+  ]
+}

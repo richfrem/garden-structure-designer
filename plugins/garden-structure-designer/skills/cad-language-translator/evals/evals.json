@@ -1,0 +1,41 @@
+{
+  "skill": "cad-language-translator",
+  "eval_cases": [
+    {
+      "id": "E001",
+      "input": "Translate colloquial user design intent from structure.json into formal CAD constraint language.",
+      "should_trigger": true,
+      "notes": "Core trigger: intent to CAD constraint translation"
+    },
+    {
+      "id": "E002",
+      "input": "Define surface and plane constraints for paired 45-degree knee braces and hip rafters.",
+      "should_trigger": true,
+      "notes": "Parametric surface constraint definitions"
+    },
+    {
+      "id": "E003",
+      "input": "Calculate exact vertex coordinates and render 8 SVG blueprint sheets.",
+      "should_trigger": false,
+      "notes": "Geometry solving and drawing — routes to geometry_engine / drawing-generator"
+    },
+    {
+      "id": "E004",
+      "input": "Run cad_language_translator.py to populate cad_constraints in context/staging/structure.json.",
+      "should_trigger": true,
+      "notes": "Explicit script CLI invocation"
+    },
+    {
+      "id": "E005",
+      "input": "Conduct user interview to establish structure type, dimensions, and preferred roof style.",
+      "should_trigger": false,
+      "notes": "Conversational intake — routes to interactive-designer"
+    },
+    {
+      "id": "E006",
+      "input": "Enrich structure.json with the explicit member-connection topology graph via topology_compiler.py.",
+      "should_trigger": true,
+      "notes": "Topology constraint compilation"
+    }
+  ]
+}

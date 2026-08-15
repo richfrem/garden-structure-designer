@@ -68,9 +68,9 @@ def main():
     if repair.get("status") in ["FAIL", "BLOCKED"] or drift.get("failed_axes"):
         overall_status = "BLOCKED / FAILED"
 
-    content_status = content_report.get("status", "MISSING")
-    red_team_status = red_team.get("status", "MISSING")
-    red_team_may_claim = red_team.get("may_claim_success", False)
+    content_status = content_report.get("status") or "MISSING"
+    red_team_status = red_team.get("status") or "MISSING"
+    red_team_may_claim = bool(red_team.get("may_claim_success"))
     
     missing_artifacts = not all([
         (stage_dir / "structure.json").exists()
@@ -100,26 +100,31 @@ def main():
         for cf in content_files:
             icon = "✅" if cf.get("status") == "PASS" else "❌"
             codes = ", ".join(cf.get("failure_codes", [])) or "none"
-            content_rows.append(f"- {icon} `{cf['file']}`: {cf.get('status','?')} — codes: {codes}")
+            cf_st = cf.get("status") or "?"
+            content_rows.append(f"- {icon} `{cf['file']}`: {cf_st} — codes: {codes}")
         content_sheet_str = "\n".join(content_rows)
     else:
         content_sheet_str = "- No content-validation report found. Run run_drawing_red_team.py."
+
+    physics_status_str = physics.get("status") or "UNKNOWN"
+    reviewer_name = red_team.get("reviewer") or "N/A"
+    summary_desc = red_team.get("summary") or "No red-team report found. Run run_drawing_red_team.py before claiming PASS."
 
     content = f"""# Garden Structure Designer Quality Dashboard
 
 ## Run Status
 - Overall status: {overall_status}
-- Physics status: {physics.get("status", "UNKNOWN")}
+- Physics status: {physics_status_str}
 - Drawing content validation: {content_status}
 - Drawing red-team review: {red_team_status}
 - May claim success: {str(red_team_may_claim).lower()}
 - Last updated: Auto-generated
 
 ## Drawing Red-Team Status
-- Reviewer: {red_team.get("reviewer", "N/A")}
+- Reviewer: {reviewer_name}
 - Status: {red_team_status}
 - May claim success: {str(red_team_may_claim).lower()}
-- Summary: {red_team.get("summary", "No red-team report found. Run run_drawing_red_team.py before claiming PASS.")}
+- Summary: {summary_desc}
 
 ## Drawing Content Validation (Stage 5.75)
 {content_sheet_str}

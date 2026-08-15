@@ -102,8 +102,10 @@ def process(input_path: str, output_path: str) -> None:
     print(f"Written: {output_path}")
 
 
+sys.path.append(str(os.path.dirname(os.path.abspath(__file__))))
+from path_utils import outputs_dir
+
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print(f"Usage: {sys.argv[0]} <input.md> <output.md>")
-        sys.exit(1)
-    process(sys.argv[1], sys.argv[2])
+    in_path = sys.argv[1] if len(sys.argv) > 1 else str(outputs_dir() / "pergola_plan.md")
+    out_path = sys.argv[2] if len(sys.argv) > 2 else str(outputs_dir() / "pergola_plan_embedded.md")
+    process(in_path, out_path)

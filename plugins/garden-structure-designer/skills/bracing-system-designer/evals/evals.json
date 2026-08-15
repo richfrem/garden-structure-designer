@@ -2,7 +2,7 @@
   "skill": "bracing-system-designer",
   "eval_cases": [
     {"id": "E001", "input": "Design the lateral bracing system for the hexagonal pergola given the coastal wind loads.", "should_trigger": true, "notes": "Core trigger: lateral stability bracing"},
-    {"id": "E002", "input": "Add knee braces to resist wind racking and update structural-model.json with brace coordinates.", "should_trigger": true, "notes": "Explicit brace design request"},
+    {"id": "E002", "input": "Add knee braces to resist wind racking and update structure.json with brace coordinates.", "should_trigger": true, "notes": "Explicit brace design request"},
     {"id": "E003", "input": "What joinery should I use for the post-to-beam connection?", "should_trigger": false, "notes": "Joinery design — routes to joinery-designer"},
     {"id": "E004", "input": "The structure needs lateral stability for 25psf wind loads. What bracing arrangement should we use?", "should_trigger": true, "notes": "Wind-load driven bracing trigger"},
     {"id": "E005", "input": "What size timbers do I need for the beams?", "should_trigger": false, "notes": "Structural sizing — routes to structural-engine"}

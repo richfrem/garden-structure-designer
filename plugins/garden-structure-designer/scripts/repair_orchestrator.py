@@ -52,8 +52,8 @@ def save_json(data, path):
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("drift_report", type=str)
-    parser.add_argument("repair_map", type=str)
+    parser.add_argument("drift_report", nargs="?", default=str(staging_dir() / "drift_report.json"), type=str)
+    parser.add_argument("repair_map", nargs="?", default=str(plugin_root() / "repair-map.json"), type=str)
     parser.add_argument("--max-attempts", type=int, default=2)
     args = parser.parse_args()
 
@@ -88,7 +88,7 @@ def main():
     is_locked = False
     if model_path.exists():
         model = load_json(model_path)
-        is_locked = model.get("geometry", {}).get("_sealed", False) or model.get("members", {}).get("_sealed", False)
+        is_locked = bool(model.get("geometry", {}).get("_sealed") or model.get("members", {}).get("_sealed"))
 
     # Try repairs
     for axis in axes:

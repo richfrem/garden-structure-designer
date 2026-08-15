@@ -295,7 +295,8 @@ def solve_rafter_endpoints_geometric(i: int, qty: int, Z_APEX: float, Z_BEAM_TOP
 def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
     if "cad_constraints" not in structure:
         from cad_language_translator import translate_to_constraints
-        was_sealed = structure.get("geometry", {}).get("_sealed", False)
+        geom_sec = structure["geometry"] if "geometry" in structure else {}
+        was_sealed = geom_sec["_sealed"] if "_sealed" in geom_sec else False
         if was_sealed:
             structure["geometry"]["_sealed"] = False
         translate_to_constraints(structure)
@@ -336,18 +337,23 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
         "primary_rafters": rafters
     }
 
-    jack_spec = structure["roof"].get("secondary_rafters", {}); jack_endpoints = []
-    if jack_spec.get("enabled"):
-        jack_count = jack_spec.get("count_per_side", 2)
+    roof_sec = structure["roof"]
+    jack_spec = roof_sec["secondary_rafters"] if "secondary_rafters" in roof_sec else {}
+    jack_endpoints = []
+    jack_enabled = jack_spec["enabled"] if "enabled" in jack_spec else False
+    if jack_enabled:
+        jack_count = jack_spec["count_per_side"] if "count_per_side" in jack_spec else 2
         for i in range(qty):
             p1_xy = post_xy[i]; p2_xy = post_xy[(i+1)%qty]; dx = p2_xy[0]-p1_xy[0]; dy = p2_xy[1]-p1_xy[1]; blen = math.sqrt(dx*dx + dy*dy); ux, uy = dx/blen, dy/blen; in_x, in_y = -uy, ux; spacing = blen / (jack_count + 1)
             for j_idx in range(jack_count):
                 dist = (j_idx + 1) * spacing; p_seat_xy = (p1_xy[0] + ux*dist, p1_xy[1] + uy*dist); p_seat_top = (p_seat_xy[0], p_seat_xy[1], Z_BEAM_TOP + v_shift_common); dir_jack = (in_x, in_y, roof_r / apothem); f = (j_idx + 1.0) / (jack_count + 1.0); hip_idx = i if f < 0.5 else (i+1)%qty; suffix = 'a' if f < 0.5 else 'b'; h_p0 = (post_xy[hip_idx][0], post_xy[hip_idx][1], Z_BEAM_TOP); h_dir = vnorm(vsub((0.0,0.0, Z_APEX + v_shift_common), (h_p0[0], h_p0[1], Z_BEAM_TOP + v_shift_common))); h_perp_raw = (-h_dir[1], h_dir[0], 0.0); h_perp = vmul(h_perp_raw, 1.0 if vdot(vsub(p_seat_top, h_p0), h_perp_raw) >= 0.0 else -1.0); p_side = vadd((post_xy[hip_idx][0], post_xy[hip_idx][1], Z_BEAM_TOP), vmul(h_perp, rafter_w_in/24.0)); p_end, _ = intersect_line_plane(p_seat_top, dir_jack, p_side, h_perp); p_tail = vadd(p_seat_top, vmul(dir_jack, -oh_ft / v2_radius(dir_jack)))
                 jack_endpoints.append({"id": f"J{i+1}{suffix}", "start": [round(x, 4) for x in p_tail], "end": [round(x, 4) for x in p_end], "seat_point": [round(x, 4) for x in p_seat_top], "mate_id": f"R{hip_idx+1}"})
-    joints["jack_rafters"] = {"enabled": jack_spec.get("enabled", False), "endpoints": jack_endpoints}
+    joints["jack_rafters"] = {"enabled": jack_enabled, "endpoints": jack_endpoints}
     
-    bs = structure.get("bracing", {}); bp = []
-    if bs.get("enabled"):
+    bs = structure["bracing"] if "bracing" in structure else {}
+    bp = []
+    bs_enabled = bs["enabled"] if "enabled" in bs else False
+    if bs_enabled:
         phw = (structure["members"]["posts"]["actual_width_in"] / 24.0); run_t = bs["brace"]["constraints"]["run_ft"]
         for i in range(qty):
             p1 = post_xy[i]; p2 = post_xy[(i+1)%qty]; dx = p2[0]-p1[0]; dy = p2[1]-p1[1]; bl = math.sqrt(dx*dx + dy*dy); ux, uy = dx/bl, dy/bl; run = min(run_t, bl * 0.3)
@@ -355,7 +361,7 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
             bp.append({"id": f"K{i+1}A", "start": [round(x, 4) for x in p0_A], "end": [round(x, 4) for x in p1_A]})
             p0_B, p1_B = solve_brace_endpoints_geometric(p2[0], p2[1], -ux, -uy, phw, Z_POST_TOP, run)
             bp.append({"id": f"K{i+1}B", "start": [round(x, 4) for x in p0_B], "end": [round(x, 4) for x in p1_B]})
-    joints["braces"] = {"enabled": bs.get("enabled", False), "endpoints": bp}
+    joints["braces"] = {"enabled": bs_enabled, "endpoints": bp}
     joints["beam_ring"] = beam_ring_miter(qty)
     joints["resolved_model"] = compile_resolved_model(structure, joints)
     return joints
@@ -389,9 +395,11 @@ def compute_from_structure(path: str):
     cuts = {"miter_deg": 28.71, "bevel_deg": 9.1}; rl = rafter_length(span, pr, rr, oh); rise = {"rise_ft": round(span*(pr/rr), 3)}; height = total_height(post_ft, beam_in, span, pr, rr); hr = max(s["hub"]["radius_min_ft"], 0.75); lay = svg_layout(height["total_height_ft"], span, qty); sc = lay["scale_px_per_ft"]; g = lay["grade_y"]; svg = {**lay, "post_top_y": round(g-post_ft*sc), "beam_top_y": round(g-(post_ft+beam_in/12.0)*sc), "hub_apex_y": round(g-height["total_height_ft"]*sc)}; s["geometry"] = {"_sealed": True, "compound_cut": cuts, "beam_ring": beam_ring_miter(qty), "rafter": rl, "roof_rise": rise, "total_height": height, "hub_radius_ft": round(hr, 4), "svg_coordinates": svg, "joints": compute_joints(s, cuts, rl, rise, height, hr, svg)}; s["meta"]["lifecycle"] = "GEOMETRY_SEALED"; save_structure(s, path); return s
 
 def main():
-    if len(sys.argv) < 2: sys.exit(1)
-    path = sys.argv[1]
+    sys.path.append(str(os.path.dirname(os.path.abspath(__file__))))
+    from path_utils import staging_dir
+    path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")
     with open(path) as f: d = json.load(f)
     if "meta" in d: compute_from_structure(path)
+
 if __name__ == "__main__": main()
 

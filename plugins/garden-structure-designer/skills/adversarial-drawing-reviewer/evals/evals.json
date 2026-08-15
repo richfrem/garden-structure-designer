@@ -1,0 +1,41 @@
+{
+  "skill": "adversarial-drawing-reviewer",
+  "eval_cases": [
+    {
+      "id": "E001",
+      "input": "Run an independent adversarial review of all generated SVGs in outputs/ and verify builder usefulness.",
+      "should_trigger": true,
+      "notes": "Core trigger: adversarial drawing red team review"
+    },
+    {
+      "id": "E002",
+      "input": "Audit outputs/drawing-isometric-view.svg and blueprint-plan.svg for placeholder geometry and missing member IDs.",
+      "should_trigger": true,
+      "notes": "Specific sheet red team inspection"
+    },
+    {
+      "id": "E003",
+      "input": "Generate the 8 SVG drawing sheets from structure.json.",
+      "should_trigger": false,
+      "notes": "Generation task — routes to drawing-generator or shop-blueprint-generator"
+    },
+    {
+      "id": "E004",
+      "input": "Validate XML well-formedness and write context/staging/drawing-red-team-report.json.",
+      "should_trigger": true,
+      "notes": "Explicit red-team gate execution"
+    },
+    {
+      "id": "E005",
+      "input": "Check beam deflection and column slenderness against the building code.",
+      "should_trigger": false,
+      "notes": "Structural physics validation — routes to structural-engine or validation-agent"
+    },
+    {
+      "id": "E006",
+      "input": "Review rendered PNGs for spaghetti hub overlaps and floating knee braces.",
+      "should_trigger": true,
+      "notes": "Visual-physics defect detection"
+    }
+  ]
+}

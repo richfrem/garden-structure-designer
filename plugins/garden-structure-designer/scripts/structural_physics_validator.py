@@ -36,16 +36,13 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).parent.resolve()))
+from path_utils import staging_dir
+
 def load_json(path):
     with open(path) as f: return json.load(f)
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python3 structural_physics_validator.py <structure.json>")
-        sys.exit(1)
-
-    model_path = Path(sys.argv[1])
+    model_path = Path(sys.argv[1]) if len(sys.argv) > 1 else (staging_dir() / "structure.json")
     model = load_json(model_path)
 
     # Detect structure.json (new) vs structural-model.json (legacy)
@@ -54,15 +51,15 @@ def main():
     if is_structure_json:
         posts  = model.get("members", {}).get("posts", {})
         beams  = model.get("members", {}).get("beams", {})
-        pitch_defaulted = model.get("roof", {}).get("pitch_defaulted", False)
-        caisson_d = float(model.get("footings", {}).get("diameter_in", 12))
-        span_ft   = model.get("layout", {}).get("inscribed_radius_ft", 5.0)
+        pitch_defaulted = bool(model.get("roof", {}).get("pitch_defaulted"))
+        caisson_d = float(model.get("footings", {}).get("diameter_in") or 12.0)
+        span_ft   = float(model.get("layout", {}).get("inscribed_radius_ft") or 5.0)
     else:
         posts  = model.get("members", {}).get("posts", {})
         beams  = model.get("members", {}).get("beams", {})
-        pitch_defaulted = model.get("roofStructure", {}).get("pitchDefaulted", False)
-        caisson_d = float(model.get("foundation", {}).get("caisson_diameter_in", 12))
-        span_ft   = posts.get("spanDistance_ft", 10.0)
+        pitch_defaulted = bool(model.get("roofStructure", {}).get("pitchDefaulted"))
+        caisson_d = float(model.get("foundation", {}).get("caisson_diameter_in") or 12.0)
+        span_ft   = float(posts.get("spanDistance_ft") or 10.0)
 
     report = {
         "schema": "garden-structure-designer/physics-validation/1.1",
@@ -73,8 +70,8 @@ def main():
     }
 
     # 1. Slenderness (L/d <= 50)
-    post_length = posts.get("cut_length_ft", posts.get("cutLength_ft", 8.0)) * 12
-    post_width  = float(posts.get("actual_width_in", posts.get("width_in", 5.5)))
+    post_length = float(posts.get("cut_length_ft") or posts.get("cutLength_ft") or 8.0) * 12.0
+    post_width  = float(posts.get("actual_width_in") or posts.get("width_in") or 5.5)
     slenderness = post_length / post_width
 
     sl_check = {"name": "post_slenderness", "status": "PASS", "value": round(slenderness, 1), "limit": 50}
@@ -91,8 +88,8 @@ def main():
     span_in              = span_ft * 12
     allowable_deflection = span_in / 240
     # Dummy calculation for deflection using width/depth as proxy
-    beam_w = float(beams.get("actual_width_in", beams.get("width_in", 3.5)))
-    beam_d = float(beams.get("actual_depth_in", beams.get("depth_in", 7.25)))
+    beam_w = float(beams.get("actual_width_in") or beams.get("width_in") or 3.5)
+    beam_d = float(beams.get("actual_depth_in") or beams.get("depth_in") or 7.25)
     # Approximation of stiffness proxy
     stiffness = (beam_w * (beam_d ** 3)) / 12
     deflection_proxy = (span_in ** 3) / (stiffness * 1000) if stiffness > 0 else 999
@@ -105,8 +102,8 @@ def main():
 
     # 3. Bearing Area
     caisson_area = 3.14159 * (caisson_d / 2) ** 2
-    post_area    = float(posts.get("actual_width_in", posts.get("width_in", 5.5))) * \
-                   float(posts.get("actual_depth_in", posts.get("depth_in", 5.5)))
+    post_area    = float(posts.get("actual_width_in") or posts.get("width_in") or 5.5) * \
+                   float(posts.get("actual_depth_in") or posts.get("depth_in") or 5.5)
 
     brg_check = {"name": "caisson_bearing", "status": "PASS", "value": round(post_area, 1), "limit": round(caisson_area, 1)}
     if post_area > caisson_area:

@@ -1,15 +1,13 @@
 # Obstacle Triage Report
 
 **Status:** ACTION_REQUIRED
-**Recommended Next Action:** `RERUN_REPORTS_FIRST`
+**Recommended Next Action:** `BLOCK_AND_REPORT`
 
 ## Failure Classifications
-- **DASHBOARD_STALE_OR_WRONG_PATH**
-- **RENDERER_PLACEHOLDER_OUTPUT**
+- **UNKNOWN_OBSTACLE**
 
 ## Evidence
-- quality-dashboard.md says COMPLETED while red-team report does not approve (or is missing)
-- Generated SVGs are extremely small (likely placeholder stubs)
+- No specific obstacle pattern matched
 
 ## Constraints
 - 🛑 Do not weaken validators

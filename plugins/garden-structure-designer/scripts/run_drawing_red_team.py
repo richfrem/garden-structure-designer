@@ -149,7 +149,7 @@ def _write_json_report(report: dict, report_path: str) -> None:
 
 def _write_md_report(report: dict, md_path: str) -> None:
     status = report["status"]
-    may_claim = report.get("may_claim_success", False)
+    may_claim = bool(report.get("may_claim_success"))
     summary = report.get("summary", "")
 
     lines = [
@@ -178,8 +178,8 @@ def _write_md_report(report: dict, md_path: str) -> None:
             lines.append("**Semantic counts:**")
             for role, n in counts.items():
                 lines.append(f"- `data-role=\"{role}\"`: {n}")
-        lines.append(f"- Text labels: {entry.get('text_label_count', 0)}")
-        lines.append(f"- Total elements: {entry.get('total_elements', 0)}")
+        lines.append(f"- Text labels: {entry.get('text_label_count') or 0}")
+        lines.append(f"- Total elements: {entry.get('total_elements') or 0}")
         lines.append("")
         codes = entry.get("failure_codes", [])
         if codes:
@@ -326,7 +326,7 @@ def run_review(
         try:
             with open(smoke_report_path, "r", encoding="utf-8") as sf:
                 smoke_data = json.load(sf)
-            smoke_ok = smoke_data.get("may_claim_success", False)
+            smoke_ok = bool(smoke_data.get("may_claim_success"))
             smoke_failures = smoke_data.get("overall_failures", [])
             smoke_warnings = smoke_data.get("overall_warnings", [])
         except Exception as err:

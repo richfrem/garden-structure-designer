@@ -16,7 +16,7 @@ sys.path.append(str(Path(__file__).parent.resolve()))
 from structure_io import load_structure, save_structure, assert_not_sealed
 
 def translate_to_constraints(structure: dict[str, Any]) -> None:
-    assert_not_sealed(structure, "geometry")
+    assert_not_sealed(structure, "cad_constraints")
     
     qty = structure["layout"]["post_count"]
     r_ft = structure["layout"]["inscribed_radius_ft"]
@@ -35,8 +35,7 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
     
     # Calculate apothem and pitch-based rise for nominal Z_APEX
     apothem = r_ft * math.cos(math.pi / qty)
-    # Default hub radius min is 0.75 or from spec
-    hub_r = max(structure["hub"].get("radius_min_ft", 0.6), 0.75)
+    hub_r = max(structure["hub"].get("radius_min_ft") or 0.6, 0.75)
     roof_rise = r_ft * (pr / rr)
     Z_APEX = post_h + roof_rise
     
@@ -174,9 +173,8 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
             }
         })
         
-    # Braces
     if structure.get("bracing", {}).get("enabled"):
-        run_t = structure["bracing"]["brace"].get("run_ft", 1.5)
+        run_t = structure["bracing"]["brace"].get("run_ft") or 1.5
         for i in range(qty):
             # Calculate beam span to enforce max 0.3 span limit
             p1 = post_xy[i]
@@ -234,10 +232,9 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
             }
         })
         
-    # Jack Rafters
     jack_spec = structure["roof"].get("secondary_rafters", {})
     if jack_spec.get("enabled"):
-        jack_count = jack_spec.get("count_per_side", 2)
+        jack_count = jack_spec.get("count_per_side") or 2
         for i in range(qty):
             for j_idx in range(jack_count):
                 f = (j_idx + 1.0) / (jack_count + 1.0)
@@ -306,7 +303,7 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
     # Modify bracing parameters inside layout as required by schema changes
     if "bracing" in structure and "brace" in structure["bracing"]:
         # Ensure constraints are written correctly
-        run_t_val = structure["bracing"]["brace"].get("run_ft", 1.5)
+        run_t_val = structure["bracing"]["brace"].get("run_ft") or 1.5
         structure["bracing"]["brace"]["constraints"] = {
             "start_surface": "post_face",
             "end_surface": "beam_soffit",
@@ -316,12 +313,10 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
     if "meta" in structure:
         structure["meta"]["lifecycle"] = "CONSTRAINTS_DEFINED"
 
+from path_utils import staging_dir
+
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python3 cad_language_translator.py <path_to_structure.json>")
-        sys.exit(1)
-        
-    path = sys.argv[1]
+    path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")
     struct = load_structure(path)
     translate_to_constraints(struct)
     save_structure(struct, path)

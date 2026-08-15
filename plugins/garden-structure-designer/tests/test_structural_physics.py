@@ -4,8 +4,8 @@ test_structural_physics.py
 Rigorously tests support engineering, physics, and geometry invariants.
 """
 
-from __future__ import annotations
-
+import copy
+import json
 import math
 import sys
 from pathlib import Path
@@ -61,30 +61,32 @@ def test_caisson_bearing_area():
 
 
 # 4. Test Load Path and Vertical Alignment Geometry
-def test_load_path_alignment():
+def test_load_path_alignment(tmp_path):
     """The Z-elevations and horizontal layouts of the structural components must form a continuous load path."""
-    model = {
-        "members": {"posts": {"quantity": 6}},
-        "dimensions": {"max_diagonal_ft": 10.0},
-    }
-    calcs = {
-        "total_height": {"post_ft": 8.33, "beam_depth_ft": 1.0},
-        "roof_rise":    {"rise_ft": 1.6},
-    }
+    from test_geometry_engine import STRUCTURE_SEED
+    from geometry_engine import compute_from_structure
+    p = tmp_path / "structure.json"
+    p.write_text(json.dumps(copy.deepcopy(STRUCTURE_SEED)))
+    compute_from_structure(str(p))
+    s = json.loads(p.read_text())
     
-    scene = build_structure_scene(model, calcs)
+    scene = build_structure_scene(s)
     
     # Verify grade starts at 0.0
     assert scene.Z_GRADE == 0.0
     
-    # Verify post top is exactly at Z_POST_TOP (the bottom of the beams)
-    assert scene.Z_POST_TOP == 7.33
+    post_ft = s["geometry"]["total_height"]["post_ft"]
+    beam_d = s["geometry"]["total_height"]["beam_depth_ft"]
+    rise_ft = s["geometry"]["roof_rise"]["rise_ft"]
     
-    # Verify beam top is exactly at Z_BEAM_TOP (post top + beam depth)
-    assert scene.Z_BEAM_TOP == 8.33
+    # Verify post top is exactly at Z_POST_TOP (the bottom of the beams)
+    assert round(scene.Z_POST_TOP, 3) == round(post_ft - beam_d, 3)
+    
+    # Verify beam top is exactly at Z_BEAM_TOP (post top + beam depth = post_ft)
+    assert round(scene.Z_BEAM_TOP, 3) == round(post_ft, 3)
     
     # Verify roof apex is exactly at Z_APEX (beam top + roof rise)
-    assert scene.Z_APEX == 9.93
+    assert round(scene.Z_APEX, 3) == round(post_ft + rise_ft, 3)
 
 
 # 5. Test Roof Geometry & Pitch Angles

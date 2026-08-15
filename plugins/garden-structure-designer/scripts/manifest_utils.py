@@ -52,3 +52,8 @@ def compute_dependency_hash(paths):
                 pass # If it's malformed JSON, just hash the raw bytes
         h.update(content)
     return h.hexdigest()
+
+if __name__ == "__main__":
+    import sys
+    files = sys.argv[1:] if len(sys.argv) > 1 else ["context/staging/structure.json"]
+    print(compute_dependency_hash(files))

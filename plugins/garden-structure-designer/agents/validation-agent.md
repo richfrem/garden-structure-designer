@@ -93,20 +93,22 @@ If `gemini-cli` is unavailable (non-zero exit, 429 capacity exhausted, not insta
 
 For revision runs, confirm the revised package includes **current** deterministic artifacts before emitting any status:
 
-1. Required SVG outputs exist in `outputs/` and each passes `svg_validator.py`.
-2. `context/staging/schema-validation-report.json` exists and reflects the current run.
-3. `context/staging/physics-validation-report.json` exists and is current.
-4. `context/staging/design-run-summary.md` exists and reflects current geometry.
-5. `outputs/quality-dashboard.md` and `outputs/run-insights.json` exist.
-6. Any PNG renders in `outputs/` are labelled **"Visual concept only — construction geometry is governed by validated JSON/SVG artifacts."**
-7. Markdown builder docs do not assert dimensions that are unsupported by deterministic staging artifacts.
+1. Required SVG outputs exist in `outputs/` and each passes `svg_validator.py` and `drawing_content_validator.py`.
+2. `context/staging/structure.json` is sealed and valid.
+3. `context/staging/schema-validation-report.json` exists and reflects the current run.
+4. `context/staging/physics-validation-report.json` exists and is current.
+5. Builder docs exist and match deterministic models: `outputs/lumber-purchase-list.md`, `outputs/budget-estimate.md`, and `outputs/assembly-guide.md`.
+6. Compiled construction package exists: `outputs/pergola_plan_embedded.md` and `outputs/pergola_plan.pdf`.
+7. `outputs/quality-dashboard.md` and `outputs/run-insights.json` exist.
+8. Any PNG renders in `outputs/` are labelled **"Visual concept only — construction geometry is governed by validated JSON/SVG artifacts."**
+9. Markdown builder docs do not assert dimensions that are unsupported by deterministic staging artifacts.
 
-If only Markdown files, render prompts, or PNG images changed, emit:
+If builder documents or compiled PDF outputs are missing or stale, emit:
 ```
-PARTIAL — presentation artifacts updated, deterministic package not regenerated or revalidated.
+PARTIAL — drawings validated, but builder documents or PDF package not generated or revalidated.
 ```
 
-Do **not** emit `READY` unless deterministic SVG/JSON validation passes.
+Do **not** emit `READY` unless deterministic SVG/JSON and builder documents/PDF validation passes.
 
 ## Independent Drawing Red-Team Requirement
 

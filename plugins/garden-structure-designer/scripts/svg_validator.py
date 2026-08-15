@@ -140,8 +140,8 @@ def _check_dimension_labels(
     # --- Compound angle labels (only when geometry-calculations.json / geometry section is available) ---
     if calcs:
         cuts = calcs.get("compound_cut", {})
-        miter = str(round(cuts.get("miter_deg", 0), 2))
-        bevel = str(round(cuts.get("bevel_deg", 0), 2))
+        miter = str(round(cuts.get("miter_deg") or 0.0, 2))
+        bevel = str(round(cuts.get("bevel_deg") or 0.0, 2))
         
         if miter not in raw:
             errors.append(
@@ -183,7 +183,7 @@ def _check_topology_count(raw: str, model: dict) -> list[str]:
     else:
         members = model.get("members") or model.get("structuralElements", {})
         posts = members.get("posts", {})
-        expected_qty = posts.get("quantity", 6)
+        expected_qty = posts.get("quantity") or posts.get("count") or 6
 
     # Count elements with the canonical post cedar fill colour or data-role
     found = len(re.findall(r'data-role="post"', raw))
@@ -296,17 +296,20 @@ def validate(svg_path: str, model_path: str) -> list[str]:
 # ---------------------------------------------------------------------------
 
 
+from path_utils import staging_dir
+
 def main() -> None:
     """Parse CLI arguments and run validation, printing results to stdout."""
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         print(
             "Usage: python3 scripts/svg_validator.py "
-            "<svg_file> <path-to-structural-model.json>",
+            "<svg_file> [path-to-structure.json]",
             file=sys.stderr,
         )
         sys.exit(1)
 
-    svg_path, model_path = sys.argv[1], sys.argv[2]
+    svg_path = sys.argv[1]
+    model_path = sys.argv[2] if len(sys.argv) > 2 else str(staging_dir() / "structure.json")
     errors = validate(svg_path, model_path)
 
     if errors:

@@ -43,20 +43,22 @@ from cad_scene import (
 # Shared fixture — standard 6-post hex pergola matching the staging model
 # ---------------------------------------------------------------------------
 
-MODEL = {
-    "members": {"posts": {"quantity": 6}},
-    "dimensions": {"max_diagonal_ft": 10.0},
-}
-CALCS = {
-    "total_height": {"post_ft": 8.33, "beam_depth_ft": 0.604},
-    "roof_rise":    {"rise_ft": 1.667},
-}
+@pytest.fixture(scope="module")
+def base_structure_dict(tmp_path_factory):
+    from test_geometry_engine import STRUCTURE_SEED
+    from geometry_engine import compute_from_structure
+    tmp = tmp_path_factory.mktemp("base_invariants_fix")
+    p = tmp / "structure.json"
+    p.write_text(json.dumps(copy.deepcopy(STRUCTURE_SEED)))
+    compute_from_structure(str(p))
+    return json.loads(p.read_text())
+
 _FT_TOL = 1.0 / 120.0   # 1/10 inch tolerance
 
 
 @pytest.fixture(scope="module")
-def scene():
-    s = build_structure_scene(MODEL, CALCS)
+def scene(base_structure_dict):
+    s = build_structure_scene(copy.deepcopy(base_structure_dict))
     validate_scene_geometry(s)
     return s
 
@@ -322,14 +324,14 @@ def test_no_rafter_endpoint_inside_hub_radius(scene, solids_by_role):
 # validate_scene_geometry integration — ensure it catches deliberate violations
 # ---------------------------------------------------------------------------
 
-def test_validator_catches_zero_length_member():
+def test_validator_catches_zero_length_member(base_structure_dict):
     """validate_scene_geometry must raise GeometryError on zero-length members."""
     from cad_scene import Solid, Scene, Face
     bad_solid = Solid(role="post", tag="P_BAD",
                       p0=(0.0, 0.0, 0.0), p1=(0.0, 0.0, 0.0))
     bad_solid.faces.append(Face([(0,0,0)], (0,0,1), "#fff", "post", "P_BAD"))
 
-    s = build_structure_scene(MODEL, CALCS)
+    s = build_structure_scene(copy.deepcopy(base_structure_dict))
     s.solids.append(bad_solid)
 
     # Should raise because bad_solid has zero length
@@ -337,9 +339,9 @@ def test_validator_catches_zero_length_member():
         validate_scene_geometry(s)
 
 
-def test_validator_passes_on_valid_scene():
+def test_validator_passes_on_valid_scene(base_structure_dict):
     """validate_scene_geometry must not raise on a correctly built scene."""
-    scene = build_structure_scene(MODEL, CALCS)
+    scene = build_structure_scene(copy.deepcopy(base_structure_dict))
     validate_scene_geometry(scene)   # must not raise
 
 
@@ -394,12 +396,12 @@ def test_beam_endpoints_on_post_grid(scene, solids_by_role):
             )
 
 
-def test_invariant9_catches_displaced_beam():
+def test_invariant9_catches_displaced_beam(base_structure_dict):
     """
     Invariant 9 (mutation): displace a beam endpoint 0.5 ft off the post grid;
     validate_scene_geometry must raise GeometryError naming Invariant 9.
     """
-    s = build_structure_scene(MODEL, CALCS)
+    s = build_structure_scene(copy.deepcopy(base_structure_dict))
     beams = [solid for solid in s.solids if solid.role == "beam"]
     assert beams, "Need at least one beam for this mutation test"
     # Shift the first beam's p0 0.5 ft off its post position (clearly > 1/8" snap)
@@ -434,12 +436,12 @@ def test_brace_foot_on_post_face(scene, solids_by_role):
         )
 
 
-def test_invariant10_catches_floating_brace_foot():
+def test_invariant10_catches_floating_brace_foot(base_structure_dict):
     """
     Invariant 10 (mutation): move a brace's lower foot 50 ft from any post;
     validate_scene_geometry must raise GeometryError naming Invariant 10.
     """
-    s = build_structure_scene(MODEL, CALCS)
+    s = build_structure_scene(copy.deepcopy(base_structure_dict))
     braces = [solid for solid in s.solids if solid.role == "brace"]
     assert braces, "Need at least one brace for this mutation test"
     b0 = braces[0]
@@ -453,12 +455,12 @@ def test_invariant10_catches_floating_brace_foot():
         validate_scene_geometry(s)
 
 
-def test_invariant10_catches_floating_brace_head():
+def test_invariant10_catches_floating_brace_head(base_structure_dict):
     """
     Invariant 10 (mutation): move a brace's upper head 50 ft from any post;
     validate_scene_geometry must raise GeometryError naming Invariant 10.
     """
-    s = build_structure_scene(MODEL, CALCS)
+    s = build_structure_scene(copy.deepcopy(base_structure_dict))
     braces = [solid for solid in s.solids if solid.role == "brace"]
     assert braces, "Need at least one brace for this mutation test"
     b0 = braces[0]

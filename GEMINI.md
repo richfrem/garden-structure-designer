@@ -9,7 +9,10 @@ This is an **AI-native plugin** called `garden-structure-designer` — a multi-a
 
 ## Key Commands
 ```bash
-# Install via uvx (Antigravity / CLI environments)
+# Install all plugins/skills via uvx (Antigravity / CLI environments)
+uvx --from git+https://github.com/richfrem/agent-plugins-skills plugin-add plugins/ --all -y
+
+# Install specific plugin via uvx
 uvx --from git+https://github.com/richfrem/garden-structure-designer plugin-add richfrem/garden-structure-designer
 
 # Install via Claude Code marketplace
@@ -21,25 +24,31 @@ uvx --from git+https://github.com/richfrem/garden-structure-designer plugin-add 
 
 ## Architecture
 
-### Agent Pipeline Data Flow (v1.3 Deterministic)
-The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs must conform to rigorous JSON Schemas.
+### Primary Point of Entry
+- **End Users & Conversational UI**: **`interactive-designer`** is the conversational front-door. It translates colloquial user descriptions (*"chunky rustic gazebo with steep roof"*) into formal CAD constraints and writes `context/staging/structure.json`.
+- **Automated Pipeline Backend**: **`design-orchestrator`** is the non-interactive backend controller. It receives `structure.json` and drives deterministic math, drawing generation, adversarial QA, and document compilation.
 
-1. **`interactive-designer`** → user interview → calls `intake-normalizer`
-2. **`intake-normalizer`** → writes `design-spec.json`
-3. **`design-orchestrator`** → runs sequentially through fail-closed stages:
+### Agent Pipeline Data Flow (v1.3 Deterministic)
+The pipeline uses `context/staging/structure.json` as the sole data bus.
+
+1. **`interactive-designer`** → conducts user interview → calls `intake-normalizer` → writes `context/staging/structure.json`.
+2. **`design-orchestrator`** → runs sequentially through fail-closed stages:
    - **Stage 0 (Self-Healing)**: Reads `learning-registry.json` to inject lessons into prompts via `load_applicable_lessons.py`.
-   - **Stage 1 (Code & Constraints)**: `building-code-validator` maps region to wind/snow constraints.
-   - **Stage 2 (Deterministic Engineering)**: `structural-engine` runs `geometry_engine.py` to compute explicit dimensions, spans, and pitches.
-   - **Stage 3 (Connections)**: `joinery-designer` & `bracing-system-designer` create the load-path connections.
-   - **Stage 4 (Drawing & Blueprint Generation)**: `drawing-generator` & `shop-blueprint-generator` produce all 8 SVG sheets. `cut_list_engine.py` writes `SB01-cut-list.json`.
+   - **Stage 0.5 (Intent Pre-Gate)**: `validate_intent.py` verifies all 15 required structural fields exist before geometry computation.
+   - **Stage 1 (Code & Foundation)**: `building-code-validator` maps region to load constraints; `structural-engine` runs `geometry_engine.py` to solve exact 3D vertices, pitches, and miter cuts.
+   - **Stage 1.5 (CAD Constraint Translation)**: `cad_language_translator.py` compiles formal reference planes and member constraints.
+   - **Stage 2 (Connections & Topology)**: `joinery-designer` & `bracing-system-designer` define load paths; `topology_compiler.py` enriches `geometry.joints.topology` with the explicit member-connection graph.
+   - **Stage 3 (Physics QA)**: `structural_physics_validator.py` checks slenderness ($L/d \le 50$), deflection ($L/240$), and footing bearing.
+   - **Stage 4 (Drawing & Blueprint Generation)**: `render_drawings.py` produces all 8 SVG sheets with stable member IDs (`P1`, `B1`, `R1`, `HUB`); `cut_list_engine.py` writes `SB01-cut-list.json`.
    - **Stage 5 (Blueprint QA Gate)**: `validation-agent` checks XML, geometry, dimensions, and schema/physics artifacts.
    - **Stage 5.5 (Cross-Artifact Reconciliation)**: `cross_artifact_validator.py` ensures blueprint vs. model consistency.
+   - **Stage 5.6 (Visual Smoke Gate)**: `visual_svg_smoke_test.py` validates raster screenshots via headless Chromium and OpenCV topology transforms.
    - **Stage 5.75 (Drawing Red-Team Gate)**: `run_drawing_red_team.py` independently validates all SVGs for builder-usefulness. **MANDATORY before PASS.** `may_claim_success: false` blocks the package.
-   - **Stage 6 (Builder Documents)**: `builder-docs-generator` produces cut lists, assembly guide, and estimates.
-   - **Stage 7 (Package Consistency)**: `package_consistency_validator.py` and `assembly_guide_validator.py` enforce final parity.
-   - **Stage 8 (Repair)**: Repeated failures scaffold PyTest regressions via `failure_to_test.py`.
+   - **Stage 6 (Fabrication & Builder Documents)**: `fabrication_builder.py` produces `outputs/fabrication/cut-list.json`; `builder_docs_compiler.py` produces cut lists, assembly guide (tripod-first), and budget estimates.
+   - **Stage 7 (Package Compilation)**: `package_consistency_validator.py` enforces final parity; `compile_package.py` embeds assets via `embed_svgs.py` and compiles `outputs/pergola_plan.pdf`.
+   - **Stage 8 (Repair & Learning)**: Repeated failures scaffold PyTest regressions via `failure_to_test.py`; `repair_orchestrator.py` patches issues.
 
-> **Note:** The stage list above is a high-level summary. `design-orchestrator.md` is the authoritative source of stage definitions and gate logic.
+> **Note:** `design-orchestrator.md` is the authoritative source of stage definitions and gate logic.
 
 ---
 
@@ -49,8 +58,9 @@ The pipeline uses `context/staging/` as the shared data bus. All inputs/outputs 
 We have replaced LLM-guessed geometry with strictly deterministic Python engines:
 - `geometry_engine.py`: Calculates exact roof pitches, miter cuts, span physics. The AI provides inputs, but never guesses the math.
 - `cut_list_engine.py`: Computes exact board foot quantities and waste factors.
-- `render_drawings.py`: Deterministically draws SVG files based strictly on `geometry-calculations.json`.
+- `render_drawings.py`: Deterministically draws SVG files based strictly on `structure.json`.
 - `structural_physics_validator.py`: Provides empirical formulas for safety verification.
+- `builder_docs_compiler.py` & `compile_package.py`: Automates builder documentation and PDF publishing.
 
 ### Validation Layers
 | Layer | Script | Purpose | Stage |
@@ -105,6 +115,59 @@ Enforce the strict iron law from `.agent/rules/test-driven-development.md`: NO P
 
 ### 7. Data-Driven & Declarative Architecture
 Enforce the strict engineering policy from `.agent/rules/data-driven-declarative.md`: all CAD engine dimensions, framing member counts, offsets, scales, and fabrication cut lists must dynamically resolve from staging `structure.json`. Hardcoding geometry layouts, viewport scales, and silent fallback defaults (e.g. `.get(key, default)` defaults) in python scripts is strictly prohibited. If configurations are missing, fail-closed immediately.
+
+---
+
+## CAD Debuggability Requirement (HARD RULE)
+
+All generated structures MUST be debuggable with computer-aided-design-level clarity. This is a first-class architectural requirement — not a UI enhancement.
+
+### 1. Stable Unique Member IDs
+Every structural member MUST carry a stable, human-readable identifier:
+- Posts: `P1`, `P2`, … (count-sequential, matching `layout.post_count`)
+- Beams: `B1`, `B2`, … (span-sequential, same count as posts)
+- Rafters: `R1`, `R2`, … — Jack Rafters: `Jack1a`, `Jack1b`, …
+- Braces: `Brace1a`, `Brace1b`, …
+- Footings: `FT1`, `FT2`, …
+- Hub: `HUB`
+
+### 2. Cross-Layer ID Consistency
+IDs MUST be identical across ALL system layers. Any mismatch is a traceability failure:
+- `structure.json` member arrays → `geometry.joints` → CAD `Solid.tag` → SVG `data-tag` + visible label → validation reports → error messages → red-team output
+
+### 3. Mandatory Visual Labels
+Every major member in every drawing MUST carry a visible `→ {ID}` label near its axis midpoint. Missing labels on posts, beams, or rafters is a FAIL condition.
+
+### 4. ID-Referenced Validation Failures
+Every validation failure MUST name the exact member(s):
+```
+FAIL: Brace3b → Beam B4  (head gap = 1.8")
+FAIL: Beam B2 → Post P2  (soffit Z mismatch = 1.2")
+```
+Generic messages like "brace is misaligned" are prohibited.
+
+### 5. Bidirectional Debugging
+The system MUST support:
+- Drawing → identify exact member in `structure.json` (via `data-tag`)
+- `structure.json` member ID → locate exact SVG element (via `data-tag`)
+
+### 6. Machine-Readable SVG Identifiers
+Every SVG structural element MUST embed:
+```xml
+data-role="beam"  data-tag="B3"
+```
+`data-id` alone is insufficient. `data-tag` carries the stable member ID.
+
+### 7. Anonymous Geometry Prohibition
+No rendered element may be anonymous. If any element cannot be mapped back to a named member in `structure.json`, the pipeline MUST fail immediately.
+
+### 8. Connection Traceability
+Every structural connection MUST be explicitly traceable in validation reports:
+```
+R3 → HUB
+B2 → P2
+Brace4a → B4 + P4
+```
 
 ---
 
@@ -298,29 +361,26 @@ The agent MUST NOT:
 - **Agents** live in `plugins/<plugin-name>/agents/<name>/AGENT.md` with YAML frontmatter (`name`, `description`, `allowed-tools`).
 - **Skills** live in `plugins/<plugin-name>/skills/<name>/SKILL.md` with the same frontmatter pattern.
 - Skills use `create-skill`, `create-sub-agent`, and `create-plugin` meta-skills for consistent authoring.
-## Gemini CLI Tool Mapping
-
-| Claude Code | Gemini CLI equivalent |
-|:------------|:----------------------|
-| `Read`      | `read_file`           |
-| `Write`     | `write_file`          |
-| `Edit`      | `replace_in_file`     |
-| `Bash`      | `run_shell_command`   |
-| `Glob`      | `glob`                |
-| `Grep`      | `grep`                |
-
-Skills in `.agents/skills/` use Claude Code tool names in their SKILL.md files.
-When executing skills via Gemini, translate tool references using the table above.
 
 ---
 
-## Deterministic Package Completion Standard (v1.3.1)
+## Deterministic Package Completion Standard (v1.3.2)
 
 A garden-structure-designer task is **not complete** merely because Markdown files, render prompts, or photorealistic images were updated.
 
 The authoritative construction package consists of validated deterministic artifacts:
-- `context/staging/design-spec.json` / `structural-model.json` / `geometry-calculations.json`
-- `outputs/*.svg` and `outputs/shop-blueprint/SB01-cut-list.json`
-- `outputs/quality-dashboard.md` and `outputs/run-insights.json`
+```
+context/staging/structure.json              outputs/fabrication/cut-list.json
+outputs/*.svg                              outputs/pergola_plan.md
+outputs/pergola_plan_embedded.md          outputs/pergola_plan.pdf
+outputs/quality-dashboard.md              outputs/run-insights.json
+```
 
-All geometry, dimensions, angles, and cut lengths must trace back to JSON/SVG artifacts generated by scripts. Photorealistic images are presentation references only. Before claiming success, report: artifacts regenerated or revalidated · validators run · remaining warnings · status: PASS / PARTIAL / BLOCKED / DRAFT ONLY.
+All geometry, dimensions, angles, cut lengths, and validation claims must trace back to JSON/SVG artifacts generated or validated by scripts. Photorealistic images are presentation references embedded in the master PDF package.
+
+Before claiming success, agents must report:
+- deterministic artifacts regenerated or revalidated;
+- builder documents and compiled PDF generated;
+- validators run and their exit results;
+- remaining warnings;
+- status: **PASS**, **PARTIAL**, **BLOCKED**, or **DRAFT ONLY**.

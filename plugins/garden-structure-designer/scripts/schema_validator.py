@@ -146,7 +146,8 @@ def main():
     if overall_status == "FAIL":
         print("SCHEMA VALIDATION FAILED")
         for f in report["files"]:
-            if f["errors"]: print(f"  {f['path']}: {f['errors']}")
+            if f.get("errors"): print(f"  {f['path']}: {f['errors']}")
+            elif f.get("detail"): print(f"  {f['path']}: {f['detail']}")
         sys.exit(1)
     else:
         print(f"SCHEMA VALIDATION PASSED ✓ ({overall_status})")

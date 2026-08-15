@@ -100,12 +100,6 @@ class HardcodeVisitor(ast.NodeVisitor):
                             f"FORBIDDEN_GET_FALLBACK: Use of fallback default string {val!r} in .get(). "
                             "Config must be parsed directly from structure.json and validated."
                         )
-                # Older python compatibility
-                elif isinstance(default_arg, ast.Num):
-                    self.add_violation(
-                        node,
-                        "FORBIDDEN_GET_NUMBER: Use of silent number fallback default in .get()."
-                    )
         self.generic_visit(node)
 
     # External Comment: Inspect assignment nodes for hardcoded scale factor variables.

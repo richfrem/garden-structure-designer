@@ -160,11 +160,11 @@ def build_cad_model(model: dict, calcs: dict) -> object | None:
     beams_spec = model.get("members", {}).get("beams", {})
     rafters_spec = model.get("members", {}).get("rafters", {})
 
-    POST_HW   = (posts_spec.get("width_in", 5.5) / 12.0) / 2.0
-    POST_HD   = (posts_spec.get("depth_in", 5.5) / 12.0) / 2.0
-    BEAM_HW   = (beams_spec.get("width_in", 5.5) / 12.0) / 2.0
-    RAFTER_HW = (rafters_spec.get("width_in", 3.5) / 12.0) / 2.0
-    RAFTER_HD = (rafters_spec.get("depth_in", 5.5) / 12.0) / 2.0
+    POST_HW   = ((posts_spec.get("width_in") or posts_spec.get("actual_width_in") or 5.5) / 12.0) / 2.0
+    POST_HD   = ((posts_spec.get("depth_in") or posts_spec.get("actual_depth_in") or 5.5) / 12.0) / 2.0
+    BEAM_HW   = ((beams_spec.get("width_in") or beams_spec.get("actual_width_in") or 5.5) / 12.0) / 2.0
+    RAFTER_HW = ((rafters_spec.get("width_in") or rafters_spec.get("actual_width_in") or 3.5) / 12.0) / 2.0
+    RAFTER_HD = ((rafters_spec.get("depth_in") or rafters_spec.get("actual_depth_in") or 5.5) / 12.0) / 2.0
 
     parts: list = []
 
@@ -302,7 +302,7 @@ def export_svg_projection(
             "front": b3d.Vector(0, -1, 0),
             "side":  b3d.Vector(1, 0, 0),
         }
-        cam = view_dirs.get(view, view_dirs["iso"])
+        cam = view_dirs.get(view) or view_dirs["iso"]
 
         try:
             if isinstance(cad_model, list):

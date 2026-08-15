@@ -3,16 +3,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from cad_scene import build_structure_scene
 
-MODEL = {
-    "members": {"posts": {"quantity": 6}},
-    "dimensions": {"max_diagonal_ft": 10.0},
-}
-CALCS = {
-    "total_height": {"post_ft": 8.33, "beam_depth_ft": 1.0},
-    "roof_rise":    {"rise_ft": 1.6},
-}
+from test_geometry_engine import STRUCTURE_SEED
+from geometry_engine import compute_from_structure
+import copy
+import json
 
-scene = build_structure_scene(MODEL, CALCS)
+s_copy = copy.deepcopy(STRUCTURE_SEED)
+compute_from_structure(s_copy)
+
+scene = build_structure_scene(s_copy)
 braces = [s for s in scene.solids if s.role == "brace"]
 for b in braces:
     print(f"{b.tag}: p0={b.p0}, p1={b.p1}")

@@ -41,22 +41,19 @@ from validate_connections import (
 )
 
 # ---------------------------------------------------------------------------
-# Shared fixture — same minimal model as test_cad_geometry_invariants
+# Shared fixture — standard 6-post hex pergola matching the staging model
 # ---------------------------------------------------------------------------
 
-_MODEL = {
-    "members": {"posts": {"quantity": 6}},
-    "dimensions": {"max_diagonal_ft": 10.0},
-}
-_CALCS = {
-    "total_height": {"post_ft": 8.33, "beam_depth_ft": 0.604},
-    "roof_rise":    {"rise_ft": 1.667},
-}
-
-
 @pytest.fixture(scope="module")
-def valid_scene() -> Scene:
-    return build_structure_scene(_MODEL, _CALCS)
+def valid_scene(tmp_path_factory) -> Scene:
+    from test_geometry_engine import STRUCTURE_SEED
+    from geometry_engine import compute_from_structure
+    tmp = tmp_path_factory.mktemp("val_conn_fix")
+    p = tmp / "structure.json"
+    p.write_text(json.dumps(copy.deepcopy(STRUCTURE_SEED)))
+    compute_from_structure(str(p))
+    s = json.loads(p.read_text())
+    return build_structure_scene(s)
 
 
 # ---------------------------------------------------------------------------

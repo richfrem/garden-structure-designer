@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/cut-list/1.0",
-  "source_hash": "bda417845444b1738b606561a31cb04c619807b02d581032e0a3dcf42a306af6",
+  "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
   "members": [
     {
       "id": "M01",
@@ -41,7 +41,7 @@
       "order_length_ft": 8,
       "bf_per_piece_net": 12.39,
       "bf_per_piece_order": 16.0,
-      "bf_total_net": 74.32,
+      "bf_total_net": 74.31,
       "bf_total_order": 96.0
     },
     {

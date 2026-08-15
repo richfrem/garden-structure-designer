@@ -48,22 +48,29 @@ All models inside `context/staging/`.
 Visuals from `drawing-generator` (Plan, Elevation, Perspective, Isometric).
 Technical cut-sheets from `shop-blueprint-generator` (Dimensioned orthographics and isolated joinery components).
 
-## Core Responsibilities
-1. Construct the document adhering to the PDF Layout requirements. Place the primary photorealistic render (`outputs/high-resolution-image/*_render_1.png`) at the top of the compiled document, directly underneath the main title. Follow this with architectural diagrams and 3D visual layouts, then the detailed technical shop blueprints, and lastly the timber cut-list tables and fastener tables.
-2. Write the intermediate Markdown to `outputs/design-package.md` (or `outputs/pergola_plan.md` depending on the active naming convention) using standard `![alt](path)` image references pointing to the actual SVG/PNG files in `outputs/`.
-3. **Embed all assets before PDF conversion** — run `embed_svgs.py` to inline every SVG and PNG as raw HTML so the PDF contains the visuals, not broken links:
+## Canonical Compilation Command
+
+Run the unified package compiler CLI:
+```bash
+python3 plugins/garden-structure-designer/scripts/compile_package.py
+```
+
+This single command automatically:
+1. Validates all preflight gates (`drawing-red-team-report.json → may_claim_success: true`, high-resolution renders present, visual smoke tests fresh).
+2. Generates the structured master document (`outputs/pergola_plan.md` or `outputs/design-package.md`).
+3. Embeds all 8 SVG sheets and PNG renders using `embed_svgs.py`.
+4. Compiles the PDF via `npx -y md-to-pdf` with graceful fallback reporting.
+
+### Individual / Manual Steps (for debugging only):
+1. **Asset embedding**:
    ```bash
    python3 plugins/garden-structure-designer/scripts/embed_svgs.py \
        outputs/design-package.md \
        outputs/design-package-embedded.md
    ```
-4. Convert the embedded Markdown to PDF:
+2. **Direct PDF conversion**:
    ```bash
    npx -y md-to-pdf outputs/design-package-embedded.md
-   # produces outputs/design-package-embedded.pdf
-   ```
-5. Rename to final output:
-   ```bash
    mv outputs/design-package-embedded.pdf outputs/design-package.pdf
    ```
 

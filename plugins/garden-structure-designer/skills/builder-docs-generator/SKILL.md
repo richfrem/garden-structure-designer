@@ -29,8 +29,13 @@ outputs/shop-blueprint/SB01-cut-list.json
 If a dimension is uncertain, write `Dimension pending deterministic verification.` rather than inventing a value from an image.
 
 
-- `context/staging/structure.json` (members, geometry sections)
-- `outputs/shop-blueprint/SB01-cut-list.json` (for board-foot totals)
+## Execution Command
+
+Run the deterministic builder docs compiler:
+```bash
+python3 plugins/garden-structure-designer/scripts/builder_docs_compiler.py
+```
+This reads `context/staging/structure.json` and `outputs/shop-blueprint/SB01-cut-list.json` to generate all 3 builder documents deterministically.
 
 ## Outputs
 

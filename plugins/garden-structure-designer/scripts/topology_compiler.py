@@ -62,20 +62,44 @@ def _build_members(joints: dict, bracing: dict) -> list[dict[str, Any]]:
     if hub.get("type") and hub.get("type") != "none":
         members.append({"id": "HUB", "type": "hub", "hub_type": hub.get("type")})
 
-    # Primary rafters
-    primary_count = joints.get("rafters", {}).get("primary_count", 0)
+    primary_count = joints.get("rafters", {}).get("primary_count") or 0
     for i in range(primary_count):
         members.append({"id": f"R{i+1}", "type": "rafter", "subtype": "hip"})
 
     # Braces
-    pairs = bracing.get("endpoints", {}).get("pairs", [])
-    for pair in pairs:
-        members.append({
-            "id":           pair["brace_id"],
-            "type":         "brace",
-            "post_index":   pair["post_index"],
-            "toward_index": pair["toward_post_index"],
-        })
+    endpoints = bracing.get("endpoints", [])
+    if isinstance(endpoints, dict):
+        pairs = endpoints.get("pairs", [])
+        for pair in pairs:
+            members.append({
+                "id":           pair["brace_id"],
+                "type":         "brace",
+                "post_index":   pair["post_index"],
+                "toward_index": pair["toward_post_index"],
+            })
+    elif isinstance(endpoints, list):
+        qty = len(post_xy_list)
+        for ep in endpoints:
+            brace_id = ep["id"]
+            # e.g., K1A -> post 0, toward 1; K1B -> post 1, toward 0
+            if brace_id.startswith("K") and len(brace_id) >= 3:
+                try:
+                    p_num = int(brace_id[1:-1]) - 1
+                    suffix = brace_id[-1]
+                    if suffix == 'A':
+                        post_idx = p_num
+                        toward_idx = (p_num + 1) % qty
+                    else:
+                        post_idx = (p_num + 1) % qty
+                        toward_idx = p_num
+                    members.append({
+                        "id":           brace_id,
+                        "type":         "brace",
+                        "post_index":   post_idx,
+                        "toward_index": toward_idx,
+                    })
+                except ValueError:
+                    pass
 
     return members
 
@@ -193,11 +217,17 @@ def enrich_structure(structure: dict) -> None:
 # CLI entry point
 # ---------------------------------------------------------------------------
 
+import os
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.resolve()))
+from path_utils import staging_dir
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Enrich a sealed structure.json with an explicit topology graph."
     )
-    parser.add_argument("structure", help="Path to sealed structure.json")
+    parser.add_argument("structure", nargs="?", default=str(staging_dir() / "structure.json"), help="Path to sealed structure.json")
     parser.add_argument("--dry-run", action="store_true",
                         help="Print topology JSON to stdout without writing")
     args = parser.parse_args()

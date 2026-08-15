@@ -103,9 +103,9 @@ def _hub_radius_within_beam_ring(structure: dict) -> ConstraintResult:
     """Hub polygon must fit inside the beam ring: hub_r < inscribed_r * cos(π/qty)."""
     geom   = structure.get("geometry", {})
     layout = structure.get("layout", {})
-    hub_r       = float(geom.get("hub_radius_ft", 0.0))
-    inscribed_r = float(layout.get("inscribed_radius_ft", 0.0))
-    qty         = int(layout.get("post_count", 0))
+    hub_r       = float(geom.get("hub_radius_ft") or 0.0)
+    inscribed_r = float(layout.get("inscribed_radius_ft") or 0.0)
+    qty         = int(layout.get("post_count") or 0)
     if inscribed_r <= 0 or qty < 3:
         return {
             "name": "hub_radius_within_beam_ring",
@@ -141,14 +141,19 @@ def _brace_upper_endpoints_at_beam_soffit(structure: dict) -> ConstraintResult:
     Uses the explicit endpoint coordinates stored in geometry.joints.braces.
     """
     zp         = structure.get("geometry", {}).get("joints", {}).get("z_planes", {})
-    Z_POST_TOP = float(zp.get("Z_POST_TOP", 0.0))
-    pairs      = (
+    Z_POST_TOP = float(zp.get("Z_POST_TOP") or 0.0)
+    ep_data = (
         structure.get("geometry", {})
                  .get("joints", {})
                  .get("braces", {})
                  .get("endpoints", {})
-                 .get("pairs", [])
     )
+    if isinstance(ep_data, dict):
+        pairs = ep_data.get("pairs", [])
+    elif isinstance(ep_data, list):
+        pairs = ep_data
+    else:
+        pairs = []
     if not pairs:
         return {
             "name": "brace_upper_endpoints_at_beam_soffit",
@@ -186,7 +191,7 @@ def _beam_span_matches_post_chord(structure: dict) -> ConstraintResult:
     """
     geom      = structure.get("geometry", {})
     spans     = geom.get("spans", {})
-    beam_span = float(spans.get("beam_span_ft", 0.0))
+    beam_span = float(spans.get("beam_span_ft") or 0.0)
     if beam_span <= 0:
         return {
             "name": "beam_span_matches_post_chord",
@@ -194,8 +199,8 @@ def _beam_span_matches_post_chord(structure: dict) -> ConstraintResult:
             "detail": "geometry.spans.beam_span_ft not present or zero",
         }
     layout      = structure.get("layout", {})
-    inscribed_r = float(layout.get("inscribed_radius_ft", 0.0))
-    qty         = int(layout.get("post_count", 0))
+    inscribed_r = float(layout.get("inscribed_radius_ft") or 0.0)
+    qty         = int(layout.get("post_count") or 0)
     if inscribed_r <= 0 or qty < 3:
         return {
             "name": "beam_span_matches_post_chord",
@@ -429,16 +434,20 @@ def assert_connections_valid(structure: dict) -> None:
 # CLI entry point
 # ---------------------------------------------------------------------------
 
+from pathlib import Path
+from path_utils import staging_dir
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run connection constraint checks on a sealed structure.json."
     )
-    parser.add_argument("structure", help="Path to sealed structure.json")
+    parser.add_argument("structure", nargs="?", default=None, help="Path to sealed structure.json")
     parser.add_argument("--fail-on-warn", action="store_true",
                         help="Exit 1 if any constraint status is WARN (default: only FAIL)")
     args = parser.parse_args()
 
-    with open(args.structure, encoding="utf-8") as f:
+    struct_path = Path(args.structure) if args.structure else (staging_dir() / "structure.json")
+    with open(struct_path, encoding="utf-8") as f:
         structure = json.load(f)
 
     results = solve_connections(structure)

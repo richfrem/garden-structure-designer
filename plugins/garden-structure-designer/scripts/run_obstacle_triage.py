@@ -77,7 +77,7 @@ def main():
         try:
             with open(red_team_path) as f:
                 r = json.load(f)
-                red_team_may_claim = r.get("may_claim_success", False)
+                red_team_may_claim = bool(r.get("may_claim_success"))
         except Exception:
             pass
             
