@@ -1,6 +1,6 @@
 # Lumber Purchase & Hardware Procurement List
 **Jurisdiction / Region:** BC_Vancouver_Island
-**Total Board Feet (Net Fabrication):** 0.00 BF
+**Total Board Feet (Net Fabrication):** 409.40 BF
 
 ## 1. Timber Schedule (Order Lengths Include Waste Allowance)
 | Member Role | Nominal Size | Quantity | Cut Length (ft) | Recommended Stock Order Length | Subtotal (BF) |

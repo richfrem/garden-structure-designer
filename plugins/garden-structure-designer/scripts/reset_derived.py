@@ -25,12 +25,17 @@ def main():
         
     data = load_structure(model_path)
     
+    # If neither flag specified, reset both derived sections by default
+    reset_all = not args.geometry and not args.cad
+    reset_geom = args.geometry or reset_all
+    reset_cad = args.cad or reset_all
+    
     changed = False
-    if args.geometry and "geometry" in data:
+    if reset_geom and "geometry" in data:
         data["geometry"]["_sealed"] = False
         changed = True
         
-    if args.cad and "cad" in data:
+    if reset_cad and "cad" in data:
         data["cad"]["_sealed"] = False
         changed = True
         
@@ -43,9 +48,9 @@ def main():
         print(f"Reset derived sections in {model_path.name}. Lifecycle set to {args.lifecycle}.")
         
         # Optionally remove shim generated files to prevent stale state issues
-        staging_dir = model_path.parent
+        target_staging = model_path.parent
         for legacy_file in ["structural-model.json", "geometry-calculations.json", "design-spec.json"]:
-            legacy_path = staging_dir / legacy_file
+            legacy_path = target_staging / legacy_file
             if legacy_path.exists():
                 legacy_path.unlink()
                 print(f"Removed legacy shim artifact: {legacy_path.name}")
