@@ -1,14 +1,37 @@
+# OS & Editor
 .DS_Store
-exploration/
-temp/
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Local Agent Environments & Personal Configs
 .agents/
 .claude/
-proposed-improvements.md
+.antigravitycli/
+.agent/
+agent-workspace/
+
+# Python & Testing Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary / Scratch & Backup Storage
+temp/
+exploration/
+.backups/
 old-outputs/
+proposed-improvements.md
+
+# Private Inputs & Local Docs
 inputs/sawmills and lumber/
 inputs/builder-contacts/
 inputs/yard/
 docs/superpowers/
-__pycache__/
-*.pyc
-.backups/
+docs/
