@@ -6,14 +6,14 @@
     {
       "name": "post_slenderness",
       "status": "PASS",
-      "value": 20.2,
+      "value": 20.7,
       "limit": 50
     },
     {
       "name": "beam_deflection",
       "status": "WARNING",
-      "value": 1.943,
-      "limit": 0.25
+      "value": 11.334,
+      "limit": 0.45
     },
     {
       "name": "caisson_bearing",

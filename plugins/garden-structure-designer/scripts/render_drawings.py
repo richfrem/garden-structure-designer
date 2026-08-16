@@ -135,17 +135,24 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
         return False
 
     scale = coords["scale_px_per_ft"]; cx, cy = coords["width_px"] / 2, coords["grade_y"] if "elevation" in view_type else coords["height_px"] / 2
-    cam = vnorm((0,0,1) if "plan" in view_type else (0,-1,0) if "elevation" in view_type else (1,1,1))
+    if "plan" in view_type:
+        cam = vnorm((0.0, 0.0, 1.0))
+    elif "elevation" in view_type:
+        cam = vnorm((0.0, -1.0, 0.0))
+    elif "perspective" in view_type:
+        cam = vnorm((0.8, -1.0, 0.6))
+    else: # isometric
+        cam = vnorm((1.0, -1.0, 1.0))
 
     face_entries = []
-    _role_biases = {"hub":0.05, "rafter":0.04, "beam":0.03, "brace":0.02, "post":0.01, "footing":-10.0}
+    # Rafters and beams physically sit above posts and footings
+    _role_biases = {"rafter": 0.08, "purlin": 0.07, "beam": 0.04, "hub": 0.03, "brace": 0.02, "post": 0.01, "footing": -10.0}
     for solid in scene.solids:
         if _should_suppress(solid): continue
         for face in solid.faces:
             if solid.role != "footing" and vdot(face.normal, cam) < -0.1: continue # Backface cull
             c = vcent(face.verts); depth = vdot(c, cam)
-            # Use fixed tiny biases for painter's algorithm
-            bias = _role_biases[solid.role] if solid.role in _role_biases else 0.0
+            bias = _role_biases.get(solid.role, 0.0)
             face_entries.append((depth + bias, face, solid))
     face_entries.sort(key=lambda t: t[0])
     
@@ -225,14 +232,18 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
     miter_deg = structure["geometry"]["compound_cut"]["miter_deg"]
     bevel_deg = structure["geometry"]["compound_cut"]["bevel_deg"]
     pitch = structure["roof"]["pitch"]
+    species = structure.get("materials", {}).get("primary", "Cedar")
+    beam_span_ft = structure.get("layout", {}).get("post_spacing_ft") or (r_ft if structure.get("layout", {}).get("shape") != "rectangle" else 9.0)
+    has_hub = structure.get("hub", {}).get("type") not in ("none", "", None)
 
     panels = [
-        ("post", "POST P1 DETAIL", f"{post_size} Yellow Cedar ({post_h} FT)", "post", "P1", 60, 120, 260, 420),
-        ("beam", "BEAM B1 DETAIL", f"4x8 Yellow Cedar (5.25 FT, Miter {beam_miter:.2f}°)", "beam", "B1", 360, 120, 260, 420),
-        ("rafter", "RAFTER R1 DETAIL", f"4x6 Yellow Cedar ({rafter_len:.2f} FT, Pitch {pitch})", "rafter", "R1", 660, 120, 260, 420),
-        ("brace", "KNEE BRACE K1A DETAIL", f"4x4 Yellow Cedar (45.00° Miter)", "brace", "K1A", 960, 120, 260, 420),
-        ("hub", "HUB ASSEMBLY DETAIL", "Polygonal Crown Block", "hub", "HUB", 1260, 120, 260, 420)
+        ("post", "POST P1 DETAIL", f"{post_size} {species} ({post_h} FT)", "post", "P1", 60, 120, 260, 420),
+        ("beam", "BEAM B1 DETAIL", f"4x8 {species} ({beam_span_ft:.2f} FT, Miter {beam_miter:.2f}°)", "beam", "B1", 360, 120, 260, 420),
+        ("rafter", "RAFTER R1 DETAIL", f"4x6 {species} ({rafter_len:.2f} FT, Pitch {pitch})", "rafter", "R1", 660, 120, 260, 420),
+        ("brace", "KNEE BRACE K1A DETAIL", f"4x4 {species} (45.00° Miter)", "brace", "K1A", 960, 120, 260, 420),
     ]
+    if has_hub:
+        panels.append(("hub", "HUB ASSEMBLY DETAIL", "Polygonal Crown Block", "hub", "HUB", 1260, 120, 260, 420))
     
     for role, title, desc, tag_role, tag_id, px, py, pw, ph in panels:
         svg_list.append(f'  <g data-role="component" transform="translate({px}, {py})">')
@@ -256,7 +267,7 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
             svg_list.append(f'    <rect data-role="beam" x="40" y="150" width="20" height="80" fill="#2a5a9e" />')
             svg_list.append(f'    <rect data-role="beam" x="200" y="150" width="20" height="80" fill="#2a5a9e" />')
             draw_dimension(svg_list, px+40, py+250, px+220, py+250, f"BEAM MITER: {beam_miter:.2f}°", is_blueprint=True)
-            draw_dimension(svg_list, px+40, py+140, px+220, py+140, "SPAN 5.25 FT", is_blueprint=True)
+            draw_dimension(svg_list, px+40, py+140, px+220, py+140, f"SPAN {beam_span_ft:.2f} FT", is_blueprint=True)
         elif role == "rafter":
             svg_list.append(f'    <rect data-role="{tag_role}" data-id="{tag_id}" x="40" y="160" width="180" height="60" fill="{palette["rafter"]}" stroke="{palette["outline"]}" stroke-width="2" />')
             svg_list.append(f'    <line data-role="rafter" x1="40" y1="190" x2="220" y2="190" stroke="#00ffff" stroke-width="0.8" stroke-dasharray="3,3" />')

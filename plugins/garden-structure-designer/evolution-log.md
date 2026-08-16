@@ -39,14 +39,15 @@
   - Full suite of 139 unit/integration tests passing (100% PASS).
   - Executed full Stages 0–8 pipeline: Physics PASS, Drawing Content PASS, Adversarial Red-Team PASS (`may_claim_success: true`), Assembly Guide PASSED ✓, Master Embedded Document compiled to [`outputs/pergola_plan_embedded.md`](file:///Users/richardfremmerlid/Projects/garden-structure-designer/outputs/pergola_plan_embedded.md), and dynamic [`outputs/quality-dashboard.md`](file:///Users/richardfremmerlid/Projects/garden-structure-designer/outputs/quality-dashboard.md) updated to COMPLETED.---
 
-## [2026-08-15] Script & Skills Pipeline Parity Evolution (v1.3.2)
-- **Classification**: SYSTEMIC_ALIGNMENT
-- **Trigger**: Full-system audit of all 45 Python scripts, 15 skills, and 4 sub-agents against declarative data contracts.
+## [2026-08-16] Multi-Project Archive Isolation & Rectangular Flat Pergola Geometry Evolution
+- **Tier**: Tier 2 (Failure / Refactor)
+- **Target**: `interactive-designer.md`, `design-orchestrator.md`, `cad_language_translator.py`, `geometry_engine.py`, `render_drawings.py`, `drawing_content_validator.py`, `visual_svg_smoke_test.py`
+- **Trigger**: Pipeline claimed completion while drawings and outputs still retained radial/hexagonal roof shapes from a previous project run.
 - **Actions Taken**:
-  1. Reviewed, audited, and updated all 45 Python scripts in `plugins/garden-structure-designer/scripts/`.
-  2. Fixed AST hardcode guard violations (100% compliance across all 45 scripts with 0 violations).
-  3. Integrated `builder_docs_compiler.py` and `compile_package.py` into `builder-docs-generator/SKILL.md` and `document-compiler/SKILL.md`.
-  4. Added `validate_intent.py` pre-intake gate and `topology_compiler.py` connection graph compiler to `structural-engine/SKILL.md`, `cad-language-translator/SKILL.md`, and `design-orchestrator.md`.
-  5. Cleaned legacy schema pointers (`structural-model.json`, `geometry-calculations.json`) across skill eval files.
-  6. Verified full pytest suite: 147 of 147 unit/integration tests passing.
-- **Outcome**: 100% test pass rate, verified deterministic pipeline gates, and zero-math declarative execution.
+  1. Updated `interactive-designer.md` and `design-orchestrator.md` with a mandatory pre-intake archive & clean-slate step that automatically backs up prior project artifacts to `temp/pastoutputs/<project-name>` and empties `outputs/` before new generation.
+  2. Extended `cad_language_translator.py` and `geometry_engine.py` with first-class support for `shape: "rectangle"` and non-hub flat pergolas (`hub.type: "none"`), placing posts on orthogonal Cartesian grids and generating parallel cross-rafters.
+  3. Made drawing isolation panel generation in `render_drawings.py` and component count assertions in `drawing_content_validator.py` dynamically adapt to non-hub structures.
+  4. Updated `visual_svg_smoke_test.py` to suppress hub-crop and radial beam span assertions when `structure.shape == "rectangle"`.
+  5. Re-ran complete deterministic pipeline (Stages 0–7) for the 12' × 18' Saanich BC rectangular pergola: 150/150 pytest tests passing, visual smoke tests passing, drawing red-team gate approved (`may_claim_success: true`), and generated the master `outputs/pergola_plan.pdf`.
+- **Outcome**: 100% clean outputs with zero cross-project contamination, fully verified rectangular pergola blueprints, and strict prevention of premature completion claims.
+

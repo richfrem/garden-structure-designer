@@ -129,16 +129,41 @@ def compile_resolved_model(structure: dict, joints: dict) -> dict:
         add_prism(p0, p1, PHW, PHD, UP, "post", post_id, post_h, 90.0, cs)
         add_prism((p[0], p[1], zp["Z_GRADE"] - 1.5), (p[0], p[1], zp["Z_GRADE"] + 0.33), 0.5, 0.5, UP, "footing", f"FT{i+1}", 1.83, 90.0, {})
         
-    # Beams
-    for i in range(qty):
-        beam_id = f"B{i+1}"
-        p1 = pxy[i]
-        p2 = pxy[(i+1)%qty]
-        p0 = (p1[0], p1[1], zp["Z_BEAM_CENTER"])
-        pt_end = (p2[0], p2[1], zp["Z_BEAM_CENTER"])
-        beam_len = vdist(p0, pt_end)
-        cs = {"start_on_post": True, "end_on_post": True}
-        add_prism(p0, pt_end, BHW, BHD, UP, "beam", beam_id, beam_len, 0.0, cs)
+    shape = structure.get("layout", {}).get("shape", structure.get("structure", {}).get("shape", "polygon"))
+    if shape == "rectangle" and qty == 6:
+        # Standard post-and-beam rectangular pergola:
+        # 3 Transverse Beams (spanning across width at X = +hx, 0, -hx):
+        # B1: (P1 to P2), B2: (P6 to P3), B3: (P5 to P4)
+        # 2 Longitudinal Beams / Headers (spanning along length at Y = -hy and Y = +hy):
+        # B4: (P5 to P1 along Y=-hy), B5: (P4 to P2 along Y=+hy)
+        # Plus optional middle ties
+        beam_connections = [
+            ("B1", 0, 1), # Transverse right: P1(+hx,-hy) to P2(+hx,+hy)
+            ("B2", 5, 2), # Transverse middle: P6(0,-hy) to P3(0,+hy)
+            ("B3", 4, 3), # Transverse left: P5(-hx,-hy) to P4(-hx,+hy)
+            ("B4", 4, 0), # Longitudinal front: P5(-hx,-hy) to P1(+hx,-hy)
+            ("B5", 3, 1), # Longitudinal back: P4(-hx,+hy) to P2(+hx,+hy)
+            ("B6", 5, 2), # Center carrier/ridge tie
+        ]
+        for bid, i1, i2 in beam_connections:
+            p1 = pxy[i1]
+            p2 = pxy[i2]
+            p0 = (p1[0], p1[1], zp["Z_BEAM_CENTER"])
+            pt_end = (p2[0], p2[1], zp["Z_BEAM_CENTER"])
+            beam_len = vdist(p0, pt_end)
+            cs = {"start_on_post": True, "end_on_post": True}
+            add_prism(p0, pt_end, BHW, BHD, UP, "beam", bid, beam_len, 0.0, cs)
+    else:
+        # Beams around polygon perimeter
+        for i in range(qty):
+            beam_id = f"B{i+1}"
+            p1 = pxy[i]
+            p2 = pxy[(i+1)%qty]
+            p0 = (p1[0], p1[1], zp["Z_BEAM_CENTER"])
+            pt_end = (p2[0], p2[1], zp["Z_BEAM_CENTER"])
+            beam_len = vdist(p0, pt_end)
+            cs = {"start_on_post": True, "end_on_post": True}
+            add_prism(p0, pt_end, BHW, BHD, UP, "beam", beam_id, beam_len, 0.0, cs)
         
     # Braces
     for bj in joints["braces"]["endpoints"]:
@@ -219,27 +244,29 @@ def compile_resolved_model(structure: dict, joints: dict) -> dict:
             add_notched_rafter(p_tail, p_end, p_seat, RHW, RHD, joints["primary_rafters"][0]["seat_depth_ft"], UP, "rafter", jack_id, Z_BEAM_TOP, length, angle, cs)
             
     # Hub
-    hj = joints["hub"]; hr = hj["radius_ft"]; hh = hj["height_ft"]; az = zp["Z_APEX"]; hz_t = az + hh/2.0; hz_b = az - hh/2.0; r_c = hr / math.cos(math.pi/qty)
-    t_ring = [(r_c*math.cos(2*math.pi*(i-0.5)/qty), r_c*math.sin(2*math.pi*(i-0.5)/qty), hz_t) for i in range(qty)]
-    b_ring = [(r_c*math.cos(2*math.pi*(i-0.5)/qty), r_c*math.sin(2*math.pi*(i-0.5)/qty), hz_b) for i in range(qty)]
-    h_faces = [{"verts": list(range(qty)), "normal": [0,0,1], "color_key": "top"}, {"verts": list(reversed(range(qty, 2*qty))), "normal": [0,0,-1], "color_key": "bottom"}]
-    for i in range(qty): j = (i+1)%qty; fn = (math.cos(2*math.pi*i/qty), math.sin(2*math.pi*i/qty), 0.0); h_faces.append({"verts": [qty+i, qty+j, j, i], "normal": list(fn), "color_key": "left"})
-    
-    cs = {"height_lte_beam_depth_x1.2": hh <= beam_d_ft * 1.2 + 0.001}
-    resolved["members"].append({
-        "id": "HUB",
-        "role": "hub",
-        "p0": [0.0, 0.0, hz_b],
-        "p1": [0.0, 0.0, hz_t],
-        "axis_u": [0.0, 0.0, 1.0],
-        "axis_w": [1.0, 0.0, 0.0],
-        "axis_d": [0.0, 1.0, 0.0],
-        "vertices": [list(v) for v in t_ring+b_ring],
-        "faces": h_faces,
-        "derived_length_ft": round(hh, 4),
-        "derived_angle_deg": 90.0,
-        "constraints_satisfied": cs
-    })
+    has_hub = structure.get("hub", {}).get("type") not in ("none", "", None)
+    if has_hub:
+        hj = joints["hub"]; hr = hj["radius_ft"]; hh = hj["height_ft"]; az = zp["Z_APEX"]; hz_t = az + hh/2.0; hz_b = az - hh/2.0; r_c = hr / math.cos(math.pi/qty)
+        t_ring = [(r_c*math.cos(2*math.pi*(i-0.5)/qty), r_c*math.sin(2*math.pi*(i-0.5)/qty), hz_t) for i in range(qty)]
+        b_ring = [(r_c*math.cos(2*math.pi*(i-0.5)/qty), r_c*math.sin(2*math.pi*(i-0.5)/qty), hz_b) for i in range(qty)]
+        h_faces = [{"verts": list(range(qty)), "normal": [0,0,1], "color_key": "top"}, {"verts": list(reversed(range(qty, 2*qty))), "normal": [0,0,-1], "color_key": "bottom"}]
+        for i in range(qty): j = (i+1)%qty; fn = (math.cos(2*math.pi*i/qty), math.sin(2*math.pi*i/qty), 0.0); h_faces.append({"verts": [qty+i, qty+j, j, i], "normal": list(fn), "color_key": "left"})
+        
+        cs = {"height_lte_beam_depth_x1.2": hh <= beam_d_ft * 1.2 + 0.001}
+        resolved["members"].append({
+            "id": "HUB",
+            "role": "hub",
+            "p0": [0.0, 0.0, hz_b],
+            "p1": [0.0, 0.0, hz_t],
+            "axis_u": [0.0, 0.0, 1.0],
+            "axis_w": [1.0, 0.0, 0.0],
+            "axis_d": [0.0, 1.0, 0.0],
+            "vertices": [list(v) for v in t_ring+b_ring],
+            "faces": h_faces,
+            "derived_length_ft": round(hh, 4),
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": cs
+        })
 
     # Phase 3 — Full Resolution Guarantee
     for m in resolved["members"]:
@@ -312,11 +339,36 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
     rafter_d_in = structure["roof"]["primary_rafters"]["actual_depth_in"]; rafter_w_in = structure["roof"]["primary_rafters"]["actual_width_in"]; rafter_d_ft = rafter_d_in / 12.0
     Z_GRADE = 0.0; Z_POST_TOP = post_h - beam_d_ft; Z_BEAM_TOP = post_h; Z_APEX = post_h + roof_r; Z_BEAM_CENTER = Z_POST_TOP + beam_d_ft / 2.0
     joints = {"units": "feet", "coordinate_system": "right_handed_z_up", "tolerance_ft": 0.0052, "z_planes": {"Z_GRADE": Z_GRADE, "Z_POST_TOP": round(Z_POST_TOP, 3), "Z_BEAM_TOP": round(Z_BEAM_TOP, 3), "Z_BEAM_CENTER": round(Z_BEAM_CENTER, 3), "Z_APEX": round(Z_APEX, 3), "Z_BEAM_SOFFIT": round(Z_POST_TOP, 3)}}
-    post_xy = [[round(r_ft * math.cos(2*math.pi*i/qty), 4), round(r_ft * math.sin(2*math.pi*i/qty), 4)] for i in range(qty)]
+    
+    shape = structure.get("layout", {}).get("shape", structure.get("structure", {}).get("shape", "polygon"))
+    if shape == "rectangle" and qty == 6:
+        len_ft = float(structure["layout"].get("length_ft") or (r_ft * 2.0))
+        wid_ft = float(structure["layout"].get("width_ft") or (r_ft * 1.333))
+        hx, hy = len_ft / 2.0, wid_ft / 2.0
+        post_xy = [
+            [round(hx, 4), round(-hy, 4)],
+            [round(hx, 4), round(hy, 4)],
+            [0.0, round(hy, 4)],
+            [round(-hx, 4), round(hy, 4)],
+            [round(-hx, 4), round(-hy, 4)],
+            [0.0, round(-hy, 4)]
+        ]
+    elif shape == "rectangle" and qty == 4:
+        len_ft = float(structure["layout"].get("length_ft") or (r_ft * 2.0))
+        wid_ft = float(structure["layout"].get("width_ft") or (r_ft * 1.333))
+        hx, hy = len_ft / 2.0, wid_ft / 2.0
+        post_xy = [
+            [round(hx, 4), round(-hy, 4)],
+            [round(hx, 4), round(hy, 4)],
+            [round(-hx, 4), round(hy, 4)],
+            [round(-hx, 4), round(-hy, 4)]
+        ]
+    else:
+        post_xy = [[round(r_ft * math.cos(2*math.pi*i/qty), 4), round(r_ft * math.sin(2*math.pi*i/qty), 4)] for i in range(qty)]
     joints["layout"] = {"post_count": qty, "post_radius_ft": r_ft, "post_xy": post_xy}
     
     seat_depth_notch = rafter_d_ft / 3.0; remaining_meat = rafter_d_ft - seat_depth_notch
-    apothem = r_ft * math.cos(math.pi/qty); common_slope = roof_r / (apothem - hub_r * math.cos(math.pi/qty))
+    apothem = r_ft * math.cos(math.pi/qty); common_slope = roof_r / (apothem - hub_r * math.cos(math.pi/qty)) if abs(apothem - hub_r * math.cos(math.pi/qty)) > 1e-4 else 0.0
     v_shift_common = remaining_meat * math.cos(math.atan(common_slope))
     
     joints["hub"] = {
@@ -329,11 +381,34 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
     }
     
     rafters = []; oh_ft = structure["roof"]["primary_rafters"]["overhang_ft"]
-    for i in range(qty):
-        p_tail, p_hub, p_seat_top = solve_rafter_endpoints_geometric(
-            i, qty, Z_APEX, Z_BEAM_TOP, v_shift_common, r_ft, hub_r * math.cos(math.pi / qty), oh_ft
-        )
-        rafters.append({"id": f"R{i+1}", "start": [round(x, 4) for x in p_tail], "end": [round(x, 4) for x in p_hub], "seat_point": [round(x, 4) for x in p_seat_top], "seat_depth_ft": round(remaining_meat, 4)})
+    if shape == "rectangle":
+        # Parallel cross-rafters spanning width (Y-axis from -hy-oh to +hy+oh) across length (X-axis)
+        len_ft = float(structure["layout"].get("length_ft") or (r_ft * 2.0))
+        wid_ft = float(structure["layout"].get("width_ft") or (r_ft * 1.333))
+        hx = len_ft / 2.0
+        hy = wid_ft / 2.0
+        r_count = structure["roof"]["primary_rafters"]["count"]
+        # Space rafters evenly along length
+        step_x = (2.0 * hx) / max(1, (r_count - 1)) if r_count > 1 else 0.0
+        for i in range(r_count):
+            rx = -hx + i * step_x
+            p_tail = [rx, -hy - oh_ft, Z_BEAM_TOP + v_shift_common]
+            p_end = [rx, hy + oh_ft, Z_BEAM_TOP + v_shift_common]
+            p_seat = [rx, -hy, Z_BEAM_TOP + v_shift_common]
+            rafters.append({
+                "id": f"R{i+1}",
+                "start": [round(x, 4) for x in p_tail],
+                "end": [round(x, 4) for x in p_end],
+                "seat_point": [round(x, 4) for x in p_seat],
+                "seat_depth_ft": round(remaining_meat, 4)
+            })
+    else:
+        for i in range(qty):
+            p_tail, p_hub, p_seat_top = solve_rafter_endpoints_geometric(
+                i, qty, Z_APEX, Z_BEAM_TOP, v_shift_common, r_ft, hub_r * math.cos(math.pi / qty), oh_ft
+            )
+            rafters.append({"id": f"R{i+1}", "start": [round(x, 4) for x in p_tail], "end": [round(x, 4) for x in p_hub], "seat_point": [round(x, 4) for x in p_seat_top], "seat_depth_ft": round(remaining_meat, 4)})
+            
     joints["primary_rafters"] = rafters
     joints["rafters"] = {
         "hub_termination_points": {

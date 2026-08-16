@@ -1,5 +1,5 @@
 # Structural Assembly & Site Erection Guide
-**Structure Type:** Hexagon Timber Frame
+**Structure Type:** Rectangle Timber Frame
 **Saw Setting Verification:** Rafter Plumb Cut Miter: 28.71°, Bevel: 9.10° | Beam Ring Miter: 30.00°
 
 > **TEST-CUT MANDATORY WARNING:** Always make test cuts on scrap lumber pieces before cutting expensive final timber members to confirm bevel and miter blade setups.
@@ -15,13 +15,7 @@
 3. Fly beam ring members (mitered at 30.00°) and fasten beam-to-post joints.
 
 ## Phase 3 — Hub & Rafter Assembly
-### Phase 4.3 — Tripod-First Hub and Rafter Hoisting
-1. Install three alternating rafters into the central hub on ground level.
-2. Hoist this tripod assembly onto three alternating beam seats on the beam ring.
-3. Temporarily brace the tripod to the beam ring to establish stable self-supporting apex.
-4. Install the remaining three rafters one at a time into the open hub slots.
-5. Confirm hub is centred over the layout stake with plumb bob.
-6. Secure structural fasteners and pegs only after all six rafters are seated and verified.
+1. Install ridge beam and primary rafters according to roof framing plan.
 
 ## Phase 4 — Roof Decking & Finishing
 1. Install roof tongue-and-groove decking or purlins.

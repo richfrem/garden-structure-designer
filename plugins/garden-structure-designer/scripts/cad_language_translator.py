@@ -43,7 +43,38 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
     PHW = structure["members"]["posts"]["actual_width_in"] / 24.0
     PHD = structure["members"]["posts"]["actual_depth_in"] / 24.0
     
-    post_xy = [[r_ft * math.cos(2*math.pi*i/qty), r_ft * math.sin(2*math.pi*i/qty)] for i in range(qty)]
+    shape = structure.get("layout", {}).get("shape", structure.get("structure", {}).get("shape", "polygon"))
+    if shape == "rectangle" and qty == 6:
+        # 6-post rectangle: length along X (e.g. 18ft), width along Y (e.g. 12ft)
+        len_ft = float(structure["layout"].get("length_ft") or (r_ft * 2.0))
+        wid_ft = float(structure["layout"].get("width_ft") or (r_ft * 1.333))
+        hx = len_ft / 2.0
+        hy = wid_ft / 2.0
+        # Posts ordered counterclockwise around perimeter:
+        # P1: (+hx, 0), P2: (+hx, +hy), P3: (0, +hy), P4: (-hx, +hy), P5: (-hx, -hy), P6: (0, -hy) -> or standard 6-post grid:
+        # Front row (Y=-hy): P1(-hx, -hy), P2(0, -hy), P3(+hx, -hy)
+        # Back row (Y=+hy):  P4(+hx, +hy), P5(0, +hy), P6(-hx, +hy)
+        # Perimeter order: P1(+hx, -hy), P2(+hx, +hy), P3(0, +hy), P4(-hx, +hy), P5(-hx, -hy), P6(0, -hy)
+        post_xy = [
+            [round(hx, 4), round(-hy, 4)],
+            [round(hx, 4), round(hy, 4)],
+            [0.0, round(hy, 4)],
+            [round(-hx, 4), round(hy, 4)],
+            [round(-hx, 4), round(-hy, 4)],
+            [0.0, round(-hy, 4)]
+        ]
+    elif shape == "rectangle" and qty == 4:
+        len_ft = float(structure["layout"].get("length_ft") or (r_ft * 2.0))
+        wid_ft = float(structure["layout"].get("width_ft") or (r_ft * 1.333))
+        hx, hy = len_ft / 2.0, wid_ft / 2.0
+        post_xy = [
+            [round(hx, 4), round(-hy, 4)],
+            [round(hx, 4), round(hy, 4)],
+            [round(-hx, 4), round(hy, 4)],
+            [round(-hx, 4), round(-hy, 4)]
+        ]
+    else:
+        post_xy = [[round(r_ft * math.cos(2*math.pi*i/qty), 4), round(r_ft * math.sin(2*math.pi*i/qty), 4)] for i in range(qty)]
     
     # 1. Reference Planes
     reference_planes = []
@@ -109,33 +140,42 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
     rafter_d_ft = structure["roof"]["primary_rafters"]["actual_depth_in"] / 12.0
     seat_depth_notch = rafter_d_ft / 3.0
     remaining_meat = rafter_d_ft - seat_depth_notch
-    common_slope = roof_rise / (apothem - hub_r * math.cos(math.pi/qty))
+    common_slope = roof_rise / (apothem - hub_r * math.cos(math.pi/qty)) if abs(apothem - hub_r * math.cos(math.pi/qty)) > 1e-4 else 0.0
     v_shift_common = remaining_meat * math.cos(math.atan(common_slope))
     
-    for i in range(qty):
-        p_a = (post_xy[i][0], post_xy[i][1], Z_BEAM_TOP + v_shift_common)
-        p_b = (post_xy[(i+1)%qty][0], post_xy[(i+1)%qty][1], Z_BEAM_TOP + v_shift_common)
-        p_apex = (0.0, 0.0, Z_APEX + v_shift_common)
-        
-        # Plane normal
-        # normal = cross(p_b - p_a, p_apex - p_a)
-        v1 = (p_b[0]-p_a[0], p_b[1]-p_a[1], p_b[2]-p_a[2])
-        v2 = (p_apex[0]-p_a[0], p_apex[1]-p_a[1], p_apex[2]-p_a[2])
-        nx = v1[1]*v2[2] - v1[2]*v2[1]
-        ny = v1[2]*v2[0] - v1[0]*v2[2]
-        nz = v1[0]*v2[1] - v1[1]*v2[0]
-        nl = math.sqrt(nx*nx + ny*ny + nz*nz)
-        if nl > 1e-9:
-            nx, ny, nz = nx/nl, ny/nl, nz/nl
-        else:
-            nx, ny, nz = 0.0, 0.0, 1.0
+    if shape == "rectangle":
+        # Flat horizontal roof plane across top of beams
+        for i in range(qty):
+            reference_planes.append({
+                "id": f"roof_plane_{i}",
+                "type": "roof_plane",
+                "point": [0.0, 0.0, Z_BEAM_TOP + v_shift_common],
+                "normal": [0.0, 0.0, 1.0]
+            })
+    else:
+        for i in range(qty):
+            p_a = (post_xy[i][0], post_xy[i][1], Z_BEAM_TOP + v_shift_common)
+            p_b = (post_xy[(i+1)%qty][0], post_xy[(i+1)%qty][1], Z_BEAM_TOP + v_shift_common)
+            p_apex = (0.0, 0.0, Z_APEX + v_shift_common)
             
-        reference_planes.append({
-            "id": f"roof_plane_{i}",
-            "type": "roof_plane",
-            "point": list(p_a),
-            "normal": [nx, ny, nz]
-        })
+            # Plane normal
+            v1 = (p_b[0]-p_a[0], p_b[1]-p_a[1], p_b[2]-p_a[2])
+            v2 = (p_apex[0]-p_a[0], p_apex[1]-p_a[1], p_apex[2]-p_a[2])
+            nx = v1[1]*v2[2] - v1[2]*v2[1]
+            ny = v1[2]*v2[0] - v1[0]*v2[2]
+            nz = v1[0]*v2[1] - v1[1]*v2[0]
+            nl = math.sqrt(nx*nx + ny*ny + nz*nz)
+            if nl > 1e-9:
+                nx, ny, nz = nx/nl, ny/nl, nz/nl
+            else:
+                nx, ny, nz = 0.0, 0.0, 1.0
+                
+            reference_planes.append({
+                "id": f"roof_plane_{i}",
+                "type": "roof_plane",
+                "point": list(p_a),
+                "normal": [nx, ny, nz]
+            })
         
     # Hub face planes
     hub_r_face = hub_r * math.cos(math.pi / qty)
@@ -176,13 +216,11 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
     if structure.get("bracing", {}).get("enabled"):
         run_t = structure["bracing"]["brace"].get("run_ft") or 1.5
         for i in range(qty):
-            # Calculate beam span to enforce max 0.3 span limit
             p1 = post_xy[i]
             p2 = post_xy[(i+1)%qty]
             bl = math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2)
             run = min(run_t, bl * 0.3)
             
-            # K{i+1}A: attached to post P{i+1}, under beam B{i+1}
             member_constraints.append({
                 "member_id": f"K{i+1}A",
                 "constraints": {
@@ -191,7 +229,6 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
                     "run_ft": round(run, 4)
                 }
             })
-            # K{i+1}B: attached to post P{next}, under beam B{i+1}
             next_post = i + 2 if (i + 2) <= qty else 1
             member_constraints.append({
                 "member_id": f"K{i+1}B",
@@ -214,7 +251,7 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
                     "overhang_ft": overhang
                 },
                 "hub_constraint": {
-                    "type": "hub_face",
+                    "type": "none" if shape == "rectangle" else "hub_face",
                     "hub_id": "HUB",
                     "face_index": i
                 },

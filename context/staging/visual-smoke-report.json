@@ -1,13 +1,13 @@
 {
   "schema": "garden-structure-designer/visual-smoke-report/1.0",
-  "generated_at": "2026-08-16T03:50:52.777331+00:00",
-  "source_hash": "a1b2c3d4e5f6",
+  "generated_at": "2026-08-16T20:13:07.950489+00:00",
+  "source_hash": "b2c3d4e5f6a1",
   "structure_path": "context/staging/structure.json",
   "svg_dir": "outputs",
   "out_dir": "outputs/visual-smoke",
   "baseline_dir": null,
-  "status": "PASS",
-  "summary": "All sheets rendered and heuristics passed.",
+  "status": "FAIL",
+  "summary": "Visual smoke test failed heuristics.",
   "files": [
     {
       "sheet": "drawing-plan-view",
@@ -18,38 +18,26 @@
           1600,
           1600
         ],
-        "non_bg_ratio": 0.031789453125,
-        "bbox_fill_ratio": 0.35376875,
+        "non_bg_ratio": 0.05923671875,
+        "bbox_fill_ratio": 0.48594609375,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
           "beams": 6,
           "rafters": 6,
-          "hub": 1,
+          "hub": 0,
           "braces": 12
         },
         "detected_components": {
-          "posts": 1,
-          "beams": 10,
-          "rafters": 32
+          "posts": 13,
+          "beams": 28,
+          "rafters": 16
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 1885,
-        "hub_edge_density": 0.06758928571428571
+        "cv_hub_density": 857
       },
       "failures": [],
-      "warnings": [
-        "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-plan-view.svg \u2014 re-rendered"
-      ],
-      "hub_crop_png": "outputs/visual-smoke/drawing-plan-view.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          440,
-          280,
-          280
-        ]
-      },
+      "warnings": [],
       "status": "PASS"
     },
     {
@@ -61,28 +49,26 @@
           1600,
           1600
         ],
-        "non_bg_ratio": 0.050469921875,
-        "bbox_fill_ratio": 0.396278125,
+        "non_bg_ratio": 0.04404453125,
+        "bbox_fill_ratio": 0.40028671875,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
           "beams": 6,
           "rafters": 6,
-          "hub": 1,
+          "hub": 0,
           "braces": 12
         },
         "detected_components": {
-          "posts": 15,
-          "beams": 13,
-          "rafters": 15
+          "posts": 11,
+          "beams": 8,
+          "rafters": 11
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 28
+        "cv_hub_density": 102
       },
       "failures": [],
-      "warnings": [
-        "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-elevation-view.svg \u2014 re-rendered"
-      ],
+      "warnings": [],
       "status": "PASS"
     },
     {
@@ -94,38 +80,26 @@
           1600,
           1600
         ],
-        "non_bg_ratio": 0.131858203125,
-        "bbox_fill_ratio": 0.6080125,
+        "non_bg_ratio": 0.15980078125,
+        "bbox_fill_ratio": 0.80974921875,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
           "beams": 6,
           "rafters": 6,
-          "hub": 1,
+          "hub": 0,
           "braces": 12
         },
         "detected_components": {
-          "posts": 29,
-          "beams": 19,
-          "rafters": 63
+          "posts": 22,
+          "beams": 6,
+          "rafters": 93
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2097,
-        "hub_edge_density": 0.1082780612244898
+        "cv_hub_density": 1268
       },
       "failures": [],
-      "warnings": [
-        "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-isometric-view.svg \u2014 re-rendered"
-      ],
-      "hub_crop_png": "outputs/visual-smoke/drawing-isometric-view.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          471,
-          280,
-          280
-        ]
-      },
+      "warnings": [],
       "status": "PASS"
     },
     {
@@ -137,38 +111,26 @@
           1600,
           1600
         ],
-        "non_bg_ratio": 0.131858203125,
-        "bbox_fill_ratio": 0.6080125,
+        "non_bg_ratio": 0.15980078125,
+        "bbox_fill_ratio": 0.80974921875,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
           "beams": 6,
           "rafters": 6,
-          "hub": 1,
+          "hub": 0,
           "braces": 12
         },
         "detected_components": {
-          "posts": 29,
-          "beams": 19,
-          "rafters": 63
+          "posts": 22,
+          "beams": 6,
+          "rafters": 93
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2097,
-        "hub_edge_density": 0.1082780612244898
+        "cv_hub_density": 1268
       },
       "failures": [],
-      "warnings": [
-        "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-perspective-view.svg \u2014 re-rendered"
-      ],
-      "hub_crop_png": "outputs/visual-smoke/drawing-perspective-view.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          471,
-          280,
-          280
-        ]
-      },
+      "warnings": [],
       "status": "PASS"
     },
     {
@@ -180,38 +142,26 @@
           1600,
           1600
         ],
-        "non_bg_ratio": 0.03485859375,
-        "bbox_fill_ratio": 0.3548515625,
+        "non_bg_ratio": 0.066658203125,
+        "bbox_fill_ratio": 0.48681875,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
           "beams": 6,
           "rafters": 6,
-          "hub": 1,
+          "hub": 0,
           "braces": 12
         },
         "detected_components": {
-          "posts": 1,
-          "beams": 11,
-          "rafters": 33
+          "posts": 15,
+          "beams": 27,
+          "rafters": 5
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2181,
-        "hub_edge_density": 0.06551020408163265
+        "cv_hub_density": 848
       },
       "failures": [],
-      "warnings": [
-        "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-plan.svg \u2014 re-rendered"
-      ],
-      "hub_crop_png": "outputs/visual-smoke/blueprint-plan.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          440,
-          280,
-          280
-        ]
-      },
+      "warnings": [],
       "status": "PASS"
     },
     {
@@ -223,29 +173,29 @@
           1600,
           1600
         ],
-        "non_bg_ratio": 0.021823828125,
-        "bbox_fill_ratio": 0.396278125,
+        "non_bg_ratio": 0.018172265625,
+        "bbox_fill_ratio": 0.40028671875,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
           "beams": 6,
           "rafters": 6,
-          "hub": 1,
+          "hub": 0,
           "braces": 12
         },
         "detected_components": {
-          "posts": 17,
-          "beams": 15,
-          "rafters": 14
+          "posts": 12,
+          "beams": 11,
+          "rafters": 12
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 29
+        "cv_hub_density": 107
       },
-      "failures": [],
-      "warnings": [
-        "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-elevation.svg \u2014 re-rendered"
+      "failures": [
+        "VISUAL_BLANK"
       ],
-      "status": "PASS"
+      "warnings": [],
+      "status": "FAIL"
     },
     {
       "sheet": "blueprint-isometric",
@@ -256,38 +206,26 @@
           1600,
           1600
         ],
-        "non_bg_ratio": 0.106440625,
-        "bbox_fill_ratio": 0.608409375,
+        "non_bg_ratio": 0.118593359375,
+        "bbox_fill_ratio": 0.81159375,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
           "beams": 6,
           "rafters": 6,
-          "hub": 1,
+          "hub": 0,
           "braces": 12
         },
         "detected_components": {
-          "posts": 33,
-          "beams": 24,
-          "rafters": 82
+          "posts": 23,
+          "beams": 5,
+          "rafters": 120
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2161,
-        "hub_edge_density": 0.10755102040816326
+        "cv_hub_density": 1250
       },
       "failures": [],
-      "warnings": [
-        "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-isometric.svg \u2014 re-rendered"
-      ],
-      "hub_crop_png": "outputs/visual-smoke/blueprint-isometric.hub.png",
-      "clip": {
-        "hub_box_px": [
-          660,
-          471,
-          280,
-          280
-        ]
-      },
+      "warnings": [],
       "status": "PASS"
     },
     {
@@ -299,32 +237,30 @@
           1600,
           1600
         ],
-        "non_bg_ratio": 0.04727890625,
+        "non_bg_ratio": 0.047805078125,
         "bbox_fill_ratio": 0.84015625,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
           "beams": 6,
           "rafters": 6,
-          "hub": 1,
+          "hub": 0,
           "braces": 12
         },
         "detected_components": {
           "posts": 13,
-          "beams": 66,
+          "beams": 72,
           "rafters": 9
         },
         "cv_content_ratio": 1.0,
         "cv_hub_density": 221
       },
       "failures": [],
-      "warnings": [
-        "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-component-isolation.svg \u2014 re-rendered"
-      ],
+      "warnings": [],
       "status": "PASS"
     }
   ],
   "overall_failures": [],
   "overall_warnings": [],
-  "may_claim_success": true
+  "may_claim_success": false
 }

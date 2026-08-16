@@ -1,11 +1,11 @@
 # Drawing Red-Team Review Report
 
-**Status:** PASS  
-**May claim success:** true  
+**Status:** FAIL  
+**May claim success:** false  
 **Reviewer:** run_drawing_red_team.py  
-**Generated:** 2026-08-16T03:50:56.941444+00:00  
+**Generated:** 2026-08-16T20:12:00.824962+00:00  
 
-> All SVG sheets passed deterministic machine validation, sheet-specific content-quality checks, and headless browser visual smoke heuristics. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.
+> FAIL — 1 sheet(s) or validation layers failed content/visual validation. These drawings are not builder-meaningful. Regenerate before claiming PASS.
 
 ---
 
@@ -14,15 +14,15 @@
 ### ✅ `outputs/blueprint-component-isolation.svg` — PASS
 
 **Semantic counts:**
-- `data-role="post"`: 5
+- `data-role="post"`: 4
 - `data-role="beam"`: 5
 - `data-role="rafter"`: 4
-- `data-role="brace"`: 5
+- `data-role="brace"`: 4
 - `data-role="footing"`: 2
-- `data-role="dimension"`: 10
-- `data-role="component"`: 5
+- `data-role="dimension"`: 8
+- `data-role="component"`: 4
 - `data-role="title-block"`: 1
-- Text labels: 28
+- Text labels: 24
 - Total elements: 0
 
 ---
@@ -38,7 +38,7 @@
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 40
+- Text labels: 39
 - Total elements: 0
 
 ---
@@ -54,7 +54,7 @@
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 41
+- Text labels: 40
 - Total elements: 0
 
 ---
@@ -70,7 +70,7 @@
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 40
+- Text labels: 39
 - Total elements: 0
 
 ---
@@ -86,7 +86,7 @@
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 40
+- Text labels: 39
 - Total elements: 0
 
 ---
@@ -102,7 +102,7 @@
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 41
+- Text labels: 40
 - Total elements: 0
 
 ---
@@ -118,7 +118,7 @@
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 41
+- Text labels: 40
 - Total elements: 0
 
 ---
@@ -134,7 +134,7 @@
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 40
+- Text labels: 39
 - Total elements: 0
 
 ---

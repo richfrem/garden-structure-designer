@@ -1,8 +1,8 @@
 # Visual Smoke Test Report (SVG -> Browser Render)
 
 **Schema:** garden-structure-designer/visual-smoke-report/1.0  
-**Generated:** 2026-08-16T03:50:52.777331+00:00  
-**Source Hash:** `a1b2c3d4e5f6`  
+**Generated:** 2026-08-16T20:13:07.950489+00:00  
+**Source Hash:** `b2c3d4e5f6a1`  
 **Structure:** `context/staging/structure.json`  
 **SVG Dir:** `outputs`  
 **Out Dir:** `outputs/visual-smoke`  
@@ -14,11 +14,11 @@
 
 ---
 
-## STATUS: **PASS**
-**may_claim_success:** `True`
+## STATUS: **FAIL**
+**may_claim_success:** `False`
 
 ### Summary
-All sheets rendered and heuristics passed.
+Visual smoke test failed heuristics.
 
 ---
 
@@ -35,24 +35,21 @@ All sheets rendered and heuristics passed.
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-plan-view.svg`  
 **PNG:** `outputs/visual-smoke/drawing-plan-view.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/drawing-plan-view.hub.png`  
-**Hub Clip (px):** `[660, 440, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.0318`
-- bbox_fill_ratio: `0.3538`
+- non_bg_ratio: `0.0592`
+- bbox_fill_ratio: `0.4859`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `1885`
-- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 1, 'beams': 10, 'rafters': 32}`
-- hub_edge_density: `0.0676`
+- cv_hub_density: `857`
+- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 0, 'braces': 12}`
+- detected_components: `{'posts': 13, 'beams': 28, 'rafters': 16}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-plan-view.svg — re-rendered
+- *(none)*
 
 ---
 ### drawing-elevation-view
@@ -61,136 +58,124 @@ All sheets rendered and heuristics passed.
 **PNG:** `outputs/visual-smoke/drawing-elevation-view.png`  
 
 #### Metrics
-- non_bg_ratio: `0.0505`
-- bbox_fill_ratio: `0.3963`
+- non_bg_ratio: `0.0440`
+- bbox_fill_ratio: `0.4003`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `28`
-- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 15, 'beams': 13, 'rafters': 15}`
+- cv_hub_density: `102`
+- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 0, 'braces': 12}`
+- detected_components: `{'posts': 11, 'beams': 8, 'rafters': 11}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-elevation-view.svg — re-rendered
+- *(none)*
 
 ---
 ### drawing-isometric-view
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-isometric-view.svg`  
 **PNG:** `outputs/visual-smoke/drawing-isometric-view.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/drawing-isometric-view.hub.png`  
-**Hub Clip (px):** `[660, 471, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1319`
-- bbox_fill_ratio: `0.6080`
+- non_bg_ratio: `0.1598`
+- bbox_fill_ratio: `0.8097`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2097`
-- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 29, 'beams': 19, 'rafters': 63}`
-- hub_edge_density: `0.1083`
+- cv_hub_density: `1268`
+- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 0, 'braces': 12}`
+- detected_components: `{'posts': 22, 'beams': 6, 'rafters': 93}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-isometric-view.svg — re-rendered
+- *(none)*
 
 ---
 ### drawing-perspective-view
 **Status:** **PASS**  
 **SVG:** `outputs/drawing-perspective-view.svg`  
 **PNG:** `outputs/visual-smoke/drawing-perspective-view.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/drawing-perspective-view.hub.png`  
-**Hub Clip (px):** `[660, 471, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1319`
-- bbox_fill_ratio: `0.6080`
+- non_bg_ratio: `0.1598`
+- bbox_fill_ratio: `0.8097`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2097`
-- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 29, 'beams': 19, 'rafters': 63}`
-- hub_edge_density: `0.1083`
+- cv_hub_density: `1268`
+- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 0, 'braces': 12}`
+- detected_components: `{'posts': 22, 'beams': 6, 'rafters': 93}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-perspective-view.svg — re-rendered
+- *(none)*
 
 ---
 ### blueprint-plan
 **Status:** **PASS**  
 **SVG:** `outputs/blueprint-plan.svg`  
 **PNG:** `outputs/visual-smoke/blueprint-plan.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/blueprint-plan.hub.png`  
-**Hub Clip (px):** `[660, 440, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.0349`
-- bbox_fill_ratio: `0.3549`
+- non_bg_ratio: `0.0667`
+- bbox_fill_ratio: `0.4868`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2181`
-- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 1, 'beams': 11, 'rafters': 33}`
-- hub_edge_density: `0.0655`
+- cv_hub_density: `848`
+- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 0, 'braces': 12}`
+- detected_components: `{'posts': 15, 'beams': 27, 'rafters': 5}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-plan.svg — re-rendered
+- *(none)*
 
 ---
 ### blueprint-elevation
-**Status:** **PASS**  
+**Status:** **FAIL**  
 **SVG:** `outputs/blueprint-elevation.svg`  
 **PNG:** `outputs/visual-smoke/blueprint-elevation.png`  
 
 #### Metrics
-- non_bg_ratio: `0.0218`
-- bbox_fill_ratio: `0.3963`
+- non_bg_ratio: `0.0182`
+- bbox_fill_ratio: `0.4003`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `29`
-- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 17, 'beams': 15, 'rafters': 14}`
+- cv_hub_density: `107`
+- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 0, 'braces': 12}`
+- detected_components: `{'posts': 12, 'beams': 11, 'rafters': 12}`
 
 #### Failures
-- *(none)*
+- VISUAL_BLANK
 
 #### Warnings
-- PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-elevation.svg — re-rendered
+- *(none)*
 
 ---
 ### blueprint-isometric
 **Status:** **PASS**  
 **SVG:** `outputs/blueprint-isometric.svg`  
 **PNG:** `outputs/visual-smoke/blueprint-isometric.png`  
-**Hub Crop PNG:** `outputs/visual-smoke/blueprint-isometric.hub.png`  
-**Hub Clip (px):** `[660, 471, 280, 280]`  
 
 #### Metrics
-- non_bg_ratio: `0.1064`
-- bbox_fill_ratio: `0.6084`
+- non_bg_ratio: `0.1186`
+- bbox_fill_ratio: `0.8116`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
-- cv_hub_density: `2161`
-- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 33, 'beams': 24, 'rafters': 82}`
-- hub_edge_density: `0.1076`
+- cv_hub_density: `1250`
+- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 0, 'braces': 12}`
+- detected_components: `{'posts': 23, 'beams': 5, 'rafters': 120}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-isometric.svg — re-rendered
+- *(none)*
 
 ---
 ### blueprint-component-isolation
@@ -199,19 +184,19 @@ All sheets rendered and heuristics passed.
 **PNG:** `outputs/visual-smoke/blueprint-component-isolation.png`  
 
 #### Metrics
-- non_bg_ratio: `0.0473`
+- non_bg_ratio: `0.0478`
 - bbox_fill_ratio: `0.8402`
 - top_left_clustered: `False`
 - cv_content_ratio: `1.0000`
 - cv_hub_density: `221`
-- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 1, 'braces': 12}`
-- detected_components: `{'posts': 13, 'beams': 66, 'rafters': 9}`
+- expected_topology: `{'posts': 6, 'beams': 6, 'rafters': 6, 'hub': 0, 'braces': 12}`
+- detected_components: `{'posts': 13, 'beams': 72, 'rafters': 9}`
 
 #### Failures
 - *(none)*
 
 #### Warnings
-- PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-component-isolation.svg — re-rendered
+- *(none)*
 
 ---
 

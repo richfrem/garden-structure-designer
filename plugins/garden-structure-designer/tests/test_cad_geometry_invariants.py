@@ -284,14 +284,18 @@ def test_isometric_has_expected_semantic_counts():
             ids = {i for i in ids if i.startswith("R")}
         return len(ids)
 
-    qty = 6   # hex pergola
+    qty = 6
     assert count_unique("post")   == qty, f"Expected {qty} posts, got {count_unique('post')}"
     assert count_unique("beam")   == qty, f"Expected {qty} beams, got {count_unique('beam')}"
     assert count_unique("rafter") == qty, f"Expected {qty} primary rafters, got {count_unique('rafter')}"
 
-    # Hub appears as one logical member
-    hub_count = svg.count('data-role="hub"')
-    assert hub_count >= 1, "Hub has no data-role tag in isometric SVG"
+    # Hub appears as one logical member if structure has a hub
+    import json
+    struct_data = json.loads(model_path.read_text())
+    has_hub = struct_data.get("hub", {}).get("type") not in ("none", "", None)
+    if has_hub:
+        hub_count = svg.count('data-role="hub"')
+        assert hub_count >= 1, "Hub has no data-role tag in isometric SVG"
 
 
 # ---------------------------------------------------------------------------

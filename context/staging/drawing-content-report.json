@@ -1,31 +1,31 @@
 {
   "schema": "garden-structure-designer/drawing-content-report/1.0",
-  "generated": "2026-08-16T03:50:57.019403+00:00",
+  "generated": "2026-08-16T20:12:00.896599+00:00",
   "status": "PASS",
   "files": [
     {
       "file": "outputs/blueprint-component-isolation.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 40,
-      "semantic_total": 37,
+      "total_elements": 34,
+      "semantic_total": 32,
       "semantic_counts": {
-        "post": 5,
+        "post": 4,
         "beam": 5,
         "rafter": 4,
-        "brace": 5,
+        "brace": 4,
         "footing": 2,
-        "dimension": 10,
-        "component": 5,
+        "dimension": 8,
+        "component": 4,
         "title-block": 1
       },
-      "text_label_count": 28
+      "text_label_count": 24
     },
     {
       "file": "outputs/blueprint-elevation.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 183,
+      "total_elements": 199,
       "semantic_total": 38,
       "semantic_counts": {
         "post": 6,
@@ -37,13 +37,13 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 40
+      "text_label_count": 39
     },
     {
       "file": "outputs/blueprint-isometric.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 143,
+      "total_elements": 144,
       "semantic_total": 38,
       "semantic_counts": {
         "post": 6,
@@ -55,13 +55,13 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 41
+      "text_label_count": 40
     },
     {
       "file": "outputs/blueprint-plan.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 191,
+      "total_elements": 184,
       "semantic_total": 38,
       "semantic_counts": {
         "post": 6,
@@ -73,13 +73,13 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 40
+      "text_label_count": 39
     },
     {
       "file": "outputs/drawing-elevation-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 183,
+      "total_elements": 199,
       "semantic_total": 38,
       "semantic_counts": {
         "post": 6,
@@ -91,49 +91,13 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 40
+      "text_label_count": 39
     },
     {
       "file": "outputs/drawing-isometric-view.svg",
       "status": "PASS",
       "failure_codes": [],
-      "total_elements": 143,
-      "semantic_total": 38,
-      "semantic_counts": {
-        "post": 6,
-        "beam": 6,
-        "rafter": 6,
-        "brace": 12,
-        "footing": 6,
-        "dimension": 1,
-        "component": 0,
-        "title-block": 1
-      },
-      "text_label_count": 41
-    },
-    {
-      "file": "outputs/drawing-perspective-view.svg",
-      "status": "PASS",
-      "failure_codes": [],
-      "total_elements": 143,
-      "semantic_total": 38,
-      "semantic_counts": {
-        "post": 6,
-        "beam": 6,
-        "rafter": 6,
-        "brace": 12,
-        "footing": 6,
-        "dimension": 1,
-        "component": 0,
-        "title-block": 1
-      },
-      "text_label_count": 41
-    },
-    {
-      "file": "outputs/drawing-plan-view.svg",
-      "status": "PASS",
-      "failure_codes": [],
-      "total_elements": 191,
+      "total_elements": 144,
       "semantic_total": 38,
       "semantic_counts": {
         "post": 6,
@@ -146,6 +110,42 @@
         "title-block": 1
       },
       "text_label_count": 40
+    },
+    {
+      "file": "outputs/drawing-perspective-view.svg",
+      "status": "PASS",
+      "failure_codes": [],
+      "total_elements": 144,
+      "semantic_total": 38,
+      "semantic_counts": {
+        "post": 6,
+        "beam": 6,
+        "rafter": 6,
+        "brace": 12,
+        "footing": 6,
+        "dimension": 1,
+        "component": 0,
+        "title-block": 1
+      },
+      "text_label_count": 40
+    },
+    {
+      "file": "outputs/drawing-plan-view.svg",
+      "status": "PASS",
+      "failure_codes": [],
+      "total_elements": 184,
+      "semantic_total": 38,
+      "semantic_counts": {
+        "post": 6,
+        "beam": 6,
+        "rafter": 6,
+        "brace": 12,
+        "footing": 6,
+        "dimension": 1,
+        "component": 0,
+        "title-block": 1
+      },
+      "text_label_count": 39
     }
   ]
 }

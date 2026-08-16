@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/cut-list/1.0",
-  "source_hash": "b2f09a63c4e1a5",
+  "source_hash": "b2c3d4e5f6a1",
   "members": [
     {
       "id": "M01",
@@ -22,13 +22,13 @@
       "profile": "3x7",
       "width_in": 3.5,
       "depth_in": 7.25,
-      "cut_length_ft": 5.77,
+      "cut_length_ft": 10.39,
       "qty": 6,
-      "order_length_ft": 8,
-      "bf_per_piece_net": 12.21,
-      "bf_per_piece_order": 16.92,
-      "bf_total_net": 73.25,
-      "bf_total_order": 101.5
+      "order_length_ft": 12,
+      "bf_per_piece_net": 21.98,
+      "bf_per_piece_order": 25.38,
+      "bf_total_net": 131.85,
+      "bf_total_order": 152.25
     },
     {
       "id": "M03",
@@ -36,13 +36,13 @@
       "profile": "4x6",
       "width_in": 4.0,
       "depth_in": 6.0,
-      "cut_length_ft": 6.32,
+      "cut_length_ft": 10.54,
       "qty": 6,
-      "order_length_ft": 8,
-      "bf_per_piece_net": 12.65,
-      "bf_per_piece_order": 16.0,
-      "bf_total_net": 75.89,
-      "bf_total_order": 96.0
+      "order_length_ft": 12,
+      "bf_per_piece_net": 21.08,
+      "bf_per_piece_order": 24.0,
+      "bf_total_net": 126.49,
+      "bf_total_order": 144.0
     },
     {
       "id": "M04",
@@ -60,9 +60,9 @@
     }
   ],
   "totals": {
-    "bf_net": 297.9,
-    "bf_order": 368.9,
+    "bf_net": 407.1,
+    "bf_order": 467.7,
     "waste_factor": 0.1,
-    "bf_with_waste": 405.8
+    "bf_with_waste": 514.4
   }
 }

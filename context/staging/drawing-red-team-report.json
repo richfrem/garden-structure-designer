@@ -1,25 +1,25 @@
 {
   "schema": "garden-structure-designer/drawing-red-team-report/1.0",
-  "generated": "2026-08-16T03:50:56.941444+00:00",
-  "status": "PASS",
+  "generated": "2026-08-16T20:12:00.824962+00:00",
+  "status": "FAIL",
   "reviewer": "run_drawing_red_team.py",
-  "summary": "All SVG sheets passed deterministic machine validation, sheet-specific content-quality checks, and headless browser visual smoke heuristics. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.",
+  "summary": "FAIL \u2014 1 sheet(s) or validation layers failed content/visual validation. These drawings are not builder-meaningful. Regenerate before claiming PASS.",
   "files": [
     {
       "file": "outputs/blueprint-component-isolation.svg",
       "status": "PASS",
       "failure_codes": [],
       "semantic_counts": {
-        "post": 5,
+        "post": 4,
         "beam": 5,
         "rafter": 4,
-        "brace": 5,
+        "brace": 4,
         "footing": 2,
-        "dimension": 10,
-        "component": 5,
+        "dimension": 8,
+        "component": 4,
         "title-block": 1
       },
-      "text_label_count": 28,
+      "text_label_count": 24,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -37,7 +37,7 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 40,
+      "text_label_count": 39,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -55,7 +55,7 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 41,
+      "text_label_count": 40,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -73,7 +73,7 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 40,
+      "text_label_count": 39,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -91,7 +91,7 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 40,
+      "text_label_count": 39,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -109,7 +109,7 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 41,
+      "text_label_count": 40,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -127,7 +127,7 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 41,
+      "text_label_count": 40,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     },
@@ -145,11 +145,11 @@
         "component": 0,
         "title-block": 1
       },
-      "text_label_count": 40,
+      "text_label_count": 39,
       "assessment": "Passed all deterministic checks \u2014 qualitative review still required.",
       "required_fixes": []
     }
   ],
   "overall_required_fixes": [],
-  "may_claim_success": true
+  "may_claim_success": false
 }

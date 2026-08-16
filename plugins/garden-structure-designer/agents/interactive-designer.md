@@ -11,26 +11,53 @@ Your core purpose is to translate user colloquial language ("rustic hexagon with
 
 ---
 
-## Block 0 — Session Check (run silently on every invocation)
+## Block 0 — Session Check & Multi-Project Archive Management (run silently on every invocation)
 
-Before asking any questions, check whether an in-progress session exists:
+Before asking any questions, check whether an existing design or saved designs exist:
 
 ```bash
 cat context/design-dashboard.md 2>/dev/null
 cat context/staging/structure.json 2>/dev/null
+ls -la outputs/ 2>/dev/null
+ls -la temp/pastoutputs/ 2>/dev/null
 ```
 
-**If a dashboard exists and `Status` is not `Complete`:**
+**If an existing design or saved designs exist:**
 
-> "It looks like you have an in-progress design session: [structure type from dashboard], last active at [timestamp].
+> "It looks like you have active design artifacts: [structure type from dashboard/structure.json].
 >
-> - **Resume** — pick up where we left off
-> - **Start fresh** — discard the current session and begin a new design
-> - **Review** — show me what we've captured so far"
+> 1. **Start fresh (Auto-archive & Clean)** — automatically archives the full current design (`outputs/` and `context/`) into `temp/pastoutputs/<project-name>-<timestamp>` and clears `outputs/` and `context/staging/` so only net new files exist.
+> 2. **Load a past design** — restore a previously saved design from `temp/pastoutputs/<name>` into active workspace.
+> 3. **Resume** — pick up where we left off in the current session.
+> 4. **Review** — show what is currently captured."
 
-Wait for the user's choice before proceeding. On **Start fresh**, clear `context/staging/` and reset the dashboard.
+On **Start fresh (Auto-archive & Clean)**, execute immediately:
+```bash
+# 1. Extract previous project name or use timestamped fallback
+PREV_NAME=$(grep -m1 "**Structure:**" context/design-dashboard.md 2>/dev/null | awk -F': ' '{print $2}' | tr ' ' '-' | tr -cd '[:alnum:]-_' || echo "previous-design")
+ARCHIVE_DIR="temp/pastoutputs/${PREV_NAME}-$(date +%Y%m%d-%H%M%S)"
+mkdir -p "${ARCHIVE_DIR}/outputs" "${ARCHIVE_DIR}/context"
 
-**If no dashboard exists or `Status` is `Complete`:** proceed silently to Block 1.
+# 2. Archive all current outputs and staging context
+cp -r outputs/* "${ARCHIVE_DIR}/outputs/" 2>/dev/null || true
+cp -r context/* "${ARCHIVE_DIR}/context/" 2>/dev/null || true
+
+# 3. Clean outputs and reset staging to guarantee zero cross-project contamination
+rm -rf outputs/*
+python3 plugins/garden-structure-designer/scripts/reset_derived.py
+```
+
+On **Load a past design**:
+```bash
+# List available designs in temp/pastoutputs/
+# Prompt user to choose, then copy that project's outputs/ and context/ back into workspace root
+cp -r temp/pastoutputs/<chosen-design>/outputs/* outputs/
+cp -r temp/pastoutputs/<chosen-design>/context/* context/
+```
+
+**CRITICAL RULE**: `outputs/` MUST be completely clean before any new design generation begins. No stale SVGs, PNGs, or PDFs from prior projects may ever persist into a new design package.
+
+**If no dashboard/outputs exist:** proceed silently to Block 1.
 
 ---
 

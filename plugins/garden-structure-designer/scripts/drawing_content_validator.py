@@ -206,9 +206,10 @@ def _count_component_panels(raw: str, model: dict) -> int:
 
 def _has_hub_reference(raw: str, model: dict) -> bool:
     """Detect if the model/drawing references a central hub."""
-    if "hub" in raw.lower():
-        return True
-    if "hub" in model and model["hub"]:
+    if "hub" in model and isinstance(model["hub"], dict):
+        hub_type = model["hub"].get("type")
+        if hub_type in ("none", "", None):
+            return False
         return True
     roof = model.get("roofStructure", model.get("members", {}).get("roofStructure", {}))
     return bool(roof.get("hubDiameter") or roof.get("hub"))
@@ -267,17 +268,23 @@ def _check_sheet(svg_path: str, raw: str, model: dict) -> tuple[list[str], dict]
         return errors, counts  # No point running further checks
 
     # Sheet-specific element floor
-    if total_elements < req["min_elements"]:
+    min_elem = req["min_elements"]
+    min_sem = req["min_semantic"]
+    if sheet == "blueprint-component-isolation" and not _has_hub_reference(raw, model):
+        min_elem = 30
+        min_sem = 22
+
+    if total_elements < min_elem:
         errors.append(
             f"SVG_CONTENT_TOO_SMALL: {total_elements} elements found, "
-            f"need {req['min_elements']} for sheet '{sheet}'."
+            f"need {min_elem} for sheet '{sheet}'."
         )
 
     # Sheet-specific semantic floor
-    if semantic_total < req["min_semantic"]:
+    if semantic_total < min_sem:
         errors.append(
             f"SVG_TOO_FEW_SEMANTIC_ELEMENTS: {semantic_total} data-role elements, "
-            f"need {req['min_semantic']} for sheet '{sheet}'."
+            f"need {min_sem} for sheet '{sheet}'."
         )
 
     # Sheet-specific text floor

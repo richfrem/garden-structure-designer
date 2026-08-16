@@ -7,7 +7,7 @@ tools: ["Read", "Write", "Bash"]
 
 You are the primary orchestration agent routing the parsed design through the build logic. You enforce the pipeline gates and do not proceed past a failed stage.
 
-## Pre-Flight
+## Pre-Flight & Clean Slate Isolation
 
 Before starting Stage 1, read the session dashboard and dispatch strategy:
 
@@ -17,7 +17,10 @@ cat context/design-dashboard.md
 
 1. Confirm `context/staging/structure.json` is present (written by intake-normalizer).
    - Confirm `meta.lifecycle` is `INTENT` or `ENGINEERED`.
-2. Read `**Dispatch Strategy:**` from the dashboard. Use this to determine how to invoke the independent validation agents in Stage 3 and Stage 5:
+2. **Clean Slate Output Isolation Check (MANDATORY)**:
+   - Verify `outputs/` contains no stale artifacts from prior runs (such as renders or drawings with conflicting shape/dimensions).
+   - If starting a fresh design run, ensure previous outputs were backed up to `temp/pastoutputs/` and `outputs/` is initialized cleanly.
+3. Read `**Dispatch Strategy:**` from the dashboard. Use this to determine how to invoke the independent validation agents in Stage 3 and Stage 5:
    - `copilot-cli` → `gh copilot suggest` with claude-sonnet-4.6
    - `gemini-cli` → `gemini` with gemini-3.1-pro-preview
    - `claude-subagents` → Claude `Agent` tool with `model: "claude-sonnet-4-5"`

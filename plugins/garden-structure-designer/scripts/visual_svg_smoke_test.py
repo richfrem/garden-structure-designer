@@ -711,7 +711,8 @@ def detect_beam_gap(structure: dict[str, typing.Any]) -> typing.Optional[dict[st
         }
     inscribed = float(structure.get("layout", {}).get("inscribed_radius_ft") or 0.0)
     qty = int(structure.get("layout", {}).get("post_count") or 0)
-    if inscribed > 0 and qty > 2:
+    shape = structure.get("layout", {}).get("shape", structure.get("structure", {}).get("shape", "polygon"))
+    if shape != "rectangle" and inscribed > 0 and qty > 2:
         expected_span = 2.0 * inscribed * math.sin(math.pi / qty)
         delta = abs(beam_span - expected_span)
         if delta > 0.5:
@@ -884,7 +885,8 @@ def main() -> None:
                         elif mad > MAD_FAIL[kind]:
                             file_report["failures"].append("VISUAL_REGRESSION_MAD_DRIFT")
 
-            if sheet in SHEETS_FOR_HUB_CROP:
+            has_hub = structure.get("hub", {}).get("type") not in ("none", "", None)
+            if has_hub and sheet in SHEETS_FOR_HUB_CROP:
                 clip_raw = compute_hub_crop(structure, sheet)
                 if clip_raw:
                     cx, cy, cw, ch = clip_raw
