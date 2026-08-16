@@ -1,19 +1,19 @@
 {
   "schema": "garden-structure-designer/physics-validation/1.1",
-  "status": "PASS",
+  "status": "WARNING",
   "disclaimer": "Screening calculation only; not professional engineering certification.",
   "checks": [
     {
       "name": "post_slenderness",
       "status": "PASS",
-      "value": 18.4,
+      "value": 20.2,
       "limit": 50
     },
     {
       "name": "beam_deflection",
-      "status": "PASS",
-      "value": 0.232,
-      "limit": 0.244
+      "status": "WARNING",
+      "value": 1.943,
+      "limit": 0.25
     },
     {
       "name": "caisson_bearing",

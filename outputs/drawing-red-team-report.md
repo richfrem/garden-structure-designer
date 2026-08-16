@@ -3,7 +3,7 @@
 **Status:** PASS  
 **May claim success:** true  
 **Reviewer:** run_drawing_red_team.py  
-**Generated:** 2026-08-15T19:43:38.611196+00:00  
+**Generated:** 2026-08-16T03:50:56.941444+00:00  
 
 > All SVG sheets passed deterministic machine validation, sheet-specific content-quality checks, and headless browser visual smoke heuristics. This executable red-team gate approves may_claim_success. Optional human or LLM qualitative review may still be performed for additional assurance.
 
@@ -14,15 +14,15 @@
 ### ✅ `outputs/blueprint-component-isolation.svg` — PASS
 
 **Semantic counts:**
-- `data-role="post"`: 7
-- `data-role="beam"`: 7
-- `data-role="rafter"`: 7
-- `data-role="brace"`: 1
-- `data-role="footing"`: 7
-- `data-role="dimension"`: 8
-- `data-role="component"`: 6
+- `data-role="post"`: 5
+- `data-role="beam"`: 5
+- `data-role="rafter"`: 4
+- `data-role="brace"`: 5
+- `data-role="footing"`: 2
+- `data-role="dimension"`: 10
+- `data-role="component"`: 5
 - `data-role="title-block"`: 1
-- Text labels: 35
+- Text labels: 28
 - Total elements: 0
 
 ---
@@ -32,13 +32,13 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 52
+- Text labels: 40
 - Total elements: 0
 
 ---
@@ -48,13 +48,13 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 53
+- Text labels: 41
 - Total elements: 0
 
 ---
@@ -64,13 +64,13 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 52
+- Text labels: 40
 - Total elements: 0
 
 ---
@@ -80,13 +80,13 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 52
+- Text labels: 40
 - Total elements: 0
 
 ---
@@ -96,13 +96,13 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 53
+- Text labels: 41
 - Total elements: 0
 
 ---
@@ -112,13 +112,13 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 53
+- Text labels: 41
 - Total elements: 0
 
 ---
@@ -128,13 +128,13 @@
 **Semantic counts:**
 - `data-role="post"`: 6
 - `data-role="beam"`: 6
-- `data-role="rafter"`: 18
+- `data-role="rafter"`: 6
 - `data-role="brace"`: 12
 - `data-role="footing"`: 6
 - `data-role="dimension"`: 1
 - `data-role="component"`: 0
 - `data-role="title-block"`: 1
-- Text labels: 52
+- Text labels: 40
 - Total elements: 0
 
 ---

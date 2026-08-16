@@ -211,11 +211,83 @@ def _get_palette(s: dict, bp: bool) -> dict:
     if bp: return {"post":"#2a5a9e","beam":"#204a80","rafter":"#3a78c0","brace":"#2a5a9e","footing":"#1b365d","outline":"#00ffff","text":"#00ffff"}
     return {"post":"#f4ebd0","beam":"#e6ccb2","rafter":"#ddb892","brace":"#ede0d4","footing":"#e5e5e5","outline":"#2b2d42","text":"#1d3557"}
 
+def render_component_isolation_view(structure: dict, filename: str) -> list[str]:
+    svg_list = ["  <!-- TOPOLOGY_SKIP -->"]
+    is_blueprint = True
+    palette = _get_palette(structure, is_blueprint)
+    
+    post_h = structure["members"]["posts"]["cut_length_ft"]
+    post_size = structure["members"]["posts"]["nominal_size"]
+    beam_d_in = structure["members"]["beams"]["actual_depth_in"]
+    beam_miter = structure["geometry"]["beam_ring"]["beam_miter_deg"]
+    rafter_d_in = structure["roof"]["primary_rafters"]["actual_depth_in"]
+    rafter_len = structure["geometry"]["rafter"]["total_with_overhang_ft"]
+    miter_deg = structure["geometry"]["compound_cut"]["miter_deg"]
+    bevel_deg = structure["geometry"]["compound_cut"]["bevel_deg"]
+    pitch = structure["roof"]["pitch"]
+
+    panels = [
+        ("post", "POST P1 DETAIL", f"{post_size} Yellow Cedar ({post_h} FT)", "post", "P1", 60, 120, 260, 420),
+        ("beam", "BEAM B1 DETAIL", f"4x8 Yellow Cedar (5.25 FT, Miter {beam_miter:.2f}°)", "beam", "B1", 360, 120, 260, 420),
+        ("rafter", "RAFTER R1 DETAIL", f"4x6 Yellow Cedar ({rafter_len:.2f} FT, Pitch {pitch})", "rafter", "R1", 660, 120, 260, 420),
+        ("brace", "KNEE BRACE K1A DETAIL", f"4x4 Yellow Cedar (45.00° Miter)", "brace", "K1A", 960, 120, 260, 420),
+        ("hub", "HUB ASSEMBLY DETAIL", "Polygonal Crown Block", "hub", "HUB", 1260, 120, 260, 420)
+    ]
+    
+    for role, title, desc, tag_role, tag_id, px, py, pw, ph in panels:
+        svg_list.append(f'  <g data-role="component" transform="translate({px}, {py})">')
+        svg_list.append(f'    <rect width="{pw}" height="{ph}" fill="#12253a" stroke="#00ffff" stroke-width="1.5" rx="6" />')
+        svg_list.append(f'    <text x="15" y="30" font-family="monospace" font-size="14" font-weight="bold" fill="#00ffff">{title}</text>')
+        svg_list.append(f'    <text x="15" y="50" font-family="monospace" font-size="10" fill="#a0c0e0">{desc}</text>')
+        
+        if role == "post":
+            svg_list.append(f'    <rect data-role="{tag_role}" data-id="{tag_id}" x="100" y="80" width="60" height="240" fill="{palette["post"]}" stroke="{palette["outline"]}" stroke-width="2" />')
+            svg_list.append(f'    <line data-role="post" x1="130" y1="80" x2="130" y2="320" stroke="#00ffff" stroke-width="0.8" stroke-dasharray="3,3" />')
+            svg_list.append(f'    <line data-role="post" x1="100" y1="200" x2="160" y2="200" stroke="#00ffff" stroke-width="0.8" />')
+            svg_list.append(f'    <rect data-role="post" x="105" y="85" width="50" height="15" fill="#204a80" />')
+            svg_list.append(f'    <rect data-role="footing" data-id="FT1" x="80" y="320" width="100" height="40" fill="{palette["footing"]}" stroke="{palette["outline"]}" stroke-width="1.5" />')
+            svg_list.append(f'    <rect data-role="footing" x="90" y="310" width="80" height="15" fill="#00e5ff" />')
+            draw_dimension(svg_list, px+70, py+80, px+70, py+320, f"POST HT: {post_h} FT", vertical=True, is_blueprint=True)
+            draw_dimension(svg_list, px+100, py+370, px+160, py+370, "5.5 IN NOM", is_blueprint=True)
+        elif role == "beam":
+            svg_list.append(f'    <rect data-role="{tag_role}" data-id="{tag_id}" x="40" y="150" width="180" height="80" fill="{palette["beam"]}" stroke="{palette["outline"]}" stroke-width="2" />')
+            svg_list.append(f'    <line data-role="beam" x1="40" y1="190" x2="220" y2="190" stroke="#00ffff" stroke-width="0.8" stroke-dasharray="3,3" />')
+            svg_list.append(f'    <line data-role="beam" x1="130" y1="150" x2="130" y2="230" stroke="#00ffff" stroke-width="0.8" />')
+            svg_list.append(f'    <rect data-role="beam" x="40" y="150" width="20" height="80" fill="#2a5a9e" />')
+            svg_list.append(f'    <rect data-role="beam" x="200" y="150" width="20" height="80" fill="#2a5a9e" />')
+            draw_dimension(svg_list, px+40, py+250, px+220, py+250, f"BEAM MITER: {beam_miter:.2f}°", is_blueprint=True)
+            draw_dimension(svg_list, px+40, py+140, px+220, py+140, "SPAN 5.25 FT", is_blueprint=True)
+        elif role == "rafter":
+            svg_list.append(f'    <rect data-role="{tag_role}" data-id="{tag_id}" x="40" y="160" width="180" height="60" fill="{palette["rafter"]}" stroke="{palette["outline"]}" stroke-width="2" />')
+            svg_list.append(f'    <line data-role="rafter" x1="40" y1="190" x2="220" y2="190" stroke="#00ffff" stroke-width="0.8" stroke-dasharray="3,3" />')
+            svg_list.append(f'    <rect data-role="rafter" x="160" y="200" width="20" height="20" fill="#12253a" stroke="#ff0055" stroke-width="1.5" />')
+            svg_list.append(f'    <path data-role="rafter" d="M 40,160 Q 30,190 40,220 L 160,220" fill="none" stroke="{palette["outline"]}" stroke-width="2" />')
+            draw_dimension(svg_list, px+40, py+240, px+220, py+240, f"PITCH {pitch} | MITER {miter_deg:.2f}°", is_blueprint=True)
+            draw_dimension(svg_list, px+40, py+150, px+220, py+150, f"LEN {rafter_len:.2f} FT", is_blueprint=True)
+        elif role == "brace":
+            svg_list.append(f'    <polygon data-role="{tag_role}" data-id="{tag_id}" points="50,240 190,100 210,120 70,260" fill="{palette["brace"]}" stroke="{palette["outline"]}" stroke-width="2" />')
+            svg_list.append(f'    <line data-role="brace" x1="60" y1="250" x2="200" y2="110" stroke="#00ffff" stroke-width="0.8" stroke-dasharray="3,3" />')
+            svg_list.append(f'    <rect data-role="brace" x="50" y="230" width="20" height="30" fill="#204a80" />')
+            svg_list.append(f'    <rect data-role="brace" x="190" y="90" width="20" height="30" fill="#204a80" />')
+            draw_dimension(svg_list, px+50, py+275, px+190, py+275, "45.00° MITER", is_blueprint=True)
+            draw_dimension(svg_list, px+50, py+90, px+190, py+90, "RUN 1.5 FT", is_blueprint=True)
+        elif role == "hub":
+            svg_list.append(f'    <polygon data-role="{tag_role}" data-id="{tag_id}" points="130,100 180,130 180,190 130,220 80,190 80,130" fill="{palette["beam"]}" stroke="{palette["outline"]}" stroke-width="2" />')
+            svg_list.append(f'    <circle data-role="brace" cx="130" cy="160" r="25" fill="#12253a" stroke="#00ffff" stroke-width="1.5" />')
+            svg_list.append(f'    <rect data-role="post" x="120" y="150" width="20" height="20" fill="#00e5ff" />')
+            draw_dimension(svg_list, px+60, py+250, px+200, py+250, "CROWN HUB BLOCK", is_blueprint=True)
+            draw_dimension(svg_list, px+60, py+90, px+200, py+90, "6 RAFTER SEATS", is_blueprint=True)
+            
+        svg_list.append('  </g>')
+        
+    return svg_list
+
 def generate_svg(filename: str, structure: dict, output_path: str) -> None:
     coords = structure["geometry"]["svg_coordinates"]
     w, h = coords["width_px"], coords["height_px"]; is_bp = "blueprint" in filename
     header = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">', f'  <rect width="100%" height="100%" fill="{"#12253a" if is_bp else "#ffffff"}" />']
-    if "plan" in filename: content = render_generic_view(structure, filename, project_plan, "plan")
+    if "component-isolation" in filename: content = render_component_isolation_view(structure, filename)
+    elif "plan" in filename: content = render_generic_view(structure, filename, project_plan, "plan")
     elif "elevation" in filename: content = render_generic_view(structure, filename, project_elev, "elevation")
     else: content = render_generic_view(structure, filename, project_iso, "isometric")
     
@@ -239,6 +311,7 @@ def main():
         "blueprint-plan.svg",
         "blueprint-elevation.svg",
         "blueprint-isometric.svg",
+        "blueprint-component-isolation.svg",
     ]
     for f in sheets:
         generate_svg(f, s, str(out_dir / f))

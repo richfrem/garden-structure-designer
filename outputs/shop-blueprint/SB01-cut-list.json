@@ -1,6 +1,6 @@
 {
   "schema": "garden-structure-designer/cut-list/1.0",
-  "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
+  "source_hash": "b2f09a63c4e1a5",
   "members": [
     {
       "id": "M01",
@@ -8,27 +8,27 @@
       "profile": "5x5",
       "width_in": 5.5,
       "depth_in": 5.5,
-      "cut_length_ft": 8.42,
+      "cut_length_ft": 9.5,
       "qty": 6,
       "order_length_ft": 10,
-      "bf_per_piece_net": 21.23,
+      "bf_per_piece_net": 23.95,
       "bf_per_piece_order": 25.21,
-      "bf_total_net": 127.35,
+      "bf_total_net": 143.69,
       "bf_total_order": 151.25
     },
     {
       "id": "M02",
       "name": "Ring beams",
-      "profile": "6x12",
-      "width_in": 6.0,
-      "depth_in": 12.0,
-      "cut_length_ft": 5.63,
+      "profile": "3x7",
+      "width_in": 3.5,
+      "depth_in": 7.25,
+      "cut_length_ft": 5.77,
       "qty": 6,
       "order_length_ft": 8,
-      "bf_per_piece_net": 33.77,
-      "bf_per_piece_order": 48.0,
-      "bf_total_net": 202.65,
-      "bf_total_order": 288.0
+      "bf_per_piece_net": 12.21,
+      "bf_per_piece_order": 16.92,
+      "bf_total_net": 73.25,
+      "bf_total_order": 101.5
     },
     {
       "id": "M03",
@@ -36,12 +36,12 @@
       "profile": "4x6",
       "width_in": 4.0,
       "depth_in": 6.0,
-      "cut_length_ft": 6.19,
+      "cut_length_ft": 6.32,
       "qty": 6,
       "order_length_ft": 8,
-      "bf_per_piece_net": 12.39,
+      "bf_per_piece_net": 12.65,
       "bf_per_piece_order": 16.0,
-      "bf_total_net": 74.31,
+      "bf_total_net": 75.89,
       "bf_total_order": 96.0
     },
     {
@@ -60,9 +60,9 @@
     }
   ],
   "totals": {
-    "bf_net": 409.4,
-    "bf_order": 555.4,
+    "bf_net": 297.9,
+    "bf_order": 368.9,
     "waste_factor": 0.1,
-    "bf_with_waste": 611.0
+    "bf_with_waste": 405.8
   }
 }

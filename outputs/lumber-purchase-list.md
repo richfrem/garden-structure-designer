@@ -1,12 +1,12 @@
 # Lumber Purchase & Hardware Procurement List
 **Jurisdiction / Region:** BC_Vancouver_Island
-**Total Board Feet (Net Fabrication):** 409.40 BF
+**Total Board Feet (Net Fabrication):** 297.90 BF
 
 ## 1. Timber Schedule (Order Lengths Include Waste Allowance)
 | Member Role | Nominal Size | Quantity | Cut Length (ft) | Recommended Stock Order Length | Subtotal (BF) |
 |---|---|---|---|---|---|
-| Posts | 6x6 | 6 | 8.42' | 10.0' | 0.00 |
-| Beams | 6x12 | 6 | 5.00' | 10.0' | 0.00 |
+| Posts | 6x6 | 6 | 9.25' | 11.0' | 0.00 |
+| Beams | 4x8 | 6 | 5.25' | 10.0' | 0.00 |
 | Primary Rafters | 4x6 | 6 | 8.50' | 10.0' | 0.00 |
 | Knee Braces | 4x4 | 12 | 3.00' | 8.0' (cut 2/board) | 0.00 |
 

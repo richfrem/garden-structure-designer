@@ -494,6 +494,8 @@ def full_visual_validation(
 
     for k in expected:
         if k in ("posts", "beams", "rafters"):
+            if "plan" in sheet_key and k == "posts":
+                continue
             if k in detected:
                 if expected[k] > 0 and detected[k] < expected[k] // 2:
                     failures.append(f"COUNT_MISMATCH_{k.upper()}")

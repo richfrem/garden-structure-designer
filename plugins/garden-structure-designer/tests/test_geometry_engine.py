@@ -143,3 +143,17 @@ def test_compute_fails_on_already_sealed_geometry(tmp_path):
     p.write_text(json.dumps(seed))
     with pytest.raises(RuntimeError, match="sealed"):
         compute_from_structure(str(p))
+
+def test_flat_pitch_0_12(tmp_path):
+    """0:12 flat pitch pergola should calculate geometry without plane intersection error."""
+    import copy
+    seed = copy.deepcopy(STRUCTURE_SEED)
+    seed["roof"]["pitch"] = "0:12"
+    seed["roof"]["type"] = "flat"
+    p = tmp_path / "structure.json"
+    p.write_text(json.dumps(seed))
+    compute_from_structure(str(p))
+    data = json.loads(p.read_text())
+    assert data["geometry"]["_sealed"] is True
+    assert data["geometry"]["roof_rise"]["rise_ft"] == 0.0
+

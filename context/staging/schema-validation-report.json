@@ -3,22 +3,22 @@
   "status": "PASS",
   "files": [
     {
-      "path": "/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/structure.json",
-      "schema": "/Users/richardfremmerlid/Projects/garden-structure-designer/plugins/garden-structure-designer/schemas/structure.schema.json",
+      "path": "context/staging/structure.json",
+      "schema": "plugins/garden-structure-designer/schemas/structure.schema.json",
       "status": "PASS",
       "errors": [],
       "warnings": []
     },
     {
-      "path": "/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/building-code.json",
-      "schema": "/Users/richardfremmerlid/Projects/garden-structure-designer/plugins/garden-structure-designer/schemas/building-code.schema.json",
+      "path": "context/staging/building-code.json",
+      "schema": "plugins/garden-structure-designer/schemas/building-code.schema.json",
       "status": "PASS",
       "errors": [],
       "warnings": []
     },
     {
-      "path": "/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/joinery-model.json",
-      "schema": "/Users/richardfremmerlid/Projects/garden-structure-designer/plugins/garden-structure-designer/schemas/joinery-model.schema.json",
+      "path": "context/staging/joinery-model.json",
+      "schema": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
       "status": "PASS",
       "errors": [],
       "warnings": []

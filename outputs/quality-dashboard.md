@@ -2,7 +2,7 @@
 
 ## Run Status
 - Overall status: COMPLETED
-- Physics status: PASS
+- Physics status: WARNING
 - Drawing content validation: PASS
 - Drawing red-team review: PASS
 - May claim success: true
@@ -25,8 +25,8 @@
 - ✅ `outputs/drawing-plan-view.svg`: PASS — codes: none
 
 ## Physics Validations
-- post_slenderness: PASS (Val: 18.4, Lim: 50)
-- beam_deflection: PASS (Val: 0.232, Lim: 0.244)
+- post_slenderness: PASS (Val: 20.2, Lim: 50)
+- beam_deflection: WARNING (Val: 1.943, Lim: 0.25)
 - caisson_bearing: PASS (Val: 30.2, Lim: 113.1)
 
 ## Repair Attempts

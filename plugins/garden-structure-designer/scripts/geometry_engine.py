@@ -277,16 +277,21 @@ def solve_rafter_endpoints_geometric(i: int, qty: int, Z_APEX: float, Z_BEAM_TOP
     dir_rafter = vcross(n1, n2)
     if dir_rafter[2] > 0:
         dir_rafter = vmul(dir_rafter, -1.0)
+    if vlen(dir_rafter) < 1e-6:
+        dir_rafter = (math.cos(theta_i), math.sin(theta_i), 0.0)
     u_dir = vnorm(dir_rafter)
     
     p_hub_plane = (hub_r * math.cos(theta_i), hub_r * math.sin(theta_i), Z_APEX)
     n_hub_plane = (math.cos(theta_i), math.sin(theta_i), 0.0)
     
-    p_beam_top_plane = (0.0, 0.0, Z_BEAM_TOP + v_shift)
-    n_beam_top_plane = (0.0, 0.0, 1.0)
-    
-    p_hub, _ = intersect_line_plane(p_apex, u_dir, p_hub_plane, n_hub_plane)
-    p_seat_top, _ = intersect_line_plane(p_apex, u_dir, p_beam_top_plane, n_beam_top_plane)
+    if abs(u_dir[2]) < 1e-6:
+        p_hub = (hub_r * math.cos(theta_i), hub_r * math.sin(theta_i), Z_APEX + v_shift)
+        p_seat_top = (r_ft * math.cos(theta_i), r_ft * math.sin(theta_i), Z_BEAM_TOP + v_shift)
+    else:
+        p_beam_top_plane = (0.0, 0.0, Z_BEAM_TOP + v_shift)
+        n_beam_top_plane = (0.0, 0.0, 1.0)
+        p_hub, _ = intersect_line_plane(p_apex, u_dir, p_hub_plane, n_hub_plane)
+        p_seat_top, _ = intersect_line_plane(p_apex, u_dir, p_beam_top_plane, n_beam_top_plane)
     
     u_xy_len = v2_radius(u_dir)
     p_tail = vadd(p_seat_top, vmul(u_dir, oh_ft / u_xy_len))

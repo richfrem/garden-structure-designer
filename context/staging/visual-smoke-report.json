@@ -1,25 +1,25 @@
 {
   "schema": "garden-structure-designer/visual-smoke-report/1.0",
-  "generated_at": "2026-08-15T19:43:35.840701+00:00",
-  "source_hash": "6a3a31093913173981deb71e2e0b9148147dfe6aba97ba5347db7fd1c3ea4d61",
-  "structure_path": "/Users/richardfremmerlid/Projects/garden-structure-designer/context/staging/structure.json",
-  "svg_dir": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs",
-  "out_dir": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke",
+  "generated_at": "2026-08-16T03:50:52.777331+00:00",
+  "source_hash": "a1b2c3d4e5f6",
+  "structure_path": "context/staging/structure.json",
+  "svg_dir": "outputs",
+  "out_dir": "outputs/visual-smoke",
   "baseline_dir": null,
   "status": "PASS",
   "summary": "All sheets rendered and heuristics passed.",
   "files": [
     {
       "sheet": "drawing-plan-view",
-      "svg": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-plan-view.svg",
-      "png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-plan-view.png",
+      "svg": "outputs/drawing-plan-view.svg",
+      "png": "outputs/visual-smoke/drawing-plan-view.png",
       "metrics": {
         "viewport_px": [
           1600,
           1600
         ],
-        "non_bg_ratio": 0.050112109375,
-        "bbox_fill_ratio": 0.34954921875,
+        "non_bg_ratio": 0.031789453125,
+        "bbox_fill_ratio": 0.35376875,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -29,19 +29,19 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 4,
-          "beams": 15,
-          "rafters": 67
+          "posts": 1,
+          "beams": 10,
+          "rafters": 32
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2736,
+        "cv_hub_density": 1885,
         "hub_edge_density": 0.06758928571428571
       },
       "failures": [],
       "warnings": [
         "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-plan-view.svg \u2014 re-rendered"
       ],
-      "hub_crop_png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-plan-view.hub.png",
+      "hub_crop_png": "outputs/visual-smoke/drawing-plan-view.hub.png",
       "clip": {
         "hub_box_px": [
           660,
@@ -54,15 +54,15 @@
     },
     {
       "sheet": "drawing-elevation-view",
-      "svg": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-elevation-view.svg",
-      "png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-elevation-view.png",
+      "svg": "outputs/drawing-elevation-view.svg",
+      "png": "outputs/visual-smoke/drawing-elevation-view.png",
       "metrics": {
         "viewport_px": [
           1600,
           1600
         ],
-        "non_bg_ratio": 0.0596546875,
-        "bbox_fill_ratio": 0.421475,
+        "non_bg_ratio": 0.050469921875,
+        "bbox_fill_ratio": 0.396278125,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -73,11 +73,11 @@
         },
         "detected_components": {
           "posts": 15,
-          "beams": 10,
-          "rafters": 39
+          "beams": 13,
+          "rafters": 15
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 0
+        "cv_hub_density": 28
       },
       "failures": [],
       "warnings": [
@@ -87,15 +87,15 @@
     },
     {
       "sheet": "drawing-isometric-view",
-      "svg": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-isometric-view.svg",
-      "png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-isometric-view.png",
+      "svg": "outputs/drawing-isometric-view.svg",
+      "png": "outputs/visual-smoke/drawing-isometric-view.png",
       "metrics": {
         "viewport_px": [
           1600,
           1600
         ],
-        "non_bg_ratio": 0.14016796875,
-        "bbox_fill_ratio": 0.577416015625,
+        "non_bg_ratio": 0.131858203125,
+        "bbox_fill_ratio": 0.6080125,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -105,23 +105,23 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 30,
-          "beams": 33,
-          "rafters": 89
+          "posts": 29,
+          "beams": 19,
+          "rafters": 63
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2162,
+        "cv_hub_density": 2097,
         "hub_edge_density": 0.1082780612244898
       },
       "failures": [],
       "warnings": [
         "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-isometric-view.svg \u2014 re-rendered"
       ],
-      "hub_crop_png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-isometric-view.hub.png",
+      "hub_crop_png": "outputs/visual-smoke/drawing-isometric-view.hub.png",
       "clip": {
         "hub_box_px": [
           660,
-          438,
+          471,
           280,
           280
         ]
@@ -130,15 +130,15 @@
     },
     {
       "sheet": "drawing-perspective-view",
-      "svg": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/drawing-perspective-view.svg",
-      "png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-perspective-view.png",
+      "svg": "outputs/drawing-perspective-view.svg",
+      "png": "outputs/visual-smoke/drawing-perspective-view.png",
       "metrics": {
         "viewport_px": [
           1600,
           1600
         ],
-        "non_bg_ratio": 0.14016796875,
-        "bbox_fill_ratio": 0.577416015625,
+        "non_bg_ratio": 0.131858203125,
+        "bbox_fill_ratio": 0.6080125,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -148,23 +148,23 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 30,
-          "beams": 33,
-          "rafters": 89
+          "posts": 29,
+          "beams": 19,
+          "rafters": 63
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2162,
+        "cv_hub_density": 2097,
         "hub_edge_density": 0.1082780612244898
       },
       "failures": [],
       "warnings": [
         "PNG_STALE_OR_MISSING: PNG was older than SVG for drawing-perspective-view.svg \u2014 re-rendered"
       ],
-      "hub_crop_png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/drawing-perspective-view.hub.png",
+      "hub_crop_png": "outputs/visual-smoke/drawing-perspective-view.hub.png",
       "clip": {
         "hub_box_px": [
           660,
-          438,
+          471,
           280,
           280
         ]
@@ -173,15 +173,15 @@
     },
     {
       "sheet": "blueprint-plan",
-      "svg": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-plan.svg",
-      "png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-plan.png",
+      "svg": "outputs/blueprint-plan.svg",
+      "png": "outputs/visual-smoke/blueprint-plan.png",
       "metrics": {
         "viewport_px": [
           1600,
           1600
         ],
-        "non_bg_ratio": 0.05435,
-        "bbox_fill_ratio": 0.35029296875,
+        "non_bg_ratio": 0.03485859375,
+        "bbox_fill_ratio": 0.3548515625,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -191,19 +191,19 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 6,
-          "beams": 17,
-          "rafters": 68
+          "posts": 1,
+          "beams": 11,
+          "rafters": 33
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 3160,
+        "cv_hub_density": 2181,
         "hub_edge_density": 0.06551020408163265
       },
       "failures": [],
       "warnings": [
         "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-plan.svg \u2014 re-rendered"
       ],
-      "hub_crop_png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-plan.hub.png",
+      "hub_crop_png": "outputs/visual-smoke/blueprint-plan.hub.png",
       "clip": {
         "hub_box_px": [
           660,
@@ -216,15 +216,15 @@
     },
     {
       "sheet": "blueprint-elevation",
-      "svg": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-elevation.svg",
-      "png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-elevation.png",
+      "svg": "outputs/blueprint-elevation.svg",
+      "png": "outputs/visual-smoke/blueprint-elevation.png",
       "metrics": {
         "viewport_px": [
           1600,
           1600
         ],
-        "non_bg_ratio": 0.02773359375,
-        "bbox_fill_ratio": 0.42204765625,
+        "non_bg_ratio": 0.021823828125,
+        "bbox_fill_ratio": 0.396278125,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -234,12 +234,12 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 19,
-          "beams": 12,
-          "rafters": 37
+          "posts": 17,
+          "beams": 15,
+          "rafters": 14
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 0
+        "cv_hub_density": 29
       },
       "failures": [],
       "warnings": [
@@ -249,15 +249,15 @@
     },
     {
       "sheet": "blueprint-isometric",
-      "svg": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-isometric.svg",
-      "png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-isometric.png",
+      "svg": "outputs/blueprint-isometric.svg",
+      "png": "outputs/visual-smoke/blueprint-isometric.png",
       "metrics": {
         "viewport_px": [
           1600,
           1600
         ],
-        "non_bg_ratio": 0.111003125,
-        "bbox_fill_ratio": 0.57781015625,
+        "non_bg_ratio": 0.106440625,
+        "bbox_fill_ratio": 0.608409375,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -267,23 +267,23 @@
           "braces": 12
         },
         "detected_components": {
-          "posts": 30,
-          "beams": 28,
-          "rafters": 102
+          "posts": 33,
+          "beams": 24,
+          "rafters": 82
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 2267,
+        "cv_hub_density": 2161,
         "hub_edge_density": 0.10755102040816326
       },
       "failures": [],
       "warnings": [
         "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-isometric.svg \u2014 re-rendered"
       ],
-      "hub_crop_png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-isometric.hub.png",
+      "hub_crop_png": "outputs/visual-smoke/blueprint-isometric.hub.png",
       "clip": {
         "hub_box_px": [
           660,
-          438,
+          471,
           280,
           280
         ]
@@ -292,15 +292,15 @@
     },
     {
       "sheet": "blueprint-component-isolation",
-      "svg": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/blueprint-component-isolation.svg",
-      "png": "/Users/richardfremmerlid/Projects/garden-structure-designer/outputs/visual-smoke/blueprint-component-isolation.png",
+      "svg": "outputs/blueprint-component-isolation.svg",
+      "png": "outputs/visual-smoke/blueprint-component-isolation.png",
       "metrics": {
         "viewport_px": [
           1600,
-          1200
+          1600
         ],
-        "non_bg_ratio": 0.11044791666666667,
-        "bbox_fill_ratio": 0.9550572916666666,
+        "non_bg_ratio": 0.04727890625,
+        "bbox_fill_ratio": 0.84015625,
         "top_left_clustered": false,
         "expected_topology": {
           "posts": 6,
@@ -311,14 +311,16 @@
         },
         "detected_components": {
           "posts": 13,
-          "beams": 97,
-          "rafters": 17
+          "beams": 66,
+          "rafters": 9
         },
         "cv_content_ratio": 1.0,
-        "cv_hub_density": 1690
+        "cv_hub_density": 221
       },
       "failures": [],
-      "warnings": [],
+      "warnings": [
+        "PNG_STALE_OR_MISSING: PNG was older than SVG for blueprint-component-isolation.svg \u2014 re-rendered"
+      ],
       "status": "PASS"
     }
   ],
