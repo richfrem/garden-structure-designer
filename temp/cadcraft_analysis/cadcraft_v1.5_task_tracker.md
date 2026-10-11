@@ -27,7 +27,7 @@
   - Verify downstream renderers, CAD adapters, and package compilers are strictly NOT called after Stage 2 rejection.
 - [x] **TASK-002**: Implement Stage 0.5 `plugins/garden-structure-designer/scripts/validate_topology_intent.py` and update `schemas/structure.schema.json`.
 - [x] **TASK-003**: Harden Stage 2 `plugins/garden-structure-designer/scripts/topology_compiler.py` to validate source arrays before graph construction; enforce in-process validation for downstream consumers.
-- [ ] **TASK-004**: Record baseline evidence (observed paths, precision limits) per plan TASK-004 without asserting unverified license claims.
+- [x] **TASK-004**: Record baseline evidence (observed paths, precision limits) per plan TASK-004 without asserting unverified license claims (documented in `ATTRIBUTION.md` and ADR `002-constraint-solver-evaluation.md`).
 
 ---
 
@@ -74,10 +74,29 @@
 ---
 
 ### M4 — Initial Radial Production Acceptance (C1–C6)
-- [x] **TASK-401**: Run complete end-to-end radial test suite across all regular polygons $N \ge 5$ on supported platforms (`test_radial_production_acceptance.py`).
+- [x] **TASK-401**: Run complete end-to-end radial test suite across all regular polygons $N \ge 5$ on supported platforms (`test_radial_production_acceptance.py` covering $N \in \{5, 6, 8, 10, 12\}$).
 - [x] **TASK-402**: Validate `outputs/package-manifest.json` against all artifact SHA-256 digests (`compile_package.py` and `test_compile_package.py`).
 - [x] **TASK-403**: Verify C1–C6 byte-for-byte synchronization between `architecture.md` and `cadcraft_v1.5_spec.md` (verified 100% identical).
 - [x] **TASK-404**: Pass independent `drawing-red-team-agent` gate (`may_claim_success: true`).
+- [x] **TASK-405**: Link Mermaid architecture diagrams in root `README.md`.
+
+---
+
+### M5 — Orthogonal Grid Pergola & Plugin/Skill Alignment (Future Epic)
+- [ ] **TASK-501 (Skill & Agent Documentation Alignment)**:
+  - Update `plugins/garden-structure-designer/skills/document-compiler/SKILL.md` to document CAD DXF deliverables (`SB01`, `SB02`) and `package-manifest.json`.
+  - Update `plugins/garden-structure-designer/skills/drawing-generator/SKILL.md` and `timber-frame-cad/SKILL.md` with ExchangeWriter port details.
+  - Lightly align `plugins/garden-structure-designer/agents/design-orchestrator.md` Stage 7 documentation with CAD deliverables.
+- [ ] **TASK-502 (OrthogonalGridTopology Intent & Geometry)**:
+  - Implement Stage 0.5 unsealed intent support for `OrthogonalGridTopology` (4 sides, `rows * cols` posts, longitudinal headers, transverse joists).
+  - Implement Stage 1 rectangular geometry math in `geometry_engine.py` for arbitrary $M \times N$ orthogonal post grids.
+- [ ] **TASK-503 (Orthogonal Topology Compiler)**:
+  - Implement Stage 2 sealed graph compilation for rectangular framing (posts $P_1..P_K$, perimeter beams, intermediate joists/ties, post-to-beam tenons/connections).
+- [ ] **TASK-504 (Orthogonal Multi-Sheet DXF & Blueprint Projection)**:
+  - Extend `export_cad.py` and `render_drawings.py` to project 3D wireframe (`SB01`) and 2D planar plan (`SB02`) for orthogonal grid structures with 1:1 member ID parity.
+- [ ] **TASK-505 (End-to-End Claude CLI E2E Verification)**:
+  - Prompt Claude CLI (`claude-cli-agent`) to design a 6-post rectangular pergola ($3 \times 2$ post grid, e.g. 18ft $\times$ 12ft) using the plugin skills and scripts.
+  - Assert full Stage 0.5 $\rightarrow$ Stage 7 execution producing valid `structure.json`, 8 SVGs, 2 DXFs, fabrication cut list, and compiled PDF package.
 
 ---
 
@@ -88,3 +107,5 @@
 - **Gate 2A (Drafting)**: SVG and DXF dimensions match 100% numerically.
 - **Gate 3 (Transactional CAS)**: Atomic commit-time compare-and-swap prevents race conditions and invalidates stale caches.
 - **Gate 4 (Production Sign-Off)**: Independent red team approval over all generated deliverables.
+- **Gate 5 (Orthogonal Grid Sign-Off)**: 6-post rectangular pergola designed via Claude CLI and verified with 100% test passes across all stages.
+
