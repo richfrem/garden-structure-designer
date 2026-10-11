@@ -22,7 +22,7 @@ Key Input Dependencies:
 Key Functions:
     validate_package(staging_path=None, outputs_path=None) -> list[str]
     _required_files() -> list[str]
-    _check_revision_binding(structure_path, cut_list_path) -> list[str]
+    check_revision_binding(structure_path, cut_list_path) -> list[str]
     _check_svg_consistency(outputs_path) -> list[str]
 
 Usage Examples:
@@ -52,7 +52,7 @@ def _required_files() -> list[str]:
     ]
 
 
-def _check_revision_binding(structure_path: Path, cut_list_path: Path) -> list[str]:
+def check_revision_binding(structure_path: Path, cut_list_path: Path) -> list[str]:
     """The cut list must carry the same revision identity as the canonical structure.json."""
     if not (structure_path.is_file() and cut_list_path.is_file()):
         return []  # absence is reported by the required-files check
@@ -104,7 +104,7 @@ def validate_package(staging_path: Optional[Path] = None, outputs_path: Optional
     if not glob.glob(str(o_dir / "high-resolution-image" / "*_render_*.png")):
         errors.append("MISSING_RENDERS: No photorealistic renders found in outputs/high-resolution-image/")
     errors.extend(_check_svg_consistency(str(o_dir)))
-    errors.extend(_check_revision_binding(s_dir / "structure.json", o_dir / FABRICATION_SUBDIR / CUT_LIST_FILENAME))
+    errors.extend(check_revision_binding(s_dir / "structure.json", o_dir / FABRICATION_SUBDIR / CUT_LIST_FILENAME))
     return errors
 
 

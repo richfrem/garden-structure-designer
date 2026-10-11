@@ -12,7 +12,7 @@ Purpose:
 Layer: Execution / Stage 7 Compilation Gate
 
 Key Input Dependencies:
-    - context/staging/drawing-red-team-report.json (gating with may_claim_success)
+    - context/staging/drawing-red-team-report.json (may_claim_success AND bound to the current revision_id/hash)
     - context/staging/structure.json (sealed model with revision_id)
     - outputs/cad/SB01-structure.dxf and SB02-plan.dxf (written at Stage 4 by export_cad.py)
     - constants.py (CAD_SUBDIR, SHEET_FILENAMES), cross_artifact_validator.py, revision_identity.py
@@ -47,13 +47,13 @@ from cross_artifact_validator import validate_dxf_artifacts
 from embed_svgs import process as embed_process
 from path_utils import outputs_dir as default_outputs_dir
 from path_utils import staging_dir as default_staging_dir
-from revision_identity import compute_revision_hash
+from revision_identity import compute_revision_hash, verify_receipt_binding
 
 MAX_REPORTED_CAD_ERRORS = 10
 
 
 def verify_preflight_gates(staging_dir: Path, outputs_dir: Path) -> Tuple[bool, str]:
-    """Verifies that red team QA passed, high-res renders exist, and structure.json is available."""
+    """Verifies the red-team approval (bound to the current revision), high-res renders, and structure.json."""
     report_path = staging_dir / "drawing-red-team-report.json"
     if not report_path.exists():
         return False, f"BLOCKED: {report_path} not found. Run Stage 5.75 first."
@@ -76,6 +76,15 @@ def verify_preflight_gates(staging_dir: Path, outputs_dir: Path) -> Tuple[bool, 
     structure_path = staging_dir / "structure.json"
     if not structure_path.exists():
         return False, f"BLOCKED: {structure_path} not found; required for CAD export."
+
+    structure = json.loads(structure_path.read_text(encoding="utf-8"))
+    meta = structure.get("meta") or {}
+    if not verify_receipt_binding(r, meta.get("revision_id"), compute_revision_hash(structure)):
+        return False, (
+            "BLOCKED: drawing-red-team-report.json is not bound to the current revision "
+            f"(report revision_id={r.get('revision_id')!r}, structure revision_id={meta.get('revision_id')!r}); "
+            "re-run the Stage 5 red-team gate for this revision."
+        )
 
     return True, f"Gate approved. Found {len(renders)} renders."
 

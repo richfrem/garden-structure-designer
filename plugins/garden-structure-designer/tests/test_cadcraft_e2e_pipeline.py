@@ -107,7 +107,11 @@ def compiled_hex_package(hex_package):
     """Stage 7: compile the hexagonal package (PDF export forced down the fallback path)."""
     staging, outputs = hex_package["staging"], hex_package["outputs"]
     (staging / "drawing-red-team-report.json").write_text(
-        json.dumps({"may_claim_success": True, "summary": "Approved (test fixture)"}), encoding="utf-8"
+        json.dumps({
+            "may_claim_success": True, "summary": "Approved (test fixture)",
+            "revision_id": hex_package["structure"]["meta"]["revision_id"],
+            "revision_hash": hex_package["structure"]["meta"]["revision_hash"], "hash_algorithm": "gsd-json-v1",
+        }), encoding="utf-8"
     )
     render_dir = outputs / "high-resolution-image"
     render_dir.mkdir()

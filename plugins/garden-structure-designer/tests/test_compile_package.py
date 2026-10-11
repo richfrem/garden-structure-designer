@@ -8,6 +8,7 @@ sys.path.append(str(Path(__file__).parent.parent / "scripts"))
 from compile_package import compile_package
 from export_cad import export_sheets
 from ezdxf_adapter import EzdxfAdapter
+from revision_identity import compute_revision_hash
 
 def _minimal_structure():
     ring = [(0.25, 0.25), (-0.25, 0.25), (-0.25, -0.25), (0.25, -0.25)]
@@ -28,7 +29,12 @@ def mock_package_env(tmp_path):
     img_dir.mkdir(parents=True)
     
     # Gate report
-    report = {"may_claim_success": True, "summary": "Approved"}
+    structure = _minimal_structure()
+    report = {  # a Stage 5 approval bound to the exact revision being packaged
+        "may_claim_success": True, "summary": "Approved",
+        "revision_id": structure["meta"]["revision_id"],
+        "revision_hash": compute_revision_hash(structure), "hash_algorithm": "gsd-json-v1",
+    }
     with open(staging / "drawing-red-team-report.json", "w") as f:
         json.dump(report, f)
         

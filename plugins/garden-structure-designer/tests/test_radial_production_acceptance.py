@@ -136,7 +136,11 @@ def test_radial_pipeline_e2e_polygon(tmp_path, n_sides):
 
     # 8. Stage 7 Package Compilation
     (staging / "drawing-red-team-report.json").write_text(
-        json.dumps({"may_claim_success": True, "summary": f"Approved N={n_sides}"}), encoding="utf-8"
+        json.dumps({
+            "may_claim_success": True, "summary": f"Approved N={n_sides}",
+            "revision_id": stamped["meta"]["revision_id"],
+            "revision_hash": stamped["meta"]["revision_hash"], "hash_algorithm": "gsd-json-v1",
+        }), encoding="utf-8"
     )
     render_dir = outputs / "high-resolution-image"
     render_dir.mkdir(exist_ok=True)
