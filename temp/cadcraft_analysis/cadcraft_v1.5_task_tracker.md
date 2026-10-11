@@ -35,13 +35,13 @@
 - [x] **TASK-101**: Audit `vendor/cadcraft` license inventory, transitive dependencies, and API surface; author `ATTRIBUTION.md` based on verified evidence.
 - [x] **TASK-102**: Compile release binary with `scripts/build_cadcraft.py` and record binary hash.
 - [x] **TASK-103**: Write smoke test `plugins/garden-structure-designer/tests/test_cadcraft_cli_smoke.py`.
-- [ ] **TASK-104**: Implement `ExchangeWriter` port with `CadcraftAdapter` and fallback `EzdxfAdapter`. Export single-member INSERT block with registered GSD XDATA and verify round-trip with `ezdxf`.
+- [x] **TASK-104**: Implement `ExchangeWriter` port with `CadcraftAdapter` and fallback `EzdxfAdapter`. Export single-member INSERT block with registered GSD XDATA and verify round-trip with `ezdxf`.
 
 ---
 
 ### M1B — Production Multi-Sheet DXF Export & Parsed Acceptance (C3–C4)
-- [ ] **TASK-105**: Author typed adapter `plugins/garden-structure-designer/scripts/cadcraft_adapter.py` with 15s subprocess timeout and error captures.
-- [ ] **TASK-106**: Implement `plugins/garden-structure-designer/scripts/export_cad.py`:
+- [x] **TASK-105**: Author typed adapter `plugins/garden-structure-designer/scripts/cadcraft_adapter.py` with 15s subprocess timeout and error captures.
+- [x] **TASK-106**: Implement `plugins/garden-structure-designer/scripts/export_cad.py`:
   - `outputs/cad/SB01-structure.dxf`: Full-scale 3D wireframe framing model.
   - `outputs/cad/SB02-plan.dxf`: Full-scale 2D planar projection.
   - Layer mappings: `FRAMING_POSTS`, `FRAMING_BEAMS`, `FRAMING_RAFTERS`, `FRAMING_HUBS`, `FRAMING_BRACES`, `FOOTINGS_PIERS`.
