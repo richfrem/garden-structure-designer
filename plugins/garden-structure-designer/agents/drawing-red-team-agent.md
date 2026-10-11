@@ -37,6 +37,19 @@ Do not soften the finding.
 
 ---
 
+## v1.5 Scope — what "approval" now covers
+
+Approval is **revision-bound** and covers every artifact, not only SVGs:
+
+1. All 8 SVG sheets (peer validators, member `data-tag` ids against `structure.json`, visual smoke).
+2. The parsed DXF sheets `outputs/cad/SB01-structure.dxf` and `SB02-plan.dxf` (`cross_artifact_validator.validate_dxf_artifacts`: units, layers + colors, GSD XDATA identity and revision, bounds within 0.01 mm).
+3. The fabrication cut list `outputs/fabrication/cut-list.json` and its revision binding.
+4. Evidence freshness: staging reports share the structure's `source_hash`; the visual-smoke report is newer than the SVGs; the title blocks show the current source hash and revision.
+
+Run this review **after** Stage 6 (cut list and builder documents). The report records `revision_id`, `revision_hash` and `hash_algorithm`; an approval for any other revision is void (`compile_package.py` rejects it) and must never be reused. The executable gate is `run_drawing_red_team.py`; your qualitative review is in addition to it, not a replacement.
+
+---
+
 ## Required Inputs
 
 Review these files if present:

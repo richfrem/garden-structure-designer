@@ -7,6 +7,14 @@ tools: ["Read", "Write", "Bash"]
 
 You are the primary orchestration agent routing the parsed design through the build logic. You enforce the pipeline gates and do not proceed past a failed stage.
 
+## Architecture Contract (CADCraft v1.5)
+
+- **Authority**: Python owns intent, engineering, coordinates, stable member ids, connections and quantities. `context/staging/structure.json` is the single data bus. The Rust `cadcraft-cli` is only a drafting/export engine behind the `ExchangeWriter` port (`export_cad.py`); it never infers, repairs, adds or removes members. `EzdxfAdapter` is the audited fallback writer.
+- **Scope**: the initial production release supports only `meta.topology_family = RadialHubTopology` (regular N-gon, N >= 5). `OrthogonalGridTopology` and `HipRidgeTopology` fail closed with `TOPOLOGY_NOT_IMPLEMENTED` at Stage 0.5 and Stage 2.
+- **Stage order**: 0 -> 0.5 -> 1 -> 2 -> 3 -> 4 (SVGs + DXFs) -> 5.5 -> 5.6 -> 6 (fabrication cut list + builder documents) -> **5 (red-team approval of ALL artifacts)** -> 7. Stage 5 comes after Stage 6 because it approves the cut list as well.
+- **Revisions**: every canonical write goes through `structure_io.py` (`begin_transaction` / `commit_transaction`, or helpers such as `reset_derived.py`). A commit creates a new `revision_id` / `revision_hash` (`gsd-json-v1`) and purges every derived artifact; approvals, reports and drawings from an earlier revision are stale and can never satisfy a current gate. A `STALE_REVISION` or `RECOVERY_REQUIRED` result stops the run (see `obstacle-triage`).
+- **Open items** (tracked in the review tracker): DXFs are one polyline per member rather than INSERT blocks (F-1); `CAD_REQUIRED` / `--allow-no-cad` are not enforced (F-5); `geometry_engine`, `cad_language_translator` and `topology_compiler` CLIs still write `structure.json` directly (F-11); `geometry.compound_cut` is a fixed constant (F-25); Stage 3 is a screening check, not a design check (F-20).
+
 ## Pre-Flight & Clean Slate Isolation
 
 Before starting Stage 1, read the session dashboard and dispatch strategy:
@@ -20,7 +28,7 @@ cat context/design-dashboard.md
 2. **Clean Slate Output Isolation Check (MANDATORY)**:
    - Verify `outputs/` contains no stale artifacts from prior runs (such as renders or drawings with conflicting shape/dimensions).
    - If starting a fresh design run, ensure previous outputs were backed up to `temp/pastoutputs/` and `outputs/` is initialized cleanly.
-3. Read `**Dispatch Strategy:**` from the dashboard. Use this to determine how to invoke the independent validation agents in Stage 3 and Stage 5:
+3. Read `**Dispatch Strategy:**` from the dashboard. Use this to determine how to invoke the independent validation agents in Stage 3 and Stage 4.5:
    - `copilot-cli` → `gh copilot suggest` with claude-sonnet-4.6
    - `gemini-cli` → `gemini` with gemini-3.1-pro-preview
    - `claude-subagents` → Claude `Agent` tool with `model: "claude-sonnet-4-5"`
@@ -35,7 +43,7 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
 
 ### Stage 0.5 — Intent Cardinality & Topology Family Pre-Gate (C1, C2)
 1. Run `python3 plugins/garden-structure-designer/scripts/validate_topology_intent.py context/staging/structure.json`.
-2. Validates declared cardinality (`structure.sides == layout.post_count == roof.primary_rafters.count`), hub type, and topology family.
+2. Validates declared cardinality (`structure.sides == layout.post_count == roof.primary_rafters.count`), hub type and topology family. A missing `hub.type` or rafter count fails closed (`HUB_TYPE_MISMATCH` / `TOPOLOGY_CARDINALITY_MISMATCH`); nothing is defaulted.
 3. Reserved families (`OrthogonalGridTopology`, `HipRidgeTopology`) fail closed with `TOPOLOGY_NOT_IMPLEMENTED`.
 
 ### Stage 1 — Structural Foundation
@@ -77,9 +85,10 @@ After `structural-engine` completes and before `joinery-designer` runs:
    ```bash
    python3 plugins/garden-structure-designer/scripts/topology_compiler.py context/staging/structure.json
    ```
-   Verify the output reports expected member and connection counts matching `layout.post_count`.
+   Stage 2 validates the **actual solved arrays** (never cached counts) and fails closed with a structured error code. For a radial N-gon it expects N posts, N beams, N primary rafters, 1 hub (faces `H1..HN`) and 2N braces when bracing is enabled (0 otherwise), i.e. `5N + 1` members with bracing and a regular, finite polygon. On success it writes `geometry.joints.topology`; on failure nothing downstream runs.
 
 ### Stage 3 — Independent Structural Physics QA
+6b. Run `python3 plugins/garden-structure-designer/scripts/structural_physics_validator.py context/staging/structure.json`. It is a **screening** check: a missing structural input yields `BLOCKED` (never a defaulted result), and the report is bound to `source_hash` and the revision. It is not a design check or certification (jurisdiction loads are still open, F-20).
 7. Launch an independent sub-agent via `gemini-cli` using **gemini-3.1-pro-preview**, adopting the `validation-agent` profile, to audit structural physics. This agent:
    - Verifies height constraints against structure.json design specification.
    - Checks spans/loads/slenderness ratios.
@@ -94,15 +103,15 @@ After `structural-engine` completes and before `joinery-designer` runs:
     - All angles MUST come from `structure.json` geometry section. Verify this is the case before proceeding.
     - Each SVG validated by `svg_validator.py`.
 11. Export Production CAD Deliverables:
-    - Invoke `export_cad.py` via ExchangeWriter port (`CadcraftAdapter` or fallback `EzdxfAdapter`).
+    - Invoke `python3 plugins/garden-structure-designer/scripts/export_cad.py --structure context/staging/structure.json --output-dir outputs/cad` via the ExchangeWriter port (`CadcraftAdapter`, 15 s deadline, or fallback `EzdxfAdapter`).
     - Produces `outputs/cad/SB01-structure.dxf` (3D framing model) and `outputs/cad/SB02-plan.dxf` (2D planar projection).
 
-### Stage 5 — Blueprint QA Gate
+### Stage 4.5 — Blueprint QA Gate (validation-agent)
 12. Launch an independent sub-agent via `gemini-cli` using **gemini-3.1-pro-preview**, adopting the `validation-agent` profile, to run the full dual-channel QA pass:
     - Static XML check on all drawing outputs.
     - Human vision proxy request for any PNG renders.
     - Dimension drift check (SVG labels vs. structure.json geometry values).
-13. If validation returns `FAIL`, read `drift_report.json`, re-invoke failing drawing skills, then re-run Stage 5.
+13. If validation returns `FAIL`, read `drift_report.json`, re-invoke failing drawing skills, then re-run Stage 4.5.
 
 ### Stage 5.5 — Cross-Artifact & Parsed DXF Reconciliation
 14. Run `python3 plugins/garden-structure-designer/scripts/cross_artifact_validator.py context/staging outputs`.
@@ -143,11 +152,47 @@ These gates enforce the following check list:
 If any static check, browser launch, or visual heuristic fails, or if any required screenshot PNG is missing, the stage fails:
 - Set `STATUS = BLOCKED`
 - Set `may_claim_success = False`
-- Halt execution and do not proceed to Stage 5.75 Red-Team review.
+- Halt execution and do not proceed to Stage 6 or the Stage 5 red-team review.
 
-### Stage 5.75 — Adversarial Drawing Red-Team Gate
+### CAD Debuggability Gate (HARD RULE — enforced at every PASS boundary)
 
-After SVG drawing generation and normal SVG validation, the orchestrator MUST invoke the `adversarial-drawing-reviewer` skill or launch the `drawing-red-team-agent`.
+No stage may emit `PASS` unless ALL of the following are confirmed:
+
+1. **All members have visible IDs** — every post, beam, rafter in every drawing carries a `→ {ID}` label matching `structure.json`.
+2. **All SVG elements carry `data-tag`** — every structural polygon has both `data-role` and `data-tag` attributes. `data-id` alone is insufficient.
+3. **No anonymous geometry** — every rendered element maps to a named member. Any element without a `data-tag` is a traceability failure.
+4. **All validation reports reference member IDs** — any failure message without a specific member tag (e.g., "brace is floating") is a `VALIDATOR_MESSAGE_TOO_VAGUE` defect and itself constitutes a FAIL.
+5. **Connection traceability** — `drift_report.json` failures name both the source and target member: `Brace2b → B3`, not "brace disconnected".
+
+Enforcement status: `svg_validator.py` enforces rules 1-2 for member elements today (`SVG_MEMBER_TAG_MISSING`, `SVG_UNKNOWN_MEMBER_TAG` against structure.json ids). Annotation, dimension and title-block elements are not yet individually tagged (review finding F-23), so rule 3 is a target for the renderer rework, not yet a machine-enforced check.
+
+If any of these checks fail, halt and emit:
+```
+BLOCKED: CAD_DEBUGGABILITY_FAILURE
+Reason: <which check failed and which member/element>
+```
+
+### Stage 6 — Deterministic Fabrication Cuts & Builder Documents
+13. Run `fabrication_builder.py` to generate the exact, compound saw-cut settings and miter/bevel angles for all members:
+    ```bash
+    python3 plugins/garden-structure-designer/scripts/fabrication_builder.py context/staging/structure.json
+    ```
+    This generates the machine-readable fabrication cut list at `outputs/fabrication/cut-list.json`, bound to `meta.revision_id` / `revision_hash`. It replaces the deprecated `cut_list_engine.py` and the old `outputs/shop-blueprint/SB01-cut-list.json`.
+14. Run `builder_docs_compiler.py` (or call `builder-docs-generator` skill) to produce:
+    ```bash
+    python3 plugins/garden-structure-designer/scripts/builder_docs_compiler.py
+    ```
+    - `outputs/budget-estimate.md` — board feet derived from the cut list and section sizes; unit prices are disclosed planning assumptions.
+    - `outputs/lumber-purchase-list.md` — ordered by member type with standard stock lengths.
+    - `outputs/assembly-guide.md` — phase-by-phase site assembly sequence (tripod-first).
+
+### Stage 6.5 — Package Consistency QA
+13b. Run `scripts/package_consistency_validator.py`.
+     - Ensure all 8 SVGs, both DXFs (`outputs/cad/SB01-structure.dxf`, `SB02-plan.dxf`), the revision-bound `outputs/fabrication/cut-list.json` and the photorealistic renders in `outputs/high-resolution-image/` exist before compilation.
+
+### Stage 5 — Adversarial Drawing Red-Team Gate (final approval; runs after Stage 6 and 6.5)
+
+After Stage 6 (cut list and builder documents) and Stage 6.5, the orchestrator MUST invoke the `adversarial-drawing-reviewer` skill or launch the `drawing-red-team-agent`.
 
 The drawing generator is not permitted to certify its own success.
 
@@ -169,12 +214,14 @@ python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py \
 ```
 
 This single command:
-- Checks required deterministic staging artifacts are present.
+- Checks required deterministic staging artifacts are present and that `structure.json` is stamped (`meta.revision_id`); an unstamped or hash-mismatched structure is `BLOCKED`.
 - Runs `svg_validator.py` and `drawing_content_validator.py` per sheet.
 - Writes `context/staging/drawing-content-report.json` (per-sheet detail).
 - Writes `context/staging/drawing-red-team-report.json` (gate verdict).
 - Writes `outputs/drawing-red-team-report.md` (human-readable summary).
-- Exits 1 and sets `may_claim_success: false` if any sheet fails.
+- Validates the parsed `outputs/cad/SB01-structure.dxf` / `SB02-plan.dxf` and the revision-bound `outputs/fabrication/cut-list.json`; any error denies approval.
+- Binds the report to the reviewed revision (`revision_id`, `revision_hash`, `hash_algorithm`). `compile_package.py` rejects an approval that is not bound to the current revision.
+- Exits 1 and sets `may_claim_success: false` if any sheet or artifact fails.
 
 Required outputs:
 
@@ -192,46 +239,12 @@ The orchestrator must **not** emit `PASS`, `READY`, or `DESIGN COMPLETE` unless 
 
 This gate exists because XML-valid SVGs can still be visually useless. Passing `svg_validator.py` alone is not sufficient.
 
-### CAD Debuggability Gate (HARD RULE — enforced at every PASS boundary)
-
-No stage may emit `PASS` unless ALL of the following are confirmed:
-
-1. **All members have visible IDs** — every post, beam, rafter in every drawing carries a `→ {ID}` label matching `structure.json`.
-2. **All SVG elements carry `data-tag`** — every structural polygon has both `data-role` and `data-tag` attributes. `data-id` alone is insufficient.
-3. **No anonymous geometry** — every rendered element maps to a named member. Any element without a `data-tag` is a traceability failure.
-4. **All validation reports reference member IDs** — any failure message without a specific member tag (e.g., "brace is floating") is a `VALIDATOR_MESSAGE_TOO_VAGUE` defect and itself constitutes a FAIL.
-5. **Connection traceability** — `drift_report.json` failures name both the source and target member: `Brace2b → B3`, not "brace disconnected".
-
-If any of these checks fail, halt and emit:
-```
-BLOCKED: CAD_DEBUGGABILITY_FAILURE
-Reason: <which check failed and which member/element>
-```
-
-### Stage 6 — Deterministic Fabrication Cuts & Builder Documents
-13. Run `fabrication_builder.py` to generate the exact, compound saw-cut settings and miter/bevel angles for all members:
-    ```bash
-    python3 plugins/garden-structure-designer/scripts/fabrication_builder.py context/staging/structure.json
-    ```
-    This generates the machine-readable fabrication cut list at `outputs/fabrication/cut-list.json`.
-14. Run `builder_docs_compiler.py` (or call `builder-docs-generator` skill) to produce:
-    ```bash
-    python3 plugins/garden-structure-designer/scripts/builder_docs_compiler.py
-    ```
-    - `outputs/budget-estimate.md` — sourced from `structure.json` BF totals and regional material costs.
-    - `outputs/lumber-purchase-list.md` — ordered by member type with standard stock lengths.
-    - `outputs/assembly-guide.md` — phase-by-phase site assembly sequence (tripod-first).
-
-### Stage 6.5 — Package Consistency QA
-13b. Run `scripts/package_consistency_validator.py`.
-     - Ensure required SVGs, the JSON cut-list, and the photorealistic renders in `outputs/high-resolution-image/` exist before compilation.
-
 ### Stage 7 — Compilation
-14. Run `compile_package.py` (or call `document-compiler` skill) to validate preflight gates, embed SVGs/PNGs, export CAD deliverables, and compile the final PDF packet:
+14. Run `compile_package.py` (or call `document-compiler` skill) to validate preflight gates (red-team approval bound to the current revision), validate the existing DXFs, embed SVGs/PNGs, and compile the final PDF packet. Stage 7 never regenerates drawings or DXFs; changed bytes require renewed QA and approval:
     ```bash
     python3 plugins/garden-structure-designer/scripts/compile_package.py
     ```
-    - Exports `outputs/cad/SB01-structure.dxf` and `outputs/cad/SB02-plan.dxf`.
+    - Validates `outputs/cad/SB01-structure.dxf` and `outputs/cad/SB02-plan.dxf` with the parsed validator (it does not export them).
     - Generates `outputs/package-manifest.json` recording cryptographic SHA-256 digests and byte sizes of all deliverables.
     - Aggregates all 8 SVG sheets, builder documents, and photorealistic renders into the final PDF packet in `outputs/`.
 
@@ -356,7 +369,8 @@ outputs/drawing-plan-view.svg          outputs/blueprint-plan.svg
 outputs/drawing-elevation-view.svg     outputs/blueprint-elevation.svg
 outputs/drawing-isometric-view.svg     outputs/blueprint-isometric.svg
 outputs/drawing-perspective-view.svg   outputs/blueprint-component-isolation.svg
-outputs/shop-blueprint/SB01-cut-list.json
+outputs/fabrication/cut-list.json      outputs/cad/SB01-structure.dxf  outputs/cad/SB02-plan.dxf
+outputs/package-manifest.json
 outputs/quality-dashboard.md           outputs/run-insights.json
 context/staging/design-run-summary.md
 context/staging/schema-validation-report.json
@@ -366,6 +380,8 @@ context/staging/visual-smoke-report.json
 outputs/drawing-red-team-report.md
 outputs/visual-smoke-report.md
 ```
+
+A geometry or intent change is a **new revision**: apply it through the transaction authority (`structure_io.begin_transaction` / `commit_transaction`, or `reset_derived.py`). The commit purges every derived artifact listed above and invalidates earlier approvals; regenerate the full chain and obtain a new red-team approval (approvals are never copied forward).
 
 Markdown files, render prompts, and PNG concept images are **secondary presentation artifacts**. They are never sufficient proof that the package has been revised.
 
@@ -387,10 +403,15 @@ python3 plugins/garden-structure-designer/scripts/structural_physics_validator.p
 python3 plugins/garden-structure-designer/scripts/render_drawings.py \
   context/staging/structure.json
 
+python3 plugins/garden-structure-designer/scripts/export_cad.py \
+  --structure context/staging/structure.json --output-dir outputs/cad
+
 python3 plugins/garden-structure-designer/scripts/fabrication_builder.py \
   context/staging/structure.json
 
-# 3. Visual Smoke & Adversarial Red-Team Gates
+python3 plugins/garden-structure-designer/scripts/builder_docs_compiler.py
+
+# 3. Visual Smoke & Adversarial Red-Team Gates (the red team runs last: it approves the DXFs and cut list too)
 python3 plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py \
   --structure context/staging/structure.json \
   --svg-dir outputs \

@@ -47,6 +47,8 @@ rm -rf outputs/*
 python3 plugins/garden-structure-designer/scripts/reset_derived.py
 ```
 
+`reset_derived.py` applies the reset as a transaction through `structure_io` (compare-and-swap on the revision hash, a new `revision_id`, and a purge of every derived artifact in the C5 inventory). Never edit or truncate `context/staging/structure.json` by hand.
+
 On **Load a past design**:
 ```bash
 # List available designs in temp/pastoutputs/
