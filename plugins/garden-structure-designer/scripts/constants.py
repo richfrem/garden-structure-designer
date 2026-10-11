@@ -11,7 +11,19 @@ Purpose:
 Layer: Core (constants)
 
 Consumers:
-    exchange_writer.py, render_drawings.py, cross_artifact_validator.py, tests.
+    exchange_writer.py, cadcraft_adapter.py, export_cad.py, cross_artifact_validator.py,
+    compile_package.py, structure_io.py, pipeline_runner.py, cad_backend_build123d.py,
+    render_drawings.py, tests.
+
+Key Constants (index):
+    Units: MM_PER_INCH, INCHES_PER_FOOT, MM_PER_FOOT, MM_PER_UNIT, INSUNITS_MM
+    CAD limits: CAD_EXPORT_TIMEOUT_S (C3 15s export deadline)
+    DXF sheets/layers: APPID, SHEET_ID_STRUCTURE, SHEET_ID_PLAN, SHEET_IDS, SHEET_FILENAMES, CAD_SUBDIR,
+        DIMENSION_LAYER, LAYER_COLORS, ROLE_LAYERS
+    Dimension standards: DIM_OFFSET_MM, DIM_TEXT_HEIGHT_MM, DIM_TICK_OFFSET_MM
+    SVG lineweights: LW_*
+    Tolerances: DXF_BOUNDS_TOL_MM (C4 0.01 mm), DXF_PLANAR_TOL_MM, DIM_CROSSCHECK_TOL_MM
+    C5: ERROR_STALE_REVISION, ERROR_RECOVERY_REQUIRED, C5_PURGE_GLOBS, C5_PURGE_ROOTS
 
 Script Dependencies:
     Standard library only.
