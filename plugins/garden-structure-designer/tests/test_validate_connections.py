@@ -264,3 +264,14 @@ def test_all_checks_pass_on_new_path_scene(new_path_scene):
 def test_assert_connections_passes_on_new_path_scene(new_path_scene):
     """assert_connections_physical must not raise on constraint-based scene."""
     assert_connections_physical(new_path_scene)
+
+
+def test_structure_without_braces_does_not_need_post_or_layout_sections():
+    """Brace-foot warnings read members/layout only when a brace exists (behavior preserved by the refactor)."""
+    from validate_connections import _structure_warnings
+
+    class _Scene:
+        Z_BEAM_TOP = 8.0
+
+    structure = {"geometry": {"joints": {"resolved_model": {"members": [{"id": "P1", "role": "post"}]}}}}
+    assert _structure_warnings(_Scene(), structure) == []

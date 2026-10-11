@@ -107,6 +107,13 @@ DIM_CROSSCHECK_TOL_MM = MM_PER_INCH  # SVG label vs DXF geometry parity (1 in)
 IMPLEMENTED_FAMILIES: tuple[str, ...] = ("RadialHubTopology",)
 RESERVED_FAMILIES: tuple[str, ...] = ("OrthogonalGridTopology", "HipRidgeTopology")
 
+# --- Physical contact tolerances (feet) used by validate_connections ---
+CONTACT_BEAM_SOFFIT_TOL_FT = 0.0104  # ~1/8 inch
+CONTACT_RAFTER_TIP_TOL_FT = 0.2
+CONTACT_BRACE_FOOT_MAX_FT = 1.0
+CONTACT_SEAT_WARN_RANGE_FT = (0.1, 0.2)  # (lower, upper) deviation that raises a seating warning
+CONTACT_BRACE_RADIUS_WARN_FT = 0.5
+
 # --- Stage 2 radial polygon regularity (post_xy is rounded to 4 decimal feet by the geometry solver) ---
 POLYGON_RADIUS_TOL_FT = 1e-3
 POLYGON_ANGLE_TOL_RAD = 1e-3
