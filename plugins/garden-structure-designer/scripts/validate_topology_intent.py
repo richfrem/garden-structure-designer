@@ -27,7 +27,7 @@ Key Functions:
     run_stage(structure, reports_dir, outputs_dir) -> dict
     main(argv=None) -> int
     _failure(code, message) -> dict                     _is_int(value) -> bool
-    _validate_radial_hub(structure) -> dict | None
+    _validate_radial_hub(structure) -> dict | None      _validate_hub_type(hub_type, sides) -> dict | None
 
 Script Dependencies:
     pipeline_runner.py (TopologyErrorCode), constants.py (family registry)
@@ -37,7 +37,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 sys.path.append(str(Path(__file__).parent.resolve()))
 from constants import IMPLEMENTED_FAMILIES, RESERVED_FAMILIES
@@ -56,6 +56,23 @@ def _failure(code: TopologyErrorCode, message: str) -> dict:
 def _is_int(value) -> bool:
     """True for real integers (bools excluded)."""
     return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _validate_hub_type(hub_type: Any, sides: int) -> Optional[dict]:
+    """hub.type is required, must be a known radial type and must agree with the side count."""
+    if hub_type not in HUB_TYPES:
+        return _failure(
+            TopologyErrorCode.HUB_TYPE_MISMATCH,
+            f"hub.type {hub_type!r} must be one of {list(HUB_TYPES)}.",
+        )
+    expected_sides = HUB_TYPE_SIDES.get(hub_type)
+    if expected_sides is not None and expected_sides != sides:
+        return _failure(
+            TopologyErrorCode.HUB_TYPE_MISMATCH,
+            f"hub.type {hub_type!r} implies {expected_sides} sides but structure.sides is {sides}.",
+        )
+
+    return None
 
 
 def _validate_radial_hub(structure: dict) -> Optional[dict]:
@@ -81,20 +98,7 @@ def _validate_radial_hub(structure: dict) -> Optional[dict]:
             f"roof.primary_rafters.count ({rafter_count!r}) must equal structure.sides ({sides}).",
         )
 
-    hub_type = (structure.get("hub") or {}).get("type")
-    if hub_type not in HUB_TYPES:
-        return _failure(
-            TopologyErrorCode.HUB_TYPE_MISMATCH,
-            f"hub.type {hub_type!r} must be one of {list(HUB_TYPES)}.",
-        )
-    expected_sides = HUB_TYPE_SIDES.get(hub_type)
-    if expected_sides is not None and expected_sides != sides:
-        return _failure(
-            TopologyErrorCode.HUB_TYPE_MISMATCH,
-            f"hub.type {hub_type!r} implies {expected_sides} sides but structure.sides is {sides}.",
-        )
-
-    return None
+    return _validate_hub_type((structure.get("hub") or {}).get("type"), sides)
 
 
 def run_stage(structure: dict, reports_dir: Path, outputs_dir: Path) -> dict:
