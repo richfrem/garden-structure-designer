@@ -55,6 +55,9 @@ ROLE_LAYERS: dict[str, str] = {
     "footing": "FOOTINGS_PIERS",
 }
 
+# --- CAD subprocess limits (C3) ---
+CAD_EXPORT_TIMEOUT_S = 15  # export deadline for one cadcraft-cli invocation
+
 # --- DXF dimension standards (millimetres) ---
 DIM_OFFSET_MM = 600.0  # dimension line offset from the post extents
 DIM_TEXT_HEIGHT_MM = 150.0

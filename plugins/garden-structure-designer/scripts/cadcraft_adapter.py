@@ -15,11 +15,17 @@ Key Input Dependencies:
     - Built cadcraft-cli binary (vendor/cadcraft/target/release/cadcraft-cli)
     - ezdxf library
     - exchange_writer.py protocol contract
+    - constants.py (CAD_EXPORT_TIMEOUT_S)
 
 Key Functions / Classes:
     default_binary_path() -> Path
+    _command(cmd_id, params) -> str
+    _build_commands(entities) -> list[str]
+    _entity_handles(stdout) -> list[str]
     CadcraftError (exception)
+    CadcraftAdapter.__init__(binary) -> None
     CadcraftAdapter.is_available() -> bool
+    CadcraftAdapter._run_cli(commands, output_path) -> str   (15s deadline, constants.CAD_EXPORT_TIMEOUT_S)
     CadcraftAdapter.export_sheet(...) -> dict
 
 Usage Examples:
@@ -37,6 +43,7 @@ from pathlib import Path
 import ezdxf
 
 sys.path.append(str(Path(__file__).parent))
+from constants import CAD_EXPORT_TIMEOUT_S  # noqa: E402
 from exchange_writer import (  # noqa: E402
     APPID,
     INSUNITS_MM,
@@ -47,8 +54,6 @@ from exchange_writer import (  # noqa: E402
     xdata_strings,
 )
 from ezdxf_adapter import stamp_xdata  # noqa: E402
-
-CLI_TIMEOUT_S = 120
 
 
 class CadcraftError(RuntimeError):
@@ -121,7 +126,10 @@ class CadcraftAdapter:
         for command in commands:
             argv += ["--cmd", command]
         argv += ["--save", str(output_path)]
-        result = subprocess.run(argv, capture_output=True, text=True, timeout=CLI_TIMEOUT_S)
+        try:
+            result = subprocess.run(argv, capture_output=True, text=True, timeout=CAD_EXPORT_TIMEOUT_S)
+        except subprocess.TimeoutExpired as error:
+            raise CadcraftError(f"cadcraft-cli timed out after {CAD_EXPORT_TIMEOUT_S}s") from error
         if result.returncode != 0 or not output_path.is_file():
             raise CadcraftError(f"cadcraft-cli failed (rc={result.returncode}): {result.stderr.strip()}")
         return result.stdout
