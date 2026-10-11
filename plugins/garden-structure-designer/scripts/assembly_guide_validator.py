@@ -12,7 +12,9 @@ Layer: Execution / QA Gate
 
 Key Input Dependencies:
     - outputs/assembly-guide.md (or specified path)
-    - context/staging/structure.json (or specified geometry/spec path)
+    - context/staging/structure.json (structure.sides is authoritative; legacy geometry.sides /
+      layout.post_count are fallbacks)
+    - path_utils.py (default staging/outputs directories)
 
 Key Functions:
     validate(guide_path, calcs_path, spec_path=None) -> list[str]
@@ -100,7 +102,7 @@ def validate(
     layout = calcs_data.get("layout") or {}
 
     errors: List[str] = []
-    sides = geom.get("sides") or layout.get("post_count")
+    sides = (calcs_data.get("structure") or {}).get("sides") or geom.get("sides") or layout.get("post_count")
 
     check_tripod_first(sides, guide, errors)
     check_saw_settings(geom, guide, errors)
