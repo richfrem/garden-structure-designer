@@ -36,3 +36,8 @@ inputs/yard/
 docs/superpowers/
 docs/docs/superpowers/
 .antigravitycli
+
+# Ephemeral pipeline runtime context
+context/events.jsonl
+context/design-dashboard.md
+context/staging/
