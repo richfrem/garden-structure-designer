@@ -29,7 +29,16 @@ from __future__ import annotations
 
 import argparse
 import json
-from typing import Any
+import sys
+from pathlib import Path
+from typing import Any, Optional
+
+sys.path.append(str(Path(__file__).parent.resolve()))
+from path_utils import staging_dir
+from pipeline_runner import TopologyErrorCode
+
+IMPLEMENTED_FAMILIES = ("RadialHubTopology",)
+RESERVED_FAMILIES = ("OrthogonalGridTopology", "HipRidgeTopology")
 
 
 # ---------------------------------------------------------------------------
@@ -214,14 +223,156 @@ def enrich_structure(structure: dict) -> None:
 
 
 # ---------------------------------------------------------------------------
-# CLI entry point
+# Sealed-source invariants (Stage 2 fail-closed checks)
 # ---------------------------------------------------------------------------
 
-import os
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).parent.resolve()))
-from path_utils import staging_dir
+def _failure(code: TopologyErrorCode, message: str) -> dict:
+    return {"error_code": code, "error_message": message}
+
+
+def _is_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _check_family(structure: dict) -> Optional[dict]:
+    family = (structure.get("meta") or {}).get("topology_family")
+    if family in RESERVED_FAMILIES:
+        return _failure(
+            TopologyErrorCode.TOPOLOGY_NOT_IMPLEMENTED,
+            f"Topology family {family!r} is reserved and not yet implemented.",
+        )
+    if family not in IMPLEMENTED_FAMILIES:
+        return _failure(
+            TopologyErrorCode.UNKNOWN_TOPOLOGY_FAMILY,
+            f"Unknown meta.topology_family {family!r}.",
+        )
+    return None
+
+
+def _check_cardinality(structure: dict, layout: dict) -> Optional[dict]:
+    post_xy = layout.get("post_xy")
+    if not isinstance(post_xy, list):
+        return _failure(
+            TopologyErrorCode.GEOMETRY_INVALID,
+            "geometry.joints.layout.post_xy must be a list.",
+        )
+
+    sides = (structure.get("structure") or {}).get("sides")
+    if not _is_int(sides):
+        return _failure(
+            TopologyErrorCode.GEOMETRY_INVALID,
+            f"RadialHubTopology requires integer structure.sides, got {sides!r}.",
+        )
+    if len(post_xy) != sides:
+        return _failure(
+            TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
+            f"len(layout.post_xy) ({len(post_xy)}) must equal structure.sides ({sides}).",
+        )
+
+    cached_count = layout.get("post_count")
+    if cached_count != len(post_xy):
+        return _failure(
+            TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
+            f"layout.post_count ({cached_count!r}) drifted from len(layout.post_xy) ({len(post_xy)}).",
+        )
+    return None
+
+
+def _check_unique_member_ids(members: list[dict[str, Any]]) -> Optional[dict]:
+    seen: set[str] = set()
+    for member in members:
+        if member["id"] in seen:
+            return _failure(
+                TopologyErrorCode.DUPLICATE_MEMBER_ID,
+                f"Duplicate member id {member['id']!r}.",
+            )
+        seen.add(member["id"])
+    return None
+
+
+def _check_beam_post_indices(members: list[dict[str, Any]], post_count: int) -> Optional[dict]:
+    for member in members:
+        if member["type"] != "beam":
+            continue
+        for key in ("i0", "i1"):
+            index = member[key]
+            if not _is_int(index) or not 0 <= index < post_count:
+                return _failure(
+                    TopologyErrorCode.DANGLING_CONNECTION_ENDPOINT,
+                    f"Beam {member['id']!r} {key}={index!r} is outside valid post indices [0, {post_count - 1}].",
+                )
+    return None
+
+
+def _check_connection_endpoints(
+    members: list[dict[str, Any]],
+    connections: list[dict[str, Any]],
+) -> Optional[dict]:
+    member_ids = {m["id"] for m in members}
+    for connection in connections:
+        for end in ("from", "to"):
+            if connection[end] not in member_ids:
+                return _failure(
+                    TopologyErrorCode.DANGLING_CONNECTION_ENDPOINT,
+                    f"Connection {connection['id']!r} {end} endpoint {connection[end]!r} is not a member.",
+                )
+    return None
+
+
+def validate_sealed(structure: dict) -> dict:
+    """
+    Re-derive the topology from sealed geometry and check every Stage 2 invariant.
+
+    Safe for in-process consumers (renderers, exporters) that must not trust a
+    previously written topology receipt.  Does not mutate structure.
+    Returns {"valid": True, "topology": <topology dict>} on success, or
+    {"error_code": TopologyErrorCode, "error_message": str} on failure.
+    """
+    geometry = structure.get("geometry") or {}
+    if geometry.get("_sealed") is not True:
+        return _failure(TopologyErrorCode.GEOMETRY_INVALID, "geometry._sealed is not True.")
+
+    failure = _check_family(structure)
+    if failure:
+        return failure
+
+    joints = geometry.get("joints") or {}
+    layout = joints.get("layout") or {}
+    failure = _check_cardinality(structure, layout)
+    if failure:
+        return failure
+
+    try:
+        members = _build_members(joints, joints.get("braces") or {})
+        failure = _check_unique_member_ids(members) or _check_beam_post_indices(members, len(layout["post_xy"]))
+        if failure:
+            return failure
+        connections = _build_connections(joints, members)
+    except (KeyError, TypeError, ValueError, ZeroDivisionError) as exc:
+        return _failure(
+            TopologyErrorCode.GEOMETRY_INVALID,
+            f"Malformed sealed geometry: {type(exc).__name__}: {exc}",
+        )
+
+    failure = _check_connection_endpoints(members, connections)
+    if failure:
+        return failure
+
+    return {"valid": True, "topology": compile_topology(structure)}
+
+
+def run_stage(structure: dict, reports_dir: Path, outputs_dir: Path) -> dict:
+    """Pipeline Stage 2: validate sealed geometry, then write the topology graph."""
+    result = validate_sealed(structure)
+    if "error_code" in result:
+        return result
+    structure["geometry"]["joints"]["topology"] = result["topology"]
+    return structure
+
+
+# ---------------------------------------------------------------------------
+# CLI entry point
+# ---------------------------------------------------------------------------
 
 def main() -> None:
     parser = argparse.ArgumentParser(
