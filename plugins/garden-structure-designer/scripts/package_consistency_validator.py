@@ -1,94 +1,119 @@
 #!/usr/bin/env python3
 """
-package_consistency_validator.py (CLI)
-=====================================
+package_consistency_validator.py
+================================
 
 Purpose:
-    package_consistency_validator.py (CLI) =====================================
+    Final-package completeness and consistency gate. Verifies that every Stage 4/6
+    deliverable exists (all eight SVG sheets, both DXF sheets SB01/SB02, the fabrication
+    cut list, photorealistic renders), that SVG generation dates/titles agree, and that the
+    fabrication cut list is bound to the same ``revision_id``/``revision_hash`` as the
+    canonical structure.json. The parsed-DXF content checks live in cross_artifact_validator.py.
 
-Layer: Execution
+Layer: Execution / QA Gate
 
-Usage Examples:
-    python package_consistency_validator.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - context/staging/structure.json (meta.revision_id, meta.revision_hash)
+    - outputs/*.svg (8 sheets), outputs/cad/SB01-structure.dxf + SB02-plan.dxf
+    - outputs/fabrication/cut-list.json (written by fabrication_builder.py)
+    - outputs/high-resolution-image/*_render_*.png
+    - constants.py (sheet and directory names), path_utils.py (default directories)
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    validate_package(staging_path=None, outputs_path=None) -> list[str]
+    _required_files() -> list[str]
+    _check_revision_binding(structure_path, cut_list_path) -> list[str]
+    _check_svg_consistency(outputs_path) -> list[str]
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 plugins/garden-structure-designer/scripts/package_consistency_validator.py
 """
+from __future__ import annotations
+
+import glob
+import json
 import os
+import re
 import sys
 from pathlib import Path
+from typing import Optional
+
 sys.path.append(str(Path(__file__).parent.resolve()))
-from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
+from constants import CAD_SUBDIR, CUT_LIST_FILENAME, FABRICATION_SUBDIR, SHEET_FILENAMES, SVG_SHEET_FILENAMES
+from path_utils import outputs_dir, staging_dir
 
-import sys
 
-def validate_package() -> list[str]:
-    errors = []
-    out_dir_path = str(outputs_dir())
-    if not os.path.exists(out_dir_path):
-        return ["Outputs directory not found"]
-        
-    required_files = [
-        "blueprint-plan.svg",
-        "drawing-plan-view.svg",
-        "shop-blueprint/SB01-cut-list.json"
+def _required_files() -> list[str]:
+    """Returns the output-relative paths every complete package must contain."""
+    return [
+        *SVG_SHEET_FILENAMES,
+        *(f"{CAD_SUBDIR}/{name}" for name in SHEET_FILENAMES.values()),
+        f"{FABRICATION_SUBDIR}/{CUT_LIST_FILENAME}",
     ]
-    for rf in required_files:
-        if not os.path.exists(os.path.join(out_dir_path, rf)):
-            errors.append(f"MISSING_OUTPUT: {rf} was not generated.")
-            
-    import glob
-    # Check for photorealistic renders
-    render_dir = os.path.join(out_dir_path, "high-resolution-image")
-    renders = glob.glob(os.path.join(render_dir, "*_render_*.png"))
-    if not renders:
-        errors.append("MISSING_RENDERS: No photorealistic renders found in outputs/high-resolution-image/")
-    import re
-    svg_files = glob.glob(os.path.join(out_dir_path, "**", "*.svg"), recursive=True)
-    dates = set()
-    titles = set()
-    for svg in svg_files:
-        with open(svg) as f:
+
+
+def _check_revision_binding(structure_path: Path, cut_list_path: Path) -> list[str]:
+    """The cut list must carry the same revision identity as the canonical structure.json."""
+    if not (structure_path.is_file() and cut_list_path.is_file()):
+        return []  # absence is reported by the required-files check
+    meta = json.loads(structure_path.read_text(encoding="utf-8")).get("meta", {})
+    cut_list = json.loads(cut_list_path.read_text(encoding="utf-8"))
+    mismatched = [
+        key for key in ("revision_id", "revision_hash") if cut_list.get(key) != meta.get(key)
+    ]
+    return [
+        f"REVISION_MISMATCH: {FABRICATION_SUBDIR}/{CUT_LIST_FILENAME} {key} {cut_list.get(key)!r} "
+        f"!= structure.json meta.{key} {meta.get(key)!r}"
+        for key in mismatched
+    ]
+
+
+def _check_svg_consistency(outputs_path: str) -> list[str]:
+    """SVG sheets must agree on generation date and project title."""
+    dates: set[str] = set()
+    titles: set[str] = set()
+    for svg in glob.glob(os.path.join(outputs_path, "**", "*.svg"), recursive=True):
+        with open(svg, encoding="utf-8") as f:
             content = f.read()
-            date_match = re.search(r"data-date=[\"'](.*?)[\"']", content)
-            if date_match:
-                dates.add(date_match.group(1))
-            title_match = re.search(r"data-title=[\"'](.*?)[\"']", content)
-            if title_match:
-                titles.add(title_match.group(1))
-                
+        date_match = re.search(r"data-date=[\"'](.*?)[\"']", content)
+        title_match = re.search(r"data-title=[\"'](.*?)[\"']", content)
+        if date_match:
+            dates.add(date_match.group(1))
+        if title_match:
+            titles.add(title_match.group(1))
+    errors = []
     if len(dates) > 1:
         errors.append(f"INCONSISTENT_DATES: Found multiple generation dates in SVGs: {dates}")
     if len(titles) > 1:
         errors.append(f"INCONSISTENT_TITLES: Found multiple project titles in SVGs: {titles}")
-        
     return errors
 
+
+def validate_package(staging_path: Optional[Path] = None, outputs_path: Optional[Path] = None) -> list[str]:
+    """Validates the assembled package; returns a list of error strings (empty when consistent)."""
+    s_dir = Path(staging_path) if staging_path is not None else staging_dir()
+    o_dir = Path(outputs_path) if outputs_path is not None else outputs_dir()
+    if not o_dir.exists():
+        return ["Outputs directory not found"]
+
+    errors = [
+        f"MISSING_OUTPUT: {rel} was not generated."
+        for rel in _required_files()
+        if not (o_dir / rel).exists()
+    ]
+    if not glob.glob(str(o_dir / "high-resolution-image" / "*_render_*.png")):
+        errors.append("MISSING_RENDERS: No photorealistic renders found in outputs/high-resolution-image/")
+    errors.extend(_check_svg_consistency(str(o_dir)))
+    errors.extend(_check_revision_binding(s_dir / "structure.json", o_dir / FABRICATION_SUBDIR / CUT_LIST_FILENAME))
+    return errors
+
+
 if __name__ == "__main__":
-    errors = validate_package()
-    if errors:
+    validation_errors = validate_package()
+    if validation_errors:
         print("PACKAGE CONSISTENCY VALIDATION FAILED:")
-        for e in errors:
+        for e in validation_errors:
             print(f"  ✗ {e}")
         sys.exit(1)
-    else:
-        print("PACKAGE CONSISTENCY VALIDATION PASSED ✓")
-        sys.exit(0)
+    print("PACKAGE CONSISTENCY VALIDATION PASSED ✓")
+    sys.exit(0)

@@ -70,6 +70,20 @@ ROLE_LAYERS: dict[str, str] = {
 # --- CAD subprocess limits (C3) ---
 CAD_EXPORT_TIMEOUT_S = 15  # export deadline for one cadcraft-cli invocation
 
+# --- SVG drawing sheets (Stage 4 produces all eight) ---
+SVG_SHEET_FILENAMES: tuple[str, ...] = (
+    "drawing-plan-view.svg",
+    "drawing-elevation-view.svg",
+    "drawing-isometric-view.svg",
+    "drawing-perspective-view.svg",
+    "blueprint-plan.svg",
+    "blueprint-elevation.svg",
+    "blueprint-isometric.svg",
+    "blueprint-component-isolation.svg",
+)
+FABRICATION_SUBDIR = "fabrication"
+CUT_LIST_FILENAME = "cut-list.json"
+
 # --- DXF dimension standards (millimetres) ---
 DIM_OFFSET_MM = 600.0  # dimension line offset from the post extents
 DIM_TEXT_HEIGHT_MM = 150.0
