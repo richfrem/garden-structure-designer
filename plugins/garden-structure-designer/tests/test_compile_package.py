@@ -7,6 +7,15 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent / "scripts"))
 from compile_package import compile_package
 
+def _minimal_structure():
+    ring = [(0.25, 0.25), (-0.25, 0.25), (-0.25, -0.25), (0.25, -0.25)]
+    vertices = [[dx, dy, z] for z in (0.0, 8.0) for dx, dy in ring]
+    member = {"id": "P1", "role": "post", "p0": [0, 0, 0.0], "p1": [0, 0, 8.0], "vertices": vertices}
+    return {
+        "meta": {"revision_id": "11111111-2222-3333-4444-555555555555", "revision_hash": "abc123"},
+        "geometry": {"joints": {"units": "feet", "resolved_model": {"constraints_resolved": True, "members": [member]}}},
+    }
+
 @pytest.fixture
 def mock_package_env(tmp_path):
     staging = tmp_path / "context" / "staging"
@@ -21,6 +30,8 @@ def mock_package_env(tmp_path):
     with open(staging / "drawing-red-team-report.json", "w") as f:
         json.dump(report, f)
         
+    (staging / "structure.json").write_text(json.dumps(_minimal_structure()))
+
     # Photorealistic render
     (img_dir / "pergola_render_1.png").write_bytes(b"PNG fake data")
     
@@ -55,3 +66,21 @@ def test_compile_package_success_and_fallback(mock_package_env):
     embedded_text = (outputs / "pergola_plan_embedded.md").read_text()
     assert '<svg' in embedded_text
     assert 'data:image/png;base64,' in embedded_text
+
+
+def test_compile_package_blocked_if_structure_missing(mock_package_env):
+    staging = mock_package_env / "context" / "staging"
+    outputs = mock_package_env / "outputs"
+    (staging / "structure.json").unlink()
+
+    res = compile_package(staging_dir=staging, outputs_dir=outputs, md_filename="pergola_plan.md")
+    assert res["status"] == "BLOCKED"
+    assert "structure.json not found" in res["reason"]
+
+def test_compile_package_exports_cad_deliverables(mock_package_env):
+    staging = mock_package_env / "context" / "staging"
+    outputs = mock_package_env / "outputs"
+
+    res = compile_package(staging_dir=staging, outputs_dir=outputs, md_filename="pergola_plan.md")
+    assert [Path(p).name for p in res["cad_deliverables"]] == ["SB01-structure.dxf", "SB02-plan.dxf"]
+    assert all(Path(p).stat().st_size > 0 for p in res["cad_deliverables"])

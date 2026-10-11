@@ -14,10 +14,12 @@ Usage Examples:
 
 Input Files:
     context/staging/drawing-red-team-report.json
+    context/staging/structure.json
     outputs/high-resolution-image/*_render_1.png
     outputs/<md_filename>
 
 Output:
+    outputs/cad/SB01-structure.dxf, outputs/cad/SB02-plan.dxf (listed under ``cad_deliverables``)
     outputs/<stem>_embedded.md
     outputs/<stem>.pdf (or COMPILATION_BLOCKED.md / PDF_GENERATION_FAILED.md on failure/fallback)
 """
@@ -32,6 +34,9 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent))
 from path_utils import staging_dir as default_staging_dir, outputs_dir as default_outputs_dir
 from embed_svgs import process as embed_process
+from export_cad import SHEET_FILENAMES, export_sheets
+
+CAD_SUBDIR = "cad"
 
 def verify_preflight_gates(staging_dir: Path, outputs_dir: Path) -> tuple[bool, str]:
     report_path = staging_dir / "drawing-red-team-report.json"
@@ -52,7 +57,11 @@ def verify_preflight_gates(staging_dir: Path, outputs_dir: Path) -> tuple[bool, 
     renders = list(img_dir.glob("*.png")) if img_dir.exists() else []
     if not renders:
         return False, f"BLOCKED: No photorealistic renders found in {img_dir}"
-        
+
+    structure_path = staging_dir / "structure.json"
+    if not structure_path.exists():
+        return False, f"BLOCKED: {structure_path} not found; required for CAD export."
+
     return True, f"Gate approved. Found {len(renders)} renders."
 
 def compile_package(staging_dir: Path = None, outputs_dir: Path = None, md_filename: str = "pergola_plan.md") -> dict:
@@ -88,6 +97,19 @@ def compile_package(staging_dir: Path = None, outputs_dir: Path = None, md_filen
     embedded_md_path = outputs_dir / f"{stem}_embedded.md"
     pdf_path = outputs_dir / f"{stem}.pdf"
     
+    # 0. Export CAD deliverables (SB01 3D structure, SB02 plan) from the sealed structure
+    cad_dir = outputs_dir / CAD_SUBDIR
+    try:
+        structure = json.loads((staging_dir / "structure.json").read_text(encoding="utf-8"))
+        export_sheets(structure, cad_dir)
+    except Exception as e:
+        return {"status": "FAIL", "reason": f"CAD export failed: {e}"}
+    cad_deliverables = [cad_dir / name for name in SHEET_FILENAMES.values()]
+    missing = [str(p) for p in cad_deliverables if not p.exists() or p.stat().st_size == 0]
+    if missing:
+        return {"status": "FAIL", "reason": f"CAD deliverables missing or empty: {missing}"}
+    cad_manifest = [str(p) for p in cad_deliverables]
+
     # 1. Embed SVGs and PNGs into single standalone embedded markdown
     try:
         embed_process(str(raw_md_path), str(embedded_md_path))
@@ -118,7 +140,8 @@ def compile_package(staging_dir: Path = None, outputs_dir: Path = None, md_filen
         return {
             "status": "COMPLETE",
             "pdf_output": str(pdf_path),
-            "embedded_md": str(embedded_md_path)
+            "embedded_md": str(embedded_md_path),
+            "cad_deliverables": cad_manifest
         }
     else:
         fail_path = outputs_dir / "PDF_GENERATION_FAILED.md"
@@ -128,6 +151,7 @@ def compile_package(staging_dir: Path = None, outputs_dir: Path = None, md_filen
             "status": "FALLBACK",
             "reason": pdf_error,
             "embedded_md": str(embedded_md_path),
+            "cad_deliverables": cad_manifest,
             "failed_file": str(fail_path)
         }
 
