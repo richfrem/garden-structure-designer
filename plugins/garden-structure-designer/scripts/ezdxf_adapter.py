@@ -26,6 +26,7 @@ import sys
 from pathlib import Path
 
 import ezdxf
+from ezdxf.entities import DXFEntity
 
 sys.path.append(str(Path(__file__).parent))
 from exchange_writer import (  # noqa: E402
@@ -38,7 +39,7 @@ from exchange_writer import (  # noqa: E402
 )
 
 
-def stamp_xdata(entity, strings: list[str]) -> None:
+def stamp_xdata(entity: DXFEntity, strings: list[str]) -> None:
     """Attach the GSD application XDATA (group 1000 strings) to ``entity``."""
     entity.set_xdata(APPID, [(1000, s) for s in strings])
 

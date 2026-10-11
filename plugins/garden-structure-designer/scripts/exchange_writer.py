@@ -24,13 +24,19 @@ Key Input Dependencies:
 
 Key Functions:
     build_draw_entities(structure, sheet_id) -> list[DrawEntity]
+    _unit_scale(structure) -> float
+    _project(sheet_id, point) -> Point
+    _wireframe_path(vertices) -> list[Point]
+    _member_path(member, scale) -> list[Point]
+    _format_feet_inches(mm) -> str
+    _dimension_entities(posts, scale) -> list[DrawEntity]
     xdata_strings(entity, sheet_id, revision_id, revision_hash) -> list[str]
     sha256_of_file(path) -> str
     build_metadata(sheet_id, output_path, writer, entities_count) -> dict
     ExchangeWriter.export_sheet(...)  (Protocol)
 
 Script Dependencies:
-    Standard library only.
+    constants.py (layers, units, sheet ids, dimension standards); standard library.
 """
 from __future__ import annotations
 
@@ -52,6 +58,7 @@ from constants import (  # noqa: E402,F401
     MM_PER_INCH,
     MM_PER_UNIT,
     ROLE_LAYERS,
+    SHEET_ID_PLAN,
     SHEET_IDS,
 )
 
@@ -69,7 +76,9 @@ class ExchangeWriter(Protocol):
         *,
         revision_id: str,
         revision_hash: str,
-    ) -> dict: ...
+    ) -> dict:
+        """Write ``sheet_id`` of ``structure`` to ``output_path``; return export metadata."""
+        ...
 
 
 @dataclass(frozen=True)
@@ -94,7 +103,7 @@ def _unit_scale(structure: dict) -> float:
 
 def _project(sheet_id: str, point: Point) -> Point:
     """Apply the per-sheet projection rule (SB02 flattens Z to 0)."""
-    return (point[0], point[1], 0.0) if sheet_id == "SB02" else point
+    return (point[0], point[1], 0.0) if sheet_id == SHEET_ID_PLAN else point
 
 
 def _wireframe_path(vertices: list[Point]) -> list[Point]:
