@@ -13,7 +13,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parents[3]
 MANIFEST_PATH = REPO_ROOT / "vendor" / "cadcraft" / "Cargo.toml"
 PACKAGE_NAME = "cadcraft-cli"
 BINARY_NAME = PACKAGE_NAME + (".exe" if sys.platform == "win32" else "")

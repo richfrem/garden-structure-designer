@@ -19,7 +19,7 @@ from pathlib import Path
 
 
 def run_probe() -> dict:
-    repo_root = Path(__file__).resolve().parent.parent
+    repo_root = Path(__file__).resolve().parents[3]
     manifest = repo_root / "vendor" / "cadcraft" / "Cargo.toml"
     
     if not manifest.is_file():

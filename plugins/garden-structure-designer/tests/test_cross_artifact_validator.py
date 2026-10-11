@@ -10,7 +10,7 @@ import ezdxf
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-from control_plane.constants import (  # type: ignore[import]  # noqa: E402
+from constants import (  # type: ignore[import]  # noqa: E402
     APPID,
     CAD_SUBDIR,
     DIM_CROSSCHECK_TOL_MM,

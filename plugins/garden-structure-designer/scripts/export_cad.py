@@ -32,8 +32,8 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent))
 from cadcraft_adapter import CadcraftAdapter, CadcraftError  # noqa: E402
+from constants import SHEET_FILENAMES  # noqa: E402,F401
 from exchange_writer import ExchangeWriter  # noqa: E402
-from control_plane.constants import SHEET_FILENAMES  # noqa: E402,F401
 from ezdxf_adapter import EzdxfAdapter  # noqa: E402
 from revision_identity import compute_revision_hash  # noqa: E402
 

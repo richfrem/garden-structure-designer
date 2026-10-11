@@ -38,13 +38,12 @@ import os
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.resolve()))
-from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir, find_repo_root
-sys.path.append(str(find_repo_root(Path(__file__))))
+from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
 
 import re
 import sys
 
-from control_plane.constants import (  # noqa: E402
+from constants import (  # noqa: E402
     APPID,
     CAD_SUBDIR,
     DIM_CROSSCHECK_TOL_MM,

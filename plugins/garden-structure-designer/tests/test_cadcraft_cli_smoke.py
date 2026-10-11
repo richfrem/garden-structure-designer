@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-SCRIPT_PATH = Path(__file__).resolve().parents[3] / "scripts" / "build_cadcraft.py"
+SCRIPT_PATH = Path(__file__).resolve().parent.parent / "scripts" / "build_cadcraft.py"
 
 
 @pytest.fixture(scope="module")

@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-from control_plane import constants as C  # type: ignore[import]  # noqa: E402
+import constants as C  # type: ignore[import]  # noqa: E402
 import exchange_writer  # type: ignore[import]  # noqa: E402
 import export_cad  # type: ignore[import]  # noqa: E402
 import render_drawings  # type: ignore[import]  # noqa: E402

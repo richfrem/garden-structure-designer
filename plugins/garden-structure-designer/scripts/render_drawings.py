@@ -17,13 +17,11 @@ sys.path.append(str(Path(__file__).parent))
 from cad_scene import build_structure_scene, validate_scene_geometry, vcent, vdot, vsub, vlen, vnorm
 
 try:
-    from path_utils import find_repo_root
-    sys.path.append(str(find_repo_root(Path(__file__))))
-    from control_plane.constants import (
+    from constants import (
         LW_DIMENSION, LW_GROUND_LINE, LW_LEADER, LW_MEMBER_BLUEPRINT,
         LW_MEMBER_DRAWING, LW_TITLE_BORDER, LW_TITLE_RULE,
     )
-except ImportError:  # backward-compatible defaults; keep in sync with control_plane/constants.py
+except ImportError:  # backward-compatible defaults; keep in sync with constants.py
     LW_TITLE_BORDER, LW_TITLE_RULE, LW_LEADER, LW_DIMENSION = 1.8, 1.0, 0.8, 1.2
     LW_GROUND_LINE, LW_MEMBER_DRAWING, LW_MEMBER_BLUEPRINT = 2.0, 1.2, 3.0
 

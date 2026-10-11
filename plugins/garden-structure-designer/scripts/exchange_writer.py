@@ -41,10 +41,7 @@ from pathlib import Path
 from typing import Protocol
 
 sys.path.append(str(Path(__file__).parent))
-from path_utils import find_repo_root  # noqa: E402
-
-sys.path.append(str(find_repo_root(Path(__file__))))
-from control_plane.constants import (  # noqa: E402,F401
+from constants import (  # noqa: E402,F401
     APPID,
     DIM_OFFSET_MM,
     DIM_TEXT_HEIGHT_MM,

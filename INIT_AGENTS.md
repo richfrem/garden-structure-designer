@@ -9,7 +9,7 @@ Canonical constraints, CAD invariants, and non-negotiables live in [`AGENTS.md`]
 ```bash
 # Initialize CADCraft submodule & compile headless CLI
 git submodule update --init --recursive
-python3 scripts/build_cadcraft.py
+python3 plugins/garden-structure-designer/scripts/build_cadcraft.py
 
 # Antigravity / CLI environments via uvx
 uvx --from git+https://github.com/richfrem/agent-plugins-skills plugin-add plugins/ 
