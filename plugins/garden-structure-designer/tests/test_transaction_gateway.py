@@ -46,9 +46,10 @@ PURGE_FILES = [
     "outputs/visual-smoke-report.md",
     "outputs/shop-blueprint/SB01-cut-list.json",
     "outputs/visual-smoke/plan.png",
+    "outputs/run-insights.json",
     "outputs/high-resolution-image/pergola_render_1.png",
 ]
-KEEP_FILES = ["outputs/run-insights.json"]  # archived audit evidence is never purged
+KEEP_FILES = ["context/staging/script-run-history.jsonl", "context/staging/learning-registry.json"]  # archived audit/learning evidence is never purged
 
 
 @pytest.fixture

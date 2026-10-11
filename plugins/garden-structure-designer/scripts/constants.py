@@ -141,9 +141,10 @@ C5_PURGE_GLOBS: tuple[str, ...] = (
     "outputs/shop-blueprint/*",
     "outputs/visual-smoke/*",
     "outputs/high-resolution-image/*",
-    # QA / approval (archived run history such as run-insights.json is intentionally excluded)
+    # QA / approval (archived run history such as script-run-history.jsonl is intentionally excluded)
     "context/staging/*-report.json",
     "outputs/*-report.md",
     "outputs/quality-dashboard*",
+    "outputs/run-insights.json",
 )
 C5_PURGE_ROOTS: tuple[str, ...] = ("context/staging", "outputs")
