@@ -30,56 +30,27 @@ metadata:
 
 # Obstacle Triage Skill
 
-This skill is invoked when the pipeline encounters contradictory state, failed gates, or obviously poor outputs.
+## Contents
+- [Critical Constraints](#critical-constraints)
+- [Quick start](#quick-start)
+- [Workflow](#workflow)
+- [Verification](#verification)
+- [References](#references)
 
-It must run before large code rewrites or repeated regeneration attempts.
+## Critical Constraints
+- Strictly follow deterministic execution contracts for obstacle-triage.
+- Input parameters must resolve from staging structure.json.
 
-## Required Checks
+## Quick start
 
-1. Identify active working directory.
-2. Locate all staging directories.
-3. Locate structural model and geometry calculations.
-4. Locate validation reports.
-5. Compare timestamps and source hashes.
-6. Inspect output SVG size and semantic content.
-7. Inspect dashboard status.
-8. Compare dashboard status with red-team status.
-9. Classify the failure.
-10. Recommend the next action.
 
-## Output
+## Workflow
+1. **Input Phase**: Load parameters for obstacle-triage.
+2. **Execution Phase**: Process and emit deterministic output.
+3. **Gate Phase**: Validate schema and physics integrity.
 
-Write:
+## Verification
 
-```text
-context/staging/obstacle-triage-report.json
-outputs/obstacle-triage-report.md
-```
 
-Use this JSON shape:
-
-```json
-{
-  "schema": "garden-structure-designer/obstacle-triage-report/1.0",
-  "status": "PASS|BLOCKED|ACTION_REQUIRED",
-  "failure_classification": [
-    "PATH_SPLIT",
-    "STALE_REPORT",
-    "RENDERER_PLACEHOLDER_OUTPUT"
-  ],
-  "active_staging_path": "context/staging",
-  "conflicting_staging_paths": [
-    "plugins/garden-structure-designer/context/staging"
-  ],
-  "evidence": [
-    "structure.json found in context/staging but not plugin staging",
-    "quality-dashboard.md says COMPLETED while red-team report says FAIL"
-  ],
-  "recommended_next_action": "FIX_PATHS_FIRST",
-  "do_not_do": [
-    "Do not weaken validators",
-    "Do not claim PASS",
-    "Do not compile PDF"
-  ]
-}
-```
+## References
+- [Acceptance Criteria](references/acceptance-criteria.md)

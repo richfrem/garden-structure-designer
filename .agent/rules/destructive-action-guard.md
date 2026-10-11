@@ -120,5 +120,5 @@ The consolidation from 26 → 11 plugins left pre-consolidation stand-ins with c
 that never existed post-merge. Blind deletion passes treat MISLOCATED and DEAD references
 identically — but only DEAD ones are safe to remove. The distinction requires a git search.
 
-This incident was caught during the dev-utils Opus review (2026-06-28): 19 stand-ins identified,
+This incident was caught during the dev-utils Opus review: 19 stand-ins identified,
 repo search revealed MISLOCATED and SKILL_ALIAS cases that would have been incorrectly deleted.

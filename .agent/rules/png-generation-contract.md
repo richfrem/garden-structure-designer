@@ -1,3 +1,9 @@
+---
+title: PNG Generation Contract
+description: Contract governing deterministic PNG generation in render stage and vision review decoupling.
+globs: ["outputs/**", "plugins/garden-structure-designer/scripts/**"]
+---
+
 # PNG Generation Contract
 
 ## Architecture
