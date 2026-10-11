@@ -14,8 +14,8 @@
 | **TASK-0** | Pure Revision Utility (`revision_identity.py`) | 🟢 **VERIFIED_DONE** | `pytest test_revision_identity.py`: 24/24 passed (100%) |
 | **TASK-1** | Pipeline Runner Seam (`pipeline_runner.py`) & Error Registry | 🟢 **VERIFIED_DONE** | `pytest test_pipeline_runner.py`: 8/8 passed (100%) |
 | **TASK-2** | M0 Failing Invariant Tests (`test_topology_invariants.py`) | 🟢 **VERIFIED_DONE (RED)** | 14/14 tests failing as expected on missing Stage 0.5/2 contracts |
-| **TASK-3A** | Stage 0.5 Intent Validator (`validate_topology_intent.py`) | 🟡 **IN_PROGRESS** | Fail-closed on mismatched intent before math runs |
-| **TASK-3B** | Stage 2 Topology Compiler Invariant Hardening | ⚪ NOT_STARTED | Fail-closed on solved cardinality drift; 100% test pass |
+| **TASK-3A** | Stage 0.5 Intent Validator (`validate_topology_intent.py`) | 🟢 **VERIFIED_DONE** | Validates intent cardinality before geometry; all checks pass |
+| **TASK-3B** | Stage 2 Topology Compiler Invariant Hardening | 🟡 **IN_PROGRESS** | Fail-closed on solved cardinality drift; 100% test pass |
 | **TASK-4** | Submodule Setup & Portable Build (`build_cadcraft.py`) | ⚪ NOT_STARTED | Verify `vendor/cadcraft` compile and `--help` smoke test |
 | **TASK-5** | `ExchangeWriter` Port & Adapters (`cadcraft` + `ezdxf`) | ⚪ NOT_STARTED | Parsed DXF round-trip tests with `ezdxf` |
 | **TASK-6** | End-to-End Pipeline Integration & Verification | ⚪ NOT_STARTED | Multi-layer DXF generation and full regression suite |
