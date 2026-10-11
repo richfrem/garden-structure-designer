@@ -6,7 +6,8 @@ validate_topology_intent.py
 Purpose:
     Stage 0.5 pre-geometry gate. Validates unsealed ``structure.json`` intent
     (topology family, side/post/rafter cardinality, hub type) before any
-    geometry math runs. Fails closed with a ``TopologyErrorCode``.
+    geometry math runs. Fails closed with a ``TopologyErrorCode``; for the radial family
+    a missing ``hub.type`` or ``roof.primary_rafters.count`` is an error, never a default (spec C1).
 
 Layer: Core
 
@@ -18,11 +19,18 @@ Stage Contract:
 Usage:
     python validate_topology_intent.py [structure_path] [--dry-run]
 
+Key Input Dependencies:
+    - unsealed structure.json: meta.topology_family, structure.sides, layout.post_count,
+      roof.primary_rafters.count, hub.type
+
 Key Functions:
     run_stage(structure, reports_dir, outputs_dir) -> dict
+    main(argv=None) -> int
+    _failure(code, message) -> dict                     _is_int(value) -> bool
+    _validate_radial_hub(structure) -> dict | None
 
 Script Dependencies:
-    pipeline_runner.py (TopologyErrorCode)
+    pipeline_runner.py (TopologyErrorCode), constants.py (family registry)
 """
 
 import argparse
@@ -32,24 +40,26 @@ from pathlib import Path
 from typing import Optional
 
 sys.path.append(str(Path(__file__).parent.resolve()))
+from constants import IMPLEMENTED_FAMILIES, RESERVED_FAMILIES
 from pipeline_runner import TopologyErrorCode
 
-IMPLEMENTED_FAMILIES = ("RadialHubTopology",)
-RESERVED_FAMILIES = ("OrthogonalGridTopology", "HipRidgeTopology")
 MIN_RADIAL_SIDES = 5
 HUB_TYPES = ("hexagonal_prism", "octagonal_prism", "polygonal_cylinder")
 HUB_TYPE_SIDES = {"hexagonal_prism": 6, "octagonal_prism": 8}
 
 
 def _failure(code: TopologyErrorCode, message: str) -> dict:
+    """Builds the structured Stage 0.5 failure dict."""
     return {"error_code": code, "error_message": message}
 
 
 def _is_int(value) -> bool:
+    """True for real integers (bools excluded)."""
     return isinstance(value, int) and not isinstance(value, bool)
 
 
 def _validate_radial_hub(structure: dict) -> Optional[dict]:
+    """Radial intent: sides >= 5, post_count == sides, primary rafter count == sides, hub type valid for sides."""
     sides = (structure.get("structure") or {}).get("sides")
     if not _is_int(sides) or sides < MIN_RADIAL_SIDES:
         return _failure(
@@ -64,34 +74,31 @@ def _validate_radial_hub(structure: dict) -> Optional[dict]:
             f"layout.post_count ({post_count!r}) must equal structure.sides ({sides}).",
         )
 
-    primary_rafters = (structure.get("roof") or {}).get("primary_rafters")
-    if isinstance(primary_rafters, dict) and "count" in primary_rafters:
-        rafter_count = primary_rafters["count"]
-        if rafter_count != sides:
-            return _failure(
-                TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
-                f"roof.primary_rafters.count ({rafter_count!r}) must equal structure.sides ({sides}).",
-            )
+    rafter_count = ((structure.get("roof") or {}).get("primary_rafters") or {}).get("count")
+    if rafter_count != sides:
+        return _failure(
+            TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
+            f"roof.primary_rafters.count ({rafter_count!r}) must equal structure.sides ({sides}).",
+        )
 
-    hub = structure.get("hub")
-    if isinstance(hub, dict) and "type" in hub:
-        hub_type = hub["type"]
-        if hub_type not in HUB_TYPES:
-            return _failure(
-                TopologyErrorCode.HUB_TYPE_MISMATCH,
-                f"hub.type {hub_type!r} must be one of {list(HUB_TYPES)}.",
-            )
-        expected_sides = HUB_TYPE_SIDES.get(hub_type)
-        if expected_sides is not None and expected_sides != sides:
-            return _failure(
-                TopologyErrorCode.HUB_TYPE_MISMATCH,
-                f"hub.type {hub_type!r} implies {expected_sides} sides but structure.sides is {sides}.",
-            )
+    hub_type = (structure.get("hub") or {}).get("type")
+    if hub_type not in HUB_TYPES:
+        return _failure(
+            TopologyErrorCode.HUB_TYPE_MISMATCH,
+            f"hub.type {hub_type!r} must be one of {list(HUB_TYPES)}.",
+        )
+    expected_sides = HUB_TYPE_SIDES.get(hub_type)
+    if expected_sides is not None and expected_sides != sides:
+        return _failure(
+            TopologyErrorCode.HUB_TYPE_MISMATCH,
+            f"hub.type {hub_type!r} implies {expected_sides} sides but structure.sides is {sides}.",
+        )
 
     return None
 
 
 def run_stage(structure: dict, reports_dir: Path, outputs_dir: Path) -> dict:
+    """Pipeline Stage 0.5: reserved/unknown families and invalid radial intent fail closed; else returns structure."""
     family = (structure.get("meta") or {}).get("topology_family")
 
     if family in RESERVED_FAMILIES:
@@ -110,6 +117,7 @@ def run_stage(structure: dict, reports_dir: Path, outputs_dir: Path) -> dict:
 
 
 def main(argv: Optional[list] = None) -> int:
+    """CLI: validate a structure.json intent (read-only) and exit 0/1."""
     parser = argparse.ArgumentParser(description="Stage 0.5 topology intent validator.")
     parser.add_argument("structure_path", nargs="?", default="structure.json")
     parser.add_argument("--dry-run", action="store_true", help="Validate and report only; write nothing.")

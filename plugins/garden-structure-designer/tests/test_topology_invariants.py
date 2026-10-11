@@ -40,6 +40,8 @@ def _valid_intent(**overrides):
         "meta": {"topology_family": "RadialHubTopology"},
         "structure": {"sides": 6},
         "layout": {"post_count": 6},
+        "roof": {"primary_rafters": {"count": 6}},
+        "hub": {"type": "hexagonal_prism"},
     }
     for dotpath, value in overrides.items():
         section, key = dotpath.split("__")

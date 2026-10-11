@@ -62,12 +62,9 @@ from pathlib import Path
 from typing import Any, Optional
 
 sys.path.append(str(Path(__file__).parent.resolve()))
-from constants import POLYGON_ANGLE_TOL_RAD, POLYGON_RADIUS_TOL_FT
+from constants import IMPLEMENTED_FAMILIES, POLYGON_ANGLE_TOL_RAD, POLYGON_RADIUS_TOL_FT, RESERVED_FAMILIES
 from path_utils import staging_dir
 from pipeline_runner import TopologyErrorCode
-
-IMPLEMENTED_FAMILIES = ("RadialHubTopology",)
-RESERVED_FAMILIES = ("OrthogonalGridTopology", "HipRidgeTopology")
 
 
 # ---------------------------------------------------------------------------

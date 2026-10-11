@@ -103,6 +103,10 @@ DXF_BOUNDS_TOL_MM = 0.01  # C4: max absolute exchange error vs sealed solved geo
 DXF_PLANAR_TOL_MM = 1e-6  # SB02 must be planar (|Z| <= tol)
 DIM_CROSSCHECK_TOL_MM = MM_PER_INCH  # SVG label vs DXF geometry parity (1 in)
 
+# --- Topology family registry (C1): only the radial family is enabled in the initial production release ---
+IMPLEMENTED_FAMILIES: tuple[str, ...] = ("RadialHubTopology",)
+RESERVED_FAMILIES: tuple[str, ...] = ("OrthogonalGridTopology", "HipRidgeTopology")
+
 # --- Stage 2 radial polygon regularity (post_xy is rounded to 4 decimal feet by the geometry solver) ---
 POLYGON_RADIUS_TOL_FT = 1e-3
 POLYGON_ANGLE_TOL_RAD = 1e-3
