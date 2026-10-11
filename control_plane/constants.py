@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""
+constants.py
+============
+
+Purpose:
+    Single source of truth for drafting, layer, unit and tolerance constants shared
+    by the DXF exchange writers, the SVG blueprint renderer and the cross-artifact
+    validator. Never redefine these values locally; import them from here.
+
+Layer: Core (constants)
+
+Consumers:
+    exchange_writer.py, render_drawings.py, cross_artifact_validator.py, tests.
+
+Script Dependencies:
+    Standard library only.
+"""
+from __future__ import annotations
+
+# --- Units ---
+MM_PER_INCH = 25.4
+INCHES_PER_FOOT = 12
+MM_PER_FOOT = 304.8  # = MM_PER_INCH * INCHES_PER_FOOT
+MM_PER_UNIT: dict[str, float] = {"feet": MM_PER_FOOT, "ft": MM_PER_FOOT, "mm": 1.0}
+INSUNITS_MM = 4  # DXF $INSUNITS code for millimetres
+
+# --- DXF sheets, application id and layers (C4 contract) ---
+APPID = "GSD"
+SHEET_ID_STRUCTURE = "SB01"  # full-scale 3D WCS wireframe
+SHEET_ID_PLAN = "SB02"  # XY plan projection (Z = 0)
+SHEET_IDS = (SHEET_ID_STRUCTURE, SHEET_ID_PLAN)
+SHEET_FILENAMES: dict[str, str] = {
+    SHEET_ID_STRUCTURE: "SB01-structure.dxf",
+    SHEET_ID_PLAN: "SB02-plan.dxf",
+}
+CAD_SUBDIR = "cad"
+DIMENSION_LAYER = "DIMENSIONS_ARCH"
+# layer name -> AutoCAD color index
+LAYER_COLORS: dict[str, int] = {
+    "FRAMING_POSTS": 1,
+    "FRAMING_BEAMS": 3,
+    "FRAMING_RAFTERS": 4,
+    "FRAMING_HUBS": 6,
+    "FRAMING_BRACES": 5,
+    "FOOTINGS_PIERS": 8,
+    DIMENSION_LAYER: 2,
+}
+ROLE_LAYERS: dict[str, str] = {
+    "post": "FRAMING_POSTS",
+    "beam": "FRAMING_BEAMS",
+    "rafter": "FRAMING_RAFTERS",
+    "hub": "FRAMING_HUBS",
+    "brace": "FRAMING_BRACES",
+    "footing": "FOOTINGS_PIERS",
+}
+
+# --- DXF dimension standards (millimetres) ---
+DIM_OFFSET_MM = 600.0  # dimension line offset from the post extents
+DIM_TEXT_HEIGHT_MM = 150.0
+DIM_TICK_OFFSET_MM = 100.0  # architectural tick overshoot past the extension line
+
+# --- SVG lineweights (px) ---
+LW_TITLE_BORDER = 1.8
+LW_TITLE_RULE = 1.0
+LW_LEADER = 0.8
+LW_DIMENSION = 1.2
+LW_GROUND_LINE = 2.0
+LW_MEMBER_DRAWING = 1.2
+LW_MEMBER_BLUEPRINT = 3.0
+
+# --- Validation tolerances ---
+DXF_BOUNDS_TOL_MM = 1.0  # 3D bounds / extents parity (WCS mm)
+DXF_PLANAR_TOL_MM = 1e-6  # SB02 must be planar (|Z| <= tol)
+DIM_CROSSCHECK_TOL_MM = MM_PER_INCH  # SVG label vs DXF geometry parity (1 in)

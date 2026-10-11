@@ -35,36 +35,28 @@ Script Dependencies:
 from __future__ import annotations
 
 import hashlib
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
 
-APPID = "GSD"
-INSUNITS_MM = 4
-SHEET_IDS = ("SB01", "SB02")
-MM_PER_UNIT = {"feet": 304.8, "ft": 304.8, "mm": 1.0}
+sys.path.append(str(Path(__file__).parent))
+from path_utils import find_repo_root  # noqa: E402
 
-# layer name -> AutoCAD color index
-LAYER_COLORS: dict[str, int] = {
-    "FRAMING_POSTS": 1,
-    "FRAMING_BEAMS": 3,
-    "FRAMING_RAFTERS": 4,
-    "FRAMING_HUBS": 6,
-    "FRAMING_BRACES": 5,
-    "FOOTINGS_PIERS": 8,
-    "DIMENSIONS_ARCH": 2,
-}
-ROLE_LAYERS: dict[str, str] = {
-    "post": "FRAMING_POSTS",
-    "beam": "FRAMING_BEAMS",
-    "rafter": "FRAMING_RAFTERS",
-    "hub": "FRAMING_HUBS",
-    "brace": "FRAMING_BRACES",
-    "footing": "FOOTINGS_PIERS",
-}
-DIMENSION_LAYER = "DIMENSIONS_ARCH"
-DIM_OFFSET_MM = 600.0
-DIM_TEXT_HEIGHT_MM = 150.0
+sys.path.append(str(find_repo_root(Path(__file__))))
+from control_plane.constants import (  # noqa: E402,F401
+    APPID,
+    DIM_OFFSET_MM,
+    DIM_TEXT_HEIGHT_MM,
+    DIMENSION_LAYER,
+    INCHES_PER_FOOT,
+    INSUNITS_MM,
+    LAYER_COLORS,
+    MM_PER_INCH,
+    MM_PER_UNIT,
+    ROLE_LAYERS,
+    SHEET_IDS,
+)
 
 Point = tuple[float, float, float]
 
@@ -129,8 +121,8 @@ def _member_path(member: dict, scale: float) -> list[Point]:
 
 def _format_feet_inches(mm: float) -> str:
     """Format millimetres as feet-inches, e.g. ``18'-0"``."""
-    inches = round(mm / 25.4 * 16) / 16
-    feet, rest = divmod(inches, 12)
+    inches = round(mm / MM_PER_INCH * 16) / 16
+    feet, rest = divmod(inches, INCHES_PER_FOOT)
     return f"{int(feet)}'-{rest:g}\""
 
 

@@ -16,6 +16,17 @@ from typing import Any
 sys.path.append(str(Path(__file__).parent))
 from cad_scene import build_structure_scene, validate_scene_geometry, vcent, vdot, vsub, vlen, vnorm
 
+try:
+    from path_utils import find_repo_root
+    sys.path.append(str(find_repo_root(Path(__file__))))
+    from control_plane.constants import (
+        LW_DIMENSION, LW_GROUND_LINE, LW_LEADER, LW_MEMBER_BLUEPRINT,
+        LW_MEMBER_DRAWING, LW_TITLE_BORDER, LW_TITLE_RULE,
+    )
+except ImportError:  # backward-compatible defaults; keep in sync with control_plane/constants.py
+    LW_TITLE_BORDER, LW_TITLE_RULE, LW_LEADER, LW_DIMENSION = 1.8, 1.0, 0.8, 1.2
+    LW_GROUND_LINE, LW_MEMBER_DRAWING, LW_MEMBER_BLUEPRINT = 2.0, 1.2, 3.0
+
 TITLE_BLOCK_W: int = 400
 TITLE_BLOCK_H: int = 150
 
@@ -55,8 +66,8 @@ def draw_title_block(svg_list: list[str], structure: dict, dwg_name: str, is_blu
     border = "#00ffff" if is_blueprint else "#2b2d42"; bg = "#12253a" if is_blueprint else "#ffffff"
     tc = "#00ffff" if is_blueprint else "#1d3557"
     svg_list.append(f'    <g data-role="title-block" transform="translate({x}, {y})">')
-    svg_list.append(f'        <rect width="{TITLE_BLOCK_W}" height="{TITLE_BLOCK_H}" fill="{bg}" stroke="{border}" stroke-width="1.8" />')
-    svg_list.append(f'        <line x1="0" y1="40" x2="{TITLE_BLOCK_W}" y2="40" stroke="{border}" stroke-width="1" />')
+    svg_list.append(f'        <rect width="{TITLE_BLOCK_W}" height="{TITLE_BLOCK_H}" fill="{bg}" stroke="{border}" stroke-width="{LW_TITLE_BORDER}" />')
+    svg_list.append(f'        <line x1="0" y1="40" x2="{TITLE_BLOCK_W}" y2="40" stroke="{border}" stroke-width="{LW_TITLE_RULE}" />')
     svg_list.append(f'        <text x="15" y="28" font-family="monospace" font-size="18" font-weight="bold" fill="{tc}">{dwg_name.upper()}</text>')
     svg_list.append(f'        <text x="15" y="60" font-family="monospace" font-size="11" fill="{tc}">STRUCTURE: {st}</text>')
     svg_list.append(f'        <text x="15" y="80" font-family="monospace" font-size="11" fill="{tc}">JURISDICTION: {jur}</text>')
@@ -67,7 +78,7 @@ def draw_title_block(svg_list: list[str], structure: dict, dwg_name: str, is_blu
 def draw_leader(svg_list: list[str], x1: float, y1: float, x2: float, y2: float, label: str, is_blueprint: bool = False) -> None:
     stroke = "#00e5ff" if is_blueprint else "#3d5a80"; tc = "#00e5ff" if is_blueprint else "#1d3557"
     svg_list.append(f'    <g data-role="leader">')
-    svg_list.append(f'        <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{stroke}" stroke-width="0.8" stroke-dasharray="2,2" />')
+    svg_list.append(f'        <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{stroke}" stroke-width="{LW_LEADER}" stroke-dasharray="2,2" />')
     svg_list.append(f'        <circle cx="{x1}" cy="{y1}" r="2" fill="{stroke}" />')
     svg_list.append(f'        <text x="{x2}" y="{y2-5}" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="{tc}">{label}</text>')
     svg_list.append(f'    </g>')
@@ -84,7 +95,7 @@ def draw_validator_anchors(svg_list: list[str], structure: dict) -> None:
 def draw_dimension(svg_list: list[str], x1: float, y1: float, x2: float, y2: float, label: str, vertical: bool = False, is_blueprint: bool = False) -> None:
     stroke = "#00e5ff" if is_blueprint else "#3d5a80"; tc = "#00e5ff" if is_blueprint else "#1d3557"
     svg_list.append(f'    <g data-role="dimension">')
-    svg_list.append(f'        <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{stroke}" stroke-width="1.2" />')
+    svg_list.append(f'        <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{stroke}" stroke-width="{LW_DIMENSION}" />')
     if vertical:
         mx, my = (x1 + x2) / 2 - 15, (y1 + y2) / 2
         svg_list.append(f'        <text x="{mx}" y="{my}" text-anchor="middle" transform="rotate(-90,{mx},{my})" font-family="monospace" font-size="13" font-weight="bold" fill="{tc}">{label}</text>')
@@ -165,7 +176,7 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
         if solid.tag not in tagged_ids:
             attr = f' data-role="{face.role}" data-id="{face.tag}"'
             tagged_ids.add(solid.tag)
-        svg_list.append(f'    <polygon{attr} points="{pts_str}" fill="{face.color}" stroke="{palette["outline"]}" stroke-width="{"3.0" if is_blueprint else "1.2"}" />')
+        svg_list.append(f'    <polygon{attr} points="{pts_str}" fill="{face.color}" stroke="{palette["outline"]}" stroke-width="{LW_MEMBER_BLUEPRINT if is_blueprint else LW_MEMBER_DRAWING}" />')
 
     # Annotations pass (Top Layer)
     def _resolve_label_overlap(x: float, y: float, placed: list[tuple[float, float]], min_dist: float = 14, max_radius: float = 40, step: float = 5) -> tuple[float, float]:
@@ -205,7 +216,7 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
     elif "elevation" in view_type:
         ph = structure["members"]["posts"]["cut_length_ft"]
         draw_dimension(svg_list, cx-200, cy, cx-200, cy-ph*scale, f"POST: {ph} FT", vertical=True, is_blueprint=is_blueprint)
-        svg_list.append(f'  <line x1="100" y1="{cy}" x2="{coords["width_px"]-100}" y2="{cy}" stroke="{palette["outline"]}" stroke-width="2" />')
+        svg_list.append(f'  <line x1="100" y1="{cy}" x2="{coords["width_px"]-100}" y2="{cy}" stroke="{palette["outline"]}" stroke-width="{LW_GROUND_LINE}" />')
     else:
         # 3D views: add minimal dimensions to satisfy validator
         ph = structure["members"]["posts"]["cut_length_ft"]
