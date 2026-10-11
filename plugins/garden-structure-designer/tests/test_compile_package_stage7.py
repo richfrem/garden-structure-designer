@@ -115,3 +115,12 @@ def test_approval_without_revision_binding_blocks_packaging(mock_package_env):
         json.dumps({"may_claim_success": True, "summary": "legacy report"})
     )
     assert _run(mock_package_env)["status"] == "BLOCKED"
+
+
+def test_missing_markdown_asset_fails_packaging(mock_package_env):
+    _stage4_export(mock_package_env)
+    _approval(mock_package_env)
+    plan = mock_package_env / "outputs" / "pergola_plan.md"
+    plan.write_text(plan.read_text() + "\n![Gone](missing-sheet.svg)\n")
+    result = _run(mock_package_env)
+    assert result["status"] == "FAIL" and "missing-sheet.svg" in result["reason"]

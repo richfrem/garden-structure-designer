@@ -1,36 +1,29 @@
 #!/usr/bin/env python3
 """
-embed_svgs.py (CLI)
-=====================================
+embed_svgs.py
+=============
 
 Purpose:
-    embed_svgs.py (CLI) =====================================
+    Inlines the images referenced by a package markdown file: SVG sheets become inline
+    responsive ``<div>`` blocks (all ``data-role``/``data-tag`` attributes preserved) and
+    PNG/JPG/WebP files become base64 data URIs, so md-to-pdf renders one self-contained
+    document. Assets that cannot be found are collected and returned (and the CLI exits 1)
+    instead of leaving silent broken references in the final package.
 
-Layer: Execution
+Layer: Execution / Stage 7 Document Assembly
 
-Usage Examples:
-    python embed_svgs.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - outputs/pergola_plan.md (or the path argument) and the images it references (relative paths)
+    - path_utils.py (default outputs directory)
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    embed_svg(svg_path) -> str
+    embed_png(png_path, alt) -> str
+    process(input_path, output_path) -> list[str]     # returns missing asset paths
+    main(argv=None) -> int
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 plugins/garden-structure-designer/scripts/embed_svgs.py [in.md] [out.md]
 """
 import sys
 import os
@@ -63,7 +56,9 @@ def embed_png(png_path: str, alt: str) -> str:
     )
 
 
-def process(input_path: str, output_path: str) -> None:
+def process(input_path: str, output_path: str) -> list[str]:
+    """Writes the embedded markdown to ``output_path``; returns the resolved paths of assets that were missing."""
+    missing: list[str] = []
     base_dir = os.path.dirname(os.path.abspath(input_path))
 
     with open(input_path, "r", encoding="utf-8") as f:
@@ -73,6 +68,7 @@ def process(input_path: str, output_path: str) -> None:
     img_pattern = re.compile(r"!\[([^\]]*)\]\(([^)]+)\)")
 
     def replace_image(m: re.Match) -> str:
+        """Replaces one markdown image reference with its inline HTML (or leaves it, recording a missing file)."""
         alt = m.group(1)
         raw_path = m.group(2)
 
@@ -81,6 +77,7 @@ def process(input_path: str, output_path: str) -> None:
 
         if not os.path.isfile(resolved):
             print(f"  WARNING: asset not found, leaving as-is: {resolved}", file=sys.stderr)
+            missing.append(resolved)
             return m.group(0)  # leave unchanged
 
         ext = os.path.splitext(resolved)[1].lower()
@@ -100,12 +97,19 @@ def process(input_path: str, output_path: str) -> None:
         f.write(result)
 
     print(f"Written: {output_path}")
+    return missing
+
+
+def main(argv: list[str] | None = None) -> int:
+    """CLI entrypoint; exits 1 when any referenced asset was missing."""
+    args = sys.argv[1:] if argv is None else argv
+    in_path = args[0] if len(args) > 0 else str(outputs_dir() / "pergola_plan.md")
+    out_path = args[1] if len(args) > 1 else str(outputs_dir() / "pergola_plan_embedded.md")
+    return 1 if process(in_path, out_path) else 0
 
 
 sys.path.append(str(os.path.dirname(os.path.abspath(__file__))))
 from path_utils import outputs_dir
 
 if __name__ == "__main__":
-    in_path = sys.argv[1] if len(sys.argv) > 1 else str(outputs_dir() / "pergola_plan.md")
-    out_path = sys.argv[2] if len(sys.argv) > 2 else str(outputs_dir() / "pergola_plan_embedded.md")
-    process(in_path, out_path)
+    sys.exit(main())

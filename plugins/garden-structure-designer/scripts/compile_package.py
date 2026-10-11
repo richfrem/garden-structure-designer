@@ -186,9 +186,11 @@ def compile_package(
         return {"status": "FAIL", "reason": cad_err}
 
     try:
-        embed_process(str(raw_md_path), str(embedded_md_path))
+        missing_assets = embed_process(str(raw_md_path), str(embedded_md_path))
     except Exception as e:
         return {"status": "FAIL", "reason": f"Embedding assets failed: {e}"}
+    if missing_assets:
+        return {"status": "FAIL", "reason": f"Embedding assets failed: missing referenced assets {missing_assets}"}
 
     pdf_success, pdf_error = convert_md_to_pdf(embedded_md_path, pdf_path, o_dir, stem)
     structure = json.loads((s_dir / "structure.json").read_text(encoding="utf-8"))
