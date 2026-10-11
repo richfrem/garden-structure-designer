@@ -6,10 +6,13 @@ metadata:
   garden_structure_designer:
     consumes:
       - context/staging/structure.json
+      - outputs/fabrication/cut-list.json
     produces:
-      - context/staging/cut-list.json
+      - outputs/assembly-guide.md
+      - outputs/budget-estimate.md
+      - outputs/lumber-purchase-list.md
     validators:
-      - plugins/garden-structure-designer/scripts/schema_validator.py
+      - scripts/assembly_guide_validator.py
     repair_axes:
       - schema_error
 ---
@@ -24,19 +27,24 @@ metadata:
 - [References](#references)
 
 ## Critical Constraints
-- Strictly follow deterministic execution contracts for builder-docs-generator.
-- Input parameters must resolve from staging structure.json.
+- Produces `assembly-guide.md`, `budget-estimate.md` and `lumber-purchase-list.md` from `structure.json` and `outputs/fabrication/cut-list.json` (Stage 6 documents).
+- Every structural input is required: a missing miter/bevel, section size, region, side count or brace data stops generation (`MISSING_INPUT`); nothing is guessed.
+- Board feet are derived as (actual width x depth / 12) x cut length; the tripod hoisting section is emitted only when the rafter count divides into three equal sets (hexagon: 'three alternating rafters').
+- Unit prices and hardware allowances are disclosed planning assumptions, not structural inputs.
 
 ## Quick start
-
+```bash
+python3 scripts/builder_docs_compiler.py [staging_dir] [outputs_dir]
+```
+Run commands from the skill root. `scripts/` entries are file-level symlinks to the plugin's canonical `scripts/` (dereferenced on install); never edit them through the symlink.
 
 ## Workflow
-1. **Input Phase**: Load parameters for builder-docs-generator.
-2. **Execution Phase**: Process and emit deterministic output.
-3. **Gate Phase**: Validate schema and physics integrity.
+1. **Input**: structure.json and the fabrication cut list.
+2. **Execution**: write the three markdown documents into `outputs/`.
+3. **Gate**: `assembly_guide_validator.py` checks saw settings and the hex tripod method against the structure.
 
 ## Verification
-
+- `pytest tests/test_builder_docs_compiler.py tests/test_assembly_guide_validator.py` (development checkout, run from the plugin root).
 
 ## References
 - [Acceptance Criteria](references/acceptance-criteria.md)

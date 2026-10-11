@@ -1,0 +1,1 @@
+../../../scripts/drawing_content_validator.py

@@ -7,16 +7,16 @@ metadata:
     consumes:
       - context/staging/structure.json
     produces:
-      - outputs/cad/model.step
-      - outputs/cad/model.stl
+      - outputs/model.step
     validators:
-      - plugins/garden-structure-designer/scripts/cad_backend_build123d.py
+      - scripts/validate_connections.py
+      - scripts/cad_backend_build123d.py
     repair_axes:
       - cad_geometry_error
       - solid_collision_warning
 ---
 
-# Execute solid modeling, run CAD geometry validations, and export STEP/STL files
+# Timber Frame CAD
 
 ## Contents
 - [Critical Constraints](#critical-constraints)
@@ -26,24 +26,24 @@ metadata:
 - [References](#references)
 
 ## Critical Constraints
-- Strictly follow deterministic execution contracts for timber-frame-cad.
-- Input parameters must resolve from staging structure.json.
-- Python remains 100% authoritative over 3D structural geometry, solid models, and graph topology.
-- CAD export to 2D/3D DXF drafting sheets is handled downstream via the ExchangeWriter port (`export_cad.py`).
+- Python is 100% authoritative for 3D structure: this skill translates the resolved model into a scene (SVG projection) and build123d solids (STEP). It is **not** part of the Rust DXF path.
+- `cad_backend_build123d.py` requires every section size, `structure.sides` and `Z_APEX`; missing values fail closed (no 3.5 x 5.5 in defaults).
+- DXF drafting is handled by drawing-generator through the ExchangeWriter port (`export_cad.py`). The legacy `cad_backend.py` is deprecated.
 
 ## Quick start
 ```bash
-python3 plugins/garden-structure-designer/scripts/cad_scene.py
+python3 scripts/validate_connections.py [structure.json]
+python3 scripts/cad_backend_build123d.py structure.json [out.step]
 ```
+Run commands from the skill root. `scripts/` entries are file-level symlinks to the plugin's canonical `scripts/` (dereferenced on install); never edit them through the symlink.
 
 ## Workflow
-1. **Input Phase**: Load sealed `structure.json` geometry and joint definitions.
-2. **Execution Phase**: Build 3D BREP solids (posts, beams, rafters, braces, footings, hubs) and perform solid clearance validations.
-3. **Gate Phase**: Validate geometry invariants with `test_cad_geometry_invariants.py`.
+1. **Input**: sealed structure.json with a resolved model.
+2. **Execution**: `cad_scene.build_structure_scene` builds the scene used by the renderer; `cad_backend_build123d.py` writes `outputs/model.step`.
+3. **Gate**: `validate_connections.py` checks physical contact (beam soffits, rafter tips on the hub face, brace feet near posts).
 
 ## Verification
-- Run `pytest plugins/garden-structure-designer/tests/test_cad_scene.py`.
-- Run `pytest plugins/garden-structure-designer/tests/test_cad_geometry_invariants.py`.
+- `pytest tests/test_cad_scene.py tests/test_cad_geometry_invariants.py tests/test_validate_connections.py tests/test_cad_backend_build123d.py` (development checkout, run from the plugin root).
 
 ## References
 - [Acceptance Criteria](references/acceptance-criteria.md)

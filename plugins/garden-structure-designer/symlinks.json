@@ -2550,6 +2550,396 @@
       "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/structure.schema.json",
       "strategy": "symlink",
       "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/revision_identity.py",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/scripts/revision_identity.py",
+      "strategy": "symlink",
+      "description": "revision identity (C5) for run_obstacle_triage"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "intake-normalizer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": "intake-normalizer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/pipeline_runner.py",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/scripts/pipeline_runner.py",
+      "strategy": "symlink",
+      "description": "intake-normalizer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/validate_intent.py",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/scripts/validate_intent.py",
+      "strategy": "symlink",
+      "description": "intake-normalizer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/validate_topology_intent.py",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/scripts/validate_topology_intent.py",
+      "strategy": "symlink",
+      "description": "intake-normalizer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "cad-language-translator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/revision_identity.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/revision_identity.py",
+      "strategy": "symlink",
+      "description": "cad-language-translator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structure_io.py",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/scripts/structure_io.py",
+      "strategy": "symlink",
+      "description": "cad-language-translator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_language_translator.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/cad_language_translator.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_scene.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/cad_scene.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constraint_solver.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/constraint_solver.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/pipeline_runner.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/pipeline_runner.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/reset_derived.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/reset_derived.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/revision_identity.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/revision_identity.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/strict_access.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/strict_access.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structure_io.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/structure_io.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/topology_compiler.py",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/scripts/topology_compiler.py",
+      "strategy": "symlink",
+      "description": "structural-engine: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_language_translator.py",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/scripts/cad_language_translator.py",
+      "strategy": "symlink",
+      "description": "bracing-system-designer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_scene.py",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/scripts/cad_scene.py",
+      "strategy": "symlink",
+      "description": "bracing-system-designer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "bracing-system-designer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constraint_solver.py",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/scripts/constraint_solver.py",
+      "strategy": "symlink",
+      "description": "bracing-system-designer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": "bracing-system-designer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/revision_identity.py",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/scripts/revision_identity.py",
+      "strategy": "symlink",
+      "description": "bracing-system-designer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structure_io.py",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/scripts/structure_io.py",
+      "strategy": "symlink",
+      "description": "bracing-system-designer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/validate_intent.py",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/scripts/validate_intent.py",
+      "strategy": "symlink",
+      "description": "bracing-system-designer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": "building-code-validator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/strict_access.py",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/scripts/strict_access.py",
+      "strategy": "symlink",
+      "description": "building-code-validator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/validate_intent.py",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/scripts/validate_intent.py",
+      "strategy": "symlink",
+      "description": "building-code-validator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_language_translator.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cad_language_translator.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cadcraft_adapter.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cadcraft_adapter.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/drawing_content_validator.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/drawing_content_validator.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/exchange_writer.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/exchange_writer.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/export_cad.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/export_cad.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/ezdxf_adapter.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/ezdxf_adapter.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/revision_identity.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/revision_identity.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/strict_access.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/strict_access.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structure_io.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/structure_io.py",
+      "strategy": "symlink",
+      "description": "drawing-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_language_translator.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cad_language_translator.py",
+      "strategy": "symlink",
+      "description": "timber-frame-cad: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "timber-frame-cad: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/revision_identity.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/revision_identity.py",
+      "strategy": "symlink",
+      "description": "timber-frame-cad: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/strict_access.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/strict_access.py",
+      "strategy": "symlink",
+      "description": "timber-frame-cad: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structure_io.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/structure_io.py",
+      "strategy": "symlink",
+      "description": "timber-frame-cad: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/validate_connections.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/validate_connections.py",
+      "strategy": "symlink",
+      "description": "timber-frame-cad: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_language_translator.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/cad_language_translator.py",
+      "strategy": "symlink",
+      "description": "shop-blueprint-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "shop-blueprint-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/fabrication_builder.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/fabrication_builder.py",
+      "strategy": "symlink",
+      "description": "shop-blueprint-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/revision_identity.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/revision_identity.py",
+      "strategy": "symlink",
+      "description": "shop-blueprint-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/strict_access.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/strict_access.py",
+      "strategy": "symlink",
+      "description": "shop-blueprint-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/structure_io.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/structure_io.py",
+      "strategy": "symlink",
+      "description": "shop-blueprint-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/builder_docs_compiler.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/builder_docs_compiler.py",
+      "strategy": "symlink",
+      "description": "builder-docs-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/strict_access.py",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/scripts/strict_access.py",
+      "strategy": "symlink",
+      "description": "builder-docs-generator: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/chrome-verification/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "chrome-verification: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/chrome-verification/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": "chrome-verification: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/visual_svg_smoke_test.py",
+      "dst": "plugins/garden-structure-designer/skills/chrome-verification/scripts/visual_svg_smoke_test.py",
+      "strategy": "symlink",
+      "description": "chrome-verification: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "adversarial-drawing-reviewer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/revision_identity.py",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/scripts/revision_identity.py",
+      "strategy": "symlink",
+      "description": "adversarial-drawing-reviewer: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/compile_package.py",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/scripts/compile_package.py",
+      "strategy": "symlink",
+      "description": "document-compiler: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/constants.py",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/scripts/constants.py",
+      "strategy": "symlink",
+      "description": "document-compiler: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/path_utils.py",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/scripts/path_utils.py",
+      "strategy": "symlink",
+      "description": "document-compiler: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/revision_identity.py",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/scripts/revision_identity.py",
+      "strategy": "symlink",
+      "description": "document-compiler: import closure of the scripts its SKILL.md runs"
     }
   ]
 }

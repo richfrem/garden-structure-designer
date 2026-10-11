@@ -7,10 +7,14 @@ metadata:
     consumes:
       - context/staging/structure.json
     produces:
-      - outputs/drawing-plan-view.svg
-      - outputs/drawing-elevation-view.svg
+      - outputs/drawing-*.svg
+      - outputs/blueprint-*.svg
+      - outputs/cad/SB01-structure.dxf
+      - outputs/cad/SB02-plan.dxf
     validators:
-      - plugins/garden-structure-designer/scripts/svg_validator.py
+      - scripts/svg_validator.py
+      - scripts/drawing_content_validator.py
+      - scripts/cross_artifact_validator.py
     repair_axes:
       - svg_xml_invalid
       - svg_topology_mismatch
@@ -27,29 +31,28 @@ metadata:
 - [References](#references)
 
 ## Critical Constraints
-- Strictly follow deterministic execution contracts for drawing-generator.
-- Input parameters must resolve from staging structure.json.
-- All rendered elements must carry semantic `data-role` and `data-tag` attributes matching stable member IDs.
-- Primary CAD drafting export routes through the ExchangeWriter port (`export_cad.py`).
+- **Stage 4 (+5.5).** Renders the 8 SVG sheets and writes the two DXF sheets; python owns all geometry, CADCraft only drafts.
+- SVG member elements carry `data-role` and `data-tag` (the stable member id; legacy `data-id` is kept). Only member roots are tagged today (F-23): annotations are not yet individually tagged.
+- The title block shows the committed revision; sheets from another revision are rejected by `svg_validator.py`.
+- DXF export goes through the `ExchangeWriter` port: `CadcraftAdapter` (Rust `cadcraft-cli`, 15 s deadline) with `EzdxfAdapter` as the audited fallback. `auto` falls back silently today (F-5: spec `CAD_REQUIRED` not yet enforced).
+- DXFs are currently one polyline per member; the spec target is one INSERT per member with a block (F-1). `cross_artifact_validator.py` parses both sheets (units, layers+colors, XDATA identity, revision, bounds within 0.01 mm).
+- The cadcraft binary is located relative to the source repo (`vendor/cadcraft/target/release/cadcraft-cli`); in an installed skill it will be absent and the ezdxf fallback is used (F-4).
 
 ## Quick start
 ```bash
-python3 plugins/garden-structure-designer/scripts/render_drawings.py [structure_path]
-python3 plugins/garden-structure-designer/scripts/export_cad.py [structure_path] [outputs_cad_dir]
+python3 scripts/render_drawings.py [structure.json]
+python3 scripts/export_cad.py --structure structure.json --output-dir outputs/cad [--writer auto|cadcraft|ezdxf]
+python3 scripts/cross_artifact_validator.py [staging_dir] [outputs_dir]
 ```
+Run commands from the skill root. `scripts/` entries are file-level symlinks to the plugin's canonical `scripts/` (dereferenced on install); never edit them through the symlink.
 
 ## Workflow
-1. **Input Phase**: Load sealed `structure.json` geometry and topological graph.
-2. **Execution Phase**: 
-   - Render all 8 SVG sheets (plan, elevation, isometric, perspective, blueprints, component isolation) with visible IDs.
-   - Export multi-sheet DXF deliverables: `SB01-structure.dxf` (3D framing) and `SB02-plan.dxf` (2D planar projection) via `CadcraftAdapter` (or fallback `EzdxfAdapter`).
-3. **Gate Phase**: 
-   - Validate SVGs with `svg_validator.py` and `drawing_content_validator.py`.
-   - Validate DXFs with `cross_artifact_validator.py` asserting zero auditor errors, 1:1 member ID parity, and SVG/DXF dimension cross-checks.
+1. **Input**: sealed structure.json (Stage 2 topology valid).
+2. **Execution**: `render_drawings.py` -> 8 SVGs; `export_cad.py` -> `outputs/cad/SB01-structure.dxf` (3D framing) and `SB02-plan.dxf` (XY plan, Z = 0), both in millimetres (`$INSUNITS = 4`).
+3. **Gate**: `svg_validator.py` + `drawing_content_validator.py` per sheet; `cross_artifact_validator.py` for the DXFs (zero auditor errors, member-id parity with structure.json, SVG/DXF dimension cross-checks).
 
 ## Verification
-- Run `pytest plugins/garden-structure-designer/tests/test_dxf_export_pipeline.py`.
-- Run `pytest plugins/garden-structure-designer/tests/test_drafting_standards.py`.
+- `pytest tests/test_dxf_export_pipeline.py tests/test_cross_artifact_c4_gates.py tests/test_render_drawings_alignment.py tests/test_svg_validator_tags.py` (development checkout, run from the plugin root).
 
 ## References
 - [Acceptance Criteria](references/acceptance-criteria.md)

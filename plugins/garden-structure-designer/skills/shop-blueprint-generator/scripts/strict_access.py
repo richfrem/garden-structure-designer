@@ -1,0 +1,1 @@
+../../../scripts/strict_access.py

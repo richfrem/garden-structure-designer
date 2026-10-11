@@ -1,0 +1,1 @@
+../../../scripts/cadcraft_adapter.py

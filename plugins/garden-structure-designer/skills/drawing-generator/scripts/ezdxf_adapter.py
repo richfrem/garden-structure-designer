@@ -1,0 +1,1 @@
+../../../scripts/ezdxf_adapter.py
