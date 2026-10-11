@@ -79,6 +79,7 @@ DIM_CROSSCHECK_TOL_MM = MM_PER_INCH  # SVG label vs DXF geometry parity (1 in)
 
 # --- C5 transaction purge inventory (globs relative to the project root) ---
 ERROR_STALE_REVISION = "STALE_REVISION"
+ERROR_RECOVERY_REQUIRED = "RECOVERY_REQUIRED"
 C5_PURGE_GLOBS: tuple[str, ...] = (
     # Solved staging mirrors
     "context/staging/structural-model.json",

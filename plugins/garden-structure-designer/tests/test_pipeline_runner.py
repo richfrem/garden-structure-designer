@@ -120,3 +120,12 @@ def test_error_code_registry_is_exhaustive():
         "STALE_REVISION",
         "RECOVERY_REQUIRED",
     }
+
+
+def test_transaction_error_codes_match_registry():
+    """structure_io error codes and the TopologyErrorCode registry share constants.py values."""
+    from pipeline_runner import TopologyErrorCode
+    from structure_io import RecoveryRequiredError, StaleRevisionError
+
+    assert TopologyErrorCode(StaleRevisionError.error_code) is TopologyErrorCode.STALE_REVISION
+    assert TopologyErrorCode(RecoveryRequiredError.error_code) is TopologyErrorCode.RECOVERY_REQUIRED

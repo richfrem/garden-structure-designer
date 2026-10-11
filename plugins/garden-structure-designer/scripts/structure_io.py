@@ -59,14 +59,13 @@ except ImportError:  # Windows: no fcntl; use msvcrt byte-range locking
     fcntl = None
     import msvcrt
 
-from constants import C5_PURGE_GLOBS, C5_PURGE_ROOTS, ERROR_STALE_REVISION
+from constants import C5_PURGE_GLOBS, C5_PURGE_ROOTS, ERROR_RECOVERY_REQUIRED, ERROR_STALE_REVISION
 from revision_identity import compute_revision_hash, stamp_revision
 
 INPUT_SECTIONS = {
     "intent", "structure", "layout", "members", "roof",
     "hub", "bracing", "footings", "joinery"
 }
-ERROR_RECOVERY_REQUIRED = "RECOVERY_REQUIRED"
 
 
 def load_structure(path: str | Path) -> dict[str, Any]:
