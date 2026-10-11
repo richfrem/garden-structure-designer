@@ -33,6 +33,11 @@ Update the dashboard's Pipeline Stage Status table as each stage completes or fa
 2. Read the filtered lessons from `learning-registry.json`.
 3. Make all active lessons available as hard constraints to downstream skills.
 
+### Stage 0.5 — Intent Cardinality & Topology Family Pre-Gate (C1, C2)
+1. Run `python3 plugins/garden-structure-designer/scripts/validate_topology_intent.py context/staging/structure.json`.
+2. Validates declared cardinality (`structure.sides == layout.post_count == roof.primary_rafters.count`), hub type, and topology family.
+3. Reserved families (`OrthogonalGridTopology`, `HipRidgeTopology`) fail closed with `TOPOLOGY_NOT_IMPLEMENTED`.
+
 ### Stage 1 — Structural Foundation
 1. Verify `context/staging/structure.json` is present and complete.
    - Run `python3 plugins/garden-structure-designer/scripts/validate_intent.py context/staging/structure.json`
@@ -82,22 +87,28 @@ After `structural-engine` completes and before `joinery-designer` runs:
    - If `gemini-cli` unavailable, falls back to Claude self-review (see validation-agent.md §7).
 8. If validation returns `FAIL`, read `context/staging/drift_report.json` and re-invoke the specific failing skills. Then re-run this Stage 3 gate.
 
-### Stage 4 — Drawing & Blueprint Generation
+### Stage 4 — Drawing, Blueprint & CAD Deliverables Generation
 9. Call `drawing-generator` → produces architectural SVGs from `structure.json` geometry.
    - Each SVG must be validated by `svg_validator.py` before this stage is considered complete.
 10. Call `shop-blueprint-generator` → produces heavily dimensioned carpenter drawings.
     - All angles MUST come from `structure.json` geometry section. Verify this is the case before proceeding.
     - Each SVG validated by `svg_validator.py`.
+11. Export Production CAD Deliverables:
+    - Invoke `export_cad.py` via ExchangeWriter port (`CadcraftAdapter` or fallback `EzdxfAdapter`).
+    - Produces `outputs/cad/SB01-structure.dxf` (3D framing model) and `outputs/cad/SB02-plan.dxf` (2D planar projection).
+
 ### Stage 5 — Blueprint QA Gate
-11. Launch an independent sub-agent via `gemini-cli` using **gemini-3.1-pro-preview**, adopting the `validation-agent` profile, to run the full dual-channel QA pass:
+12. Launch an independent sub-agent via `gemini-cli` using **gemini-3.1-pro-preview**, adopting the `validation-agent` profile, to run the full dual-channel QA pass:
     - Static XML check on all drawing outputs.
     - Human vision proxy request for any PNG renders.
     - Dimension drift check (SVG labels vs. structure.json geometry values).
-12. If validation returns `FAIL`, read `drift_report.json`, re-invoke failing drawing skills, then re-run Stage 5.
+13. If validation returns `FAIL`, read `drift_report.json`, re-invoke failing drawing skills, then re-run Stage 5.
 
-### Stage 5.5 — Cross-Artifact Reconciliation
-12b. Run `scripts/cross_artifact_validator.py context/staging outputs`.
-     - Validates paths, SAW_SETTINGS metadata against structure.json source hash, and ensures that beam miters ≠ rafter miters appropriately across all MD and SVG artifacts.
+### Stage 5.5 — Cross-Artifact & Parsed DXF Reconciliation
+14. Run `python3 plugins/garden-structure-designer/scripts/cross_artifact_validator.py context/staging outputs`.
+    - Validates paths, SAW_SETTINGS metadata against structure.json source hash.
+    - Validates parsed DXF entity parity, layer standards, zero auditor errors, and 1:1 member ID XDATA tracking (`MEMBER_ID=...`).
+    - Performs numerical dimension cross-checks between SVG blueprints and DXF entities.
 
 ### Stage 5.6 — Visual Smoke Test Gate (Browser Render) & Hardcode Guard
 
@@ -216,11 +227,13 @@ Reason: <which check failed and which member/element>
      - Ensure required SVGs, the JSON cut-list, and the photorealistic renders in `outputs/high-resolution-image/` exist before compilation.
 
 ### Stage 7 — Compilation
-14. Run `compile_package.py` (or call `document-compiler` skill) to validate preflight gates, embed SVGs/PNGs, and compile the final PDF packet:
+14. Run `compile_package.py` (or call `document-compiler` skill) to validate preflight gates, embed SVGs/PNGs, export CAD deliverables, and compile the final PDF packet:
     ```bash
     python3 plugins/garden-structure-designer/scripts/compile_package.py
     ```
-    Ensures all 8 sheets, builder documents, and photorealistic renders are aggregated into the final PDF packet in `outputs/`.
+    - Exports `outputs/cad/SB01-structure.dxf` and `outputs/cad/SB02-plan.dxf`.
+    - Generates `outputs/package-manifest.json` recording cryptographic SHA-256 digests and byte sizes of all deliverables.
+    - Aggregates all 8 SVG sheets, builder documents, and photorealistic renders into the final PDF packet in `outputs/`.
 
 ### Stage 8 — Learning Capture and Self-Healing
 15. Read validation reports and the package consistency report.
