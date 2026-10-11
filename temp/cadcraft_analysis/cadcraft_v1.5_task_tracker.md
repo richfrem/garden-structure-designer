@@ -46,21 +46,21 @@
   - `outputs/cad/SB02-plan.dxf`: Full-scale 2D planar projection.
   - Layer mappings: `FRAMING_POSTS`, `FRAMING_BEAMS`, `FRAMING_RAFTERS`, `FRAMING_HUBS`, `FRAMING_BRACES`, `FOOTINGS_PIERS`.
 - [x] **TASK-107**: Wire pipeline lifecycle stages in verified order: Stage 4 (Renderings/DXF) → Stage 5.5 (Parsed DXF & dimensions) → Stage 5.6 (Visual smoke) → Stage 6 (Cut lists & BOM) → Stage 5 (Independent Red-Team approval across ALL artifacts including cut lists) → Stage 7 (Package compilation in `compile_package.py`).
-- [ ] **TASK-108**: Implement parsed DXF validation in `plugins/garden-structure-designer/scripts/cross_artifact_validator.py` (parsed entity counts, 1:1 member ID xdata parity, 3D bounds for SB01, 2D projected XY bounds for SB02).
+- [x] **TASK-108**: Implement parsed DXF validation in `plugins/garden-structure-designer/scripts/cross_artifact_validator.py` (parsed entity counts, 1:1 member ID xdata parity, 3D bounds for SB01, 2D projected XY bounds for SB02).
 - [x] **TASK-109**: Author integration test `plugins/garden-structure-designer/tests/test_dxf_export_pipeline.py`.
 
 ---
 
 ### M2A — Unified Architectural Drafting Standards (C4)
-- [ ] **TASK-201**: Consolidate lineweights, architectural tick offsets, and dimension standards in `control_plane/constants.py`.
-- [ ] **TASK-202**: Align SVG blueprint generators (`render_drawings.py`, `shop-blueprint-generator`) with drafting constants.
-- [ ] **TASK-203**: Add numerical dimension cross-checks between SVG and DXF in `cross_artifact_validator.py`.
+- [x] **TASK-201**: Consolidate lineweights, architectural tick offsets, and dimension standards in `control_plane/constants.py`.
+- [x] **TASK-202**: Align SVG blueprint generators (`render_drawings.py`, `shop-blueprint-generator`) with drafting constants.
+- [x] **TASK-203**: Add numerical dimension cross-checks between SVG and DXF in `cross_artifact_validator.py`.
 
 ---
 
 ### M2B — 2D Planar Constraint Solver Feasibility Gate (Optional Research)
-- [ ] **TASK-204**: Author `scripts/constraint_solver_probe.py` testing CADCraft `crates/constraints`.
-- [ ] **TASK-205**: Document solve stability and degrees of freedom; record research decision record.
+- [x] **TASK-204**: Author `scripts/constraint_solver_probe.py` testing CADCraft `crates/constraints`.
+- [x] **TASK-205**: Document solve stability and degrees of freedom; record research decision record.
 
 ---
 
