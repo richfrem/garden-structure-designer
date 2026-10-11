@@ -27,6 +27,7 @@ Key Functions / Classes:
     begin_transaction(canonical_path, base_revision_hash) -> Transaction
     commit_transaction(txn) -> None
     recover_journals(canonical_path) -> None           (resolve COMMITTING journals under the lock)
+    update_structure(canonical_path, mutate) -> None   (begin -> mutate candidate -> commit; replaces direct writes)
     _project_root(canonical_path) -> Path              _journal_path(canonical_path, txn_id) -> Path
     _FileLock(canonical_path)                          (fcntl on POSIX, msvcrt on Windows)
     _write_json_durably(path, payload) -> None         _record_journal(canonical_path, txn_id, entry) -> None
@@ -51,7 +52,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any, Callable, Iterator
 
 try:
     import fcntl
@@ -314,4 +315,21 @@ def commit_transaction(txn: Transaction) -> None:
             path.unlink(missing_ok=True)
 
         _record_journal(canonical, txn.txn_id, {**journal, "state": "COMMITTED"})
+        shutil.rmtree(txn.candidate_path.parent, ignore_errors=True)
+
+
+def update_structure(canonical_path: str | Path, mutate: Callable[[dict[str, Any]], None]) -> None:
+    """Applies ``mutate`` to a candidate copy and commits it through the C5 transaction authority.
+
+    The canonical file is untouched if ``mutate`` raises; the candidate workspace is removed either way.
+    Raises StaleRevisionError if canonical changed between the base read and the commit.
+    """
+    canonical = Path(canonical_path)
+    txn = begin_transaction(canonical, compute_revision_hash(load_structure(canonical)))
+    try:
+        candidate = load_structure(txn.candidate_path)
+        mutate(candidate)
+        _write_json_durably(txn.candidate_path, candidate)
+        commit_transaction(txn)
+    finally:
         shutil.rmtree(txn.candidate_path.parent, ignore_errors=True)

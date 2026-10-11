@@ -118,6 +118,7 @@ C5_PURGE_GLOBS: tuple[str, ...] = (
     # Solved staging mirrors
     "context/staging/structural-model.json",
     "context/staging/geometry-calculations.json",
+    "context/staging/design-spec.json",  # legacy shim artifact
     # Drawings / CAD
     "outputs/*.svg",
     "outputs/cad/*.dxf",
