@@ -18,7 +18,7 @@ Key Input Dependencies:
       geometry.joints.z_planes.Z_APEX and hub, and the member section sizes
       (members.posts/beams, roof.primary_rafters, bracing.brace: actual_width_in/actual_depth_in)
     - build123d library
-    - constants.py (MM_PER_FOOT), path_utils.py (default outputs directory)
+    - constants.py (MM_PER_FOOT), path_utils.py (default outputs directory), strict_access.py
 
 Key Functions:
     build_hub_solid(hj, z_apex, post_count, ft_to_mm) -> b3d.Solid
@@ -26,7 +26,6 @@ Key Functions:
     build_cad_model(structure: dict) -> b3d.Compound | None
     export_step(compound, path: str) -> bool
     main() -> None
-    _require(mapping, key, label) -> Any             (fail-closed accessor; raises ValueError MISSING_INPUT)
     _section_for_role(role, structure) -> tuple[dict, str] | None
 
 Usage Examples:
@@ -43,6 +42,7 @@ from typing import Any, Dict, List, Optional
 sys.path.append(str(Path(__file__).parent))
 from constants import MM_PER_FOOT
 from path_utils import outputs_dir
+from strict_access import require as _require
 
 try:
     import build123d as b3d
@@ -50,13 +50,6 @@ try:
     BUILD123D_AVAILABLE = True
 except ImportError:
     BUILD123D_AVAILABLE = False
-
-
-def _require(mapping: Any, key: str, label: str) -> Any:
-    """Returns ``mapping[key]`` or raises ValueError ``MISSING_INPUT: label.key`` (no silent defaults)."""
-    if not isinstance(mapping, dict) or mapping.get(key) in (None, ""):
-        raise ValueError(f"MISSING_INPUT: {label}.{key}")
-    return mapping[key]
 
 
 def _section_for_role(role: str, structure: Dict[str, Any]) -> Optional[tuple]:

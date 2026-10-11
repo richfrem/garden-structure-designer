@@ -16,7 +16,7 @@ Layer: Execution / Document Generation
 Key Input Dependencies:
     - context/staging/structure.json (jurisdiction, structure.sides, members, roof, bracing, geometry angles)
     - outputs/fabrication/cut-list.json (fabrication-cut-list/1.0 members with stock lengths)
-    - path_utils.py (default staging/outputs directories)
+    - path_utils.py (default staging/outputs directories), strict_access.py (fail-closed required inputs)
 
 Key Functions:
     generate_builder_docs(staging_dir=None, outputs_dir=None) -> dict
@@ -28,7 +28,6 @@ Key Functions:
     total_board_feet(groups) -> float
     math_ceil(val) -> float
     main() -> None
-    _need(mapping, key, label) -> Any                (fail-closed required-field accessor)
     _hub_phase_lines(sides, rafters) -> list[str]
 
 Usage Examples:
@@ -45,6 +44,8 @@ from typing import Any, Dict, List, Optional
 sys.path.append(str(Path(__file__).parent))
 from path_utils import outputs_dir as default_outputs_dir
 from path_utils import staging_dir as default_staging_dir
+from strict_access import MissingInputError as BuilderDocsInputError
+from strict_access import require as _need
 
 CUT_LIST_RELPATH = Path("fabrication") / "cut-list.json"
 BOARD_FEET_DIVISOR = 12.0  # (width_in x depth_in / 12) x length_ft
@@ -65,17 +66,6 @@ SCHEDULE_ROLES: Dict[str, tuple] = {
     "rafter_primary": ("Primary Rafters", ("roof", "primary_rafters")),
     "brace": ("Knee Braces", ("bracing", "brace")),
 }
-
-
-class BuilderDocsInputError(ValueError):
-    """Raised when a required structural input is missing; documents are never generated from guesses."""
-
-
-def _need(mapping: Any, key: str, label: str) -> Any:
-    """Returns ``mapping[key]`` or raises BuilderDocsInputError naming ``label.key`` (fail closed)."""
-    if not isinstance(mapping, dict) or mapping.get(key) in (None, ""):
-        raise BuilderDocsInputError(f"MISSING_INPUT: {label}.{key}")
-    return mapping[key]
 
 
 def math_ceil(val: float) -> float:
