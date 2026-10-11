@@ -73,3 +73,24 @@ LW_MEMBER_BLUEPRINT = 3.0
 DXF_BOUNDS_TOL_MM = 1.0  # 3D bounds / extents parity (WCS mm)
 DXF_PLANAR_TOL_MM = 1e-6  # SB02 must be planar (|Z| <= tol)
 DIM_CROSSCHECK_TOL_MM = MM_PER_INCH  # SVG label vs DXF geometry parity (1 in)
+
+# --- C5 transaction purge inventory (globs relative to the project root) ---
+ERROR_STALE_REVISION = "STALE_REVISION"
+C5_PURGE_GLOBS: tuple[str, ...] = (
+    # Solved staging mirrors
+    "context/staging/structural-model.json",
+    "context/staging/geometry-calculations.json",
+    # Drawings / CAD
+    "outputs/*.svg",
+    "outputs/cad/*.dxf",
+    # Fabrication
+    "outputs/fabrication/cut-list.json",
+    "outputs/fabrication/*-cut-list.json",
+    # Packages / docs
+    "outputs/pergola_plan.md",
+    "outputs/pergola_plan.pdf",
+    # QA / approval
+    "context/staging/drawing-red-team-report.json",
+    "outputs/quality-dashboard*",
+)
+C5_PURGE_ROOTS: tuple[str, ...] = ("context/staging", "outputs")
