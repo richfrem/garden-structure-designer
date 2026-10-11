@@ -32,3 +32,16 @@ def test_run_cli_passes_deadline_to_subprocess(monkeypatch, tmp_path):
     with pytest.raises(cadcraft_adapter.CadcraftError, match="timed out"):
         cadcraft_adapter.CadcraftAdapter(binary)._run_cli(["new {}"], tmp_path / "o.dxf")
     assert seen["timeout"] == constants.CAD_EXPORT_TIMEOUT_S
+
+
+def test_run_cli_wraps_exec_failure(monkeypatch, tmp_path):
+    """An unexecutable binary must raise CadcraftError so export_cad can fall back to ezdxf."""
+    binary = tmp_path / "cadcraft-cli"
+    binary.write_text("")
+
+    def fake_run(argv, **kwargs):
+        raise PermissionError("not executable")
+
+    monkeypatch.setattr(cadcraft_adapter.subprocess, "run", fake_run)
+    with pytest.raises(cadcraft_adapter.CadcraftError, match="could not be executed"):
+        cadcraft_adapter.CadcraftAdapter(binary)._run_cli(["new {}"], tmp_path / "o.dxf")

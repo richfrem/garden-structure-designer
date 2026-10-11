@@ -16,6 +16,7 @@ Key Input Dependencies:
 
 Key Functions:
     select_writer(name) -> ExchangeWriter
+    _revision_identity(structure) -> tuple[str, str]
     export_sheets(structure, output_dir, writer=None) -> list[dict]
     main(argv) -> int
 
@@ -36,7 +37,6 @@ from constants import SHEET_FILENAMES  # noqa: E402,F401
 from exchange_writer import ExchangeWriter  # noqa: E402
 from ezdxf_adapter import EzdxfAdapter  # noqa: E402
 from revision_identity import compute_revision_hash  # noqa: E402
-
 
 
 def select_writer(name: str = "auto") -> ExchangeWriter:

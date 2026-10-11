@@ -130,6 +130,8 @@ class CadcraftAdapter:
             result = subprocess.run(argv, capture_output=True, text=True, timeout=CAD_EXPORT_TIMEOUT_S)
         except subprocess.TimeoutExpired as error:
             raise CadcraftError(f"cadcraft-cli timed out after {CAD_EXPORT_TIMEOUT_S}s") from error
+        except OSError as error:
+            raise CadcraftError(f"cadcraft-cli could not be executed: {error}") from error
         if result.returncode != 0 or not output_path.is_file():
             raise CadcraftError(f"cadcraft-cli failed (rc={result.returncode}): {result.stderr.strip()}")
         return result.stdout
