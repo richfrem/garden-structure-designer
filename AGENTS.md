@@ -3,7 +3,7 @@
 ## Overview
 `garden-structure-designer` is an AI-native multi-agent design pipeline that converts colloquial user descriptions of garden structures (pergolas, gazebos, pavilions) into professional-grade structural construction PDF packages. Staging bus is `context/staging/structure.json`.
 
-Detailed architecture and stage definitions live in [`docs/architecture.md`](docs/architecture.md). Operational workflows and triage live in [`INIT_AGENTS.md`](INIT_AGENTS.md).
+Detailed architecture and stage definitions live in [`architecture.md`](architecture.md). Operational workflows and triage live in [`INIT_AGENTS.md`](INIT_AGENTS.md).
 
 ## On-Demand Skills (Enable / Disable)
 Skills, agents, rules and hooks are loaded on demand. Desired state lives in `.agents/ownership/<plugin>.json` (`should_install: true/false`). Run `python3 .agents/skills/plugin-syncer/scripts/sync_with_inventory.py` to synchronize changes. Never toggle components without explicit user authorization.
@@ -38,4 +38,4 @@ Detailed policy documents live in [`.agent/rules/`](.agent/rules/). Key invarian
 9. **Worktree Isolation**: MUST create an isolated git worktree before multi-file modifications. (details: [`.agent/rules/worktree-lifecycle-management.md`](.agent/rules/worktree-lifecycle-management.md))
 10. **Adversarial Reasoning**: MUST challenge assumptions before agreement. (details: [`.agent/rules/adversarial-reasoning-before-agreement-rule.md`](.agent/rules/adversarial-reasoning-before-agreement-rule.md))
 11. **Cryptographic Human Gates**: MUST obtain user approval for gated actions. (details: [`.agent/rules/cryptographic-human-gates.md`](.agent/rules/cryptographic-human-gates.md))
-12. **Config-Driven Constants**: MUST consolidate constants in `control_plane/constants.py`. (details: [`.agent/rules/config-driven-constants-over-hardcoding.md`](.agent/rules/config-driven-constants-over-hardcoding.md))
+12. **Config-Driven Constants**: MUST consolidate constants in `plugins/garden-structure-designer/scripts/constants.py` (the single source; never recreate a root `control_plane/`). (details: [`.agent/rules/config-driven-constants-over-hardcoding.md`](.agent/rules/config-driven-constants-over-hardcoding.md))

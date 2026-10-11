@@ -1,0 +1,1 @@
+../../../scripts/visual_svg_smoke_test.py

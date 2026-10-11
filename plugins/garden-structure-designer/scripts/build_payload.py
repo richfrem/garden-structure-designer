@@ -1,50 +1,41 @@
 #!/usr/bin/env python3
 """
-build_payload.py (CLI)
-=====================================
+build_payload.py
+================
 
 Purpose:
-    build_payload.py (CLI) =====================================
+    Compiles all sealed design artifacts (structure.json, all 8 SVG sheets,
+    and builder documentation markdown files) into a single consolidated
+    validation payload markdown file for review and external validation.
 
-Layer: Execution
+Layer: Service / QA Pipeline
 
-Usage Examples:
-    python build_payload.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - context/staging/structure.json
+    - outputs/*.svg (all 8 presentation and technical SVG drawings)
+    - outputs/*.md (assembly guide, budget estimate, lumber purchase list)
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    build_payload(output_path: Path | None = None) -> Path
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 plugins/garden-structure-designer/scripts/build_payload.py [--out target.md]
 """
-import os
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).parent.resolve()))
-from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
-
+from __future__ import annotations
 
 import argparse
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).parent.resolve()))
+from path_utils import outputs_dir, staging_dir
+
 
 def build_payload(output_path: Path | None = None) -> Path:
+    """Concatenates all primary staging and output artifacts into a markdown bundle."""
     s_dir = staging_dir()
     o_dir = outputs_dir()
-    
+
     files_to_merge = {
         "SEALED MANIFEST (structure.json)": s_dir / "structure.json",
         "GENERATED OUTPUT (drawing-plan-view.svg)": o_dir / "drawing-plan-view.svg",
@@ -59,10 +50,10 @@ def build_payload(output_path: Path | None = None) -> Path:
         "BUILDER DOC (budget-estimate.md)": o_dir / "budget-estimate.md",
         "BUILDER DOC (lumber-purchase-list.md)": o_dir / "lumber-purchase-list.md",
     }
-    
+
     target_out = output_path or (s_dir / "validation_payload.md")
     target_out.parent.mkdir(parents=True, exist_ok=True)
-    
+
     with open(target_out, "w", encoding="utf-8") as out:
         for title, p in files_to_merge.items():
             out.write(f"--- {title} ---\n")
@@ -74,12 +65,20 @@ def build_payload(output_path: Path | None = None) -> Path:
                     out.write(f"Error reading {p}: {e}\n\n")
             else:
                 out.write(f"File not found: {p}\n\n")
-                
+
     print(f"Created validation payload at: {target_out}")
     return target_out
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Compile all design artifacts into a consolidated validation payload.")
-    parser.add_argument("--out", type=Path, default=None, help="Target markdown file path")
+    parser = argparse.ArgumentParser(
+        description="Compile all design artifacts into a consolidated validation payload."
+    )
+    parser.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help="Target markdown file path",
+    )
     args = parser.parse_args()
     build_payload(args.out)

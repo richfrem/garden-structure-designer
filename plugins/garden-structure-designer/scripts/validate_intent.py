@@ -2,8 +2,20 @@
 """
 validate_intent.py
 ==================
-Pre-geometry validation gate: verifies that all fields required by
-geometry_engine.py are present, numeric, and have physically plausible values.
+
+Purpose:
+    Pre-geometry validation gate: verifies that all fields required by geometry_engine.py (and by the
+    Stage 3 physics check) are present, numeric, and have physically plausible values. It also requires
+    the confirmed jurisdiction and the declared side count before any structural computation.
+
+Key Input Dependencies:
+    - context/staging/structure.json (path_utils.py supplies the default path)
+
+Key Functions:
+    validate_intent(structure) -> list[str]           assert_intent_valid(structure) -> None
+    main() -> None
+    _get(structure, dotpath) -> Any                   _check(structure, field, expected_type, valid, description) -> str | None
+    _UNCONDITIONAL_CHECKS / _BRACING_CHECKS           (the contract tables)
 
 Pipeline position:
     intake-normalizer  (produces structure.json from user description)
@@ -86,11 +98,27 @@ _UNCONDITIONAL_CHECKS: list[tuple[str, type | tuple, Any, str]] = [
     ("members.posts.actual_width_in",          (int, float), lambda v: 0 < v <= 24,      "inches, range (0, 24]"),
     ("members.posts.cut_length_ft",            (int, float), lambda v: v > 0,            "positive number (feet)"),
     ("members.beams.actual_depth_in",          (int, float), lambda v: 0 < v <= 24,      "inches, range (0, 24]"),
+    ("intent.jurisdiction",                    str,          lambda v: bool(v.strip()),  "confirmed jurisdiction (wind/snow loads) before any structural computation"),
+    ("structure.sides",                        int,          lambda v: v >= 3,           "integer side count (authoritative, spec C1)"),
+    ("members.posts.actual_depth_in",          (int, float), lambda v: 0 < v <= 24,      "inches, range (0, 24]"),
+    ("members.beams.actual_width_in",          (int, float), lambda v: 0 < v <= 24,      "inches, range (0, 24]"),
+    ("footings.diameter_in",                   (int, float), lambda v: v > 0,            "positive number (inches); footing width and the Stage 3 bearing check"),
+    ("footings.depth_in",                      (int, float), lambda v: v > 0,            "positive number (inches); footing embedment below grade"),
     ("hub.type",                               str,          lambda v: len(v) > 0,       "non-empty string"),
     ("hub.radius_min_ft",                      (int, float), lambda v: v > 0,            "positive number (feet)"),
     ("cad.units",                              str,          lambda v: v == "feet",      "must be 'feet'"),
     ("cad.coordinate_system",                  str,          lambda v: v == "right_handed_z_up",  "must be 'right_handed_z_up'"),
     ("cad.precision",                          (int, float), lambda v: 0 < v < 1,        "float in (0, 1), e.g. 0.001"),
+]
+
+
+# Additional required fields when bracing is enabled (geometry_engine reads all of them)
+_BRACING_CHECKS: list[tuple[str, type | tuple, Any, str]] = [
+    ("bracing.brace.actual_width_in",           (int, float), lambda v: 0 < v <= 24,      "inches, range (0, 24]"),
+    ("bracing.brace.actual_depth_in",           (int, float), lambda v: 0 < v <= 24,      "inches, range (0, 24]"),
+    ("bracing.brace.constraints.run_ft",        (int, float), lambda v: v > 0,            "positive number (feet)"),
+    ("bracing.brace.constraints.start_surface", str,          lambda v: len(v) > 0,       "non-empty string"),
+    ("bracing.brace.constraints.end_surface",   str,          lambda v: len(v) > 0,       "non-empty string"),
 ]
 
 
@@ -112,10 +140,7 @@ def validate_intent(structure: dict) -> list[str]:
 
     # Bracing: additional required fields when enabled
     if structure.get("bracing", {}).get("enabled"):
-        for field, etype, valid, desc in [
-            ("bracing.brace.constraints.start_surface", str, lambda v: len(v) > 0, "non-empty string"),
-            ("bracing.brace.constraints.end_surface",   str, lambda v: len(v) > 0, "non-empty string"),
-        ]:
+        for field, etype, valid, desc in _BRACING_CHECKS:
             err = _check(structure, field, etype, valid, desc)
             if err:
                 errors.append(err)
@@ -147,6 +172,7 @@ sys.path.append(str(Path(__file__).parent.resolve()))
 from path_utils import staging_dir
 
 def main() -> None:
+    """CLI entrypoint: validate a structure.json and exit 0/1."""
     parser = argparse.ArgumentParser(
         description="Validate a structure.json is ready for geometry computation."
     )

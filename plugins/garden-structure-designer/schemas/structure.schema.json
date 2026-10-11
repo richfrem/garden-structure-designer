@@ -13,7 +13,15 @@
           "type": "string",
           "enum": ["INTENT", "CONSTRAINTS_DEFINED", "ENGINEERED", "GEOMETRY_SEALED", "CAD_SEALED", "RENDERED"]
         },
-        "source_hash": { "type": "string" }
+        "source_hash": { "type": "string" },
+        "topology_family": {
+          "type": "string",
+          "enum": ["RadialHubTopology", "OrthogonalGridTopology", "HipRidgeTopology"],
+          "description": "C1: reserved families validate then return TOPOLOGY_NOT_IMPLEMENTED; only RadialHubTopology is enabled."
+        },
+        "revision_id": { "type": "string", "minLength": 1, "description": "C5: committed revision UUID assigned by the transaction authority." },
+        "revision_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "C5: gsd-json-v1 SHA-256 of the canonical document." },
+        "updated_at": { "type": "string" }
       }
     },
     "intent": {

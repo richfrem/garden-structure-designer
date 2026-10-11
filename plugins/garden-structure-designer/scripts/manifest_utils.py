@@ -1,59 +1,54 @@
 #!/usr/bin/env python3
 """
-manifest_utils.py (CLI)
-=====================================
+manifest_utils.py
+=================
 
 Purpose:
-    manifest_utils.py (CLI) =====================================
+    Dependency digest for derived-artifact manifests (spec C5: cache hits require matching
+    dependency digests; file existence or mtime is never a cache key). JSON dependencies are
+    canonicalized (sorted keys, compact separators) so key order does not change the digest.
+    A missing dependency raises ``FileNotFoundError`` instead of being skipped, so a vanished
+    input can never produce the same digest as one that was never listed.
 
-Layer: Execution
+Layer: Core / Shared Utility
 
-Usage Examples:
-    python manifest_utils.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - the dependency file paths passed in (default: context/staging/structure.json)
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    compute_dependency_hash(paths) -> str
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 manifest_utils.py context/staging/structure.json outputs/fabrication/cut-list.json
 """
-import os
-import json
-import hashlib
+from __future__ import annotations
 
-def compute_dependency_hash(paths):
+import hashlib
+import json
+import os
+import sys
+from typing import Iterable
+
+
+def compute_dependency_hash(paths: Iterable[str]) -> str:
+    """SHA-256 over the sorted dependency files (JSON canonicalized); raises FileNotFoundError if one is missing."""
     h = hashlib.sha256()
     for path in sorted(paths):
         if not os.path.exists(path):
-            continue
+            raise FileNotFoundError(f"Dependency not found: {path}")
         with open(path, 'rb') as f:
             content = f.read()
         if path.endswith('.json'):
             # Canonicalize JSON for stable hashing
             try:
                 obj = json.loads(content)
-                content = json.dumps(obj, sort_keys=True, separators=(",",":")).encode()
+                content = json.dumps(obj, sort_keys=True, separators=(",", ":")).encode()
             except json.JSONDecodeError:
-                pass # If it's malformed JSON, just hash the raw bytes
+                pass  # If it's malformed JSON, just hash the raw bytes
         h.update(content)
     return h.hexdigest()
 
+
 if __name__ == "__main__":
-    import sys
     files = sys.argv[1:] if len(sys.argv) > 1 else ["context/staging/structure.json"]
     print(compute_dependency_hash(files))

@@ -178,7 +178,9 @@ def test_brace_endpoint_at_tolerance_boundary_passes():
 
 
 def test_no_brace_data_skips():
+    """Bracing disabled + no brace data skips (enabled bracing without data fails closed, C2)."""
     s = copy.deepcopy(VALID_STRUCTURE)
+    s["bracing"] = {"enabled": False}
     s["geometry"]["joints"]["braces"] = {}
     results = solve_connections(s)
     brace_r = next(r for r in results if r["name"] == "brace_upper_endpoints_at_beam_soffit")

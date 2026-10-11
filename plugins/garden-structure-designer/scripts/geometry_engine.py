@@ -1,10 +1,41 @@
 #!/usr/bin/env python3
 """
-geometry_engine.py (CLI)
-=====================================
+geometry_engine.py
+==================
+
 Purpose:
-    v6.0 High-Fidelity Geometry Compiler for garden-structure-designer.
-    Solves 100% of structural vertices and faces from constraint intersections.
+    Stage 1 geometry compiler: solves joint coordinates (z planes, plan layout, beam segments, hub with
+    face planes H1..HN, primary and jack rafters, knee braces) from structure.json and compiles the
+    resolved model (every member as a prism with axes, vertices, faces and constraint flags). Seals the
+    geometry block (geometry._sealed) and sets meta.lifecycle = GEOMETRY_SEALED. Pure Python: 3D solving is
+    separate from the Rust DXF export (spec C1: CADCraft never infers structure).
+
+Layer: Execution / Stage 1 Geometry
+
+Key Input Dependencies:
+    - context/staging/structure.json (validated by validate_intent.py): layout, members, roof, hub, bracing,
+      footings; cad_constraints (created by cad_language_translator.translate_to_constraints when absent)
+    - structure_io.py (load/save), path_utils.py
+
+Key Functions:
+    compute_from_structure(path) -> dict          main() -> None
+    compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords) -> dict
+    compile_resolved_model(structure, joints) -> dict
+    beam_ring_miter(sides) / rafter_length(...) / total_height(...) / svg_layout(...)
+    solve_brace_endpoints_geometric(...) / solve_rafter_endpoints_geometric(...)
+    Vector math: vdot vcross vsub vadd vmul vlen vnorm vdist v2_radius vcent
+    intersect_three_planes / intersect_line_plane / get_compound_cuts / point_to_plane_distance
+    Joint helpers: _ensure_constraints _joints_context _joints_layout _joints_roof_geometry _joints_hub
+                   _joints_primary_rafters _joints_jack_rafters _joints_braces
+    Resolved-model helpers: _add_prism _add_notched_rafter _resolved_context _add_posts_and_footings _add_beams
+                   _add_braces _add_primary_rafters _add_jack_rafters _add_hub _verify_resolution
+
+Review notes (see the review tracker): geometry.compound_cut is a fixed 28.71/9.1 constant (F-25), brace ids are
+legacy K<i>A/B (F-18), hub minimum radius 0.75 ft is a hidden default (F-15), compute_from_structure writes the
+canonical file directly (F-11).
+
+Usage Examples:
+    python3 plugins/garden-structure-designer/scripts/geometry_engine.py [structure.json]
 """
 from __future__ import annotations
 import json
@@ -13,23 +44,48 @@ import os
 import sys
 import hashlib
 from datetime import datetime, timezone
+from functools import partial
+from types import SimpleNamespace
 from typing import Any
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from constants import FOOTING_STUB_ABOVE_GRADE_FT
 
 V3 = tuple[float, float, float]
 
-def vdot(a: V3, b: V3) -> float: return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]
-def vcross(a: V3, b: V3) -> V3: return (a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0])
-def vsub(a: V3, b: V3) -> V3: return (a[0]-b[0], a[1]-b[1], a[2]-b[2])
-def vadd(a: V3, b: V3) -> V3: return (a[0]+b[0], a[1]+b[1], a[2]+b[2])
-def vmul(a: V3, s: float) -> V3: return (a[0]*s, a[1]*s, a[2]*s)
-def vlen(a: V3) -> float: return math.sqrt(vdot(a, a))
-def vnorm(a: V3) -> V3: l = vlen(a); return vmul(a, 1.0/l) if l > 1e-9 else (0.0, 0.0, 0.0)
-def vdist(a: V3, b: V3) -> float: return vlen(vsub(a, b))
-def v2_radius(v: V3) -> float: return math.sqrt(v[0]*v[0] + v[1]*v[1])
+def vdot(a: V3, b: V3) -> float:
+    """Dot product."""
+    return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]
+def vcross(a: V3, b: V3) -> V3:
+    """Cross product."""
+    return (a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0])
+def vsub(a: V3, b: V3) -> V3:
+    """Component-wise a - b."""
+    return (a[0]-b[0], a[1]-b[1], a[2]-b[2])
+def vadd(a: V3, b: V3) -> V3:
+    """Component-wise a + b."""
+    return (a[0]+b[0], a[1]+b[1], a[2]+b[2])
+def vmul(a: V3, s: float) -> V3:
+    """Scales a vector by s."""
+    return (a[0]*s, a[1]*s, a[2]*s)
+def vlen(a: V3) -> float:
+    """Euclidean length."""
+    return math.sqrt(vdot(a, a))
+def vnorm(a: V3) -> V3:
+    """Unit vector (zero vector for near-zero input)."""
+    l = vlen(a); return vmul(a, 1.0/l) if l > 1e-9 else (0.0, 0.0, 0.0)
+def vdist(a: V3, b: V3) -> float:
+    """Distance between two points."""
+    return vlen(vsub(a, b))
+def v2_radius(v: V3) -> float:
+    """Radius of the XY projection."""
+    return math.sqrt(v[0]*v[0] + v[1]*v[1])
 def vcent(pts: list[V3]) -> V3:
+    """Centroid of a list of points."""
     n = len(pts); return (sum(p[0] for p in pts)/n, sum(p[1] for p in pts)/n, sum(p[2] for p in pts)/n)
 
 def intersect_three_planes(p1: V3, n1: V3, p2: V3, n2: V3, p3: V3, n3: V3, eps: float = 1e-9) -> V3:
+    """Point where three planes (point + normal each) meet; raises ValueError when they are parallel/degenerate."""
     denom = vdot(n1, vcross(n2, n3))
     if abs(denom) < eps:
         raise ValueError("Planes parallel or degenerate intersection")
@@ -40,12 +96,14 @@ def intersect_three_planes(p1: V3, n1: V3, p2: V3, n2: V3, p3: V3, n3: V3, eps: 
     return vmul(numerator, 1.0 / denom)
 
 def intersect_line_plane(p0: V3, d: V3, p_plane: V3, n: V3, eps: float = 1e-8) -> tuple[V3, float]:
+    """Intersection of a line (p0 + t*d) with a plane; returns (point, t); raises ValueError when parallel."""
     denom = vdot(d, n)
     if abs(denom) < eps: raise ValueError("Line parallel to plane")
     t = vdot(vsub(p_plane, p0), n) / denom
     return vadd(p0, vmul(d, t)), t
 
 def get_compound_cuts(target_normal: V3, x_axis: V3, y_axis: V3, z_axis: V3) -> tuple[float, float]:
+    """Miter and bevel (degrees) of a cut plane normal expressed in a member basis (x, y, z axes)."""
     ln = (vdot(target_normal, x_axis), vdot(target_normal, y_axis), vdot(target_normal, z_axis))
     miter = math.degrees(math.atan2(ln[1], abs(ln[0])))
     bevel = math.degrees(math.acos(vnorm(ln)[2])) - 90.0
@@ -57,69 +115,83 @@ def point_to_plane_distance(point: V3, plane_point: V3, plane_normal: V3) -> flo
     norm = vmul(plane_normal, 1.0/nl) if nl > 1e-9 else plane_normal
     return vdot(vsub(point, plane_point), norm)
 
-def compile_resolved_model(structure: dict, joints: dict) -> dict:
-    resolved = {"constraints_resolved": True, "members": []}
-    qty = structure["layout"]["post_count"]
-    PHW = (structure["members"]["posts"]["actual_width_in"] / 24.0); PHD = (structure["members"]["posts"]["actual_depth_in"] / 24.0)
-    BHW = (structure["members"]["beams"]["actual_width_in"] / 24.0); BHD = (structure["members"]["beams"]["actual_depth_in"] / 24.0)
-    RHW = (structure["roof"]["primary_rafters"]["actual_width_in"] / 24.0); RHD = (structure["roof"]["primary_rafters"]["actual_depth_in"] / 24.0)
-    KHW = (structure["bracing"]["brace"]["actual_width_in"] / 24.0); KHD = (structure["bracing"]["brace"]["actual_depth_in"] / 24.0)
-    UP: V3 = (0.0, 0.0, 1.0)
-    
-    planes_map = {p["id"]: p for p in structure["cad_constraints"]["reference_planes"]}
-    
-    def add_prism(p0: V3, p1: V3, hw: float, hd: float, up_hint: V3, role: str, bid: str, derived_length: float, derived_angle: float, cs: dict):
-        axis = vsub(p1, p0); u = vnorm(axis)
-        ref = up_hint
-        if abs(vdot(ref, u)) > 0.999:
-            ref = (1.0, 0.0, 0.0) if abs(u[0]) < 0.9 else (0.0, 1.0, 0.0)
-        w = vnorm(vcross(ref, u))
-        d = vnorm(vcross(w, u))
-        pts = [vadd(vadd(p0, vmul(d, -hd)), vmul(w, -hw)), vadd(vadd(p0, vmul(d, -hd)), vmul(w, hw)), vadd(vadd(p0, vmul(d, hd)), vmul(w, hw)), vadd(vadd(p0, vmul(d, hd)), vmul(w, -hw)), vadd(vadd(p1, vmul(d, -hd)), vmul(w, -hw)), vadd(vadd(p1, vmul(d, -hd)), vmul(w, hw)), vadd(vadd(p1, vmul(d, hd)), vmul(w, hw)), vadd(vadd(p1, vmul(d, hd)), vmul(w, -hw))]
-        faces = [{"verts": [0, 3, 2, 1], "normal": list(vmul(u, -1)), "color_key": "start"}, {"verts": [4, 5, 6, 7], "normal": list(u), "color_key": "end"}, {"verts": [0, 1, 5, 4], "normal": list(vmul(d, -1)), "color_key": "top"}, {"verts": [3, 7, 6, 2], "normal": list(d), "color_key": "bottom"}, {"verts": [0, 4, 7, 3], "normal": list(vmul(w, -1)), "color_key": "left"}, {"verts": [1, 2, 6, 5], "normal": list(w), "color_key": "right"}]
-        resolved["members"].append({
-            "id": bid,
-            "role": role,
-            "p0": list(p0),
-            "p1": list(p1),
-            "axis_u": list(u),
-            "axis_w": list(w),
-            "axis_d": list(d),
-            "vertices": [list(v) for v in pts],
-            "faces": faces,
-            "derived_length_ft": round(derived_length, 4),
-            "derived_angle_deg": round(derived_angle, 2),
-            "constraints_satisfied": cs
-        })
+def _add_prism(resolved: dict, p0: V3, p1: V3, hw: float, hd: float, up_hint: V3, role: str, bid: str, derived_length: float, derived_angle: float, cs: dict):
+    """Appends a rectangular prism member (axes, 8 vertices, 6 faces, derived length/angle, constraint flags) to resolved."""
+    axis = vsub(p1, p0); u = vnorm(axis)
+    ref = up_hint
+    if abs(vdot(ref, u)) > 0.999:
+        ref = (1.0, 0.0, 0.0) if abs(u[0]) < 0.9 else (0.0, 1.0, 0.0)
+    w = vnorm(vcross(ref, u))
+    d = vnorm(vcross(w, u))
+    pts = [vadd(vadd(p0, vmul(d, -hd)), vmul(w, -hw)), vadd(vadd(p0, vmul(d, -hd)), vmul(w, hw)), vadd(vadd(p0, vmul(d, hd)), vmul(w, hw)), vadd(vadd(p0, vmul(d, hd)), vmul(w, -hw)), vadd(vadd(p1, vmul(d, -hd)), vmul(w, -hw)), vadd(vadd(p1, vmul(d, -hd)), vmul(w, hw)), vadd(vadd(p1, vmul(d, hd)), vmul(w, hw)), vadd(vadd(p1, vmul(d, hd)), vmul(w, -hw))]
+    faces = [{"verts": [0, 3, 2, 1], "normal": list(vmul(u, -1)), "color_key": "start"}, {"verts": [4, 5, 6, 7], "normal": list(u), "color_key": "end"}, {"verts": [0, 1, 5, 4], "normal": list(vmul(d, -1)), "color_key": "top"}, {"verts": [3, 7, 6, 2], "normal": list(d), "color_key": "bottom"}, {"verts": [0, 4, 7, 3], "normal": list(vmul(w, -1)), "color_key": "left"}, {"verts": [1, 2, 6, 5], "normal": list(w), "color_key": "right"}]
+    resolved["members"].append({
+        "id": bid,
+        "role": role,
+        "p0": list(p0),
+        "p1": list(p1),
+        "axis_u": list(u),
+        "axis_w": list(w),
+        "axis_d": list(d),
+        "vertices": [list(v) for v in pts],
+        "faces": faces,
+        "derived_length_ft": round(derived_length, 4),
+        "derived_angle_deg": round(derived_angle, 2),
+        "constraints_satisfied": cs
+    })
 
-    def add_notched_rafter(p_tail: V3, p_apex: V3, p_seat: V3, hw: float, hd: float, seat_depth_notch: float, up_hint: V3, role: str, bid: str, z_seat: float, derived_length: float, derived_angle: float, cs: dict):
-        u = vnorm(vsub(p_apex, p_tail)); w = vnorm(vcross(up_hint, u)); d_perp = vnorm(vcross(w, u)); full_depth = hd * 2.0; cos_pitch = v2_radius(u)
-        notch_d = full_depth - seat_depth_notch
-        def get_side_pts(lat: float) -> list[V3]:
-            v0 = vadd(p_tail, vmul(w, lat)); v1 = vadd(p_apex, vmul(w, lat))
-            v2 = (v1[0], v1[1], v1[2] - full_depth/cos_pitch if cos_pitch > 0.1 else v1[2]-full_depth)
-            v4 = (p_seat[0], p_seat[1], z_seat); v3 = (v4[0], v4[1], v4[2] - notch_d/cos_pitch); v5 = (v0[0], v0[1], z_seat); return [v0, v1, v2, v3, v4, v5]
-        pts_l = get_side_pts(-hw); pts_r = get_side_pts(hw); all_pts = pts_l + pts_r
-        faces = [{"verts": [0, 6, 7, 1], "normal": list(vmul(d_perp, -1)), "color_key": "top"}, {"verts": [1, 7, 8, 2], "normal": list(u), "color_key": "end"}, {"verts": [2, 8, 9, 3], "normal": list(d_perp), "color_key": "bottom"}, {"verts": [3, 9, 10, 4], "normal": list(vmul(u, -1)), "color_key": "other"}, {"verts": [4, 10, 11, 5], "normal": [0, 0, -1], "color_key": "bottom"}, {"verts": [5, 11, 6, 0], "normal": list(vmul(u, -1)), "color_key": "start"}, {"verts": [0, 1, 2, 3, 4, 5], "normal": list(vmul(w, -1)), "color_key": "left"}, {"verts": [11, 10, 9, 8, 7, 6], "normal": list(w), "color_key": "right"}]
-        resolved["members"].append({
-            "id": bid,
-            "role": role,
-            "p0": list(p_tail),
-            "p1": list(p_apex),
-            "axis_u": list(u),
-            "axis_w": list(w),
-            "axis_d": list(d_perp),
-            "vertices": [list(v) for v in all_pts],
-            "faces": faces,
-            "derived_length_ft": round(derived_length, 4),
-            "derived_angle_deg": round(derived_angle, 2),
-            "constraints_satisfied": cs
-        })
 
-    zp = joints["z_planes"]; pxy = joints["layout"]["post_xy"]; Z_BEAM_TOP = zp["Z_BEAM_TOP"]
-    post_h = structure["members"]["posts"]["cut_length_ft"]
-    beam_d_ft = structure["members"]["beams"]["actual_depth_in"] / 12.0
+def _add_notched_rafter(resolved: dict, p_tail: V3, p_apex: V3, p_seat: V3, hw: float, hd: float, seat_depth_notch: float, up_hint: V3, role: str, bid: str, z_seat: float, derived_length: float, derived_angle: float, cs: dict):
+    """Appends a rafter with a seat notch (two 6-point profiles, 8 faces) to resolved."""
+    u = vnorm(vsub(p_apex, p_tail)); w = vnorm(vcross(up_hint, u)); d_perp = vnorm(vcross(w, u)); full_depth = hd * 2.0; cos_pitch = v2_radius(u)
+    notch_d = full_depth - seat_depth_notch
+    def get_side_pts(lat: float) -> list[V3]:
+        """Six profile points of one rafter side at lateral offset lat."""
+        v0 = vadd(p_tail, vmul(w, lat)); v1 = vadd(p_apex, vmul(w, lat))
+        v2 = (v1[0], v1[1], v1[2] - full_depth/cos_pitch if cos_pitch > 0.1 else v1[2]-full_depth)
+        v4 = (p_seat[0], p_seat[1], z_seat); v3 = (v4[0], v4[1], v4[2] - notch_d/cos_pitch); v5 = (v0[0], v0[1], z_seat); return [v0, v1, v2, v3, v4, v5]
+    pts_l = get_side_pts(-hw); pts_r = get_side_pts(hw); all_pts = pts_l + pts_r
+    faces = [{"verts": [0, 6, 7, 1], "normal": list(vmul(d_perp, -1)), "color_key": "top"}, {"verts": [1, 7, 8, 2], "normal": list(u), "color_key": "end"}, {"verts": [2, 8, 9, 3], "normal": list(d_perp), "color_key": "bottom"}, {"verts": [3, 9, 10, 4], "normal": list(vmul(u, -1)), "color_key": "other"}, {"verts": [4, 10, 11, 5], "normal": [0, 0, -1], "color_key": "bottom"}, {"verts": [5, 11, 6, 0], "normal": list(vmul(u, -1)), "color_key": "start"}, {"verts": [0, 1, 2, 3, 4, 5], "normal": list(vmul(w, -1)), "color_key": "left"}, {"verts": [11, 10, 9, 8, 7, 6], "normal": list(w), "color_key": "right"}]
+    resolved["members"].append({
+        "id": bid,
+        "role": role,
+        "p0": list(p_tail),
+        "p1": list(p_apex),
+        "axis_u": list(u),
+        "axis_w": list(w),
+        "axis_d": list(d_perp),
+        "vertices": [list(v) for v in all_pts],
+        "faces": faces,
+        "derived_length_ft": round(derived_length, 4),
+        "derived_angle_deg": round(derived_angle, 2),
+        "constraints_satisfied": cs
+    })
 
+
+def _resolved_context(structure: dict, joints: dict) -> SimpleNamespace:
+    """Shared inputs for the resolved-model builders: half-sections (ft), z planes, post xy, plane lookup."""
+    zp = joints["z_planes"]
+    return SimpleNamespace(
+        structure=structure, joints=joints, resolved={"constraints_resolved": True, "members": []},
+        qty=structure["layout"]["post_count"],
+        PHW=structure["members"]["posts"]["actual_width_in"] / 24.0, PHD=structure["members"]["posts"]["actual_depth_in"] / 24.0,
+        BHW=structure["members"]["beams"]["actual_width_in"] / 24.0, BHD=structure["members"]["beams"]["actual_depth_in"] / 24.0,
+        RHW=structure["roof"]["primary_rafters"]["actual_width_in"] / 24.0, RHD=structure["roof"]["primary_rafters"]["actual_depth_in"] / 24.0,
+        KHW=structure["bracing"]["brace"]["actual_width_in"] / 24.0, KHD=structure["bracing"]["brace"]["actual_depth_in"] / 24.0,
+        UP=(0.0, 0.0, 1.0),
+        planes_map={p["id"]: p for p in structure["cad_constraints"]["reference_planes"]},
+        zp=zp, pxy=joints["layout"]["post_xy"], Z_BEAM_TOP=zp["Z_BEAM_TOP"],
+        post_h=structure["members"]["posts"]["cut_length_ft"],
+        beam_d_ft=structure["members"]["beams"]["actual_depth_in"] / 12.0,
+    )
+
+
+def _add_posts_and_footings(ctx: SimpleNamespace) -> None:
+    """Posts and their footings (one of each per post position); footing size and embedment come from structure.footings."""
+    structure, PHW, PHD, UP, zp, pxy, post_h = ctx.structure, ctx.PHW, ctx.PHD, ctx.UP, ctx.zp, ctx.pxy, ctx.post_h
+    add_prism = partial(_add_prism, ctx.resolved)
+    footing_hw = structure["footings"]["diameter_in"] / 24.0
+    footing_depth_ft = structure["footings"]["depth_in"] / 12.0
     # Posts
     for i, p in enumerate(pxy):
         post_id = f"P{i+1}"
@@ -127,8 +199,13 @@ def compile_resolved_model(structure: dict, joints: dict) -> dict:
         p1 = (p[0], p[1], zp["Z_POST_TOP"])
         cs = {"base_on_footing": True, "top_on_beam": True}
         add_prism(p0, p1, PHW, PHD, UP, "post", post_id, post_h, 90.0, cs)
-        add_prism((p[0], p[1], zp["Z_GRADE"] - 1.5), (p[0], p[1], zp["Z_GRADE"] + 0.33), 0.5, 0.5, UP, "footing", f"FT{i+1}", 1.83, 90.0, {})
-        
+        add_prism((p[0], p[1], zp["Z_GRADE"] - footing_depth_ft), (p[0], p[1], zp["Z_GRADE"] + FOOTING_STUB_ABOVE_GRADE_FT), footing_hw, footing_hw, UP, "footing", f"FT{i+1}", footing_depth_ft + FOOTING_STUB_ABOVE_GRADE_FT, 90.0, {})
+
+
+def _add_beams(ctx: SimpleNamespace) -> None:
+    """Beams: perimeter ring for polygons, the fixed 6-beam layout for the 6-post rectangle."""
+    structure, qty, BHW, BHD, UP, zp, pxy = ctx.structure, ctx.qty, ctx.BHW, ctx.BHD, ctx.UP, ctx.zp, ctx.pxy
+    add_prism = partial(_add_prism, ctx.resolved)
     shape = structure.get("layout", {}).get("shape", structure.get("structure", {}).get("shape", "polygon"))
     if shape == "rectangle" and qty == 6:
         # Standard post-and-beam rectangular pergola:
@@ -164,7 +241,12 @@ def compile_resolved_model(structure: dict, joints: dict) -> dict:
             beam_len = vdist(p0, pt_end)
             cs = {"start_on_post": True, "end_on_post": True}
             add_prism(p0, pt_end, BHW, BHD, UP, "beam", beam_id, beam_len, 0.0, cs)
-        
+
+
+def _add_braces(ctx: SimpleNamespace) -> None:
+    """Knee braces from the solved brace endpoints, with plane-contact constraint flags."""
+    structure, joints, KHW, KHD, UP, planes_map = ctx.structure, ctx.joints, ctx.KHW, ctx.KHD, ctx.UP, ctx.planes_map
+    add_prism = partial(_add_prism, ctx.resolved)
     # Braces
     for bj in joints["braces"]["endpoints"]:
         brace_id = bj["id"]
@@ -185,7 +267,12 @@ def compile_resolved_model(structure: dict, joints: dict) -> dict:
                  cs["end_on_beam_soffit"] = d1 < 0.0025
                  break
         add_prism(p0, p1, KHW, KHD, UP, "brace", brace_id, length, angle, cs)
-        
+
+
+def _add_primary_rafters(ctx: SimpleNamespace) -> None:
+    """Primary (hip) rafters from the solved rafter joints, with roof-plane constraint flags."""
+    structure, joints, RHW, RHD, UP, planes_map, Z_BEAM_TOP = ctx.structure, ctx.joints, ctx.RHW, ctx.RHD, ctx.UP, ctx.planes_map, ctx.Z_BEAM_TOP
+    add_notched_rafter = partial(_add_notched_rafter, ctx.resolved)
     # Rafters
     for rj in joints["primary_rafters"]:
         rafter_id = rj["id"]
@@ -213,7 +300,12 @@ def compile_resolved_model(structure: dict, joints: dict) -> dict:
                 cs["seat_on_roof_plane"] = d_seat < 0.0025
                 break
         add_notched_rafter(p_tail, p_apex, p_seat, RHW, RHD, rj["seat_depth_ft"], UP, "rafter", rafter_id, Z_BEAM_TOP, length, angle, cs)
-        
+
+
+def _add_jack_rafters(ctx: SimpleNamespace) -> None:
+    """Jack rafters (only when enabled in the joints)."""
+    structure, joints, RHW, RHD, UP, planes_map, Z_BEAM_TOP = ctx.structure, ctx.joints, ctx.RHW, ctx.RHD, ctx.UP, ctx.planes_map, ctx.Z_BEAM_TOP
+    add_notched_rafter = partial(_add_notched_rafter, ctx.resolved)
     # Jack Rafters
     if joints["jack_rafters"]["enabled"]:
         for ep in joints["jack_rafters"]["endpoints"]:
@@ -242,7 +334,11 @@ def compile_resolved_model(structure: dict, joints: dict) -> dict:
                     cs["seat_on_roof_plane"] = d_seat < 0.0025
                     break
             add_notched_rafter(p_tail, p_end, p_seat, RHW, RHD, joints["primary_rafters"][0]["seat_depth_ft"], UP, "rafter", jack_id, Z_BEAM_TOP, length, angle, cs)
-            
+
+
+def _add_hub(ctx: SimpleNamespace) -> None:
+    """Crown hub prism (only when the structure declares a hub)."""
+    structure, joints, resolved, qty, zp, beam_d_ft = ctx.structure, ctx.joints, ctx.resolved, ctx.qty, ctx.zp, ctx.beam_d_ft
     # Hub
     has_hub = structure.get("hub", {}).get("type") not in ("none", "", None)
     if has_hub:
@@ -268,6 +364,9 @@ def compile_resolved_model(structure: dict, joints: dict) -> dict:
             "constraints_satisfied": cs
         })
 
+
+def _verify_resolution(resolved: dict) -> None:
+    """Full-resolution guarantee: every member has finite endpoints and every constraint is satisfied."""
     # Phase 3 — Full Resolution Guarantee
     for m in resolved["members"]:
         print(f"MEMBER {m['id']}: {m.get('constraints_satisfied')}")
@@ -280,15 +379,29 @@ def compile_resolved_model(structure: dict, joints: dict) -> dict:
         for constraint, satisfied in m.get("constraints_satisfied", {}).items():
             if not satisfied:
                 raise ValueError(f"Member {m['id']} failed constraint: {constraint}")
-                
-    return resolved
+
+
+def compile_resolved_model(structure: dict, joints: dict) -> dict:
+    """Builds the resolved model (every member as a prism with axes, vertices, faces and constraint flags)."""
+    ctx = _resolved_context(structure, joints)
+    _add_posts_and_footings(ctx)
+    _add_beams(ctx)
+    _add_braces(ctx)
+    _add_primary_rafters(ctx)
+    _add_jack_rafters(ctx)
+    _add_hub(ctx)
+    _verify_resolution(ctx.resolved)
+    return ctx.resolved
+
 
 def solve_brace_endpoints_geometric(px: float, py: float, ux: float, uy: float, phw: float, z_soffit: float, run: float) -> tuple[V3, V3]:
+    """Lower and upper endpoints of a knee brace: starts at the post face, ends at the beam soffit."""
     p0 = (px + ux * phw, py + uy * phw, z_soffit - run)
     p1 = (px + ux * (phw + run), py + uy * (phw + run), z_soffit)
     return p0, p1
 
 def solve_rafter_endpoints_geometric(i: int, qty: int, Z_APEX: float, Z_BEAM_TOP: float, v_shift: float, r_ft: float, hub_r: float, oh_ft: float) -> tuple[V3, V3, V3]:
+    """Tail, hub and seat points of hip rafter i from the two adjoining roof planes (tail overhangs by oh_ft)."""
     theta_i = 2.0 * math.pi * i / qty
     theta_next = 2.0 * math.pi * (i + 1) / qty
     theta_prev = 2.0 * math.pi * (i - 1) / qty
@@ -324,7 +437,8 @@ def solve_rafter_endpoints_geometric(i: int, qty: int, Z_APEX: float, Z_BEAM_TOP
     p_tail = vadd(p_seat_top, vmul(u_dir, oh_ft / u_xy_len))
     return p_tail, p_hub, p_seat_top
 
-def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
+def _ensure_constraints(structure: dict) -> None:
+    """Runs the CAD constraint translation when structure.json has no cad_constraints yet (geometry seal preserved)."""
     if "cad_constraints" not in structure:
         from cad_language_translator import translate_to_constraints
         geom_sec = structure["geometry"] if "geometry" in structure else {}
@@ -334,12 +448,25 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
         translate_to_constraints(structure)
         if was_sealed:
             structure["geometry"]["_sealed"] = True
+
+
+def _joints_context(structure: dict, rise: dict, hub_r: float) -> SimpleNamespace:
+    """Inputs shared by the joint solvers: counts, section depths, z planes and the joints dict seeded with units/z_planes."""
     qty = structure["layout"]["post_count"]; r_ft = structure["layout"]["inscribed_radius_ft"]
     post_h = structure["members"]["posts"]["cut_length_ft"]; beam_d_in = structure["members"]["beams"]["actual_depth_in"]; beam_d_ft = beam_d_in / 12.0; roof_r = rise["rise_ft"]
     rafter_d_in = structure["roof"]["primary_rafters"]["actual_depth_in"]; rafter_w_in = structure["roof"]["primary_rafters"]["actual_width_in"]; rafter_d_ft = rafter_d_in / 12.0
     Z_GRADE = 0.0; Z_POST_TOP = post_h - beam_d_ft; Z_BEAM_TOP = post_h; Z_APEX = post_h + roof_r; Z_BEAM_CENTER = Z_POST_TOP + beam_d_ft / 2.0
     joints = {"units": "feet", "coordinate_system": "right_handed_z_up", "tolerance_ft": 0.0052, "z_planes": {"Z_GRADE": Z_GRADE, "Z_POST_TOP": round(Z_POST_TOP, 3), "Z_BEAM_TOP": round(Z_BEAM_TOP, 3), "Z_BEAM_CENTER": round(Z_BEAM_CENTER, 3), "Z_APEX": round(Z_APEX, 3), "Z_BEAM_SOFFIT": round(Z_POST_TOP, 3)}}
-    
+    return SimpleNamespace(
+        structure=structure, hub_r=hub_r, rise=rise, qty=qty, r_ft=r_ft, post_h=post_h, beam_d_in=beam_d_in, beam_d_ft=beam_d_ft,
+        roof_r=roof_r, rafter_d_in=rafter_d_in, rafter_w_in=rafter_w_in, rafter_d_ft=rafter_d_ft, Z_GRADE=Z_GRADE,
+        Z_POST_TOP=Z_POST_TOP, Z_BEAM_TOP=Z_BEAM_TOP, Z_APEX=Z_APEX, Z_BEAM_CENTER=Z_BEAM_CENTER, joints=joints,
+    )
+
+
+def _joints_layout(c: SimpleNamespace) -> None:
+    """Plan layout: shape, post xy (polygon / 4- or 6-post rectangle) and the closed beam segment list."""
+    structure, qty, r_ft, joints = c.structure, c.qty, c.r_ft, c.joints
     shape = structure.get("layout", {}).get("shape", structure.get("structure", {}).get("shape", "polygon"))
     if shape == "rectangle" and qty == 6:
         len_ft = float(structure["layout"].get("length_ft") or (r_ft * 2.0))
@@ -365,12 +492,27 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
         ]
     else:
         post_xy = [[round(r_ft * math.cos(2*math.pi*i/qty), 4), round(r_ft * math.sin(2*math.pi*i/qty), 4)] for i in range(qty)]
-    joints["layout"] = {"post_count": qty, "post_radius_ft": r_ft, "post_xy": post_xy}
-    
+    joints["layout"] = {"post_count": qty, "post_radius_ft": r_ft, "post_xy": post_xy, "beam_segments": [{"id": f"B{i+1}", "i0": i, "i1": (i+1) % qty} for i in range(qty)]}
+    c.shape = shape
+    c.post_xy = post_xy
+
+
+def _joints_roof_geometry(c: SimpleNamespace) -> None:
+    """Seat notch, apothem, common roof slope and the vertical shift shared by all rafters."""
+    hub_r, qty, r_ft, roof_r, rafter_d_ft = c.hub_r, c.qty, c.r_ft, c.roof_r, c.rafter_d_ft
     seat_depth_notch = rafter_d_ft / 3.0; remaining_meat = rafter_d_ft - seat_depth_notch
     apothem = r_ft * math.cos(math.pi/qty); common_slope = roof_r / (apothem - hub_r * math.cos(math.pi/qty)) if abs(apothem - hub_r * math.cos(math.pi/qty)) > 1e-4 else 0.0
     v_shift_common = remaining_meat * math.cos(math.atan(common_slope))
-    
+    c.seat_depth_notch = seat_depth_notch
+    c.remaining_meat = remaining_meat
+    c.apothem = apothem
+    c.common_slope = common_slope
+    c.v_shift_common = v_shift_common
+
+
+def _joints_hub(c: SimpleNamespace) -> None:
+    """Hub joint: type, radius, height and one face plane (H1..HN) per side."""
+    structure, hub_r, qty, beam_d_ft, Z_APEX, joints = c.structure, c.hub_r, c.qty, c.beam_d_ft, c.Z_APEX, c.joints
     joints["hub"] = {
         "type": structure["hub"]["type"],
         "radius_ft": round(hub_r, 4),
@@ -379,7 +521,11 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
             "planes": [{"id": f"H{i+1}", "point": (hub_r*math.cos(2*math.pi*i/qty), hub_r*math.sin(2*math.pi*i/qty), Z_APEX), "normal": (math.cos(2*math.pi*i/qty), math.sin(2*math.pi*i/qty), 0.0)} for i in range(qty)]
         }
     }
-    
+
+
+def _joints_primary_rafters(c: SimpleNamespace) -> None:
+    """Primary rafter joints (polygon hips or the parallel rectangle rafters) plus the compatibility mirror."""
+    structure, hub_r, qty, r_ft, Z_BEAM_TOP, Z_APEX, joints, shape, remaining_meat, v_shift_common = c.structure, c.hub_r, c.qty, c.r_ft, c.Z_BEAM_TOP, c.Z_APEX, c.joints, c.shape, c.remaining_meat, c.v_shift_common
     rafters = []; oh_ft = structure["roof"]["primary_rafters"]["overhang_ft"]
     if shape == "rectangle":
         # Parallel cross-rafters spanning width (Y-axis from -hy-oh to +hy+oh) across length (X-axis)
@@ -416,7 +562,13 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
         },
         "primary_rafters": rafters
     }
+    c.rafters = rafters
+    c.oh_ft = oh_ft
 
+
+def _joints_jack_rafters(c: SimpleNamespace) -> None:
+    """Jack rafter joints (empty unless roof.secondary_rafters.enabled)."""
+    structure, qty, roof_r, rafter_w_in, Z_BEAM_TOP, Z_APEX, joints, post_xy, apothem, v_shift_common, oh_ft = c.structure, c.qty, c.roof_r, c.rafter_w_in, c.Z_BEAM_TOP, c.Z_APEX, c.joints, c.post_xy, c.apothem, c.v_shift_common, c.oh_ft
     roof_sec = structure["roof"]
     jack_spec = roof_sec["secondary_rafters"] if "secondary_rafters" in roof_sec else {}
     jack_endpoints = []
@@ -429,7 +581,11 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
                 dist = (j_idx + 1) * spacing; p_seat_xy = (p1_xy[0] + ux*dist, p1_xy[1] + uy*dist); p_seat_top = (p_seat_xy[0], p_seat_xy[1], Z_BEAM_TOP + v_shift_common); dir_jack = (in_x, in_y, roof_r / apothem); f = (j_idx + 1.0) / (jack_count + 1.0); hip_idx = i if f < 0.5 else (i+1)%qty; suffix = 'a' if f < 0.5 else 'b'; h_p0 = (post_xy[hip_idx][0], post_xy[hip_idx][1], Z_BEAM_TOP); h_dir = vnorm(vsub((0.0,0.0, Z_APEX + v_shift_common), (h_p0[0], h_p0[1], Z_BEAM_TOP + v_shift_common))); h_perp_raw = (-h_dir[1], h_dir[0], 0.0); h_perp = vmul(h_perp_raw, 1.0 if vdot(vsub(p_seat_top, h_p0), h_perp_raw) >= 0.0 else -1.0); p_side = vadd((post_xy[hip_idx][0], post_xy[hip_idx][1], Z_BEAM_TOP), vmul(h_perp, rafter_w_in/24.0)); p_end, _ = intersect_line_plane(p_seat_top, dir_jack, p_side, h_perp); p_tail = vadd(p_seat_top, vmul(dir_jack, -oh_ft / v2_radius(dir_jack)))
                 jack_endpoints.append({"id": f"J{i+1}{suffix}", "start": [round(x, 4) for x in p_tail], "end": [round(x, 4) for x in p_end], "seat_point": [round(x, 4) for x in p_seat_top], "mate_id": f"R{hip_idx+1}"})
     joints["jack_rafters"] = {"enabled": jack_enabled, "endpoints": jack_endpoints}
-    
+
+
+def _joints_braces(c: SimpleNamespace) -> None:
+    """Knee brace joints, two per post when bracing is enabled (legacy K<i>A/B ids)."""
+    structure, qty, Z_POST_TOP, joints, post_xy = c.structure, c.qty, c.Z_POST_TOP, c.joints, c.post_xy
     bs = structure["bracing"] if "bracing" in structure else {}
     bp = []
     bs_enabled = bs["enabled"] if "enabled" in bs else False
@@ -442,21 +598,39 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
             p0_B, p1_B = solve_brace_endpoints_geometric(p2[0], p2[1], -ux, -uy, phw, Z_POST_TOP, run)
             bp.append({"id": f"K{i+1}B", "start": [round(x, 4) for x in p0_B], "end": [round(x, 4) for x in p1_B]})
     joints["braces"] = {"enabled": bs_enabled, "endpoints": bp}
-    joints["beam_ring"] = beam_ring_miter(qty)
-    joints["resolved_model"] = compile_resolved_model(structure, joints)
-    return joints
+
+
+def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
+    """Solves all joint coordinates (z planes, layout, hub, rafters, jacks, braces) and the resolved model."""
+    _ensure_constraints(structure)
+    c = _joints_context(structure, rise, hub_r)
+    _joints_layout(c)
+    _joints_roof_geometry(c)
+    _joints_hub(c)
+    _joints_primary_rafters(c)
+    _joints_jack_rafters(c)
+    _joints_braces(c)
+    c.joints["beam_ring"] = beam_ring_miter(c.qty)
+    c.joints["resolved_model"] = compile_resolved_model(structure, c.joints)
+    return c.joints
+
 
 def beam_ring_miter(sides: int) -> dict[str, float]:
+    """Beam miter and interior angle (degrees) of the regular N-gon beam ring."""
     ia = (sides - 2) * 180.0 / sides; return {"beam_miter_deg": round((180.0 - ia) / 2.0, 2), "interior_angle_deg": round(ia, 2)}
 def rafter_length(run: float, rise_n: float, run_n: float, oh: float) -> dict[str, float]:
+    """Structural and overhang-inclusive rafter lengths (ft) for a run and N:12 pitch."""
     sf = math.sqrt(1 + (rise_n/run_n)**2); return {"structural_length_ft": round(run*sf, 3), "total_with_overhang_ft": round((run+oh)*sf, 3)}
 def total_height(post: float, beam_in: float, run: float, rise_n: float, run_n: float) -> dict[str, float]:
+    """Post, beam, roof rise and total height (ft)."""
     tr = run*(rise_n/run_n); th = post + (beam_in/12.0) + tr; return {"post_ft": post, "beam_depth_ft": round(beam_in/12.0, 3), "roof_rise_ft": round(tr, 3), "total_height_ft": round(th, 3)}
 def svg_layout(th: float, span: float, sides: int) -> dict[str, Any]:
+    """Canvas size, grade line and scale (px per ft) for the SVG sheets."""
     sc = 42.0; ch = math.ceil(th*sc); h = max(1200, ch+200); g = h-120; d = span*2 if sides > 4 else span; cw = math.ceil(d*sc)+200; w = max(1600, cw+200)
     return {"viewBox": f"0 0 {w} {h}", "width_px": w, "height_px": h, "grade_y": g, "scale_px_per_ft": sc}
 
 def compute_from_structure(path: str):
+    """Loads structure.json, solves and seals the geometry block, and saves it (direct write; see F-11). Exits 1 on a rafter/post count mismatch."""
     from structure_io import load_structure, save_structure, assert_not_sealed
     s = load_structure(path); assert_not_sealed(s, "geometry"); qty = s["layout"]["post_count"]; span = s["layout"]["inscribed_radius_ft"]; pr, rr = [int(x) for x in s["roof"]["pitch"].split(":")]; oh = s["roof"]["primary_rafters"]["overhang_ft"]; beam_in = s["members"]["beams"]["actual_depth_in"]; post_ft = s["members"]["posts"]["cut_length_ft"]
     
@@ -475,6 +649,7 @@ def compute_from_structure(path: str):
     cuts = {"miter_deg": 28.71, "bevel_deg": 9.1}; rl = rafter_length(span, pr, rr, oh); rise = {"rise_ft": round(span*(pr/rr), 3)}; height = total_height(post_ft, beam_in, span, pr, rr); hr = max(s["hub"]["radius_min_ft"], 0.75); lay = svg_layout(height["total_height_ft"], span, qty); sc = lay["scale_px_per_ft"]; g = lay["grade_y"]; svg = {**lay, "post_top_y": round(g-post_ft*sc), "beam_top_y": round(g-(post_ft+beam_in/12.0)*sc), "hub_apex_y": round(g-height["total_height_ft"]*sc)}; s["geometry"] = {"_sealed": True, "compound_cut": cuts, "beam_ring": beam_ring_miter(qty), "rafter": rl, "roof_rise": rise, "total_height": height, "hub_radius_ft": round(hr, 4), "svg_coordinates": svg, "joints": compute_joints(s, cuts, rl, rise, height, hr, svg)}; s["meta"]["lifecycle"] = "GEOMETRY_SEALED"; save_structure(s, path); return s
 
 def main():
+    """CLI: compute geometry for a structure.json that has a meta block."""
     sys.path.append(str(os.path.dirname(os.path.abspath(__file__))))
     from path_utils import staging_dir
     path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")

@@ -1,0 +1,1 @@
+../../../scripts/cad_language_translator.py

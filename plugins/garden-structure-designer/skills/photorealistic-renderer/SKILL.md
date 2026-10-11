@@ -14,19 +14,23 @@ allowed-tools: Read, Write, Bash
 - [References](#references)
 
 ## Critical Constraints
-- Strictly follow deterministic execution contracts for photorealistic-renderer.
-- Input parameters must resolve from staging structure.json.
+- Builds the render prompt **from the locked structure.json only**: member counts, sides, hub, roof pitch and materials are read, not assumed.
+- The package compiler requires at least one render in `outputs/high-resolution-image/` (Stage 7 preflight).
+- A render is derived from one revision: after a new committed revision it is purged and must be regenerated.
 
 ## Quick start
-
+```bash
+(no script: writes the prompt file; the image lands in outputs/high-resolution-image/)
+```
+Run commands from the skill root. `scripts/` entries are file-level symlinks to the plugin's canonical `scripts/` (dereferenced on install); never edit them through the symlink.
 
 ## Workflow
-1. **Input Phase**: Load parameters for photorealistic-renderer.
-2. **Execution Phase**: Process and emit deterministic output.
-3. **Gate Phase**: Validate schema and physics integrity.
+1. **Input**: sealed structure.json and the approved drawings.
+2. **Execution**: write the geometry-locked prompt (structure type, N sides, hub, roof, materials, camera, exclusions).
+3. **Gate**: `compile_package.py` blocks when no render exists.
 
 ## Verification
-
+- `ls outputs/high-resolution-image/*_render_*.png`
 
 ## References
 - [Acceptance Criteria](references/acceptance-criteria.md)

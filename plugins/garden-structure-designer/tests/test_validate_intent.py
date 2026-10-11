@@ -36,6 +36,9 @@ from validate_intent import IntentError, assert_intent_valid, validate_intent
 # ---------------------------------------------------------------------------
 
 VALID_STRUCTURE: dict = {
+    "intent": {"jurisdiction": "BC_SAANICH"},
+    "structure": {"sides": 6},
+    "footings": {"diameter_in": 12, "depth_in": 24},
     "layout": {
         "post_count": 6,
         "inscribed_radius_ft": 4.875,
@@ -52,9 +55,11 @@ VALID_STRUCTURE: dict = {
     "members": {
         "posts": {
             "actual_width_in": 5.5,
+            "actual_depth_in": 5.5,
             "cut_length_ft": 8.42,
         },
         "beams": {
+            "actual_width_in": 5.5,
             "actual_depth_in": 12.0,
         },
     },
@@ -240,7 +245,7 @@ def test_bracing_enabled_missing_constraints_fails():
 def test_bracing_enabled_valid_brace_passes():
     s = copy.deepcopy(VALID_STRUCTURE)
     s["bracing"] = {"enabled": True, "brace": {"nominal_size": "4x4", "actual_width_in": 3.5, "actual_depth_in": 3.5, "count_per_post": 2,
-                                               "constraints": {"start_surface": "post_face", "end_surface": "beam_soffit"}}}
+                                               "constraints": {"start_surface": "post_face", "end_surface": "beam_soffit", "run_ft": 1.5}}}
     errors = validate_intent(s)
     assert not any("bracing.brace" in e for e in errors), f"Valid brace should pass, got: {errors}"
 

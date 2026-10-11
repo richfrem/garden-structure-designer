@@ -1,0 +1,47 @@
+sequenceDiagram
+    autonumber
+    actor User as User / Client
+    participant ID as interactive-designer Agent
+    participant Staging as context/staging/structure.json
+    participant DO as design-orchestrator Agent
+    participant Runner as pipeline_runner.py
+    participant Geo as geometry_engine.py (Python)
+    participant Topo as topology_compiler.py (Python)
+    participant Export as export_cad.py (Service)
+    participant Adapter as cadcraft_adapter.py
+    participant CLI as vendor/cadcraft-cli (Rust Binary)
+    participant Validator as cross_artifact_validator.py
+    participant RedTeam as run_drawing_red_team.py
+    participant Compiler as compile_package.py
+
+    %% Phase 1: Conversational Input
+    User->>ID: "I want a 14ft hexagonal gazebo with steep roof..."
+    ID->>Staging: Write normalized design intent
+    ID->>DO: Hand off execution
+
+    %% Phase 2: Python Authority Execution
+    DO->>Runner: run_pipeline(structure_path)
+    Runner->>Geo: Stage 1: Solve 3D vertices, pitch, miter angles
+    Geo-->>Runner: Return geometry._sealed = true
+    Runner->>Topo: Stage 2: Validate sealed arrays & build graph
+    Topo-->>Runner: Return validated topology graph
+
+    %% Phase 3: CAD Export & CLI Communication Boundary
+    Runner->>Export: Stage 4: export_sheets(structure, output_dir)
+    Export->>Adapter: export_sheet("SB01", "SB02")
+    Note over Adapter,CLI: Subprocess CLI Execution Boundary (15s timeout)
+    Adapter->>CLI: exec: cadcraft-cli run --cmd "..." --save "outputs/cad/..."
+    CLI-->>Adapter: Return entity handles & exit code 0
+    Adapter->>Export: Stamp GSD XDATA on handles (MEMBER_ID, ROLE, REVISION_ID)
+
+    %% Phase 4: Parsed Validation Gate
+    Runner->>Validator: Stage 5.5: validate_dxf_artifacts()
+    Note over Validator: ezdxf readfile: Assert 0 errors, 1:1 ID parity, 3D bounds
+    Validator-->>Runner: PASS ✓
+
+    %% Phase 5: Adversarial Review & Package Compilation
+    Runner->>RedTeam: Stage 5: run_drawing_red_team.py
+    RedTeam-->>Runner: may_claim_success: true ✓
+    Runner->>Compiler: Stage 7: compile_package.py
+    Compiler-->>DO: Emits outputs/pergola_plan.pdf & outputs/cad/*.dxf
+    DO-->>User: Present complete verified construction package

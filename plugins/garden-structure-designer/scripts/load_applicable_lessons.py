@@ -1,79 +1,73 @@
 #!/usr/bin/env python3
 """
-load_applicable_lessons.py (CLI)
-=====================================
+load_applicable_lessons.py
+==========================
 
 Purpose:
-    load_applicable_lessons.py (CLI) =====================================
+    Self-evolution support: lists the active lessons of a category (structural, drawing, ...) from
+    the learning registry whose applies_when conditions (planShape, roofType) match the current
+    design. Shape and roof come only from the design's own declaration; an undeclared value never
+    defaults to "hexagon"/"hub-and-hip-rafter", it simply fails to match conditional lessons.
 
-Layer: Execution
+Layer: Execution / Learning Loop
 
-Usage Examples:
-    python load_applicable_lessons.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - context/staging/learning-registry.json (active_lessons)
+    - context/staging/structure.json (layout.shape / planShape, roof.type / roofType)
+    - path_utils.py
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    load_lessons(category, design_path, registry_path) -> dict
+    _design_context(design_path) -> tuple[str | None, str | None]
+    _applies(lesson, shape, roof) -> bool
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 load_applicable_lessons.py --category structural [--design structure.json] [--registry registry.json]
 """
 import json
 import os
 import sys
 from pathlib import Path
+from typing import Optional
 sys.path.append(str(Path(__file__).parent.resolve()))
-from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
+from path_utils import staging_dir
 
-import sys
+def _design_context(design_path: str) -> tuple[Optional[str], Optional[str]]:
+    """(plan shape, roof type) declared by the design; None when the design does not declare them."""
+    if not os.path.exists(design_path):
+        return None, None
+    with open(design_path) as f:
+        design = json.load(f)
+    shape = (design.get("layout") or {}).get("shape") or design.get("planShape")
+    roof = (design.get("roof") or {}).get("type") or design.get("roofType")
+    return shape, roof
+
+
+def _applies(lesson: dict, shape: Optional[str], roof: Optional[str]) -> bool:
+    """A lesson applies when each of its conditions equals the design's declared value (unknown never matches)."""
+    conditions = lesson.get("applies_when", {})
+    if "planShape" in conditions and conditions["planShape"] != shape:
+        return False
+    return not ("roofType" in conditions and conditions["roofType"] != roof)
+
 
 def load_lessons(category: str, design_path: str, registry_path: str) -> dict:
+    """Returns the active lessons of ``category`` whose applies_when conditions match the design."""
     if not os.path.exists(registry_path):
         return {"lessons": []}
-        
+
     with open(registry_path) as f:
         registry = json.load(f)
-        
-    design = {}
-    if os.path.exists(design_path):
-        with open(design_path) as f:
-            design = json.load(f)
-            
-    shape = (design.get("layout") or {}).get("shape") or design.get("planShape") or "hexagon"
-    roof = (design.get("roof") or {}).get("type") or design.get("roofType") or "hub-and-hip-rafter"
-    
-    applicable = []
-    for lesson in registry.get("active_lessons", []):
-        if lesson.get("category") != category:
-            continue
-            
-        conditions = lesson.get("applies_when", {})
-        if "planShape" in conditions and conditions["planShape"] != shape:
-            continue
-        if "roofType" in conditions and conditions["roofType"] != roof:
-            continue
-            
-        applicable.append({
-            "id": lesson["id"],
-            "file": lesson["lesson_file"],
-            "severity": lesson["severity"]
-        })
-        
-    return {"lessons": applicable}
+
+    shape, roof = _design_context(design_path)
+    return {
+        "lessons": [
+            {"id": lesson["id"], "file": lesson["lesson_file"], "severity": lesson["severity"]}
+            for lesson in registry.get("active_lessons", [])
+            if lesson.get("category") == category and _applies(lesson, shape, roof)
+        ]
+    }
+
 
 if __name__ == "__main__":
     import argparse

@@ -1,36 +1,22 @@
 #!/usr/bin/env python3
 """
-lesson_curator.py (CLI)
-=====================================
+lesson_curator.py
+=================
 
 Purpose:
-    lesson_curator.py =====================================
+    CLI to curate the learning registry (context/staging/learning-registry.json): list lessons
+    (status), pin, archive or restore a lesson by id, or back up the learning artifacts (backup).
 
-Layer: Execution
+Layer: Execution / Learning Loop
 
-Usage Examples:
-    python lesson_curator.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - context/staging/learning-registry.json, learning_backup.py (backup), path_utils.py
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    load_registry() -> dict       save_registry(data) -> None       main() -> None
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 lesson_curator.py status | pin <id> | archive <id> | restore <id> | backup
 """
 import json
 import sys
@@ -40,16 +26,19 @@ sys.path.append(str(Path(__file__).parent.resolve()))
 from path_utils import staging_dir
 
 def load_registry():
+    """Loads the learning registry, or an empty one when it does not exist yet."""
     reg = staging_dir() / "learning-registry.json"
     if reg.exists():
         with open(reg) as f: return json.load(f)
     return {"schema": "garden-structure-designer/learning-registry/1.1", "active_lessons": []}
 
 def save_registry(data):
+    """Writes the learning registry back to disk."""
     with open(staging_dir() / "learning-registry.json", "w") as f:
         json.dump(data, f, indent=2)
 
 def main():
+    """CLI dispatch: status, pin/archive/restore <lesson-id>, backup."""
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     reg = load_registry()
     

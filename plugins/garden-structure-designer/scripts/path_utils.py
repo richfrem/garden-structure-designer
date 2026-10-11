@@ -1,36 +1,26 @@
-#!/usr/bin/env python3
 """
-path_utils.py (CLI)
-=====================================
+path_utils.py
+=============
 
 Purpose:
-    path_utils.py =====================================
+    Single resolver for the repository layout used by every script: the repo root, the plugin
+    root, the staging bus directory (context/staging, home of structure.json), the outputs
+    directory, schemas, scripts and the agent workspace. Resolution walks up from the start path
+    (or cwd) to a repo marker, so scripts are cwd-agnostic.
 
-Layer: Execution
+Layer: Core / Shared Utility
 
-Usage Examples:
-    python path_utils.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - a repo marker above the start path: .git, pyproject.toml or plugins/garden-structure-designer
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    find_repo_root(start=None) -> Path
+    plugin_root(start=None) -> Path          schemas_dir(start=None) -> Path        scripts_dir(start=None) -> Path
+    staging_dir(start=None) -> Path          outputs_dir(start=None) -> Path        agent_workspace_dir(start=None) -> Path
+    ensure_dirs() -> None
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 path_utils.py          # creates the standard directories and prints them
 """
 from pathlib import Path
 import os
@@ -44,24 +34,31 @@ def find_repo_root(start: str | Path | None = None) -> Path:
     return Path.cwd().resolve()
 
 def plugin_root(start: str | Path | None = None) -> Path:
+    """Plugin root: <repo>/plugins/garden-structure-designer."""
     return find_repo_root(start) / "plugins" / "garden-structure-designer"
 
 def staging_dir(start: str | Path | None = None) -> Path:
+    """Staging bus directory: <repo>/context/staging (holds structure.json)."""
     return find_repo_root(start) / "context" / "staging"
 
 def outputs_dir(start: str | Path | None = None) -> Path:
+    """Outputs directory: <repo>/outputs."""
     return find_repo_root(start) / "outputs"
 
 def schemas_dir(start: str | Path | None = None) -> Path:
+    """Schemas directory inside the plugin."""
     return plugin_root(start) / "schemas"
 
 def scripts_dir(start: str | Path | None = None) -> Path:
+    """Canonical scripts directory inside the plugin."""
     return plugin_root(start) / "scripts"
 
 def agent_workspace_dir(start: str | Path | None = None) -> Path:
+    """Agent workspace: <repo>/agent-workspace/garden-structure-designer."""
     return find_repo_root(start) / "agent-workspace" / "garden-structure-designer"
 
 def ensure_dirs() -> None:
+    """Creates the standard working directories (staging, outputs, schemas, scripts, agent workspace)."""
     for d in [staging_dir(), outputs_dir(), schemas_dir(), scripts_dir(), 
               agent_workspace_dir(), agent_workspace_dir() / "learned-patterns", 
               agent_workspace_dir() / "generated-tests", agent_workspace_dir() / ".backups"]:

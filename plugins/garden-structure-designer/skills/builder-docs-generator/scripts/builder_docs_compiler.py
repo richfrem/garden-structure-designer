@@ -1,0 +1,1 @@
+../../../scripts/builder_docs_compiler.py

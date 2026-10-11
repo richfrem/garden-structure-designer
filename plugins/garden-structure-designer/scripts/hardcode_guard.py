@@ -1,57 +1,49 @@
 #!/usr/bin/env python3
 """
-hardcode_guard.py (CLI)
-=====================================
+hardcode_guard.py
+=================
 
 Purpose:
-    Performs abstract syntax tree (AST) static analysis on CAD rendering scripts
-    to detect and prevent forbidden hardcoded layout scale constants and silent
-    fallback defaults (e.g. dictionary .get() default values).
+    Static (AST) gate for the data-driven rule: reports silent numeric/string fallbacks in
+    .get(key, default), silent numeric defaults written as x.get(...) or <number> and
+    hardcoded scale = <number> assignments. Exit 1 lists every violation (file:line, rule, code).
+    Default targets are the drawing/geometry scripts plus the scripts hardened to fail closed in the
+    v1.5 alignment review (see _DEFAULT_TARGET_NAMES).
 
-Layer: Execution / QA Validation
+Layer: Execution / QA Static Scan Gate
+
+Key Input Dependencies:
+    - Python source files given on the command line (default: _DEFAULT_TARGET_NAMES next to this file)
+
+Key Functions / Classes:
+    HardcodeVisitor(filepath, content)   visit_Call / visit_BoolOp / visit_Assign / add_violation
+    scan_file(filepath) -> list[dict]
+    main() -> None
 
 Usage Examples:
-    python hardcode_guard.py [file_paths...]
-    python hardcode_guard.py plugins/garden-structure-designer/scripts/render_drawings.py
-
-Supported Object Types:
-    Python files (*.py)
-
-CLI Arguments:
-    file_paths: Optional list of specific python files to scan. If omitted,
-                defaults to render_drawings.py.
-
-Input Files:
-    plugins/garden-structure-designer/scripts/render_drawings.py
-
-Output:
-    Exit code 0 on PASS, 1 on FAIL with detailed violation reporting to stderr.
-
-Key Classes/Functions:
-    HardcodeVisitor: AST visitor for scanning dictionary gets and assignment statements.
-    scan_file: Parses file content to AST and runs the visitor.
-    main: Orchestrates the scan of targets and controls exit status.
-
-Script Dependencies:
-    sys, ast, pathlib
-
-Consumed by:
-    design-orchestrator (Stage 5.6 Static Scan Gate)
+    python3 hardcode_guard.py [file_paths...]
 """
-
 import sys
 import ast
 from pathlib import Path
 import typing
 
-# Files to strictly scan by default
-DEFAULT_TARGETS: list[Path] = [
-    Path(__file__).parent / "render_drawings.py",
-    Path(__file__).parent / "cad_scene.py",
-    Path(__file__).parent / "geometry_engine.py",
-    Path(__file__).parent / "cad_language_translator.py",
-    Path(__file__).parent / "fabrication_builder.py",
-]
+# Files to strictly scan by default: the original drawing/geometry scripts plus the scripts hardened to fail closed
+# during the v1.5 alignment review. (The original four still carry known violations; see the review tracker.)
+_DEFAULT_TARGET_NAMES: tuple[str, ...] = (
+    "render_drawings.py",
+    "cad_scene.py",
+    "geometry_engine.py",
+    "cad_language_translator.py",
+    "fabrication_builder.py",
+    "builder_docs_compiler.py",
+    "cad_backend_build123d.py",
+    "structural_physics_validator.py",
+    "strict_access.py",
+    "compile_package.py",
+    "package_consistency_validator.py",
+)
+DEFAULT_TARGETS: list[Path] = [Path(__file__).parent / name for name in _DEFAULT_TARGET_NAMES]
 
 # External Comment: AST NodeVisitor that inspects dictionary lookups and assignments.
 class HardcodeVisitor(ast.NodeVisitor):
@@ -100,6 +92,33 @@ class HardcodeVisitor(ast.NodeVisitor):
                             f"FORBIDDEN_GET_FALLBACK: Use of fallback default string {val!r} in .get(). "
                             "Config must be parsed directly from structure.json and validated."
                         )
+        self.generic_visit(node)
+
+    # External Comment: Inspect `x.get(...) or <number>` silent numeric defaults.
+    def visit_BoolOp(self, node: ast.BoolOp) -> None:
+        """
+        Flags ``<dict>.get(...) or <numeric literal>``: a silent structural default that hides a missing key.
+
+        Args:
+            node: The boolean-operation AST node being visited.
+        """
+        if isinstance(node.op, ast.Or):
+            has_get = any(
+                isinstance(v, ast.Call) and isinstance(v.func, ast.Attribute) and v.func.attr == "get"
+                for v in node.values[:-1]
+            )
+            last = node.values[-1]
+            is_number = (
+                isinstance(last, ast.Constant)
+                and isinstance(last.value, (int, float))
+                and not isinstance(last.value, bool)
+            )
+            if has_get and is_number:
+                self.add_violation(
+                    node,
+                    f"FORBIDDEN_OR_NUMBER_DEFAULT: Silent numeric default {last.value!r} after .get(). "
+                    "A missing structural value must fail closed (strict_access.require), not be invented."
+                )
         self.generic_visit(node)
 
     # External Comment: Inspect assignment nodes for hardcoded scale factor variables.

@@ -1,36 +1,28 @@
 #!/usr/bin/env python3
 """
-run_history.py (CLI)
-=====================================
+run_history.py
+==============
 
 Purpose:
-    run_history.py =====================================
+    Append-only history of script runs (context/staging/script-run-history.jsonl): script, args,
+    exit code, failure class and SHA-256 of produced artifacts. Used by the repair loop to halt after
+    repeated failures of the same class (should_halt) and to detect repeated identical artifacts
+    (repeated_identical_artifact).
 
-Layer: Execution
+Layer: Execution / Learning Loop
 
-Usage Examples:
-    python run_history.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - context/staging/script-run-history.jsonl (created on first write), path_utils.py
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    get_history_file() -> Path               artifact_hash(path) -> str
+    record_run(script, args, exit_code, failure_class=None, artifact_paths=None) -> None
+    get_history() -> list[dict]              recent_failures(script, failure_class, limit=5) -> list[dict]
+    should_halt(script, failure_class, max_repeats=3) -> bool
+    repeated_identical_artifact(path, repeats=2) -> bool
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 run_history.py        # prints the last recorded runs
 """
 import json
 import os
@@ -41,9 +33,11 @@ from typing import List, Dict, Any, Optional
 from path_utils import staging_dir
 
 def get_history_file() -> Path:
+    """Path of the JSON-lines run history."""
     return staging_dir() / "script-run-history.jsonl"
 
 def artifact_hash(path: str | Path) -> str:
+    """'sha256:<hex>' of a file's bytes, or '' when the file does not exist."""
     p = Path(path)
     if not p.exists():
         return ""
@@ -53,6 +47,7 @@ def artifact_hash(path: str | Path) -> str:
     return f"sha256:{hasher.hexdigest()}"
 
 def record_run(script: str, args: List[str], exit_code: int, failure_class: Optional[str] = None, artifact_paths: Optional[List[str]] = None) -> None:
+    """Appends one run record (with artifact hashes for the existing paths)."""
     history_file = get_history_file()
     
     hashes = {}
@@ -74,6 +69,7 @@ def record_run(script: str, args: List[str], exit_code: int, failure_class: Opti
         f.write(json.dumps(entry) + "\n")
 
 def get_history() -> List[Dict[str, Any]]:
+    """All recorded runs, oldest first."""
     history_file = get_history_file()
     if not history_file.exists():
         return []
@@ -85,17 +81,20 @@ def get_history() -> List[Dict[str, Any]]:
     return history
 
 def recent_failures(script: str, failure_class: str, limit: int = 5) -> List[Dict[str, Any]]:
+    """The last limit runs of script that failed with failure_class."""
     history = get_history()
     failures = [h for h in history if h.get("script") == script and h.get("failure_class") == failure_class]
     return failures[-limit:]
 
 def should_halt(script: str, failure_class: str, max_repeats: int = 3) -> bool:
+    """True once script has failed with failure_class at least max_repeats times."""
     failures = recent_failures(script, failure_class, limit=max_repeats)
     if len(failures) >= max_repeats:
         return True
     return False
 
 def repeated_identical_artifact(path: str, repeats: int = 2) -> bool:
+    """True when the last repeats recorded hashes of path are identical (no progress)."""
     history = get_history()
     hashes = [(h.get("artifact_hashes") or {}).get(path) for h in history if path in (h.get("artifact_hashes") or {})]
     hashes = [h for h in hashes if h]
