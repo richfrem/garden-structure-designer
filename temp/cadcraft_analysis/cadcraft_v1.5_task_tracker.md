@@ -10,7 +10,7 @@
 ## 1. Upstream Submodule & Build Setup
 
 - [x] **TASK-SUB-001**: Move `temp/repos/cadcraft` into canonical pinned submodule `vendor/cadcraft` tracking `https://github.com/storytold/cadcraft` at commit `54ea5e743a29acd8f3178cfaa82fb74a38c2de72`. Remove `temp/repos/cadcraft`.
-- [ ] **TASK-SUB-002**: Author portable, cross-platform build script `scripts/build_cadcraft.py` to compile `cargo build --locked --release -p cadcraft-cli --manifest-path vendor/cadcraft/Cargo.toml`.
+- [x] **TASK-SUB-002**: Author portable, cross-platform build script `scripts/build_cadcraft.py` to compile `cargo build --locked --release -p cadcraft-cli --manifest-path vendor/cadcraft/Cargo.toml`.
 
 ---
 
@@ -32,9 +32,9 @@
 ---
 
 ### M1A — Upstream Headless CLI Feasibility & ExchangeWriter Port (C3)
-- [ ] **TASK-101**: Audit `vendor/cadcraft` license inventory, transitive dependencies, and API surface; author `ATTRIBUTION.md` based on verified evidence.
-- [ ] **TASK-102**: Compile release binary with `scripts/build_cadcraft.py` and record binary hash.
-- [ ] **TASK-103**: Write smoke test `plugins/garden-structure-designer/tests/test_cadcraft_cli_smoke.py`.
+- [x] **TASK-101**: Audit `vendor/cadcraft` license inventory, transitive dependencies, and API surface; author `ATTRIBUTION.md` based on verified evidence.
+- [x] **TASK-102**: Compile release binary with `scripts/build_cadcraft.py` and record binary hash.
+- [x] **TASK-103**: Write smoke test `plugins/garden-structure-designer/tests/test_cadcraft_cli_smoke.py`.
 - [ ] **TASK-104**: Implement `ExchangeWriter` port with `CadcraftAdapter` and fallback `EzdxfAdapter`. Export single-member INSERT block with registered GSD XDATA and verify round-trip with `ezdxf`.
 
 ---

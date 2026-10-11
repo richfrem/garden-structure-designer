@@ -16,8 +16,8 @@
 | **TASK-2** | M0 Failing Invariant Tests (`test_topology_invariants.py`) | 🟢 **VERIFIED_DONE** | 14/14 tests authored; fail-closed proven |
 | **TASK-3A** | Stage 0.5 Intent Validator (`validate_topology_intent.py`) | 🟢 **VERIFIED_DONE** | Validates intent cardinality before geometry; all checks pass |
 | **TASK-3B** | Stage 2 Topology Compiler Invariant Hardening | 🟢 **VERIFIED_DONE** | `pytest test_topology_invariants.py`: 22/22 passed (100%) |
-| **TASK-4** | Submodule Setup & Portable Build (`build_cadcraft.py`) | 🟡 **IN_PROGRESS** | `TASK-SUB-001` done; verify `scripts/build_cadcraft.py` compile |
-| **TASK-5** | `ExchangeWriter` Port & Adapters (`cadcraft` + `ezdxf`) | ⚪ NOT_STARTED | Parsed DXF round-trip tests with `ezdxf` |
+| **TASK-4** | Submodule Setup & Portable Build (`build_cadcraft.py`) | 🟢 **VERIFIED_DONE** | `cadcraft-cli 0.5.0` compiled cleanly; 5 smoke tests passed |
+| **TASK-5** | `ExchangeWriter` Port & Adapters (`cadcraft` + `ezdxf`) | 🟡 **IN_PROGRESS** | Parsed DXF round-trip tests with `ezdxf` |
 | **TASK-6** | End-to-End Pipeline Integration & Verification | ⚪ NOT_STARTED | Multi-layer DXF generation and full regression suite |
 
 ---
