@@ -1,8 +1,30 @@
 #!/usr/bin/env python3
-"""Build the headless ``cadcraft-cli`` binary from the pinned vendor/cadcraft submodule.
+"""
+build_cadcraft.py
+=================
 
-Usage:
-    python scripts/build_cadcraft.py [--check-only] [--force]
+Purpose:
+    Builds and verifies the headless ``cadcraft-cli`` binary from the pinned
+    upstream ``vendor/cadcraft`` submodule using Cargo in locked release mode.
+
+Layer: Service / Infrastructure
+
+Key Input Dependencies:
+    - vendor/cadcraft/Cargo.toml (pinned vendor submodule)
+    - Rust toolchain (cargo in PATH)
+
+Key Functions:
+    find_cargo() -> str
+    binary_path() -> Path
+    sha256_of(path: Path) -> str
+    binary_responds(binary: Path) -> bool
+    verify_binary() -> Path
+    build() -> None
+    parse_args(argv) -> argparse.Namespace
+    main(argv) -> int
+
+Usage Examples:
+    python3 plugins/garden-structure-designer/scripts/build_cadcraft.py [--check-only] [--force]
 """
 from __future__ import annotations
 
@@ -26,6 +48,7 @@ class BuildError(RuntimeError):
 
 
 def find_cargo() -> str:
+    """Locates the cargo binary on the system PATH or raises BuildError."""
     cargo = shutil.which("cargo")
     if cargo is None:
         raise BuildError(
@@ -36,11 +59,13 @@ def find_cargo() -> str:
 
 
 def binary_path() -> Path:
+    """Returns the expected path of the compiled cadcraft release binary."""
     # Cargo places release artifacts in <workspace root>/target/release.
     return MANIFEST_PATH.parent / "target" / "release" / BINARY_NAME
 
 
 def sha256_of(path: Path) -> str:
+    """Computes the SHA-256 hexadecimal hash digest of a target file."""
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1 << 20), b""):
@@ -49,7 +74,7 @@ def sha256_of(path: Path) -> str:
 
 
 def binary_responds(binary: Path) -> bool:
-    """Return True if the binary exits 0 for --help or --version."""
+    """Verifies that the compiled binary responds successfully to smoke flags."""
     for flag in SMOKE_FLAGS:
         try:
             result = subprocess.run(
@@ -65,6 +90,7 @@ def binary_responds(binary: Path) -> bool:
 
 
 def verify_binary() -> Path:
+    """Validates existence and responsiveness of the compiled binary."""
     binary = binary_path()
     if not binary.is_file():
         raise BuildError(f"Compiled binary not found at {binary}")
@@ -76,6 +102,7 @@ def verify_binary() -> Path:
 
 
 def build() -> None:
+    """Compiles the cadcraft-cli binary using locked release profile."""
     if not MANIFEST_PATH.is_file():
         raise BuildError(
             f"{MANIFEST_PATH} not found. Run: git submodule update --init vendor/cadcraft"
@@ -96,6 +123,7 @@ def build() -> None:
 
 
 def parse_args(argv: list[str] | None) -> argparse.Namespace:
+    """Parses command-line arguments for building or checking the binary."""
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument(
         "--check-only",
@@ -111,6 +139,7 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """CLI entrypoint to check, build, or verify the cadcraft binary."""
     args = parse_args(argv)
     try:
         if args.check_only:

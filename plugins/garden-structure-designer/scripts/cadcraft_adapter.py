@@ -9,20 +9,23 @@ Purpose:
     command, so the saved file is reopened with ``ezdxf`` to register the ``GSD`` APPID
     and stamp member XDATA onto the entities cadcraft reported by handle.
 
-Layer: Adapter
+Layer: Adapter / CADCraft Rust CLI Bridge
 
 Key Input Dependencies:
-    Built cadcraft-cli binary (see scripts/build_cadcraft.py); ``ezdxf``;
-    exchange_writer.py contract.
+    - Built cadcraft-cli binary (vendor/cadcraft/target/release/cadcraft-cli)
+    - ezdxf library
+    - exchange_writer.py protocol contract
 
 Key Functions / Classes:
-    default_binary_path()               - repo-relative cadcraft-cli location
-    CadcraftError                       - CLI missing or failed
-    CadcraftAdapter.export_sheet(...)   - write one sheet, return metadata dict
+    default_binary_path() -> Path
+    CadcraftError (exception)
+    CadcraftAdapter.is_available() -> bool
+    CadcraftAdapter.export_sheet(...) -> dict
 
-Usage:
-    CadcraftAdapter().export_sheet("SB02", structure, Path("SB02-plan.dxf"),
-                                   revision_id=rid, revision_hash=rh)
+Usage Examples:
+    from cadcraft_adapter import CadcraftAdapter
+    adapter = CadcraftAdapter()
+    adapter.export_sheet("SB02", structure, Path("SB02-plan.dxf"), revision_id=rid, revision_hash=rh)
 """
 from __future__ import annotations
 
@@ -103,6 +106,7 @@ class CadcraftAdapter:
     name = "cadcraft"
 
     def __init__(self, binary: Path | None = None) -> None:
+        """Initializes adapter targeting either a specified binary or default release path."""
         self.binary = Path(binary) if binary else default_binary_path()
 
     def is_available(self) -> bool:
