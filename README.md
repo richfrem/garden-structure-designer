@@ -58,6 +58,7 @@ Unlike typical AI assistants that guess geometry or hallucinate cut angles:
 - **[System Architecture](architecture.md)**: Comprehensive deep dive into Stages 0–8, deterministic engines, validation layers, and data flows.
 - **[Agent Root Instructions](AGENTS.md)**: Universal behavioral guidelines (Karpathy principles), CAD invariants, and non-negotiables.
 - **[Agent Bootstrap & Triage](INIT_AGENTS.md)**: Installation commands, setup procedures, and the Stop-and-Diagnose protocol.
+- **[Attribution & Licenses](ATTRIBUTION.md)**: Third-party open-source components, including CADCraft (`vendor/cadcraft`) and acadrust.
 
 ---
 

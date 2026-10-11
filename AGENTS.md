@@ -3,7 +3,7 @@
 ## Overview
 `garden-structure-designer` is an AI-native multi-agent design pipeline that converts colloquial user descriptions of garden structures (pergolas, gazebos, pavilions) into professional-grade structural construction PDF packages. Staging bus is `context/staging/structure.json`.
 
-Detailed architecture and stage definitions live in [`docs/architecture.md`](docs/architecture.md). Operational workflows and triage live in [`INIT_AGENTS.md`](INIT_AGENTS.md).
+Detailed architecture and stage definitions live in [`architecture.md`](architecture.md). Operational workflows and triage live in [`INIT_AGENTS.md`](INIT_AGENTS.md).
 
 ## On-Demand Skills (Enable / Disable)
 Skills, agents, rules and hooks are loaded on demand. Desired state lives in `.agents/ownership/<plugin>.json` (`should_install: true/false`). Run `python3 .agents/skills/plugin-syncer/scripts/sync_with_inventory.py` to synchronize changes. Never toggle components without explicit user authorization.
