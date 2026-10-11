@@ -84,3 +84,23 @@ def test_compile_package_exports_cad_deliverables(mock_package_env):
     res = compile_package(staging_dir=staging, outputs_dir=outputs, md_filename="pergola_plan.md")
     assert [Path(p).name for p in res["cad_deliverables"]] == ["SB01-structure.dxf", "SB02-plan.dxf"]
     assert all(Path(p).stat().st_size > 0 for p in res["cad_deliverables"])
+
+
+def test_compile_package_writes_package_manifest(mock_package_env):
+    staging = mock_package_env / "context" / "staging"
+    outputs = mock_package_env / "outputs"
+
+    res = compile_package(staging_dir=staging, outputs_dir=outputs, md_filename="pergola_plan.md")
+    manifest_path = outputs / "package-manifest.json"
+    assert manifest_path.exists(), "outputs/package-manifest.json must be generated"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert manifest["version"] == "1.5"
+    assert manifest["revision_id"] == "11111111-2222-3333-4444-555555555555"
+    assert manifest["revision_hash"] == "abc123"
+    assert "artifacts" in manifest
+    assert len(manifest["artifacts"]) > 0
+    # Every artifact must have a valid sha256 hex digest
+    for art in manifest["artifacts"]:
+        assert len(art["sha256"]) == 64
+        assert (outputs / art["path"]).exists()
+

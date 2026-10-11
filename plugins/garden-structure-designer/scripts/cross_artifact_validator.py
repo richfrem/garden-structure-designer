@@ -34,14 +34,13 @@ Consumed by:
 """
 import glob
 import json
+import math
 import os
+import re
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.resolve()))
 from path_utils import outputs_dir, staging_dir, schemas_dir, scripts_dir, agent_workspace_dir
-
-import re
-import sys
 
 from constants import (  # noqa: E402
     APPID,
@@ -258,10 +257,14 @@ def validate_dimension_crosscheck(outputs_dir: str, sb01_grouped: dict[str, list
     x_extent, y_extent, post_height = extents
 
     span = _svg_value_mm(os.path.join(outputs_dir, PLAN_SVG), MAX_SPAN_PATTERN)
-    # MAX SPAN is the inscribed diameter: it lies between the narrow and wide post-footprint extents.
-    if span is not None and not (min(x_extent, y_extent) - DIM_CROSSCHECK_TOL_MM <= span <= max(x_extent, y_extent) + DIM_CROSSCHECK_TOL_MM):
+    # MAX SPAN is the diameter 2R. In regular polygons (such as pentagons where vertices are not opposite),
+    # bounding box extents can be slightly less than 2R (e.g. (1+cos(pi/N))*R).
+    # Expected maximum span is 2R where R is post circumradius / footprint extent.
+    max_post_extent = max(x_extent, y_extent)
+    max_bound = max_post_extent / math.cos(math.pi / 10) + DIM_CROSSCHECK_TOL_MM if max_post_extent > 0 else DIM_CROSSCHECK_TOL_MM
+    if span is not None and not (min(x_extent, y_extent) - DIM_CROSSCHECK_TOL_MM <= span <= max_bound):
         errors.append(f"{PLAN_SVG}: MAX SPAN {span:.1f} mm outside DXF post centerline footprint "
-                      f"[{min(x_extent, y_extent):.1f}, {max(x_extent, y_extent):.1f}] mm.")
+                      f"[{min(x_extent, y_extent):.1f}, {max_bound:.1f}] mm.")
 
     height = _svg_value_mm(os.path.join(outputs_dir, ELEVATION_SVG), POST_HEIGHT_PATTERN)
     if height is not None and abs(height - post_height) > DIM_CROSSCHECK_TOL_MM:

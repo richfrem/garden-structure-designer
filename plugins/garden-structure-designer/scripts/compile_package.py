@@ -136,12 +136,39 @@ def compile_package(staging_dir: Path = None, outputs_dir: Path = None, md_filen
     except Exception as e:
         pdf_error = str(e)
         
+    # 3. Generate outputs/package-manifest.json with SHA-256 digests
+    import hashlib
+    manifest_records = []
+    # Collect all outputs files
+    for fpath in sorted(outputs_dir.rglob("*")):
+        if fpath.is_file() and fpath.name != "package-manifest.json":
+            rel = fpath.relative_to(outputs_dir).as_posix()
+            digest = hashlib.sha256(fpath.read_bytes()).hexdigest()
+            manifest_records.append({
+                "path": rel,
+                "sha256": digest,
+                "size_bytes": fpath.stat().st_size
+            })
+
+    meta = structure.get("meta", {})
+    package_manifest = {
+        "version": "1.5",
+        "revision_id": meta.get("revision_id"),
+        "revision_hash": meta.get("revision_hash"),
+        "schema_version": meta.get("schema_version", "1.5"),
+        "topology_family": meta.get("topology_family", "RadialHubTopology"),
+        "artifacts": manifest_records,
+    }
+    manifest_path = outputs_dir / "package-manifest.json"
+    manifest_path.write_text(json.dumps(package_manifest, indent=2), encoding="utf-8")
+
     if pdf_success and pdf_path.exists():
         return {
             "status": "COMPLETE",
             "pdf_output": str(pdf_path),
             "embedded_md": str(embedded_md_path),
-            "cad_deliverables": cad_manifest
+            "cad_deliverables": cad_manifest,
+            "manifest": str(manifest_path)
         }
     else:
         fail_path = outputs_dir / "PDF_GENERATION_FAILED.md"
@@ -152,7 +179,8 @@ def compile_package(staging_dir: Path = None, outputs_dir: Path = None, md_filen
             "reason": pdf_error,
             "embedded_md": str(embedded_md_path),
             "cad_deliverables": cad_manifest,
-            "failed_file": str(fail_path)
+            "failed_file": str(fail_path),
+            "manifest": str(manifest_path)
         }
 
 def main():

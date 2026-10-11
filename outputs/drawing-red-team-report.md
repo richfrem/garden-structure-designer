@@ -1,140 +1,18 @@
 # Drawing Red-Team Review Report
 
-**Status:** FAIL  
+**Status:** BLOCKED  
 **May claim success:** false  
 **Reviewer:** run_drawing_red_team.py  
-**Generated:** 2026-08-16T20:12:00.824962+00:00  
+**Generated:** 2026-10-11T20:24:09.216096+00:00  
 
-> FAIL — 1 sheet(s) or validation layers failed content/visual validation. These drawings are not builder-meaningful. Regenerate before claiming PASS.
+> BLOCKED: 4 required staging artifact(s) missing. Run the full structural pipeline before the drawing red-team gate.
 
 ---
 
 ## Per-Sheet Results
 
-### ✅ `outputs/blueprint-component-isolation.svg` — PASS
-
-**Semantic counts:**
-- `data-role="post"`: 4
-- `data-role="beam"`: 5
-- `data-role="rafter"`: 4
-- `data-role="brace"`: 4
-- `data-role="footing"`: 2
-- `data-role="dimension"`: 8
-- `data-role="component"`: 4
-- `data-role="title-block"`: 1
-- Text labels: 24
-- Total elements: 0
-
----
-
-### ✅ `outputs/blueprint-elevation.svg` — PASS
-
-**Semantic counts:**
-- `data-role="post"`: 6
-- `data-role="beam"`: 6
-- `data-role="rafter"`: 6
-- `data-role="brace"`: 12
-- `data-role="footing"`: 6
-- `data-role="dimension"`: 1
-- `data-role="component"`: 0
-- `data-role="title-block"`: 1
-- Text labels: 39
-- Total elements: 0
-
----
-
-### ✅ `outputs/blueprint-isometric.svg` — PASS
-
-**Semantic counts:**
-- `data-role="post"`: 6
-- `data-role="beam"`: 6
-- `data-role="rafter"`: 6
-- `data-role="brace"`: 12
-- `data-role="footing"`: 6
-- `data-role="dimension"`: 1
-- `data-role="component"`: 0
-- `data-role="title-block"`: 1
-- Text labels: 40
-- Total elements: 0
-
----
-
-### ✅ `outputs/blueprint-plan.svg` — PASS
-
-**Semantic counts:**
-- `data-role="post"`: 6
-- `data-role="beam"`: 6
-- `data-role="rafter"`: 6
-- `data-role="brace"`: 12
-- `data-role="footing"`: 6
-- `data-role="dimension"`: 1
-- `data-role="component"`: 0
-- `data-role="title-block"`: 1
-- Text labels: 39
-- Total elements: 0
-
----
-
-### ✅ `outputs/drawing-elevation-view.svg` — PASS
-
-**Semantic counts:**
-- `data-role="post"`: 6
-- `data-role="beam"`: 6
-- `data-role="rafter"`: 6
-- `data-role="brace"`: 12
-- `data-role="footing"`: 6
-- `data-role="dimension"`: 1
-- `data-role="component"`: 0
-- `data-role="title-block"`: 1
-- Text labels: 39
-- Total elements: 0
-
----
-
-### ✅ `outputs/drawing-isometric-view.svg` — PASS
-
-**Semantic counts:**
-- `data-role="post"`: 6
-- `data-role="beam"`: 6
-- `data-role="rafter"`: 6
-- `data-role="brace"`: 12
-- `data-role="footing"`: 6
-- `data-role="dimension"`: 1
-- `data-role="component"`: 0
-- `data-role="title-block"`: 1
-- Text labels: 40
-- Total elements: 0
-
----
-
-### ✅ `outputs/drawing-perspective-view.svg` — PASS
-
-**Semantic counts:**
-- `data-role="post"`: 6
-- `data-role="beam"`: 6
-- `data-role="rafter"`: 6
-- `data-role="brace"`: 12
-- `data-role="footing"`: 6
-- `data-role="dimension"`: 1
-- `data-role="component"`: 0
-- `data-role="title-block"`: 1
-- Text labels: 40
-- Total elements: 0
-
----
-
-### ✅ `outputs/drawing-plan-view.svg` — PASS
-
-**Semantic counts:**
-- `data-role="post"`: 6
-- `data-role="beam"`: 6
-- `data-role="rafter"`: 6
-- `data-role="brace"`: 12
-- `data-role="footing"`: 6
-- `data-role="dimension"`: 1
-- `data-role="component"`: 0
-- `data-role="title-block"`: 1
-- Text labels: 39
-- Total elements: 0
-
----
+## Overall Required Fixes
+- Missing: context/staging/structure.json
+- Missing: context/staging/schema-validation-report.json
+- Missing: context/staging/physics-validation-report.json
+- Missing: context/staging/visual-smoke-report.json

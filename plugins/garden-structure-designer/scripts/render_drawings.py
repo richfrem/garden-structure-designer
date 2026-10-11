@@ -212,12 +212,14 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
     qty = structure["layout"]["post_count"]; r_ft = structure["layout"]["inscribed_radius_ft"]
     if "plan" in view_type: draw_dimension(svg_list, cx-r_ft*scale, cy+r_ft*scale+50, cx+r_ft*scale, cy+r_ft*scale+50, f"MAX SPAN: {r_ft*2} FT", is_blueprint=is_blueprint)
     elif "elevation" in view_type:
-        ph = structure["members"]["posts"]["cut_length_ft"]
+        zp = (structure.get("geometry", {}).get("joints", {}).get("z_planes") or {})
+        ph = zp.get("Z_POST_TOP") or structure["members"]["posts"]["cut_length_ft"]
         draw_dimension(svg_list, cx-200, cy, cx-200, cy-ph*scale, f"POST: {ph} FT", vertical=True, is_blueprint=is_blueprint)
         svg_list.append(f'  <line x1="100" y1="{cy}" x2="{coords["width_px"]-100}" y2="{cy}" stroke="{palette["outline"]}" stroke-width="{LW_GROUND_LINE}" />')
     else:
         # 3D views: add minimal dimensions to satisfy validator
-        ph = structure["members"]["posts"]["cut_length_ft"]
+        zp = (structure.get("geometry", {}).get("joints", {}).get("z_planes") or {})
+        ph = zp.get("Z_POST_TOP") or structure["members"]["posts"]["cut_length_ft"]
         draw_dimension(svg_list, cx-r_ft*scale, cy+r_ft*scale, cx+r_ft*scale, cy+r_ft*scale, f"OVERALL SPAN: {r_ft*2} FT", is_blueprint=is_blueprint)
         draw_leader(svg_list, cx-r_ft*scale, cy, cx-r_ft*scale-100, cy-100, f"POST HT: {ph} FT", is_blueprint=is_blueprint)
         

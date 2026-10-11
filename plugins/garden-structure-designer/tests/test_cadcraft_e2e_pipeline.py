@@ -143,6 +143,21 @@ def test_hex_pipeline_produces_all_deliverables(compiled_hex_package, hex_packag
     embedded = (outputs / "pergola_plan_embedded.md").read_text(encoding="utf-8")
     assert "<svg" in embedded
 
+    # Package manifest validation (C4/C6)
+    manifest_path = outputs / "package-manifest.json"
+    assert manifest_path.exists(), "outputs/package-manifest.json must exist"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert manifest["version"] == "1.5"
+    assert manifest["topology_family"] == "RadialHubTopology"
+    assert len(manifest["artifacts"]) > 0
+    import hashlib
+    for art in manifest["artifacts"]:
+        f = outputs / art["path"]
+        assert f.exists(), f"Artifact {art['path']} in manifest does not exist"
+        calc_digest = hashlib.sha256(f.read_bytes()).hexdigest()
+        assert calc_digest == art["sha256"], f"Digest mismatch on {art['path']}"
+
+
 
 @pytest.mark.parametrize("sheet_id", sorted(SHEET_FILENAMES))
 def test_hex_pipeline_dxf_has_zero_auditor_errors(compiled_hex_package, hex_package, sheet_id):

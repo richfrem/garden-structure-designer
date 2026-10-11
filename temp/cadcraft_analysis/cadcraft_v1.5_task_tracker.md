@@ -74,10 +74,10 @@
 ---
 
 ### M4 — Initial Radial Production Acceptance (C1–C6)
-- [ ] **TASK-401**: Run complete end-to-end radial test suite across all regular polygons $N \ge 5$ on supported platforms.
-- [ ] **TASK-402**: Validate `outputs/package-manifest.json` against all artifact SHA-256 digests.
-- [ ] **TASK-403**: Verify C1–C6 byte-for-byte synchronization between `architecture.md` and `cadcraft_v1.5_spec.md`.
-- [ ] **TASK-404**: Pass independent `drawing-red-team-agent` gate (`may_claim_success: true`).
+- [x] **TASK-401**: Run complete end-to-end radial test suite across all regular polygons $N \ge 5$ on supported platforms (`test_radial_production_acceptance.py`).
+- [x] **TASK-402**: Validate `outputs/package-manifest.json` against all artifact SHA-256 digests (`compile_package.py` and `test_compile_package.py`).
+- [x] **TASK-403**: Verify C1–C6 byte-for-byte synchronization between `architecture.md` and `cadcraft_v1.5_spec.md` (verified 100% identical).
+- [x] **TASK-404**: Pass independent `drawing-red-team-agent` gate (`may_claim_success: true`).
 
 ---
 

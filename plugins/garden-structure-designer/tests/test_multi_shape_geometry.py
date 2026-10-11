@@ -14,6 +14,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+sys.path.insert(0, str(Path(__file__).parent))
 from validate_intent import validate_intent
 from cad_language_translator import translate_to_constraints
 from geometry_engine import compute_from_structure

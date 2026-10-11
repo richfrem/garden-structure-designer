@@ -56,6 +56,7 @@ Unlike typical AI assistants that guess geometry or hallucinate cut angles:
 ## 📚 Documentation & Architecture
 
 - **[System Architecture](architecture.md)**: Comprehensive deep dive into Stages 0–8, deterministic engines, validation layers, and data flows.
+- **[Architecture Diagrams](docs/architecture/diagrams/README.md)**: Visual Mermaid diagrams illustrating CLI orchestration, plugin architecture, and vendor engine boundaries ([System Overview](docs/architecture/diagrams/cli_plugin_vendor_architecture.mmd) & [Execution Sequence](docs/architecture/diagrams/runtime_execution_sequence.mmd)).
 - **[Agent Root Instructions](AGENTS.md)**: Universal behavioral guidelines (Karpathy principles), CAD invariants, and non-negotiables.
 - **[Agent Bootstrap & Triage](INIT_AGENTS.md)**: Installation commands, setup procedures, and the Stop-and-Diagnose protocol.
 - **[Attribution & Licenses](ATTRIBUTION.md)**: Third-party open-source components, including CADCraft (`vendor/cadcraft`) and acadrust.
