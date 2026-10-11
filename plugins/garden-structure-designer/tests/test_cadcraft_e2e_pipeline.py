@@ -22,7 +22,7 @@ import compile_package as compile_package_module  # type: ignore[import]  # noqa
 from compile_package import compile_package  # type: ignore[import]  # noqa: E402
 import fabrication_builder  # type: ignore[import]  # noqa: E402
 from exchange_writer import APPID  # type: ignore[import]  # noqa: E402
-from export_cad import SHEET_FILENAMES  # type: ignore[import]  # noqa: E402
+from export_cad import SHEET_FILENAMES, export_sheets  # type: ignore[import]  # noqa: E402
 from geometry_engine import compute_from_structure  # type: ignore[import]  # noqa: E402
 from pipeline_runner import TopologyErrorCode  # type: ignore[import]  # noqa: E402
 from render_drawings import generate_svg  # type: ignore[import]  # noqa: E402
@@ -89,6 +89,9 @@ def hex_package(tmp_path_factory):
 
     for sheet in SVG_SHEETS:
         generate_svg(sheet, stamped, str(outputs / sheet))
+
+    # Stage 4 CAD export: Stage 7 validates these exact bytes and never regenerates them (C4).
+    export_sheets(stamped, outputs / "cad")
 
     # Stage 6 fabrication cut list (writes outputs/fabrication/cut-list.json)
     with pytest.MonkeyPatch.context() as patch:

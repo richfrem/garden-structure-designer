@@ -4,23 +4,27 @@ compile_package.py
 ==================
 
 Purpose:
-    Integrates SVG/PNG embedding (embed_svgs.py logic), CAD DXF export (export_cad.py),
-    Playwright/md-to-pdf PDF export, and generates outputs/package-manifest.json
-    with SHA-256 digests for Stage 7 construction design package compilation.
+    Stage 7 package compiler: embeds SVG/PNG assets (embed_svgs.py), validates the
+    Stage 4 DXF sheets with the parsed cross-artifact validator against the exact bytes
+    being packaged (C4: Stage 7 never regenerates drawings), exports the PDF through
+    md-to-pdf, and writes outputs/package-manifest.json with SHA-256 digests.
 
 Layer: Execution / Stage 7 Compilation Gate
 
 Key Input Dependencies:
     - context/staging/drawing-red-team-report.json (gating with may_claim_success)
     - context/staging/structure.json (sealed model with revision_id)
+    - outputs/cad/SB01-structure.dxf and SB02-plan.dxf (written at Stage 4 by export_cad.py)
+    - constants.py (CAD_SUBDIR, SHEET_FILENAMES), cross_artifact_validator.py, revision_identity.py
     - outputs/high-resolution-image/*_render_1.png (photorealistic render)
     - outputs/pergola_plan.md (or design-package.md)
 
 Key Functions:
     verify_preflight_gates(staging_dir, outputs_dir) -> tuple[bool, str]
-    export_cad_deliverables(staging_dir, outputs_dir) -> tuple[bool, list[str], str]
+    verify_cad_deliverables(staging_dir, outputs_dir) -> tuple[bool, list[str], str]
     convert_md_to_pdf(embedded_md_path, pdf_path, outputs_dir, stem) -> tuple[bool, str]
     write_package_manifest(outputs_dir, structure) -> Path
+    _resolve_markdown(outputs_dir, md_filename) -> Path | None
     compile_package(staging_dir=None, outputs_dir=None, md_filename="pergola_plan.md") -> dict
     main() -> None
 
@@ -38,12 +42,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 sys.path.append(str(Path(__file__).parent))
+from constants import CAD_SUBDIR, SHEET_FILENAMES
+from cross_artifact_validator import validate_dxf_artifacts
 from embed_svgs import process as embed_process
-from export_cad import SHEET_FILENAMES, export_sheets
 from path_utils import outputs_dir as default_outputs_dir
 from path_utils import staging_dir as default_staging_dir
+from revision_identity import compute_revision_hash
 
-CAD_SUBDIR = "cad"
+MAX_REPORTED_CAD_ERRORS = 10
 
 
 def verify_preflight_gates(staging_dir: Path, outputs_dir: Path) -> Tuple[bool, str]:
@@ -74,21 +80,15 @@ def verify_preflight_gates(staging_dir: Path, outputs_dir: Path) -> Tuple[bool, 
     return True, f"Gate approved. Found {len(renders)} renders."
 
 
-def export_cad_deliverables(staging_dir: Path, outputs_dir: Path) -> Tuple[bool, List[str], str]:
-    """Exports SB01 and SB02 DXF sheets, returning success flag, file list, and error message."""
+def verify_cad_deliverables(staging_dir: Path, outputs_dir: Path) -> Tuple[bool, List[str], str]:
+    """Validates the existing SB01/SB02 DXF bytes with the parsed validator; never regenerates them (C4 Stage 7)."""
+    errors = validate_dxf_artifacts(str(staging_dir), str(outputs_dir))
+    if errors:
+        shown = "; ".join(errors[:MAX_REPORTED_CAD_ERRORS])
+        return False, [], f"CAD validation failed ({len(errors)} errors): {shown}"
+
     cad_dir = outputs_dir / CAD_SUBDIR
-    try:
-        structure = json.loads((staging_dir / "structure.json").read_text(encoding="utf-8"))
-        export_sheets(structure, cad_dir)
-    except Exception as e:
-        return False, [], f"CAD export failed: {e}"
-
-    cad_deliverables = [cad_dir / name for name in SHEET_FILENAMES.values()]
-    missing = [str(p) for p in cad_deliverables if not p.exists() or p.stat().st_size == 0]
-    if missing:
-        return False, [], f"CAD deliverables missing or empty: {missing}"
-
-    return True, [str(p) for p in cad_deliverables], ""
+    return True, [str(cad_dir / name) for name in SHEET_FILENAMES.values()], ""
 
 
 def convert_md_to_pdf(
@@ -129,15 +129,23 @@ def write_package_manifest(outputs_dir: Path, structure: Dict[str, Any]) -> Path
     meta = structure.get("meta", {})
     package_manifest = {
         "version": "1.5",
-        "revision_id": meta.get("revision_id"),
-        "revision_hash": meta.get("revision_hash"),
-        "schema_version": meta.get("schema_version", "1.5"),
-        "topology_family": meta.get("topology_family", "RadialHubTopology"),
+        "revision_id": meta["revision_id"],
+        "revision_hash": meta.get("revision_hash") or compute_revision_hash(structure),
+        "schema_version": meta.get("schema_version"),
+        "topology_family": meta.get("topology_family"),
         "artifacts": manifest_records,
     }
     manifest_path = outputs_dir / "package-manifest.json"
     manifest_path.write_text(json.dumps(package_manifest, indent=2), encoding="utf-8")
     return manifest_path
+
+
+def _resolve_markdown(outputs_dir: Path, md_filename: str) -> Optional[Path]:
+    """Returns the requested markdown file, else the first existing default package markdown, else None."""
+    for candidate in (outputs_dir / md_filename, outputs_dir / "pergola_plan.md", outputs_dir / "design-package.md"):
+        if candidate.exists():
+            return candidate
+    return None
 
 
 def compile_package(
@@ -156,20 +164,15 @@ def compile_package(
             f.write(f"# Compilation Blocked\n\n{msg}\n")
         return {"status": "BLOCKED", "reason": msg, "blocked_file": str(blocked_path)}
 
-    raw_md_path = o_dir / md_filename
-    if not raw_md_path.exists():
-        for alt in (o_dir / "pergola_plan.md", o_dir / "design-package.md"):
-            if alt.exists():
-                raw_md_path = alt
-                break
-        if not raw_md_path.exists():
-            return {"status": "FAIL", "reason": f"No input markdown file found at {raw_md_path}"}
+    raw_md_path = _resolve_markdown(o_dir, md_filename)
+    if raw_md_path is None:
+        return {"status": "FAIL", "reason": f"No input markdown file found at {o_dir / md_filename}"}
 
     stem = raw_md_path.stem
     embedded_md_path = o_dir / f"{stem}_embedded.md"
     pdf_path = o_dir / f"{stem}.pdf"
 
-    cad_ok, cad_manifest, cad_err = export_cad_deliverables(s_dir, o_dir)
+    cad_ok, cad_manifest, cad_err = verify_cad_deliverables(s_dir, o_dir)
     if not cad_ok:
         return {"status": "FAIL", "reason": cad_err}
 

@@ -6,6 +6,8 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent / "scripts"))
 from compile_package import compile_package
+from export_cad import export_sheets
+from ezdxf_adapter import EzdxfAdapter
 
 def _minimal_structure():
     ring = [(0.25, 0.25), (-0.25, 0.25), (-0.25, -0.25), (0.25, -0.25)]
@@ -31,6 +33,8 @@ def mock_package_env(tmp_path):
         json.dump(report, f)
         
     (staging / "structure.json").write_text(json.dumps(_minimal_structure()))
+    # Stage 4 output: C4 Stage 7 validates these exact bytes and never regenerates them.
+    export_sheets(_minimal_structure(), outputs / "cad", EzdxfAdapter())
 
     # Photorealistic render
     (img_dir / "pergola_render_1.png").write_bytes(b"PNG fake data")
@@ -77,7 +81,7 @@ def test_compile_package_blocked_if_structure_missing(mock_package_env):
     assert res["status"] == "BLOCKED"
     assert "structure.json not found" in res["reason"]
 
-def test_compile_package_exports_cad_deliverables(mock_package_env):
+def test_compile_package_lists_validated_cad_deliverables(mock_package_env):
     staging = mock_package_env / "context" / "staging"
     outputs = mock_package_env / "outputs"
 
