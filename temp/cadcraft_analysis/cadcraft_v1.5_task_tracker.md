@@ -65,11 +65,11 @@
 ---
 
 ### M3 — Transactional CAS in structure_io.py & Cache Purge (C5)
-- [ ] **TASK-301**: Implement transaction authority in `plugins/garden-structure-designer/scripts/structure_io.py`.
-- [ ] **TASK-302**: Enforce atomic commit-time compare-and-swap on `meta.revision_hash`.
-- [ ] **TASK-303**: Isolate mutation sessions in `context/staging/candidates/<txn_id>/` and write deliverables to `outputs/.rev/<revision_id>/`.
-- [ ] **TASK-304**: Purge the complete C5 five-family inventory upon candidate commit (solved staging mirrors, drawings/DXFs, cut lists, compiled PDFs/docs, QA/approval reports).
-- [ ] **TASK-305**: Author concurrency, TTL expiration for orphaned `PREPARED` entries, and crash recovery tests in `plugins/garden-structure-designer/tests/test_transaction_gateway.py`.
+- [x] **TASK-301**: Implement transaction authority in `plugins/garden-structure-designer/scripts/structure_io.py`.
+- [x] **TASK-302**: Enforce atomic commit-time compare-and-swap on `meta.revision_hash`.
+- [x] **TASK-303**: Isolate mutation sessions in `context/staging/candidates/<txn_id>/` and write deliverables to `outputs/.rev/<revision_id>/`.
+- [x] **TASK-304**: Purge the complete C5 five-family inventory upon candidate commit (solved staging mirrors, drawings/DXFs, cut lists, compiled PDFs/docs, QA/approval reports).
+- [x] **TASK-305**: Author concurrency, TTL expiration for orphaned `PREPARED` entries, and crash recovery tests in `plugins/garden-structure-designer/tests/test_transaction_gateway.py`.
 
 ---
 
