@@ -11,8 +11,12 @@ Purpose:
 
 Layer: Execution / QA Gate
 
+Not Rust: pure-Python joint checks on the solved geometry (the CADCraft constraint crate is only
+    probed by constraint_solver_probe.py and is never a geometry authority, per spec C6/M2B).
+
 Key Input Dependencies:
     - context/staging/structure.json containing geometry._sealed == True
+    - path_utils.py (default staging directory)
     - geometry.joints.resolved_model member coordinates and z-planes
 
 Key Functions:
@@ -105,8 +109,8 @@ def _hub_radius_within_beam_ring(structure: dict) -> ConstraintResult:
     if inscribed_r <= 0 or qty < 3:
         return {
             "name": "hub_radius_within_beam_ring",
-            "status": "SKIP",
-            "detail": "Insufficient layout data (inscribed_radius_ft or post_count missing)",
+            "status": "FAIL",
+            "detail": "MISSING_INPUT: layout.inscribed_radius_ft and layout.post_count (>= 3) are required",
         }
     beam_ring_r = inscribed_r * math.cos(math.pi / qty)
     if hub_r <= 0:
@@ -142,6 +146,12 @@ def _brace_upper_endpoints_at_beam_soffit(structure: dict) -> ConstraintResult:
         pairs = ep_data
     else:
         pairs = []
+    if not pairs and (structure.get("bracing") or {}).get("enabled"):
+        return {
+            "name": "brace_upper_endpoints_at_beam_soffit",
+            "status": "FAIL",
+            "detail": "MISSING_INPUT: bracing.enabled but geometry.joints.braces.endpoints.pairs is empty",
+        }
     if not pairs:
         return {
             "name": "brace_upper_endpoints_at_beam_soffit",
