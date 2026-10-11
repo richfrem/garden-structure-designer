@@ -1,0 +1,95 @@
+graph TD
+    %% -------------------------------------------------------------
+    %% 1. USER & AGENT WORKSPACE
+    %% -------------------------------------------------------------
+    subgraph UserInterface ["User & Conversational Agents"]
+        User([User / Architect])
+        ID["interactive-designer Agent<br/>(Conducts interview, resolves snow/wind loads)"]
+        DO["design-orchestrator Agent<br/>(Supervises pipeline Stages 0 - 8)"]
+        User <-->|"Natural Language Prompt"| ID
+        ID -->|"Writes initial normalized spec"| StagingFile[("context/staging/structure.json<br/>(Sole Canonical Data Bus)")]
+        DO <-->|"Reads spec & coordinates stages"| StagingFile
+    end
+
+    %% -------------------------------------------------------------
+    %% 2. PLUGIN CORE: DETERMINISTIC ENGINES & VALIDATORS
+    %% -------------------------------------------------------------
+    subgraph PluginArchitecture ["Plugin: plugins/garden-structure-designer/"]
+        subgraph StageExecution ["Fail-Closed Pipeline Lifecycle"]
+            direction TB
+            PR["scripts/pipeline_runner.py<br/>(Execution Seam & TopologyErrorCode Registry)"]
+            
+            S05["Stage 0.5: validate_topology_intent.py<br/>(Validates unsealed intent, N >= 5 radial)"]
+            S1["Stage 1: geometry_engine.py<br/>(Deterministic 3D vertex math, seals geometry)"]
+            S2["Stage 2: topology_compiler.py<br/>(Graph enricher, in-process seal check)"]
+            S3["Stage 3: structural_physics_validator.py<br/>(L/d <= 50, L/240 deflection checks)"]
+            S4["Stage 4: render_drawings.py<br/>(Projects 8 semantic SVG drawing sheets)"]
+            S4_CAD["Stage 4: export_cad.py<br/>(High-level CAD export service)"]
+            S55["Stage 5.5: cross_artifact_validator.py<br/>(Parsed DXF parity, zero auditor errors)"]
+            S56["Stage 5.6: visual_svg_smoke_test.py<br/>(Headless Chromium edge & visual checks)"]
+            S6["Stage 6: fabrication_builder.py<br/>(Generates cut-list.json & builder docs)"]
+            S5["Stage 5: run_drawing_red_team.py<br/>(Adversarial QA gate: may_claim_success)"]
+            S7["Stage 7: compile_package.py<br/>(Master package assembler & PDF generator)"]
+            
+            PR --> S05 --> S1 --> S2 --> S3 --> S4
+            S4 --> S4_CAD --> S55 --> S56 --> S6 --> S5 --> S7
+        end
+
+        subgraph SharedStandards ["Plugin Shared Contracts & Authority"]
+            CONST["scripts/constants.py<br/>(304.8 mm/ft, ACI layer colors, lineweights)"]
+            REV["scripts/revision_identity.py<br/>(Canonical gsd-json-v1 SHA-256 hash)"]
+            TXN["scripts/structure_io.py<br/>(Interprocess _FileLock, CAS authority, C5 purge)"]
+        end
+
+        subgraph ExchangePort ["ExchangeWriter Port Interface (C3.1)"]
+            EW["scripts/exchange_writer.py<br/>(Protocol: export_sheet)"]
+            CA["scripts/cadcraft_adapter.py<br/>(Primary CLI Subprocess Runner)"]
+            EA["scripts/ezdxf_adapter.py<br/>(Audited Zero-Binary Python Fallback)"]
+            EW --> CA
+            EW --> EA
+        end
+
+        S4_CAD --> EW
+        CONST -.->|"Imports standards"| EW
+        CONST -.->|"Imports standards"| S55
+        REV -.->|"Binds revision digests"| EW
+        TXN -.->|"Guards canonical writes"| StagingFile
+    end
+
+    %% -------------------------------------------------------------
+    %% 3. VENDOR SUBMODULE & HEADLESS CLI
+    %% -------------------------------------------------------------
+    subgraph VendorLayer ["Vendor Submodule: vendor/cadcraft/ (Rust)"]
+        direction TB
+        BUILD["plugins/garden-structure-designer/scripts/build_cadcraft.py<br/>(Cross-platform Python build tool)"]
+        CARGO["Cargo Workspace<br/>(crates/cli, crates/geom, crates/constraints, etc.)"]
+        CLI_BIN["vendor/cadcraft/target/release/cadcraft-cli<br/>(Compiled headless Rust CLI binary)"]
+        PROBE["plugins/garden-structure-designer/scripts/constraint_solver_probe.py<br/>(M2B 2D planar constraint probe)"]
+
+        BUILD -->|"cargo build --locked --release"| CARGO
+        CARGO --> CLI_BIN
+        PROBE -.->|"Probes test suite"| CARGO
+    end
+
+    %% -------------------------------------------------------------
+    %% 4. HARDWARE PROCESS & SUBPROCESS COMMUNICATION BOUNDARY
+    %% -------------------------------------------------------------
+    CA ==>|"Subprocess exec (15s timeout)<br/>CLI JSON UTF-8: --cmd, --save"| CLI_BIN
+    CLI_BIN ==>|"Generates candidate DXF file"| CandidateDXF[("outputs/cad/SB01-structure.dxf<br/>outputs/cad/SB02-plan.dxf")]
+    EA -.->|"Direct pure-Python DXF authoring (Fallback)"| CandidateDXF
+
+    CandidateDXF --> S55
+    S7 --> FinalPackage[("outputs/pergola_plan.pdf<br/>outputs/cad/*.dxf<br/>outputs/fabrication/cut-list.json")]
+
+    %% -------------------------------------------------------------
+    %% STYLES & HIGHLIGHTS
+    %% -------------------------------------------------------------
+    classDef agentStyle fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
+    classDef pluginStyle fill:#0f172a,stroke:#818cf8,stroke-width:2px,color:#f8fafc;
+    classDef vendorStyle fill:#18181b,stroke:#f97316,stroke-width:2px,color:#f8fafc;
+    classDef fileStyle fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#ecfdf5;
+
+    class ID,DO agentStyle;
+    class S05,S1,S2,S3,S4,S4_CAD,S55,S56,S6,S5,S7,CONST,REV,TXN,EW,CA,EA,PR pluginStyle;
+    class BUILD,CARGO,CLI_BIN,PROBE vendorStyle;
+    class StagingFile,CandidateDXF,FinalPackage fileStyle;
