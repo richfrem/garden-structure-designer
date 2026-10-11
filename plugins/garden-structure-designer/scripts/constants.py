@@ -93,8 +93,22 @@ C5_PURGE_GLOBS: tuple[str, ...] = (
     # Packages / docs
     "outputs/pergola_plan.md",
     "outputs/pergola_plan.pdf",
-    # QA / approval
-    "context/staging/drawing-red-team-report.json",
+    # Builder docs / package outputs
+    "outputs/assembly-guide.md",
+    "outputs/budget-estimate.md",
+    "outputs/lumber-purchase-list.md",
+    "outputs/pergola_plan_embedded.md",
+    "outputs/pergola_plan_embedded.pdf",
+    "outputs/package-manifest.json",
+    "outputs/COMPILATION_BLOCKED.md",
+    "outputs/PDF_GENERATION_FAILED.md",
+    # Legacy cut list (deprecated cut_list_engine) and preview rasters
+    "outputs/shop-blueprint/*",
+    "outputs/visual-smoke/*",
+    "outputs/high-resolution-image/*",
+    # QA / approval (archived run history such as run-insights.json is intentionally excluded)
+    "context/staging/*-report.json",
+    "outputs/*-report.md",
     "outputs/quality-dashboard*",
 )
 C5_PURGE_ROOTS: tuple[str, ...] = ("context/staging", "outputs")

@@ -1,83 +1,149 @@
-import sys
-import os
+"""Builder docs derive from structure.json + outputs/fabrication/cut-list.json (no legacy SB01 cut list, no silent defaults)."""
+from __future__ import annotations
+
+import copy
 import json
-import pytest
+import sys
 from pathlib import Path
 
-# Add scripts to sys.path
+import pytest
+
 sys.path.append(str(Path(__file__).parent.parent / "scripts"))
-from builder_docs_compiler import generate_builder_docs, generate_budget_estimate, generate_lumber_purchase_list, generate_assembly_guide
+from builder_docs_compiler import (  # type: ignore[import]  # noqa: E402
+    generate_assembly_guide,
+    generate_budget_estimate,
+    generate_builder_docs,
+    generate_lumber_purchase_list,
+)
 
-@pytest.fixture
-def mock_staging(tmp_path):
-    staging = tmp_path / "context" / "staging"
-    staging.mkdir(parents=True)
-    outputs = tmp_path / "outputs"
-    outputs.mkdir(parents=True)
-    shop_bp = outputs / "shop-blueprint"
-    shop_bp.mkdir(parents=True)
 
-    structure_data = {
+def _structure(sides: int = 6, braces: bool = True) -> dict:
+    return {
         "jurisdiction": {"region": "BC_Vancouver_Island"},
-        "layout": {"shape": "hexagon", "post_count": 6, "inscribed_radius_ft": 10.0},
+        "structure": {"sides": sides},
+        "layout": {"shape": "hexagon" if sides == 6 else "polygon", "post_count": sides},
         "members": {
-            "posts": {"nominal_size": "6x6", "cut_length_ft": 8.0, "board_feet": 120.0},
-            "beams": {"nominal_size": "6x12", "actual_depth_in": 11.25, "board_feet": 240.0}
+            "posts": {"nominal_size": "6x6", "actual_width_in": 5.5, "actual_depth_in": 5.5, "cut_length_ft": 8.0},
+            "beams": {"nominal_size": "6x12", "actual_width_in": 5.5, "actual_depth_in": 11.25, "cut_length_ft": 10.0},
         },
-        "roof": {
-            "pitch": "4:12",
-            "primary_rafters": {"count": 6, "nominal_size": "4x6", "cut_length_ft": 8.5, "actual_depth_in": 5.5, "actual_width_in": 3.5, "overhang_ft": 0.75, "board_feet": 180.0}
-        },
-        "hub": {"type": "polygonal", "radius_min_ft": 0.6},
+        "roof": {"primary_rafters": {"nominal_size": "4x6", "actual_width_in": 3.5, "actual_depth_in": 5.5}},
+        "hub": {"type": "hexagonal_prism"},
         "bracing": {
-            "enabled": True,
-            "brace": {"nominal_size": "4x4", "count_per_post": 2, "constraints": {"run_ft": 1.5}, "board_feet": 60.0}
+            "enabled": braces,
+            "brace": {"nominal_size": "4x4", "actual_width_in": 3.5, "actual_depth_in": 3.5, "count_per_post": 2},
         },
         "geometry": {
             "compound_cut": {"miter_deg": 28.71, "bevel_deg": 9.10},
-            "beam_ring": {"beam_miter_deg": 30.0, "interior_angle_deg": 120.0}
-        }
+            "beam_ring": {"beam_miter_deg": 30.0},
+        },
     }
 
-    cut_list_data = {
-        "total_board_feet": 600.0,
-        "items": [
-            {"id": "P1", "role": "post", "nominal": "6x6", "cut_length_ft": 8.0, "board_feet": 20.0},
-            {"id": "B1", "role": "beam", "nominal": "6x12", "cut_length_ft": 10.0, "board_feet": 40.0}
-        ]
-    }
 
-    with open(staging / "structure.json", "w", encoding="utf-8") as f:
-        json.dump(structure_data, f)
+def _cut_list(sides: int = 6, braces: bool = True) -> dict:
+    def member(mid, role, cut, order):
+        return {"id": mid, "role": role, "stock": {"cut_length_ft": cut, "order_length_ft": order}}
 
-    with open(shop_bp / "SB01-cut-list.json", "w", encoding="utf-8") as f:
-        json.dump(cut_list_data, f)
+    members = [member(f"P{i}", "post", 8.0, 10) for i in range(1, sides + 1)]
+    members += [member(f"B{i}", "beam", 10.0, 12) for i in range(1, sides + 1)]
+    members += [member(f"R{i}", "rafter_primary", 8.5, 10) for i in range(1, sides + 1)]
+    if braces:
+        members += [member(f"Brace{i}{s}", "brace", 2.2, 8) for i in range(1, sides + 1) for s in "ab"]
+    return {"schema": "garden-structure-designer/fabrication-cut-list/1.0", "members": members}
 
+
+@pytest.fixture
+def workspace(tmp_path):
+    staging, outputs = tmp_path / "context" / "staging", tmp_path / "outputs"
+    (outputs / "fabrication").mkdir(parents=True)
+    staging.mkdir(parents=True)
+    (staging / "structure.json").write_text(json.dumps(_structure()))
+    (outputs / "fabrication" / "cut-list.json").write_text(json.dumps(_cut_list()))
     return tmp_path
 
-def test_missing_cut_list_fails(tmp_path):
-    staging = tmp_path / "context" / "staging"
-    staging.mkdir(parents=True)
-    outputs = tmp_path / "outputs"
-    outputs.mkdir(parents=True)
-    
-    with open(staging / "structure.json", "w", encoding="utf-8") as f:
-        json.dump({"layout": {"shape": "hexagon"}}, f)
-        
-    res = generate_builder_docs(staging_dir=staging, outputs_dir=outputs)
-    assert res["status"] == "FAIL"
-    assert "SB01-cut-list.json missing" in res["reason"]
 
-def test_generate_builder_docs_success(mock_staging):
-    staging = mock_staging / "context" / "staging"
-    outputs = mock_staging / "outputs"
-    
-    res = generate_builder_docs(staging_dir=staging, outputs_dir=outputs)
-    assert res["status"] == "COMPLETE"
-    assert (outputs / "budget-estimate.md").exists()
-    assert (outputs / "lumber-purchase-list.md").exists()
-    assert (outputs / "assembly-guide.md").exists()
-    
-    assembly_guide = (outputs / "assembly-guide.md").read_text(encoding="utf-8")
-    assert "Phase 4.3 — Tripod-First Hub and Rafter Hoisting" in assembly_guide
-    assert "miter 28.71" in assembly_guide or "28.71°" in assembly_guide
+def _run(root: Path) -> dict:
+    return generate_builder_docs(staging_dir=root / "context" / "staging", outputs_dir=root / "outputs")
+
+
+def _edit_structure(root: Path, mutate) -> None:
+    path = root / "context" / "staging" / "structure.json"
+    data = json.loads(path.read_text())
+    mutate(data)
+    path.write_text(json.dumps(data))
+
+
+def test_missing_cut_list_fails(workspace):
+    (workspace / "outputs" / "fabrication" / "cut-list.json").unlink()
+    result = _run(workspace)
+    assert result["status"] == "FAIL"
+    assert "cut-list.json missing" in result["reason"]
+
+
+def test_generate_builder_docs_success(workspace):
+    result = _run(workspace)
+    assert result["status"] == "COMPLETE"
+    outputs = workspace / "outputs"
+    guide = (outputs / "assembly-guide.md").read_text(encoding="utf-8")
+    assert "Phase 4.3 — Tripod-First Hub and Rafter Hoisting" in guide
+    assert "28.71°" in guide
+    assert "three alternating" in guide
+    assert (outputs / "budget-estimate.md").exists() and (outputs / "lumber-purchase-list.md").exists()
+
+
+def test_board_feet_derived_from_section_and_cut_list(workspace):
+    _run(workspace)
+    text = (workspace / "outputs" / "lumber-purchase-list.md").read_text(encoding="utf-8")
+    # 6 posts: (5.5*5.5/12)*8.0 = 20.17 BF each -> 121.00 BF
+    assert "| Posts | 6x6 | 6 | 8.00' | 10.0' | 121.00 |" in text
+    assert "| Knee Braces | 4x4 | 12 |" in text
+    assert "Total Board Feet" in text
+
+
+@pytest.mark.parametrize(
+    "mutate,needle",
+    [
+        (lambda d: d["geometry"].pop("compound_cut"), "geometry.compound_cut"),
+        (lambda d: d["geometry"]["beam_ring"].pop("beam_miter_deg"), "geometry.beam_ring.beam_miter_deg"),
+        (lambda d: d["jurisdiction"].pop("region"), "jurisdiction.region"),
+        (lambda d: d["structure"].pop("sides"), "structure.sides"),
+        (lambda d: d["members"]["posts"].pop("nominal_size"), "members.posts.nominal_size"),
+        (lambda d: d["roof"]["primary_rafters"].pop("actual_depth_in"), "roof.primary_rafters.actual_depth_in"),
+    ],
+)
+def test_missing_structural_inputs_fail_closed(workspace, mutate, needle):
+    """No silent structural defaults (AGENTS data-driven rule)."""
+    _edit_structure(workspace, mutate)
+    result = _run(workspace)
+    assert result["status"] == "FAIL"
+    assert needle in result["reason"]
+
+
+def test_enabled_bracing_without_brace_members_fails(tmp_path):
+    staging, outputs = tmp_path / "context" / "staging", tmp_path / "outputs"
+    (outputs / "fabrication").mkdir(parents=True)
+    staging.mkdir(parents=True)
+    (staging / "structure.json").write_text(json.dumps(_structure(braces=True)))
+    (outputs / "fabrication" / "cut-list.json").write_text(json.dumps(_cut_list(braces=False)))
+    result = generate_builder_docs(staging_dir=staging, outputs_dir=outputs)
+    assert result["status"] == "FAIL" and "brace" in result["reason"]
+
+
+def test_assembly_guide_rafter_count_follows_sides():
+    guide = generate_assembly_guide(_structure(sides=9), _cut_list(sides=9))
+    assert "all 9 rafters" in guide and "six" not in guide.lower()
+
+
+def test_assembly_guide_tripod_only_when_sides_divisible_by_three():
+    guide = generate_assembly_guide(_structure(sides=8), _cut_list(sides=8))
+    assert "Tripod-First" not in guide
+    assert "Phase 4.3 — Balanced Hub and Rafter Hoisting" in guide
+
+
+def test_budget_discloses_rate_assumptions():
+    text = generate_budget_estimate(_structure(), _cut_list())
+    assert "LABOR EXCLUSION" in text and "Default Rate Basis" in text
+
+
+def test_lumber_list_hardware_counts_follow_cut_list():
+    text = generate_lumber_purchase_list(_structure(sides=8), _cut_list(sides=8))
+    assert "(Qty: 8)" in text

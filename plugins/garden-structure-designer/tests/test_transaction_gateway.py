@@ -31,7 +31,24 @@ PURGE_FILES = [
     "outputs/pergola_plan.md",
     "outputs/pergola_plan.pdf",
     "outputs/quality-dashboard.md",
+    # C5 families that were missing from the inventory
+    "context/staging/physics-validation-report.json",
+    "context/staging/visual-smoke-report.json",
+    "context/staging/drawing-content-report.json",
+    "context/staging/schema-validation-report.json",
+    "outputs/assembly-guide.md",
+    "outputs/budget-estimate.md",
+    "outputs/lumber-purchase-list.md",
+    "outputs/pergola_plan_embedded.md",
+    "outputs/pergola_plan_embedded.pdf",
+    "outputs/package-manifest.json",
+    "outputs/drawing-red-team-report.md",
+    "outputs/visual-smoke-report.md",
+    "outputs/shop-blueprint/SB01-cut-list.json",
+    "outputs/visual-smoke/plan.png",
+    "outputs/high-resolution-image/pergola_render_1.png",
 ]
+KEEP_FILES = ["outputs/run-insights.json"]  # archived audit evidence is never purged
 
 
 @pytest.fixture
@@ -142,12 +159,16 @@ def test_commit_purges_full_c5_inventory(canonical):
     _populate_derived(root)
     keep_input = root / "context" / "staging" / "notes.txt"
     keep_input.write_text("user input")
+    for rel in KEEP_FILES:
+        (root / rel).parent.mkdir(parents=True, exist_ok=True)
+        (root / rel).write_text("archived evidence")
 
     txn = begin_transaction(canonical, _base_hash(canonical))
     commit_transaction(txn)
 
     for rel in PURGE_FILES:
         assert not (root / rel).exists(), rel
+    assert all((root / rel).exists() for rel in KEEP_FILES)
     assert canonical.exists()
     assert keep_input.exists()
 
