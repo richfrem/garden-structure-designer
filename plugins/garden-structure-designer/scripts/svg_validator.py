@@ -1,36 +1,31 @@
 #!/usr/bin/env python3
 """
-svg_validator.py (CLI)
-=====================================
+svg_validator.py
+================
 
 Purpose:
-    svg_validator.py (CLI) =====================================
+    Machine validation of one SVG sheet against structure.json: XML well-formedness, dimension
+    labels, post topology count, source-hash and coordinate-map anchors, and member tagging
+    (every member element carries a data-tag that is a real member id; no unknown ids).
+    Used per sheet by run_drawing_red_team.py. Exit 0 = PASS, 1 = errors listed.
 
-Layer: Execution
+Layer: Execution / Stage 4-5 QA Gate
 
-Usage Examples:
-    python svg_validator.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - the SVG file and context/staging/structure.json (geometry.joints.resolved_model for member ids)
+    - path_utils.py
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    validate(svg_path, model_path) -> list[str]
+    main() -> None
+    _load_geometry_calcs(model_path) -> dict | None     _check_xml_validity(svg_path, raw) -> list[str]
+    _check_dimension_labels(...) / _check_topology_count(raw, model) / _check_source_hash(model_path, calcs)
+    _check_geometry_coordinates(raw, calcs) -> list[str]
+    _check_member_tags(raw, model) -> list[str]         _tag_problems(element, ids, roles, in_component) -> list[str]
+    _check_stale_sheet(raw, model) -> list[str]
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 svg_validator.py outputs/drawing-plan-view.svg [context/staging/structure.json]
 """
 from __future__ import annotations
 
@@ -199,6 +194,7 @@ def _check_topology_count(raw: str, model: dict) -> list[str]:
     return []
 
 def _check_source_hash(model_path: str, calcs: dict) -> list[str]:
+    """Legacy check: structural-model.json bytes must still match the hash recorded in geometry-calculations.json (no-op for structure.json)."""
     errors = []
     with open(model_path, 'rb') as f:
         current_hash = hashlib.sha256(f.read()).hexdigest()
@@ -221,6 +217,7 @@ def _check_source_hash(model_path: str, calcs: dict) -> list[str]:
     return errors
 
 def _check_geometry_coordinates(raw: str, calcs: dict) -> list[str]:
+    """The COORDINATE MAP comment embedded in the SVG must match geometry.svg_coordinates (drift > 5 px or a different grade_y fails)."""
     errors = []
     map_match = re.search(r"<!--\s*COORDINATE MAP:\s*({.*?})\s*-->", raw, re.DOTALL)
     if not map_match:
@@ -256,6 +253,61 @@ def _check_geometry_coordinates(raw: str, calcs: dict) -> list[str]:
 # ---------------------------------------------------------------------------
 
 
+def _check_stale_sheet(raw: str, model: dict) -> list[str]:
+    """The title block must show the current source hash and (when stamped) revision id, else the sheet is stale.
+
+    SVG_STALE_SOURCE_HASH / SVG_STALE_REVISION. Models without meta, and unstamped models (no revision_id),
+    skip the corresponding check.
+    """
+    meta = model.get("meta") or {}
+    errors: list[str] = []
+    source_hash, revision_id = meta.get("source_hash"), meta.get("revision_id")
+    if source_hash and f"SOURCE HASH: {source_hash[:8]}" not in raw:
+        errors.append(f"SVG_STALE_SOURCE_HASH: sheet does not show source hash {source_hash[:8]} of the current structure.json.")
+    if revision_id and f"REVISION: {revision_id[:8]}" not in raw:
+        errors.append(f"SVG_STALE_REVISION: sheet does not show revision {revision_id[:8]} of the current structure.json.")
+    return errors
+
+
+def _tag_problems(element: ET.Element, ids: set, roles: set, in_component: bool) -> list[str]:
+    """Tag errors of a single element (see _check_member_tags for the rules)."""
+    role, tag, ident = element.get("data-role"), element.get("data-tag"), element.get("data-id")
+    name = element.tag.split('}')[-1]
+    problems: list[str] = []
+    if ident and not tag:
+        problems.append(f"SVG_MEMBER_TAG_MISSING: <{name}> data-id={ident!r} has no data-tag.")
+    elif role in roles and not tag and not ident and not in_component:
+        problems.append(f"SVG_MEMBER_TAG_MISSING: <{name}> data-role={role!r} has no data-tag.")
+    if tag and tag not in ids:
+        problems.append(f"SVG_UNKNOWN_MEMBER_TAG: data-tag={tag!r} is not a member of structure.json.")
+    return problems
+
+
+def _check_member_tags(raw: str, model: dict) -> list[str]:
+    """Member elements must carry data-tag equal to a real structure.json member id (AGENTS ids across layers).
+
+    SVG_MEMBER_TAG_MISSING: an element has data-id or a member data-role but no data-tag
+    (decorative member-role elements inside a data-role="component" panel are tolerated).
+    SVG_UNKNOWN_MEMBER_TAG: a data-tag that is not a resolved_model member id.
+    Models without a resolved_model (legacy) are skipped.
+    """
+    members = ((model.get("geometry") or {}).get("joints") or {}).get("resolved_model", {}).get("members", [])
+    if not members:
+        return []
+    ids, roles = {m["id"] for m in members}, {m["role"] for m in members}
+    try:
+        root = ET.fromstring(raw)
+    except ET.ParseError:
+        return []  # XML problems are reported by _check_xml_validity
+    errors: list[str] = []
+    stack = [(root, False)]
+    while stack:
+        element, in_component = stack.pop()
+        errors.extend(_tag_problems(element, ids, roles, in_component))
+        stack.extend((child, in_component or element.get("data-role") == "component") for child in reversed(list(element)))
+    return errors
+
+
 def validate(svg_path: str, model_path: str) -> list[str]:
     """
     Run all validation checks on a single SVG against structural-model.json.
@@ -288,6 +340,8 @@ def validate(svg_path: str, model_path: str) -> list[str]:
 
     errors.extend(_check_dimension_labels(raw, model, calcs))
     errors.extend(_check_topology_count(raw, model))
+    errors.extend(_check_member_tags(raw, model))
+    errors.extend(_check_stale_sheet(raw, model))
     return errors
 
 
