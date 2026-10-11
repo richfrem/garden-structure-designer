@@ -1,99 +1,101 @@
-import os
-import glob
-import ast
+#!/usr/bin/env python3
+"""
+format_headers.py
+=================
 
-def extract_docstring(content):
+Purpose:
+    Adds the standard script header (Purpose, Layer, Key Input Dependencies, Key Functions,
+    Usage) to Python files in the current directory that have NO module docstring. It is safe by
+    default: nothing is written without ``--apply``, and a file that already has any module
+    docstring is never touched. (An earlier version rewrote every header with a generic template
+    on import; the boilerplate it produced has since been replaced with real headers.) Review
+    finding: the generated template carries no information, so removal is proposed.
+
+Layer: Maintenance / Repo Tooling
+
+Key Input Dependencies:
+    - *.py files in the current working directory
+
+Key Functions:
+    extract_docstring(content) -> str
+    format_header(filename, original_doc) -> str
+    main(argv=None) -> int
+
+Usage Examples:
+    python3 format_headers.py            # dry run: lists files that would receive a header
+    python3 format_headers.py --apply    # writes the template into docstring-less files
+"""
+from __future__ import annotations
+
+import argparse
+import ast
+import glob
+import sys
+
+SKIPPED = ("format_headers.py", "generate_schemas.py")
+
+
+def extract_docstring(content: str) -> str:
+    """Returns the module docstring of ``content`` ('' when absent or unparsable)."""
     try:
-        module = ast.parse(content)
-        doc = ast.get_docstring(module)
-        return doc if doc else ""
-    except Exception:
+        return ast.get_docstring(ast.parse(content)) or ""
+    except SyntaxError:
         return ""
 
-def format_header(filename, original_doc):
+
+def format_header(filename: str, original_doc: str) -> str:
+    """Builds the standard header text for ``filename`` (``original_doc`` seeds the Purpose line)."""
     lines = original_doc.split("\n")
-    purpose = lines[0] if lines else "Script functionality."
-    if len(lines) > 1 and lines[1]:
-        purpose += " " + lines[1]
-        
+    purpose = lines[0] if lines and lines[0] else "Describe what this script does."
     return f'''#!/usr/bin/env python3
 """
-{filename} (CLI)
-=====================================
+{filename}
+{"=" * len(filename)}
 
 Purpose:
     {purpose.strip()}
 
 Layer: Execution
 
-Usage Examples:
-    python {filename} [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - list required files, environment variables or libraries here
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    - list every function with its signature here
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 {filename} [args]
 """
 '''
 
-files = glob.glob("*.py")
-for f in files:
-    if f in ['format_headers.py', 'generate_schemas.py']:
-        continue
-    with open(f, "r") as file:
-        content = file.read()
-        
-    # Remove existing shebang and module docstring
-    lines = content.split('\n')
-    start_idx = 0
-    if lines and lines[0].startswith("#!"):
-        start_idx = 1
-        
-    in_docstring = False
-    doc_char = ""
-    for i in range(start_idx, len(lines)):
-        line = lines[i].strip()
-        if not in_docstring:
-            if line.startswith('"""') or line.startswith("'''"):
-                in_docstring = True
-                doc_char = line[:3]
-                if line.endswith(doc_char) and len(line) > 3:
-                    in_docstring = False
-                    start_idx = i + 1
-                    break
-        else:
-            if line.endswith(doc_char):
-                start_idx = i + 1
-                break
-            elif '"""' in line or "'''" in line:
-                start_idx = i + 1
-                break
-                
-    if start_idx == 0 and '"""' not in content[:100]:
-        pass # No docstring found at the start
-        
-    rest_of_code = "\n".join(lines[start_idx:]).lstrip()
-    
-    docstring = extract_docstring(content)
-    header = format_header(f, docstring)
-    
-    with open(f, "w") as file:
-        file.write(header + rest_of_code)
 
-print("Headers formatted.")
+def _strip_shebang(content: str) -> str:
+    """Removes a leading shebang line so the new header can supply its own."""
+    return content.split("\n", 1)[1] if content.startswith("#!") and "\n" in content else content
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Lists (default) or fixes (--apply) Python files lacking a module docstring; never touches documented files."""
+    parser = argparse.ArgumentParser(description="Add the standard header to docstring-less scripts.")
+    parser.add_argument("--apply", action="store_true", help="write headers (default: dry run)")
+    args = parser.parse_args(argv)
+
+    changed = 0
+    for path in sorted(glob.glob("*.py")):
+        if path in SKIPPED:
+            continue
+        with open(path, encoding="utf-8") as file:
+            content = file.read()
+        if extract_docstring(content):
+            continue
+        changed += 1
+        print(f"{'Adding header to' if args.apply else 'Would add header to'} {path}")
+        if args.apply:
+            with open(path, "w", encoding="utf-8") as file:
+                file.write(format_header(path, "") + _strip_shebang(content).lstrip())
+    print("Headers formatted." if args.apply else f"Dry run: {changed} file(s) lack a module docstring.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
