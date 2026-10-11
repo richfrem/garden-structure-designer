@@ -80,6 +80,7 @@ def check_member_counts(structure_file: Path) -> list[dict]:
         return []
 
     def failure(detail: str) -> dict:
+        """A FAIL record for the member-count invariant."""
         return {"path": str(structure_file), "check": "member_counts_match_sections", "status": "FAIL", "detail": detail}
 
     failures = []
