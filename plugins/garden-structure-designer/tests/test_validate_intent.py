@@ -38,7 +38,7 @@ from validate_intent import IntentError, assert_intent_valid, validate_intent
 VALID_STRUCTURE: dict = {
     "intent": {"jurisdiction": "BC_SAANICH"},
     "structure": {"sides": 6},
-    "footings": {"diameter_in": 12},
+    "footings": {"diameter_in": 12, "depth_in": 24},
     "layout": {
         "post_count": 6,
         "inscribed_radius_ft": 4.875,

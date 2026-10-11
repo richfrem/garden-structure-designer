@@ -48,6 +48,9 @@ from functools import partial
 from types import SimpleNamespace
 from typing import Any
 
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from constants import FOOTING_STUB_ABOVE_GRADE_FT
+
 V3 = tuple[float, float, float]
 
 def vdot(a: V3, b: V3) -> float:
@@ -184,9 +187,11 @@ def _resolved_context(structure: dict, joints: dict) -> SimpleNamespace:
 
 
 def _add_posts_and_footings(ctx: SimpleNamespace) -> None:
-    """Posts and their footings (one of each per post position)."""
-    PHW, PHD, UP, zp, pxy, post_h = ctx.PHW, ctx.PHD, ctx.UP, ctx.zp, ctx.pxy, ctx.post_h
+    """Posts and their footings (one of each per post position); footing size and embedment come from structure.footings."""
+    structure, PHW, PHD, UP, zp, pxy, post_h = ctx.structure, ctx.PHW, ctx.PHD, ctx.UP, ctx.zp, ctx.pxy, ctx.post_h
     add_prism = partial(_add_prism, ctx.resolved)
+    footing_hw = structure["footings"]["diameter_in"] / 24.0
+    footing_depth_ft = structure["footings"]["depth_in"] / 12.0
     # Posts
     for i, p in enumerate(pxy):
         post_id = f"P{i+1}"
@@ -194,7 +199,7 @@ def _add_posts_and_footings(ctx: SimpleNamespace) -> None:
         p1 = (p[0], p[1], zp["Z_POST_TOP"])
         cs = {"base_on_footing": True, "top_on_beam": True}
         add_prism(p0, p1, PHW, PHD, UP, "post", post_id, post_h, 90.0, cs)
-        add_prism((p[0], p[1], zp["Z_GRADE"] - 1.5), (p[0], p[1], zp["Z_GRADE"] + 0.33), 0.5, 0.5, UP, "footing", f"FT{i+1}", 1.83, 90.0, {})
+        add_prism((p[0], p[1], zp["Z_GRADE"] - footing_depth_ft), (p[0], p[1], zp["Z_GRADE"] + FOOTING_STUB_ABOVE_GRADE_FT), footing_hw, footing_hw, UP, "footing", f"FT{i+1}", footing_depth_ft + FOOTING_STUB_ABOVE_GRADE_FT, 90.0, {})
 
 
 def _add_beams(ctx: SimpleNamespace) -> None:

@@ -107,6 +107,9 @@ DIM_CROSSCHECK_TOL_MM = MM_PER_INCH  # SVG label vs DXF geometry parity (1 in)
 IMPLEMENTED_FAMILIES: tuple[str, ...] = ("RadialHubTopology",)
 RESERVED_FAMILIES: tuple[str, ...] = ("OrthogonalGridTopology", "HipRidgeTopology")
 
+# --- Footings ---
+FOOTING_STUB_ABOVE_GRADE_FT = 0.33  # declared nowhere in structure.json; planning assumption for the pier stub above grade
+
 # --- Physical contact tolerances (feet) used by validate_connections ---
 CONTACT_BEAM_SOFFIT_TOL_FT = 0.0104  # ~1/8 inch
 CONTACT_RAFTER_TIP_TOL_FT = 0.2

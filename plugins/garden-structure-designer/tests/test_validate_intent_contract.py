@@ -33,6 +33,7 @@ def test_real_seed_is_a_valid_intent():
         "intent.jurisdiction",
         "structure.sides",
         "footings.diameter_in",
+        "footings.depth_in",
         "members.posts.actual_depth_in",
         "members.beams.actual_width_in",
         "bracing.brace.actual_width_in",
