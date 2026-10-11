@@ -45,9 +45,9 @@
   - `outputs/cad/SB01-structure.dxf`: Full-scale 3D wireframe framing model.
   - `outputs/cad/SB02-plan.dxf`: Full-scale 2D planar projection.
   - Layer mappings: `FRAMING_POSTS`, `FRAMING_BEAMS`, `FRAMING_RAFTERS`, `FRAMING_HUBS`, `FRAMING_BRACES`, `FOOTINGS_PIERS`.
-- [ ] **TASK-107**: Wire pipeline lifecycle stages in verified order: Stage 4 (Renderings/DXF) → Stage 5.5 (Parsed DXF & dimensions) → Stage 5.6 (Visual smoke) → Stage 6 (Cut lists & BOM) → Stage 5 (Independent Red-Team approval across ALL artifacts including cut lists) → Stage 7 (Package compilation in `compile_package.py`).
+- [x] **TASK-107**: Wire pipeline lifecycle stages in verified order: Stage 4 (Renderings/DXF) → Stage 5.5 (Parsed DXF & dimensions) → Stage 5.6 (Visual smoke) → Stage 6 (Cut lists & BOM) → Stage 5 (Independent Red-Team approval across ALL artifacts including cut lists) → Stage 7 (Package compilation in `compile_package.py`).
 - [ ] **TASK-108**: Implement parsed DXF validation in `plugins/garden-structure-designer/scripts/cross_artifact_validator.py` (parsed entity counts, 1:1 member ID xdata parity, 3D bounds for SB01, 2D projected XY bounds for SB02).
-- [ ] **TASK-109**: Author integration test `plugins/garden-structure-designer/tests/test_dxf_export_pipeline.py`.
+- [x] **TASK-109**: Author integration test `plugins/garden-structure-designer/tests/test_dxf_export_pipeline.py`.
 
 ---
 
