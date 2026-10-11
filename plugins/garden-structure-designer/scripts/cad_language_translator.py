@@ -311,30 +311,30 @@ def build_member_constraints(
 
 def extract_nominal_parameters(structure: Dict[str, Any]) -> Tuple[Any, ...]:
     """Extracts dimensional layout values and computed z-levels from structure dict."""
-    layout = structure.get("layout", {})
-    members = structure.get("members", {})
-    qty = layout.get("post_count") or 6
-    r_ft = layout.get("inscribed_radius_ft") or 6.0
-    post_h = members.get("posts", {}).get("cut_length_ft") or 8.0
-    beam_d_in = members.get("beams", {}).get("actual_depth_in") or 11.25
+    layout = structure["layout"]
+    members = structure["members"]
+    qty = layout["post_count"]
+    r_ft = layout["inscribed_radius_ft"]
+    post_h = members["posts"]["cut_length_ft"]
+    beam_d_in = members["beams"]["actual_depth_in"]
     beam_d_ft = beam_d_in / 12.0
 
-    pitch_str = structure.get("roof", {}).get("pitch") or "4:12"
+    pitch_str = structure["roof"]["pitch"]
     pr, rr = [float(x) for x in pitch_str.split(":")]
 
     z_grade = 0.0
     z_post_top = post_h - beam_d_ft
     z_beam_top = post_h
-    hub_r = max(structure.get("hub", {}).get("radius_min_ft") or 0.6, 0.75)
+    hub_r = max(structure["hub"].get("radius_min_ft") or 0.6, 0.75)
     roof_rise = r_ft * (pr / rr)
     z_apex = post_h + roof_rise
 
-    phw = (members.get("posts", {}).get("actual_width_in") or 5.5) / 24.0
+    phw = members["posts"]["actual_width_in"] / 24.0
     shape = layout.get("shape", structure.get("structure", {}).get("shape", "polygon"))
     len_ft = float(layout.get("length_ft") or (r_ft * 2.0))
     wid_ft = float(layout.get("width_ft") or (r_ft * 1.333))
 
-    rafter_d_ft = (structure.get("roof", {}).get("primary_rafters", {}).get("actual_depth_in") or 5.5) / 12.0
+    rafter_d_ft = structure["roof"]["primary_rafters"]["actual_depth_in"] / 12.0
     seat_notch = rafter_d_ft / 3.0
     remaining_meat = rafter_d_ft - seat_notch
     apothem = r_ft * math.cos(math.pi / qty)
@@ -370,7 +370,7 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
     global_constraints = {
         "roof_planes": roof_planes_global,
         "proportion_rules": {
-            "beam_depth_gt_rafter_depth": beam_d_in > (structure.get("roof", {}).get("primary_rafters", {}).get("actual_depth_in") or 5.5),
+            "beam_depth_gt_rafter_depth": beam_d_in > structure["roof"]["primary_rafters"]["actual_depth_in"],
             "hub_height_lte_beam_depth_x1.2": True,
             "brace_length_lte_post_height_x0.4": True,
         },

@@ -64,20 +64,26 @@ def get_standard_length(cut_length: float) -> int:
     return int(math.ceil(cut_length / 2.0) * 2)
 
 
+def _dimension_in(spec: Dict[str, Any], axis: str, default: float) -> float:
+    """Reads a member width/depth in inches, preferring nominal keys over actual_ keys."""
+    return float(spec.get(f"{axis}_in") or spec.get(f"actual_{axis}_in") or default)
+
+
 def parse_member_dimensions(
     posts_data: Dict[str, Any],
     beams_data: Dict[str, Any],
     roof_data: Dict[str, Any],
 ) -> Tuple[float, float, float, float, float, float]:
     """Extracts actual width and depth dimensions in inches for framing members."""
-    post_w = float(posts_data.get("width_in") or posts_data.get("actual_width_in") or 6.0)
-    post_d = float(posts_data.get("depth_in") or posts_data.get("actual_depth_in") or 6.0)
-    beam_w = float(beams_data.get("width_in") or beams_data.get("actual_width_in") or 4.0)
-    beam_d = float(beams_data.get("depth_in") or beams_data.get("actual_depth_in") or 8.0)
     raf_spec = roof_data.get("rafters") or roof_data.get("primary_rafters") or {}
-    rafter_w = float(raf_spec.get("width_in") or raf_spec.get("actual_width_in") or 4.0)
-    rafter_d = float(raf_spec.get("depth_in") or raf_spec.get("actual_depth_in") or 6.0)
-    return (post_w, post_d, beam_w, beam_d, rafter_w, rafter_d)
+    return (
+        _dimension_in(posts_data, "width", 6.0),
+        _dimension_in(posts_data, "depth", 6.0),
+        _dimension_in(beams_data, "width", 4.0),
+        _dimension_in(beams_data, "depth", 8.0),
+        _dimension_in(raf_spec, "width", 4.0),
+        _dimension_in(raf_spec, "depth", 6.0),
+    )
 
 
 def compute_member_spans(

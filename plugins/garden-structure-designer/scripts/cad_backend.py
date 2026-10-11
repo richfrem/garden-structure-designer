@@ -181,11 +181,11 @@ def build_cad_model(model: dict, calcs: dict) -> object | None:
     beams_spec = model.get("members", {}).get("beams", {})
     rafters_spec = model.get("members", {}).get("rafters", {})
 
-    post_hw = ((posts_spec.get("width_in") or 5.5) / 12.0) / 2.0
-    post_hd = ((posts_spec.get("depth_in") or 5.5) / 12.0) / 2.0
-    beam_hw = ((beams_spec.get("width_in") or 5.5) / 12.0) / 2.0
-    rafter_hw = ((rafters_spec.get("width_in") or 3.5) / 12.0) / 2.0
-    rafter_hd = ((rafters_spec.get("depth_in") or 5.5) / 12.0) / 2.0
+    post_hw = ((posts_spec.get("width_in") or posts_spec.get("actual_width_in") or 5.5) / 12.0) / 2.0
+    post_hd = ((posts_spec.get("depth_in") or posts_spec.get("actual_depth_in") or 5.5) / 12.0) / 2.0
+    beam_hw = ((beams_spec.get("width_in") or beams_spec.get("actual_width_in") or 5.5) / 12.0) / 2.0
+    rafter_hw = ((rafters_spec.get("width_in") or rafters_spec.get("actual_width_in") or 3.5) / 12.0) / 2.0
+    rafter_hd = ((rafters_spec.get("depth_in") or rafters_spec.get("actual_depth_in") or 5.5) / 12.0) / 2.0
 
     parts: List[Any] = []
     parts.extend(_build_posts_and_footings(scene, post_hw, post_hd))

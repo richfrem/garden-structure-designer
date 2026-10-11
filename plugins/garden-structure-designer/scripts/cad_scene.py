@@ -157,21 +157,21 @@ def _build_scene_legacy(model: dict, calcs: dict) -> Tuple[dict, dict]:
     )
     members_sec = model.get("members", {})
     posts_sec = members_sec["posts"] if "posts" in members_sec else {}
-    qty = posts_sec.get("quantity") or 6
+    qty = posts_sec["quantity"] if "quantity" in posts_sec else 6
 
     dims_sec = model.get("dimensions", {})
-    max_diag = dims_sec.get("max_diagonal_ft") or 10.0
+    max_diag = dims_sec["max_diagonal_ft"] if "max_diagonal_ft" in dims_sec else 10.0
     r_ft = max_diag / 2.0
 
-    tot_h_sec = calcs.get("total_height") or {}
-    post_h = tot_h_sec.get("post_ft") or 8.33
-    beam_d = tot_h_sec.get("beam_depth_ft") or 0.604
+    tot_h_sec = calcs["total_height"] if "total_height" in calcs else {}
+    post_h = tot_h_sec["post_ft"] if "post_ft" in tot_h_sec else 8.33
+    beam_d = tot_h_sec["beam_depth_ft"] if "beam_depth_ft" in tot_h_sec else 0.604
 
-    roof_r_sec = calcs.get("roof_rise") or {}
-    roof_r = roof_r_sec.get("rise_ft") or 1.667
+    roof_r_sec = calcs["roof_rise"] if "roof_rise" in calcs else {}
+    roof_r = roof_r_sec["rise_ft"] if "rise_ft" in roof_r_sec else 1.667
 
     bracing_sec = model.get("bracing", {})
-    bracing_enabled = bracing_sec.get("enabled", True)
+    bracing_enabled = bracing_sec["enabled"] if "enabled" in bracing_sec else True
 
     structure_dict = {
         "layout": {"post_count": qty, "inscribed_radius_ft": r_ft},
