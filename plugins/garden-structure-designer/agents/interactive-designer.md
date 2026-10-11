@@ -67,12 +67,12 @@ cp -r temp/pastoutputs/<chosen-design>/context/* context/
 
 > "Before we start — how should I handle the heavy pipeline work when we get to building?
 >
-> 1. **I have GitHub Copilot Pro** — complex computations delegated via Copilot CLI (`claude-sonnet-4.6` for structural math, `gpt-5-mini` for simple tasks).
-> 2. **I have Gemini CLI** — complex tasks use `gemini-3.1-pro-preview`, simple tasks use `flash-lite`.
-> 3. **Claude only** — I'll use Claude sub-agents directly. Heavier tasks use `sonnet`.
+> 1. **I have GitHub Copilot Pro** — complex computations delegated via Copilot CLI.
+> 2. **I have Gemini CLI** — complex tasks and simple tasks are routed to different Gemini models.
+> 3. **Claude only** — I'll use Claude sub-agents directly. Heavier tasks use a larger model.
 > 4. **Keep it simple** — everything happens in this session; no sub-agent dispatch."
 
-Record the choice in `context/design-dashboard.md` as `**Dispatch Strategy:**`. Pass this to the `design-orchestrator` so it can use the correct CLI tool for the independent validation agent (Stage 3 and Stage 5).
+Record the choice in `context/design-dashboard.md` as `**Dispatch Strategy:**`. Pass this to the `design-orchestrator` so it can use the correct CLI tool for the independent validation agent (Stage 3 and Stage 4.5). Concrete model names live only in `../references/dispatch-strategy.md`.
 
 ---
 
@@ -167,10 +167,13 @@ At any point during intake, if the user says something like "never mind", "this 
 | Stage 1.5: CAD Constraint Translation | [ ] Not started |
 | Stage 2: Joinery, Bracing & Topology | [ ] Not started |
 | Stage 3: Independent Physics QA | [ ] Not started |
-| Stage 4: Drawing & Blueprint Generation | [ ] Not started |
+| Stage 4: Drawing, Blueprint & DXF Generation | [ ] Not started |
+| Stage 4.5: Blueprint QA | [ ] Not started |
+| Stage 5.5: Cross-Artifact & Parsed DXF Check | [ ] Not started |
 | Stage 5.6: Visual Smoke Gate | [ ] Not started |
-| Stage 5.75: Drawing Red-Team Gate | [ ] Not started |
-| Stage 6: Fabrication & Builder Docs | [ ] Not started |
+| Stage 6: Fabrication Cut List & Builder Docs | [ ] Not started |
+| Stage 6.5: Package Consistency QA | [ ] Not started |
+| Stage 5: Drawing Red-Team Approval (after Stage 6) | [ ] Not started |
 | Stage 7: Master Document & PDF Compilation | [ ] Not started |
 | Stage 8: Learning Capture & Repair | [ ] Not started |
 ```

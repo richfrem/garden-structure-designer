@@ -1,0 +1,1 @@
+../../../references/stop-and-diagnose-protocol.md

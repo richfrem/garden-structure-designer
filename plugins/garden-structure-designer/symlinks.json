@@ -2940,6 +2940,30 @@
       "dst": "plugins/garden-structure-designer/skills/document-compiler/scripts/revision_identity.py",
       "strategy": "symlink",
       "description": "document-compiler: import closure of the scripts its SKILL.md runs"
+    },
+    {
+      "src": "plugins/garden-structure-designer/references/drawing-review-criteria.md",
+      "dst": "plugins/garden-structure-designer/skills/adversarial-drawing-reviewer/references/drawing-review-criteria.md",
+      "strategy": "symlink",
+      "description": "red-team review criteria shared by the agent and the skill"
+    },
+    {
+      "src": "plugins/garden-structure-designer/references/stop-and-diagnose-protocol.md",
+      "dst": "plugins/garden-structure-designer/skills/obstacle-triage/references/stop-and-diagnose-protocol.md",
+      "strategy": "symlink",
+      "description": "agent reference shared with skill obstacle-triage"
+    },
+    {
+      "src": "plugins/garden-structure-designer/references/revision-mode.md",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/references/revision-mode.md",
+      "strategy": "symlink",
+      "description": "agent reference shared with skill document-compiler"
+    },
+    {
+      "src": "plugins/garden-structure-designer/references/dispatch-strategy.md",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/references/dispatch-strategy.md",
+      "strategy": "symlink",
+      "description": "agent reference shared with skill structural-engine"
     }
   ]
 }
