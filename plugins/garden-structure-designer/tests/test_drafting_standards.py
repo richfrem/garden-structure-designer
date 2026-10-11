@@ -1,4 +1,4 @@
-"""Invariant tests for control_plane/constants.py and parity across the drafting tools."""
+"""Invariant tests for scripts/constants.py and parity across the drafting tools."""
 from __future__ import annotations
 
 import re
