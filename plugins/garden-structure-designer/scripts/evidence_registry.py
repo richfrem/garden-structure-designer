@@ -1,36 +1,28 @@
 #!/usr/bin/env python3
 """
-evidence_registry.py (CLI)
-=====================================
+evidence_registry.py
+====================
 
 Purpose:
-    evidence_registry.py =====================================
+    Registry of evidence behind design claims: each entry links a claim to an artifact (optionally a
+    JSON pointer into it), the producing script, its source hash and the validators that checked it
+    (context/staging/evidence-registry.json). validate_evidence_links reports entries whose
+    artifact no longer exists. Evidence from an earlier revision must never satisfy a current gate:
+    bind entries to source_hash and re-validate after every committed revision.
 
-Layer: Execution
+Layer: Execution / Learning Loop
 
-Usage Examples:
-    python evidence_registry.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - context/staging/evidence-registry.json (created on first write), path_utils.py
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    get_registry_file() -> Path             init_registry() -> dict
+    load_registry() -> dict                 save_registry(data) -> None
+    add_evidence(claim, artifact, json_pointer=None, source_script=None, source_hash=None, validators=None) -> str
+    validate_evidence_links() -> list[str]
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 evidence_registry.py     # verifies every registered artifact still exists (exit 1 if not)
 """
 import json
 import os
@@ -39,15 +31,18 @@ from typing import Dict, Any, List
 from path_utils import staging_dir
 
 def get_registry_file() -> Path:
+    """Path of the evidence registry file in the staging directory."""
     return staging_dir() / "evidence-registry.json"
 
 def init_registry() -> Dict[str, Any]:
+    """A new, empty registry document."""
     return {
         "schema": "garden-structure-designer/evidence-registry/1.0",
         "evidence": []
     }
 
 def load_registry() -> Dict[str, Any]:
+    """Loads the registry, or a fresh one when none exists yet."""
     file_path = get_registry_file()
     if file_path.exists():
         with open(file_path, 'r') as f:
@@ -55,10 +50,12 @@ def load_registry() -> Dict[str, Any]:
     return init_registry()
 
 def save_registry(data: Dict[str, Any]) -> None:
+    """Writes the registry back to disk."""
     with open(get_registry_file(), 'w') as f:
         json.dump(data, f, indent=2)
 
 def add_evidence(claim: str, artifact: str, json_pointer: str = None, source_script: str = None, source_hash: str = None, validators: list = None) -> str:
+    """Appends an evidence entry and returns its id (EV-0001, EV-0002, ...)."""
     data = load_registry()
     evidence_id = f"EV-{len(data['evidence']) + 1:04d}"
     
@@ -77,6 +74,7 @@ def add_evidence(claim: str, artifact: str, json_pointer: str = None, source_scr
     return evidence_id
 
 def validate_evidence_links() -> List[str]:
+    """Returns one message per registered artifact that no longer exists."""
     data = load_registry()
     broken = []
     for ev in data.get("evidence", []):

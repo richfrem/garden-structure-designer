@@ -1,36 +1,25 @@
 #!/usr/bin/env python3
 """
-failure_to_test.py (CLI)
-=====================================
+failure_to_test.py
+==================
 
 Purpose:
-    failure_to_test.py =====================================
+    Turns each failed axis of a drift report into a generated regression test under
+    agent-workspace/.../generated-tests (classification-specific invariant or a generic guard).
+    Note: the generated structural test pins the legacy 28.71/9.10 compound cut sample values, so
+    treat generated tests as starting points to review, not as authoritative geometry assertions.
 
-Layer: Execution
+Layer: Execution / Learning Loop
 
-Usage Examples:
-    python failure_to_test.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - drift report JSON (failed_axes) passed as argv[1]
+    - error_classifier.py, path_utils.py
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    main() -> None
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 failure_to_test.py context/staging/drift_report.json
 """
 import json
 import os
@@ -42,6 +31,7 @@ from path_utils import agent_workspace_dir
 from error_classifier import classify_failure
 
 def main():
+    """Reads the drift report and writes one generated regression test per failed axis."""
     if len(sys.argv) < 2:
         print("Usage: python3 failure_to_test.py <drift_report.json>")
         sys.exit(1)

@@ -1,36 +1,23 @@
 #!/usr/bin/env python3
 """
-learning_backup.py (CLI)
-=====================================
+learning_backup.py
+==================
 
 Purpose:
-    learning_backup.py =====================================
+    Timestamped backup of the learning artifacts (learned patterns, generated tests, the learning
+    registry, repair-map.json and every skill's SKILL.md) under agent-workspace/.../.backups/<ts>.
 
-Layer: Execution
+Layer: Execution / Learning Loop
 
-Usage Examples:
-    python learning_backup.py [args]
-
-Supported Object Types:
-    JSON, SVG, Markdown
-
-CLI Arguments:
-    Varies per script, typically input file paths.
-
-Input Files:
-    context/staging/ *.json outputs/ *.svg
-
-Output:
-    Validation codes (0 or 1), generated JSON or SVG files.
+Key Input Dependencies:
+    - agent workspace learned-patterns/ and generated-tests/, context/staging/learning-registry.json,
+      plugin repair-map.json, skills/*/SKILL.md, path_utils.py
 
 Key Functions:
-    Refer to module docstring or inner functions.
+    main() -> None
 
-Script Dependencies:
-    Standard library json, os, sys, math, hashlib, etc.
-
-Consumed by:
-    design-orchestrator, various skills in the pipeline.
+Usage Examples:
+    python3 learning_backup.py
 """
 import json
 import sys
@@ -42,6 +29,7 @@ sys.path.append(str(Path(__file__).parent.resolve()))
 from path_utils import staging_dir, agent_workspace_dir, plugin_root
 
 def main():
+    """Copies the learning artifacts and each SKILL.md into a new timestamped backup directory."""
     timestamp = datetime.now().astimezone().strftime("%Y%m%d-%H%M%S")
     backup_dir = agent_workspace_dir() / ".backups" / timestamp
     backup_dir.mkdir(parents=True, exist_ok=True)
