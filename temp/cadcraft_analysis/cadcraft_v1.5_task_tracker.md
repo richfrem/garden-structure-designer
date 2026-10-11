@@ -9,7 +9,7 @@
 
 ## 1. Upstream Submodule & Build Setup
 
-- [ ] **TASK-SUB-001**: Move `temp/repos/cadcraft` into canonical pinned submodule `vendor/cadcraft` tracking `https://github.com/storytold/cadcraft` at commit `54ea5e743a29acd8f3178cfaa82fb74a38c2de72`. Remove `temp/repos/cadcraft`.
+- [x] **TASK-SUB-001**: Move `temp/repos/cadcraft` into canonical pinned submodule `vendor/cadcraft` tracking `https://github.com/storytold/cadcraft` at commit `54ea5e743a29acd8f3178cfaa82fb74a38c2de72`. Remove `temp/repos/cadcraft`.
 - [ ] **TASK-SUB-002**: Author portable, cross-platform build script `scripts/build_cadcraft.py` to compile `cargo build --locked --release -p cadcraft-cli --manifest-path vendor/cadcraft/Cargo.toml`.
 
 ---
@@ -26,7 +26,7 @@
   - Assert Stage 0.5 & Stage 2 fail-closed with `TOPOLOGY_NOT_IMPLEMENTED` on reserved families (`OrthogonalGridTopology`, `HipRidgeTopology`).
   - Verify downstream renderers, CAD adapters, and package compilers are strictly NOT called after Stage 2 rejection.
 - [x] **TASK-002**: Implement Stage 0.5 `plugins/garden-structure-designer/scripts/validate_topology_intent.py` and update `schemas/structure.schema.json`.
-- [ ] **TASK-003**: Harden Stage 2 `plugins/garden-structure-designer/scripts/topology_compiler.py` to validate source arrays before graph construction; enforce in-process validation for downstream consumers.
+- [x] **TASK-003**: Harden Stage 2 `plugins/garden-structure-designer/scripts/topology_compiler.py` to validate source arrays before graph construction; enforce in-process validation for downstream consumers.
 - [ ] **TASK-004**: Record baseline evidence (observed paths, precision limits) per plan TASK-004 without asserting unverified license claims.
 
 ---
