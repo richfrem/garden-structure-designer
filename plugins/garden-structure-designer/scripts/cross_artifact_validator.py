@@ -15,6 +15,7 @@ Key Input Dependencies:
     - context/staging/structure.json
     - outputs/**/*.md and outputs/**/*.svg
     - outputs/cad/SB01-structure.dxf and outputs/cad/SB02-plan.dxf
+    - constants.py (tolerances, layers), revision_identity.py (revision hash), path_utils.py
 
 Key Functions:
     check_paths(file_path: str, content: str) -> list[str]
@@ -23,6 +24,14 @@ Key Functions:
     validate(staging_dir: str, outputs_dir: str) -> list[str]
     validate_dxf_artifacts(staging_dir: str, outputs_dir: str) -> list[str]
     validate_dimension_crosscheck(...) -> list[str]
+    _entity_points(entity) -> list[tuple]            _bounds(points) -> Bounds
+    _member_xdata(entity) -> dict[str, str]          _resolved_members(model) -> (members, scale)  [fail closed]
+    _expected_revision(model) -> (id, hash)          _expected_member_bounds(member, scale) -> Bounds
+    _max_delta(a, b) -> float                        _group_members(label, doc, errors) -> dict  [untagged extras]
+    _check_header_and_layers(label, doc, errors)     _check_member_tags(label, sheet_id, entities, member, revision, errors)
+    _check_dxf_document(...) -> dict                 _check_structure_bounds(...)    _check_planar(label, doc, errors)
+    _parse_feet_inches(text) -> float | None         _post_extents_mm(grouped, expected) -> tuple | None
+    _svg_value_mm(svg_path, pattern) -> float | None
 
 Usage Examples:
     python3 plugins/garden-structure-designer/scripts/cross_artifact_validator.py [staging_dir] [outputs_dir]
@@ -47,6 +56,7 @@ from constants import (
     DXF_BOUNDS_TOL_MM,
     DXF_PLANAR_TOL_MM,
     INCHES_PER_FOOT,
+    INSUNITS_MM,
     LAYER_COLORS,
     MM_PER_FOOT,
     MM_PER_INCH,
@@ -57,6 +67,7 @@ from constants import (
     SHEET_ID_STRUCTURE,
 )
 from path_utils import outputs_dir, staging_dir
+from revision_identity import compute_revision_hash
 
 Bounds = Tuple[Tuple[float, float, float], Tuple[float, float, float]]
 
@@ -162,10 +173,23 @@ def _member_xdata(entity: Any) -> Dict[str, str]:
 
 
 def _resolved_members(model: dict) -> Tuple[List[dict], float]:
-    """Returns resolved members list and mm-per-unit scale factor."""
+    """Returns resolved members and the mm-per-unit scale; raises ValueError (fail closed) when absent."""
     joints = model.get("geometry", {}).get("joints", {})
     members = joints.get("resolved_model", {}).get("members", [])
-    return members, MM_PER_UNIT.get(joints.get("units"), MM_PER_FOOT)
+    if not members:
+        raise ValueError("NO_RESOLVED_MEMBERS: geometry.joints.resolved_model.members is missing or empty.")
+    units = joints.get("units")
+    if units not in MM_PER_UNIT:
+        raise ValueError(f"UNSUPPORTED_UNITS: geometry.joints.units is {units!r}, expected one of {sorted(MM_PER_UNIT)}.")
+    return members, MM_PER_UNIT[units]
+
+
+def _expected_revision(model: dict) -> Tuple[str, str]:
+    """Returns the (revision_id, revision_hash) every DXF member must carry; hash is computed when absent."""
+    meta = model.get("meta", {})
+    if not meta.get("revision_id"):
+        raise ValueError("MISSING_REVISION: meta.revision_id is required to verify DXF XDATA.")
+    return meta["revision_id"], meta.get("revision_hash") or compute_revision_hash(model)
 
 
 def _expected_member_bounds(member: dict, scale: float) -> Bounds:
@@ -180,10 +204,12 @@ def _max_delta(a: Bounds, b: Bounds) -> float:
 
 
 def _group_members(label: str, doc: Any, errors: List[str]) -> Dict[str, List[Any]]:
-    """Groups GSD-stamped entities by MEMBER_ID, reporting untagged entities."""
+    """Groups GSD-stamped entities by MEMBER_ID, reporting untagged structural extras."""
     grouped: Dict[str, List[Any]] = {}
     for entity in doc.modelspace():
         if not entity.has_xdata(APPID):
+            if entity.dxf.layer != DIMENSION_LAYER:
+                errors.append(f"{label}: untagged top-level {entity.dxftype()} on layer {entity.dxf.layer}.")
             continue
         member_id = _member_xdata(entity).get("MEMBER_ID")
         if member_id:
@@ -193,6 +219,47 @@ def _group_members(label: str, doc: Any, errors: List[str]) -> Dict[str, List[An
     return grouped
 
 
+def _check_header_and_layers(label: str, doc: Any, errors: List[str]) -> None:
+    """Audit, units, APPID registry and layer table (names and ACI colors)."""
+    auditor = doc.audit()
+    if auditor.has_errors:
+        errors.extend(f"{label}: DXF audit error: {err.message}" for err in auditor.errors)
+    if doc.header.get("$INSUNITS") != INSUNITS_MM:
+        errors.append(f"{label}: $INSUNITS is {doc.header.get('$INSUNITS')!r}, expected {INSUNITS_MM} (mm).")
+    if APPID not in doc.appids:
+        errors.append(f"{label}: APPID {APPID} is not registered.")
+    layers = {layer.dxf.name: layer for layer in doc.layers}
+    for name, color in LAYER_COLORS.items():
+        if name not in layers:
+            errors.append(f"{label}: missing layer {name}.")
+        elif layers[name].color != color:
+            errors.append(f"{label}: layer {name} color is {layers[name].color}, expected {color}.")
+
+
+def _check_member_tags(
+    label: str,
+    sheet_id: str,
+    entities: List[Any],
+    member: dict,
+    revision: Tuple[str, str],
+    errors: List[str],
+) -> None:
+    """Sheet, role, layer and revision XDATA checks for every entity of one member."""
+    mid = member["id"]
+    expected = {"SHEET_ID": sheet_id, "ROLE": member["role"], "REVISION_ID": revision[0], "REVISION_HASH": revision[1]}
+    for entity in entities:
+        data = _member_xdata(entity)
+        errors.extend(
+            f"{label}: member {mid} {key} is {data.get(key)!r}, expected {want!r}."
+            for key, want in expected.items()
+            if data.get(key) != want
+        )
+        if entity.dxf.layer != ROLE_LAYERS.get(member["role"]):
+            errors.append(f"{label}: member {mid} on layer {entity.dxf.layer}, expected {ROLE_LAYERS.get(member['role'])}.")
+        if not all(math.isfinite(c) for p in _entity_points(entity) for c in p):
+            errors.append(f"{label}: member {mid} has non-finite coordinates.")
+
+
 def _check_dxf_document(
     label: str,
     sheet_id: str,
@@ -200,15 +267,10 @@ def _check_dxf_document(
     members: List[dict],
     scale: float,
     errors: List[str],
+    revision: Tuple[str, str],
 ) -> Dict[str, List[Any]]:
     """Audit, registry, layer, XDATA-parity and sheet-geometry checks for one DXF."""
-    auditor = doc.audit()
-    if auditor.has_errors:
-        errors.extend(f"{label}: DXF audit error: {err.message}" for err in auditor.errors)
-    if APPID not in doc.appids:
-        errors.append(f"{label}: APPID {APPID} is not registered.")
-    layer_names = {layer.dxf.name for layer in doc.layers}
-    errors.extend(f"{label}: missing layer {name}." for name in LAYER_COLORS if name not in layer_names)
+    _check_header_and_layers(label, doc, errors)
 
     grouped = _group_members(label, doc, errors)
     expected = {m["id"]: m for m in members}
@@ -217,17 +279,8 @@ def _check_dxf_document(
     errors.extend(f"{label}: duplicate MEMBER_ID {mid} ({len(ents)} entities)." for mid, ents in grouped.items() if len(ents) > 1)
 
     for mid, entities in grouped.items():
-        member = expected.get(mid)
-        if member is None:
-            continue
-        for entity in entities:
-            data = _member_xdata(entity)
-            if data.get("SHEET_ID") != sheet_id:
-                errors.append(f"{label}: member {mid} SHEET_ID is {data.get('SHEET_ID')!r}, expected {sheet_id}.")
-            if data.get("ROLE") != member["role"]:
-                errors.append(f"{label}: member {mid} ROLE is {data.get('ROLE')!r}, expected {member['role']!r}.")
-            if entity.dxf.layer != ROLE_LAYERS.get(member["role"]):
-                errors.append(f"{label}: member {mid} on layer {entity.dxf.layer}, expected {ROLE_LAYERS.get(member['role'])}.")
+        if mid in expected:
+            _check_member_tags(label, sheet_id, entities, expected[mid], revision, errors)
 
     if sheet_id == SHEET_ID_STRUCTURE:
         _check_structure_bounds(label, grouped, expected, scale, errors)
@@ -248,7 +301,10 @@ def _check_structure_bounds(
         member = expected.get(mid)
         if member is None or len(entities) != 1:
             continue
-        actual = _bounds(_entity_points(entities[0]))
+        points = _entity_points(entities[0])
+        if not all(math.isfinite(c) for p in points for c in p):
+            continue
+        actual = _bounds(points)
         want = _expected_member_bounds(member, scale)
         delta = _max_delta(actual, want)
         if delta > DXF_BOUNDS_TOL_MM:
@@ -332,7 +388,11 @@ def validate_dxf_artifacts(staging_dir_path: str, outputs_dir_path: str) -> List
         return ["MISSING_STRUCTURE: structure.json not found."]
     with open(model_path, encoding="utf-8") as f:
         model = json.load(f)
-    members, scale = _resolved_members(model)
+    try:
+        members, scale = _resolved_members(model)
+        revision = _expected_revision(model)
+    except ValueError as exc:
+        return [str(exc)]
     expected = {m["id"]: m for m in members}
 
     errors: List[str] = []
@@ -347,7 +407,7 @@ def validate_dxf_artifacts(staging_dir_path: str, outputs_dir_path: str) -> List
         except (OSError, ezdxf.DXFError) as exc:
             errors.append(f"{path}: unreadable DXF: {exc}")
             continue
-        grouped_by_sheet[sheet_id] = _check_dxf_document(SHEET_FILENAMES[sheet_id], sheet_id, docs[sheet_id], members, scale, errors)
+        grouped_by_sheet[sheet_id] = _check_dxf_document(SHEET_FILENAMES[sheet_id], sheet_id, docs[sheet_id], members, scale, errors, revision)
 
     if len(docs) == 2:
         errors.extend(validate_dimension_crosscheck(outputs_dir_path, grouped_by_sheet[SHEET_ID_STRUCTURE], docs[SHEET_ID_PLAN], expected))

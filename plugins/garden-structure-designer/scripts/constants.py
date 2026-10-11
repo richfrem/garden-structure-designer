@@ -73,7 +73,7 @@ LW_MEMBER_DRAWING = 1.2
 LW_MEMBER_BLUEPRINT = 3.0
 
 # --- Validation tolerances ---
-DXF_BOUNDS_TOL_MM = 1.0  # 3D bounds / extents parity (WCS mm)
+DXF_BOUNDS_TOL_MM = 0.01  # C4: max absolute exchange error vs sealed solved geometry (WCS mm)
 DXF_PLANAR_TOL_MM = 1e-6  # SB02 must be planar (|Z| <= tol)
 DIM_CROSSCHECK_TOL_MM = MM_PER_INCH  # SVG label vs DXF geometry parity (1 in)
 
