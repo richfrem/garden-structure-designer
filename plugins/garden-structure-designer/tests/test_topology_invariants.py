@@ -58,8 +58,13 @@ def _valid_geometry():
                     {"id": f"B{i + 1}", "i0": i, "i1": (i + 1) % 6} for i in range(6)
                 ],
             },
-            "hub": {"type": "steel_plate"},
-            "rafters": {"primary_count": 6},
+            "hub": {
+                "type": "hexagonal_prism",
+                "face_planes": {"planes": [{"id": f"H{i + 1}"} for i in range(6)]},
+            },
+            "primary_rafters": [{"id": f"R{i + 1}"} for i in range(6)],
+            "rafters": {"primary_rafters": [{"id": f"R{i + 1}"} for i in range(6)]},
+            "braces": {"enabled": False, "endpoints": []},
         },
     }
 

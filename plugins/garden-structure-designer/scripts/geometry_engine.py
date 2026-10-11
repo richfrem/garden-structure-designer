@@ -365,7 +365,7 @@ def compute_joints(structure, cuts, rl, rise, height, hub_r, svg_coords):
         ]
     else:
         post_xy = [[round(r_ft * math.cos(2*math.pi*i/qty), 4), round(r_ft * math.sin(2*math.pi*i/qty), 4)] for i in range(qty)]
-    joints["layout"] = {"post_count": qty, "post_radius_ft": r_ft, "post_xy": post_xy}
+    joints["layout"] = {"post_count": qty, "post_radius_ft": r_ft, "post_xy": post_xy, "beam_segments": [{"id": f"B{i+1}", "i0": i, "i1": (i+1) % qty} for i in range(qty)]}
     
     seat_depth_notch = rafter_d_ft / 3.0; remaining_meat = rafter_d_ft - seat_depth_notch
     apothem = r_ft * math.cos(math.pi/qty); common_slope = roof_r / (apothem - hub_r * math.cos(math.pi/qty)) if abs(apothem - hub_r * math.cos(math.pi/qty)) > 1e-4 else 0.0

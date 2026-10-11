@@ -62,12 +62,13 @@ SEALED_STRUCTURE: dict = {
                 "type": "polygonal",
                 "face_planes": {
                     "planes": [
-                        {"face_id": "H1"}, {"face_id": "H2"}, {"face_id": "H3"},
-                        {"face_id": "H4"}, {"face_id": "H5"}, {"face_id": "H6"},
+                        {"id": "H1"}, {"id": "H2"}, {"id": "H3"},
+                        {"id": "H4"}, {"id": "H5"}, {"id": "H6"},
                     ]
                 },
             },
-            "rafters": {"primary_count": 6},
+            "primary_rafters": [{"id": f"R{i}"} for i in range(1, 7)],
+            "rafters": {"primary_rafters": [{"id": f"R{i}"} for i in range(1, 7)]},
             "braces": {
                 "enabled": True,
                 "endpoints": {
@@ -154,8 +155,24 @@ def test_braces_have_foot_and_head_connections():
 # 6. enrich_structure writes topology into geometry.joints.topology
 # ---------------------------------------------------------------------------
 
-def test_enrich_structure_writes_topology():
+def _valid_radial_structure() -> dict:
+    """A structure that satisfies every Stage 2 invariant (shared with the M0/C2 contract tests)."""
+    from test_topology_invariants import _valid_geometry, _valid_intent  # type: ignore[import]
+
+    structure = _valid_intent()
+    structure["geometry"] = _valid_geometry()
+    return structure
+
+
+def test_enrich_structure_rejects_invalid_radial_structure():
     s = copy.deepcopy(SEALED_STRUCTURE)
+    with pytest.raises(ValueError, match="UNKNOWN_TOPOLOGY_FAMILY"):
+        enrich_structure(s)
+    assert "topology" not in s["geometry"]["joints"]
+
+
+def test_enrich_structure_writes_topology():
+    s = _valid_radial_structure()
     assert "topology" not in s["geometry"]["joints"]
     enrich_structure(s)
     assert "topology" in s["geometry"]["joints"]

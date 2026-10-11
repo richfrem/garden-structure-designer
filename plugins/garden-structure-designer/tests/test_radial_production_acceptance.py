@@ -98,7 +98,7 @@ def test_radial_pipeline_e2e_polygon(tmp_path, n_sides):
     enriched = stage2_topology(sealed, staging, outputs)
     assert "error_code" not in enriched, f"Stage 2 rejected N={n_sides}: {enriched}"
     topo = enriched["geometry"]["joints"]["topology"]
-    assert topo["member_count"] == 3 * n_sides + 1  # N posts + N beams + N rafters + 1 hub
+    assert topo["member_count"] == 5 * n_sides + 1  # N posts + N beams + N rafters + 2N braces (bracing enabled in seed) + 1 hub
 
     # 4. Stamp pure revision
     stamped = stamp_revision(enriched)

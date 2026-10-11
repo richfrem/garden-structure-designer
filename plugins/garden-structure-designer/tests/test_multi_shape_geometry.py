@@ -78,7 +78,7 @@ def test_square_4post_geometry_pipeline(tmp_path):
     # 4. Topology Compilation
     topology = compile_topology(resolved_structure)
     resolved_structure["geometry"]["joints"]["topology"] = topology
-    assert len(topology["members"]) == 4 + 8 + 1  # 4 posts + 8 braces + 1 hub = 13
+    assert len(topology["members"]) == 4 + 4 + 4 + 8 + 1  # 4 posts + 4 beams + 4 rafters + 8 braces + 1 hub = 21
     assert len(topology["connections"]) > 0
     
     # 5. CAD 3D Scene Invariants & Topology
@@ -141,7 +141,7 @@ def test_octagon_8post_geometry_pipeline(tmp_path):
     # 4. Topology Compilation
     topology = compile_topology(resolved_structure)
     resolved_structure["geometry"]["joints"]["topology"] = topology
-    assert len(topology["members"]) == 8 + 16 + 1  # 8 posts + 16 braces + 1 hub = 25
+    assert len(topology["members"]) == 8 + 8 + 8 + 16 + 1  # posts + beams + rafters + braces + hub  # 8 posts + 16 braces + 1 hub = 25
     assert len(topology["connections"]) > 0
     
     # 5. CAD 3D Scene Invariants & Topology
