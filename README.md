@@ -59,6 +59,7 @@ Unlike typical AI assistants that guess geometry or hallucinate cut angles:
 ## 📚 Documentation & Architecture
 
 - **[System Architecture](architecture.md)**: Comprehensive deep dive into Stages 0–8, deterministic engines, validation layers, and data flows.
+- **[Dependencies & 3GL Toolchains](DEPENDENCIES.md)**: Detailed breakdown of 3GL requirements (Python, Rust, Node.js), vendor submodules (`vendor/cadcraft`), CAD kernels (`build123d`, OpenCASCADE), and WebGL rendering.
 - **[Architecture Diagrams](docs/architecture/diagrams/README.md)**: Visual Mermaid diagrams illustrating CLI orchestration, plugin architecture, and vendor engine boundaries ([System Overview](docs/architecture/diagrams/cli_plugin_vendor_architecture.mmd) & [Execution Sequence](docs/architecture/diagrams/runtime_execution_sequence.mmd)).
 - **[Agent Root Instructions](AGENTS.md)**: Universal behavioral guidelines (Karpathy principles), CAD invariants, and non-negotiables.
 - **[Agent Bootstrap & Triage](INIT_AGENTS.md)**: Installation commands, setup procedures, and the Stop-and-Diagnose protocol.
@@ -66,7 +67,36 @@ Unlike typical AI assistants that guess geometry or hallucinate cut angles:
 
 ---
 
-## 📦 Installation
+## ⚙️ System & 3GL Requirements
+
+The pipeline requires three core toolchains plus Python runtime libraries. See **[DEPENDENCIES.md](DEPENDENCIES.md)** for exhaustive details.
+
+| Runtime / Tool | Required | Purpose |
+|---|---|---|
+| **Python 3.11+** | Required | Mathematical geometry engine, B-Rep solid modeling (`build123d`), validation lifecycle |
+| **Rust / Cargo 1.75+** | Required | Compiling headless `cadcraft-cli` from the `vendor/cadcraft` submodule |
+| **Node.js 18+ & npx** | Required | Headless WebGL capture loopback and PDF compilation via `npx md-to-pdf` |
+| **Chromium** | Required | Headless browser for Playwright visual smoke tests and Three.js presentation rendering |
+
+### Environment Setup
+
+```bash
+# 1. Clone repository and initialize vendor submodules
+git clone https://github.com/richfrem/garden-structure-designer.git
+cd garden-structure-designer
+git submodule update --init --recursive
+
+# 2. Install Python locked dependencies
+pip install -r plugins/garden-structure-designer/requirements-core.txt
+python3 -m playwright install --with-deps chromium
+
+# 3. Build the CADCraft Rust CLI binary
+python3 scripts/build_cadcraft.py
+```
+
+---
+
+## 📦 Plugin Installation
 
 ### Via `uvx` (Antigravity / CLI environments)
 ```bash
