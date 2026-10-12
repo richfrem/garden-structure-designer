@@ -28,6 +28,8 @@ Key Functions:
     main(argv=None) -> int
     _failure(code, message) -> dict                     _is_int(value) -> bool
     _validate_radial_hub(structure) -> dict | None      _validate_hub_type(hub_type, sides) -> dict | None
+    _validate_orthogonal_grid(structure) -> dict | None
+    _validate_grid_posts(layout) -> dict | None         _validate_grid_roof_and_hub(structure) -> dict | None
 
 Script Dependencies:
     pipeline_runner.py (TopologyErrorCode), constants.py (family registry)
@@ -101,8 +103,70 @@ def _validate_radial_hub(structure: dict) -> Optional[dict]:
     return _validate_hub_type((structure.get("hub") or {}).get("type"), sides)
 
 
+def _validate_grid_posts(layout: dict) -> Optional[dict]:
+    """Validate post count and grid rows * cols cardinality for orthogonal grid."""
+    post_count = layout.get("post_count")
+    if not _is_int(post_count) or post_count < 4:
+        return _failure(
+            TopologyErrorCode.GEOMETRY_INVALID,
+            f"OrthogonalGridTopology requires integer layout.post_count >= 4, got {post_count!r}.",
+        )
+
+    grid = layout.get("grid")
+    if isinstance(grid, dict):
+        rows, cols = grid.get("rows"), grid.get("cols")
+        if _is_int(rows) and _is_int(cols) and post_count != rows * cols:
+            return _failure(
+                TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
+                f"layout.post_count ({post_count}) must equal rows * cols ({rows * cols}).",
+            )
+    return None
+
+
+def _validate_grid_roof_and_hub(structure: dict) -> Optional[dict]:
+    """Validate hub type ('none' or absent) and positive rafter count for orthogonal grid."""
+    hub_type = (structure.get("hub") or {}).get("type")
+    if hub_type not in ("none", "", None):
+        return _failure(
+            TopologyErrorCode.HUB_TYPE_MISMATCH,
+            f"OrthogonalGridTopology requires hub.type 'none' or absent, got {hub_type!r}.",
+        )
+
+    rafter_count = ((structure.get("roof") or {}).get("primary_rafters") or {}).get("count")
+    if not _is_int(rafter_count) or rafter_count <= 0:
+        return _failure(
+            TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
+            f"OrthogonalGridTopology requires integer roof.primary_rafters.count > 0, got {rafter_count!r}.",
+        )
+    return None
+
+
+def _validate_orthogonal_grid(structure: dict) -> Optional[dict]:
+    """Orthogonal grid intent: 4 sides, shape in ('square', 'rectangle'), post_count >= 4, hub type 'none'."""
+    struct_block = structure.get("structure") or {}
+    sides = struct_block.get("sides")
+    if sides != 4:
+        return _failure(
+            TopologyErrorCode.GEOMETRY_INVALID,
+            f"OrthogonalGridTopology requires integer structure.sides == 4, got {sides!r}.",
+        )
+
+    shape = struct_block.get("shape")
+    if shape not in ("rectangle", "square"):
+        return _failure(
+            TopologyErrorCode.GEOMETRY_INVALID,
+            f"OrthogonalGridTopology requires shape 'rectangle' or 'square', got {shape!r}.",
+        )
+
+    err = _validate_grid_posts(structure.get("layout") or {})
+    if err is not None:
+        return err
+
+    return _validate_grid_roof_and_hub(structure)
+
+
 def run_stage(structure: dict, reports_dir: Path, outputs_dir: Path) -> dict:
-    """Pipeline Stage 0.5: reserved/unknown families and invalid radial intent fail closed; else returns structure."""
+    """Pipeline Stage 0.5: reserved/unknown families and invalid intent fail closed; else returns structure."""
     family = (structure.get("meta") or {}).get("topology_family")
 
     if family in RESERVED_FAMILIES:
@@ -116,7 +180,11 @@ def run_stage(structure: dict, reports_dir: Path, outputs_dir: Path) -> dict:
             f"Unknown meta.topology_family {family!r}.",
         )
 
-    failure = _validate_radial_hub(structure)
+    if family == "OrthogonalGridTopology":
+        failure = _validate_orthogonal_grid(structure)
+    else:
+        failure = _validate_radial_hub(structure)
+
     return failure if failure is not None else structure
 
 

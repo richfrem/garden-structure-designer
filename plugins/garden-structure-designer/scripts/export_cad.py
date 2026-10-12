@@ -89,10 +89,22 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--structure", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--writer", choices=["auto", "cadcraft", "ezdxf"], default="auto")
+    parser.add_argument("--open", action="store_true", help="Launch exported SB01 DXF in Cadcraft desktop app")
     args = parser.parse_args(argv)
     structure = json.loads(args.structure.read_text(encoding="utf-8"))
     results = export_sheets(structure, args.output_dir, select_writer(args.writer), fallback=args.writer == "auto")
     print(json.dumps(results, indent=2))
+
+    sb01_path = args.output_dir / SHEET_FILENAMES.get("SB01", "SB01-structure.dxf")
+    print(f"\nTo open in Cadcraft GUI:\n  python3 scripts/open_in_cadcraft.py {sb01_path}")
+
+    if args.open:
+        try:
+            from open_in_cadcraft import open_in_cadcraft
+            return open_in_cadcraft(sb01_path)
+        except ImportError:
+            print("Warning: open_in_cadcraft helper not available.", file=sys.stderr)
+
     return 0
 
 

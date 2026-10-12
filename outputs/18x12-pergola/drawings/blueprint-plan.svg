@@ -1,0 +1,239 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200">
+  <rect width="100%" height="100%" fill="#12253a" />
+    <polygon data-role="footing" data-id="FT1" data-tag="FT1" points="1199.0,369.0 1157.0,369.0 1157.0,327.0 1199.0,327.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="footing" data-id="FT2" data-tag="FT2" points="1199.0,873.0 1157.0,873.0 1157.0,831.0 1199.0,831.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="footing" data-id="FT3" data-tag="FT3" points="821.0,873.0 779.0,873.0 779.0,831.0 821.0,831.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="footing" data-id="FT4" data-tag="FT4" points="443.0,873.0 401.0,873.0 401.0,831.0 443.0,831.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="footing" data-id="FT5" data-tag="FT5" points="443.0,369.0 401.0,369.0 401.0,327.0 443.0,327.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="footing" data-id="FT6" data-tag="FT6" points="821.0,369.0 779.0,369.0 779.0,327.0 821.0,327.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1199.0,369.0 1199.0,327.0 1199.0,327.0 1199.0,369.0" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1157.0,369.0 1157.0,369.0 1157.0,327.0 1157.0,327.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1199.0,369.0 1199.0,369.0 1157.0,369.0 1157.0,369.0" fill="#122440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1199.0,327.0 1157.0,327.0 1157.0,327.0 1199.0,327.0" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1199.0,873.0 1199.0,831.0 1199.0,831.0 1199.0,873.0" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1157.0,873.0 1157.0,873.0 1157.0,831.0 1157.0,831.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1199.0,873.0 1199.0,873.0 1157.0,873.0 1157.0,873.0" fill="#122440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1199.0,831.0 1157.0,831.0 1157.0,831.0 1199.0,831.0" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="821.0,873.0 821.0,831.0 821.0,831.0 821.0,873.0" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="779.0,873.0 779.0,873.0 779.0,831.0 779.0,831.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="821.0,873.0 821.0,873.0 779.0,873.0 779.0,873.0" fill="#122440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="821.0,831.0 779.0,831.0 779.0,831.0 821.0,831.0" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="443.0,873.0 443.0,831.0 443.0,831.0 443.0,873.0" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="401.0,873.0 401.0,873.0 401.0,831.0 401.0,831.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="443.0,873.0 443.0,873.0 401.0,873.0 401.0,873.0" fill="#122440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="443.0,831.0 401.0,831.0 401.0,831.0 443.0,831.0" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="443.0,369.0 443.0,327.0 443.0,327.0 443.0,369.0" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="401.0,369.0 401.0,369.0 401.0,327.0 401.0,327.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="443.0,369.0 443.0,369.0 401.0,369.0 401.0,369.0" fill="#122440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="443.0,327.0 401.0,327.0 401.0,327.0 443.0,327.0" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="821.0,369.0 821.0,327.0 821.0,327.0 821.0,369.0" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="779.0,369.0 779.0,369.0 779.0,327.0 779.0,327.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="821.0,369.0 821.0,369.0 779.0,369.0 779.0,369.0" fill="#122440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="821.0,327.0 779.0,327.0 779.0,327.0 821.0,327.0" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1199.0,369.0 1199.0,327.0 1157.0,327.0 1157.0,369.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1199.0,873.0 1199.0,831.0 1157.0,831.0 1157.0,873.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="821.0,873.0 821.0,831.0 779.0,831.0 779.0,873.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="443.0,873.0 443.0,831.0 401.0,831.0 401.0,873.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="443.0,369.0 443.0,327.0 401.0,327.0 401.0,369.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="821.0,369.0 821.0,327.0 779.0,327.0 779.0,369.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="post" data-id="P1" data-tag="P1" points="1187.6,357.6 1187.6,338.4 1187.6,338.4 1187.6,357.6" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1168.4,357.6 1168.4,357.6 1168.4,338.4 1168.4,338.4" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1187.6,357.6 1187.6,357.6 1168.4,357.6 1168.4,357.6" fill="#162e50" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1187.6,338.4 1168.4,338.4 1168.4,338.4 1187.6,338.4" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="post" data-id="P2" data-tag="P2" points="1187.6,861.6 1187.6,842.4 1187.6,842.4 1187.6,861.6" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1168.4,861.6 1168.4,861.6 1168.4,842.4 1168.4,842.4" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1187.6,861.6 1187.6,861.6 1168.4,861.6 1168.4,861.6" fill="#162e50" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1187.6,842.4 1168.4,842.4 1168.4,842.4 1187.6,842.4" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="post" data-id="P3" data-tag="P3" points="809.6,861.6 809.6,842.4 809.6,842.4 809.6,861.6" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="790.4,861.6 790.4,861.6 790.4,842.4 790.4,842.4" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="809.6,861.6 809.6,861.6 790.4,861.6 790.4,861.6" fill="#162e50" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="809.6,842.4 790.4,842.4 790.4,842.4 809.6,842.4" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="post" data-id="P4" data-tag="P4" points="431.6,861.6 431.6,842.4 431.6,842.4 431.6,861.6" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="412.4,861.6 412.4,861.6 412.4,842.4 412.4,842.4" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="431.6,861.6 431.6,861.6 412.4,861.6 412.4,861.6" fill="#162e50" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="431.6,842.4 412.4,842.4 412.4,842.4 431.6,842.4" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="post" data-id="P5" data-tag="P5" points="431.6,357.6 431.6,338.4 431.6,338.4 431.6,357.6" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="412.4,357.6 412.4,357.6 412.4,338.4 412.4,338.4" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="431.6,357.6 431.6,357.6 412.4,357.6 412.4,357.6" fill="#162e50" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="431.6,338.4 412.4,338.4 412.4,338.4 431.6,338.4" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="post" data-id="P6" data-tag="P6" points="809.6,357.6 809.6,338.4 809.6,338.4 809.6,357.6" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="790.4,357.6 790.4,357.6 790.4,338.4 790.4,338.4" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="809.6,357.6 809.6,357.6 790.4,357.6 790.4,357.6" fill="#162e50" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="809.6,338.4 790.4,338.4 790.4,338.4 809.6,338.4" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K1A" data-tag="K1A" points="1184.1,353.3 1184.1,416.3 1184.1,425.0 1184.1,362.0" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1171.9,353.3 1171.9,362.0 1171.9,425.0 1171.9,416.3" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K1B" data-tag="K1B" points="1171.9,846.7 1171.9,783.7 1171.9,775.0 1171.9,838.0" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1184.1,846.7 1184.1,838.0 1184.1,775.0 1184.1,783.7" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K2A" data-tag="K2A" points="1172.7,858.1 1109.7,858.1 1101.0,858.1 1164.0,858.1" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1172.7,845.9 1164.0,845.9 1101.0,845.9 1109.7,845.9" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K2B" data-tag="K2B" points="805.3,845.9 868.3,845.9 877.0,845.9 814.0,845.9" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="805.3,858.1 814.0,858.1 877.0,858.1 868.3,858.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K3A" data-tag="K3A" points="794.7,858.1 731.7,858.1 723.0,858.1 786.0,858.1" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="794.7,845.9 786.0,845.9 723.0,845.9 731.7,845.9" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K3B" data-tag="K3B" points="427.3,845.9 490.3,845.9 499.0,845.9 436.0,845.9" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="427.3,858.1 436.0,858.1 499.0,858.1 490.3,858.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K4A" data-tag="K4A" points="415.9,846.7 415.9,783.7 415.9,775.0 415.9,838.0" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="428.1,846.7 428.1,838.0 428.1,775.0 428.1,783.7" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K4B" data-tag="K4B" points="428.1,353.3 428.1,416.3 428.1,425.0 428.1,362.0" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="415.9,353.3 415.9,362.0 415.9,425.0 415.9,416.3" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K5A" data-tag="K5A" points="427.3,341.9 490.3,341.9 499.0,341.9 436.0,341.9" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="427.3,354.1 436.0,354.1 499.0,354.1 490.3,354.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K5B" data-tag="K5B" points="794.7,354.1 731.7,354.1 723.0,354.1 786.0,354.1" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="794.7,341.9 786.0,341.9 723.0,341.9 731.7,341.9" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K6A" data-tag="K6A" points="805.3,341.9 868.3,341.9 877.0,341.9 814.0,341.9" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="805.3,354.1 814.0,354.1 877.0,354.1 868.3,354.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="brace" data-id="K6B" data-tag="K6B" points="1172.7,354.1 1109.7,354.1 1101.0,354.1 1164.0,354.1" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1172.7,341.9 1164.0,341.9 1101.0,341.9 1109.7,341.9" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1184.1,353.3 1171.9,353.3 1171.9,416.3 1184.1,416.3" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1171.9,846.7 1184.1,846.7 1184.1,783.7 1171.9,783.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1172.7,858.1 1172.7,845.9 1109.7,845.9 1109.7,858.1" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="805.3,845.9 805.3,858.1 868.3,858.1 868.3,845.9" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="794.7,858.1 794.7,845.9 731.7,845.9 731.7,858.1" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="427.3,845.9 427.3,858.1 490.3,858.1 490.3,845.9" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="415.9,846.7 428.1,846.7 428.1,783.7 415.9,783.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="428.1,353.3 415.9,353.3 415.9,416.3 428.1,416.3" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="427.3,341.9 427.3,354.1 490.3,354.1 490.3,341.9" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="794.7,354.1 794.7,341.9 731.7,341.9 731.7,354.1" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="805.3,341.9 805.3,354.1 868.3,354.1 868.3,341.9" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1172.7,354.1 1172.7,341.9 1109.7,341.9 1109.7,354.1" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1187.6,357.6 1187.6,338.4 1168.4,338.4 1168.4,357.6" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1187.6,861.6 1187.6,842.4 1168.4,842.4 1168.4,861.6" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="809.6,861.6 809.6,842.4 790.4,842.4 790.4,861.6" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="431.6,861.6 431.6,842.4 412.4,842.4 412.4,861.6" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="431.6,357.6 431.6,338.4 412.4,338.4 412.4,357.6" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="809.6,357.6 809.6,338.4 790.4,338.4 790.4,357.6" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1184.1,416.3 1171.9,416.3 1171.9,425.0 1184.1,425.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1171.9,783.7 1184.1,783.7 1184.1,775.0 1171.9,775.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1109.7,858.1 1109.7,845.9 1101.0,845.9 1101.0,858.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="868.3,845.9 868.3,858.1 877.0,858.1 877.0,845.9" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="731.7,858.1 731.7,845.9 723.0,845.9 723.0,858.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="490.3,845.9 490.3,858.1 499.0,858.1 499.0,845.9" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="415.9,783.7 428.1,783.7 428.1,775.0 415.9,775.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="428.1,416.3 415.9,416.3 415.9,425.0 428.1,425.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="490.3,341.9 490.3,354.1 499.0,354.1 499.0,341.9" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="731.7,354.1 731.7,341.9 723.0,341.9 723.0,354.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="868.3,341.9 868.3,354.1 877.0,354.1 877.0,341.9" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1109.7,354.1 1109.7,341.9 1101.0,341.9 1101.0,354.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="beam" data-id="B1" data-tag="B1" points="1188.5,348.0 1188.5,348.0 1167.5,348.0 1167.5,348.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1188.5,852.0 1167.5,852.0 1167.5,852.0 1188.5,852.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1188.5,348.0 1188.5,852.0 1188.5,852.0 1188.5,348.0" fill="#122840" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1167.5,348.0 1167.5,348.0 1167.5,852.0 1167.5,852.0" fill="#0d2035" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="beam" data-id="B2" data-tag="B2" points="1178.0,862.5 1178.0,862.5 1178.0,841.5 1178.0,841.5" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="800.0,862.5 800.0,841.5 800.0,841.5 800.0,862.5" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1178.0,862.5 800.0,862.5 800.0,862.5 1178.0,862.5" fill="#122840" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1178.0,841.5 1178.0,841.5 800.0,841.5 800.0,841.5" fill="#0d2035" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="beam" data-id="B3" data-tag="B3" points="800.0,862.5 800.0,862.5 800.0,841.5 800.0,841.5" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="422.0,862.5 422.0,841.5 422.0,841.5 422.0,862.5" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="800.0,862.5 422.0,862.5 422.0,862.5 800.0,862.5" fill="#122840" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="800.0,841.5 800.0,841.5 422.0,841.5 422.0,841.5" fill="#0d2035" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="beam" data-id="B4" data-tag="B4" points="411.5,852.0 411.5,852.0 432.5,852.0 432.5,852.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="411.5,348.0 432.5,348.0 432.5,348.0 411.5,348.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="411.5,852.0 411.5,348.0 411.5,348.0 411.5,852.0" fill="#122840" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="432.5,852.0 432.5,852.0 432.5,348.0 432.5,348.0" fill="#0d2035" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="beam" data-id="B5" data-tag="B5" points="422.0,337.5 422.0,337.5 422.0,358.5 422.0,358.5" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="800.0,337.5 800.0,358.5 800.0,358.5 800.0,337.5" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="422.0,337.5 800.0,337.5 800.0,337.5 422.0,337.5" fill="#122840" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="422.0,358.5 422.0,358.5 800.0,358.5 800.0,358.5" fill="#0d2035" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="beam" data-id="B6" data-tag="B6" points="800.0,337.5 800.0,337.5 800.0,358.5 800.0,358.5" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1178.0,337.5 1178.0,358.5 1178.0,358.5 1178.0,337.5" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="800.0,337.5 1178.0,337.5 1178.0,337.5 800.0,337.5" fill="#122840" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="800.0,358.5 800.0,358.5 1178.0,358.5 1178.0,358.5" fill="#0d2035" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="rafter" data-id="R1" data-tag="R1" points="422.0,348.0 422.0,348.0 422.0,348.0 422.0,348.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="rafter" data-id="R2" data-tag="R2" points="548.0,348.0 548.0,348.0 548.0,348.0 548.0,348.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="rafter" data-id="R3" data-tag="R3" points="674.0,348.0 674.0,348.0 674.0,348.0 674.0,348.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="rafter" data-id="R4" data-tag="R4" points="800.0,348.0 800.0,348.0 800.0,348.0 800.0,348.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="rafter" data-id="R5" data-tag="R5" points="926.0,348.0 926.0,348.0 926.0,348.0 926.0,348.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="rafter" data-id="R6" data-tag="R6" points="1052.0,348.0 1052.0,348.0 1052.0,348.0 1052.0,348.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon data-role="rafter" data-id="R7" data-tag="R7" points="1178.0,348.0 1178.0,348.0 1178.0,348.0 1178.0,348.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1188.5,348.0 1167.5,348.0 1167.5,852.0 1188.5,852.0" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1178.0,862.5 1178.0,841.5 800.0,841.5 800.0,862.5" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="800.0,862.5 800.0,841.5 422.0,841.5 422.0,862.5" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="411.5,852.0 432.5,852.0 432.5,348.0 411.5,348.0" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="422.0,337.5 422.0,358.5 800.0,358.5 800.0,337.5" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="800.0,337.5 800.0,358.5 1178.0,358.5 1178.0,337.5" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="428.1,306.0 428.1,894.0 428.1,894.0 422.0,348.0 422.0,348.0 428.1,306.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="415.9,306.0 422.0,348.0 422.0,348.0 415.9,894.0 415.9,894.0 415.9,306.0" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="554.1,306.0 554.1,894.0 554.1,894.0 548.0,348.0 548.0,348.0 554.1,306.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="541.9,306.0 548.0,348.0 548.0,348.0 541.9,894.0 541.9,894.0 541.9,306.0" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="680.1,306.0 680.1,894.0 680.1,894.0 674.0,348.0 674.0,348.0 680.1,306.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="667.9,306.0 674.0,348.0 674.0,348.0 667.9,894.0 667.9,894.0 667.9,306.0" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="806.1,306.0 806.1,894.0 806.1,894.0 800.0,348.0 800.0,348.0 806.1,306.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="793.9,306.0 800.0,348.0 800.0,348.0 793.9,894.0 793.9,894.0 793.9,306.0" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="932.1,306.0 932.1,894.0 932.1,894.0 926.0,348.0 926.0,348.0 932.1,306.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="919.9,306.0 926.0,348.0 926.0,348.0 919.9,894.0 919.9,894.0 919.9,306.0" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1058.1,306.0 1058.1,894.0 1058.1,894.0 1052.0,348.0 1052.0,348.0 1058.1,306.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1045.9,306.0 1052.0,348.0 1052.0,348.0 1045.9,894.0 1045.9,894.0 1045.9,306.0" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1184.1,306.0 1184.1,894.0 1184.1,894.0 1178.0,348.0 1178.0,348.0 1184.1,306.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1171.9,306.0 1178.0,348.0 1178.0,348.0 1171.9,894.0 1171.9,894.0 1171.9,306.0" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="428.1,894.0 415.9,894.0 415.9,894.0 428.1,894.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="554.1,894.0 541.9,894.0 541.9,894.0 554.1,894.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="680.1,894.0 667.9,894.0 667.9,894.0 680.1,894.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="806.1,894.0 793.9,894.0 793.9,894.0 806.1,894.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="932.1,894.0 919.9,894.0 919.9,894.0 932.1,894.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1058.1,894.0 1045.9,894.0 1045.9,894.0 1058.1,894.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1184.1,894.0 1171.9,894.0 1171.9,894.0 1184.1,894.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="428.1,306.0 415.9,306.0 415.9,306.0 428.1,306.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="554.1,306.0 541.9,306.0 541.9,306.0 554.1,306.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="680.1,306.0 667.9,306.0 667.9,306.0 680.1,306.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="806.1,306.0 793.9,306.0 793.9,306.0 806.1,306.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="932.1,306.0 919.9,306.0 919.9,306.0 932.1,306.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1058.1,306.0 1045.9,306.0 1045.9,306.0 1058.1,306.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1184.1,306.0 1171.9,306.0 1171.9,306.0 1184.1,306.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="428.1,306.0 415.9,306.0 415.9,894.0 428.1,894.0" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="554.1,306.0 541.9,306.0 541.9,894.0 554.1,894.0" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="680.1,306.0 667.9,306.0 667.9,894.0 680.1,894.0" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="806.1,306.0 793.9,306.0 793.9,894.0 806.1,894.0" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="932.1,306.0 919.9,306.0 919.9,894.0 932.1,894.0" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1058.1,306.0 1045.9,306.0 1045.9,894.0 1058.1,894.0" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
+    <polygon points="1184.1,306.0 1171.9,306.0 1171.9,894.0 1184.1,894.0" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
+  <g id="annotation-labels-layer">
+    <text x="1193.0" y="348.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P1">P1</text>
+    <text x="1193.0" y="852.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P2">P2</text>
+    <text x="815.0" y="852.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P3">P3</text>
+    <text x="437.0" y="852.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P4">P4</text>
+    <text x="437.0" y="348.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P5">P5</text>
+    <text x="815.0" y="348.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P6">P6</text>
+    <text x="1178.0" y="585.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B1">B1</text>
+    <text x="989.0" y="837.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B2">B2</text>
+    <text x="611.0" y="837.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B3">B3</text>
+    <text x="422.0" y="585.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B4">B4</text>
+    <text x="611.0" y="333.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B5">B5</text>
+    <text x="989.0" y="333.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B6">B6</text>
+    <text x="1178.0" y="389.1" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K1A">K1A</text>
+    <text x="1178.0" y="810.9" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K1B">K1B</text>
+    <text x="1136.9" y="852.0" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K2A">K2A</text>
+    <text x="841.1" y="852.0" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K2B">K2B</text>
+    <text x="758.9" y="852.0" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K3A">K3A</text>
+    <text x="463.1" y="852.0" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K3B">K3B</text>
+    <text x="422.0" y="810.9" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K4A">K4A</text>
+    <text x="422.0" y="389.1" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K4B">K4B</text>
+    <text x="463.1" y="348.0" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K5A">K5A</text>
+    <text x="758.9" y="348.0" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K5B">K5B</text>
+    <text x="841.1" y="348.0" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K6A">K6A</text>
+    <text x="1136.9" y="348.0" text-anchor="middle" font-size="9" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K6B">K6B</text>
+    <text x="422.0" y="600.0" text-anchor="middle" font-size="12" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R1">R1</text>
+    <text x="548.0" y="600.0" text-anchor="middle" font-size="12" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R2">R2</text>
+    <text x="674.0" y="600.0" text-anchor="middle" font-size="12" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R3">R3</text>
+    <text x="800.0" y="600.0" text-anchor="middle" font-size="12" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R4">R4</text>
+    <text x="926.0" y="600.0" text-anchor="middle" font-size="12" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R5">R5</text>
+    <text x="1052.0" y="600.0" text-anchor="middle" font-size="12" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R6">R6</text>
+    <text x="1178.0" y="600.0" text-anchor="middle" font-size="12" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R7">R7</text>
+  </g>
+    <g data-role="dimension">
+        <line x1="422.0" y1="1028.0" x2="1178.0" y2="1028.0" stroke="#00e5ff" stroke-width="1.2" />
+        <text x="800.0" y="1020.0" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#00e5ff">MAX SPAN: 18 FT</text>
+    </g>
+    <g data-role="title-block" transform="translate(1180, 1030)">
+        <rect width="400" height="150" fill="#12253a" stroke="#00ffff" stroke-width="1.8" />
+        <line x1="0" y1="40" x2="400" y2="40" stroke="#00ffff" stroke-width="1.0" />
+        <text x="15" y="28" font-family="monospace" font-size="18" font-weight="bold" fill="#00ffff">BLUEPRINT PLAN</text>
+        <text x="15" y="60" font-family="monospace" font-size="11" fill="#00ffff">STRUCTURE: PERGOLA</text>
+        <text x="15" y="80" font-family="monospace" font-size="11" fill="#00ffff">JURISDICTION: BC_SAANICH</text>
+        <text x="15" y="100" font-family="monospace" font-size="11" fill="#00ffff">SOURCE HASH: seed_per</text>
+        <text x="15" y="120" font-family="monospace" font-size="11" fill="#00ffff">REVISION: rev-m5-p | SCALE: AUTO</text>
+    </g>
+    <!-- VALIDATOR_ANCHORS: 0:12 28.71° 9.1° -->
+    <!-- SAW_SETTINGS: {"miter_deg": 28.71, "bevel_deg": 9.1} -->
+    <!-- COORDINATE MAP: {"viewBox": "0 0 1600 1200", "width_px": 1600, "height_px": 1200, "grade_y": 1080, "scale_px_per_ft": 42.0, "post_top_y": 702, "beam_top_y": 660, "hub_apex_y": 660} -->
+    <g style="visibility:hidden; display:none;"><text>0:12</text><text>28.71</text><text>9.1</text></g>
+</svg>

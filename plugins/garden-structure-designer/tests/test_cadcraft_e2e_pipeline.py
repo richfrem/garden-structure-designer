@@ -50,11 +50,9 @@ def _hex_seed() -> dict:
     return seed
 
 
-def _rectangle_seed() -> dict:
+def _hip_ridge_seed() -> dict:
     seed = copy.deepcopy(STRUCTURE_SEED)
-    seed["meta"]["topology_family"] = "OrthogonalGridTopology"
-    seed["structure"] = {"type": "pergola", "shape": "rectangle", "sides": 4}
-    seed["layout"].update({"shape": "rectangle", "length_ft": 18.0, "width_ft": 12.0})
+    seed["meta"]["topology_family"] = "HipRidgeTopology"
     return seed
 
 
@@ -182,8 +180,8 @@ def test_hex_pipeline_dxf_member_ids_trace_to_structure(compiled_hex_package, he
     assert seen <= expected
 
 
-def test_rectangular_pergola_rejected_fail_closed(tmp_path):
-    seed = _rectangle_seed()
+def test_hip_ridge_rejected_fail_closed(tmp_path):
+    seed = _hip_ridge_seed()
     stage05 = stage05_intent(seed, tmp_path, tmp_path)
     assert stage05["error_code"] == TopologyErrorCode.TOPOLOGY_NOT_IMPLEMENTED
 

@@ -6,14 +6,26 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from geometry_engine import vsub, vdot, vlen
 
+def _find_cut_list() -> Path:
+    candidates = [
+        Path("outputs/fabrication/cut-list.json"),
+        Path("outputs/sample-gazebo-run/fabrication/cut-list.json"),
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return candidates[0]
+
+
 def test_fabrication_cut_list_file_exists():
     """Verify that the cut list was compiled and exists."""
-    cut_list_path = Path("outputs/fabrication/cut-list.json")
+    cut_list_path = _find_cut_list()
     assert cut_list_path.exists(), "cut-list.json was not generated"
+
 
 def test_fabrication_schema_and_metadata():
     """Verify the cut list schema structure and source metadata."""
-    cut_list_path = Path("outputs/fabrication/cut-list.json")
+    cut_list_path = _find_cut_list()
     with open(cut_list_path, encoding="utf-8") as f:
         data = json.load(f)
     
@@ -22,9 +34,10 @@ def test_fabrication_schema_and_metadata():
     assert data["angle_units"] == "deg"
     assert len(data["members"]) > 0
 
+
 def test_rafter_regression_angles():
     """Verify primary rafter compound cut saw angles match regression anchors (miter 28.71, bevel 9.10)."""
-    cut_list_path = Path("outputs/fabrication/cut-list.json")
+    cut_list_path = _find_cut_list()
     with open(cut_list_path, encoding="utf-8") as f:
         data = json.load(f)
     
@@ -42,7 +55,7 @@ def test_rafter_regression_angles():
 
 def test_beam_regression_angles():
     """Verify ring beam flat miter cuts are perpendicular flat cuts (bevel close to 0)."""
-    cut_list_path = Path("outputs/fabrication/cut-list.json")
+    cut_list_path = _find_cut_list()
     with open(cut_list_path, encoding="utf-8") as f:
         data = json.load(f)
     
@@ -61,7 +74,7 @@ def test_beam_regression_angles():
 
 def test_brace_regression_angles():
     """Verify braces are paired and ends slope at correct angles."""
-    cut_list_path = Path("outputs/fabrication/cut-list.json")
+    cut_list_path = _find_cut_list()
     with open(cut_list_path, encoding="utf-8") as f:
         data = json.load(f)
     
@@ -79,7 +92,7 @@ def test_brace_regression_angles():
 
 def test_plane_equation_satisfaction():
     """Verify that all cut planes satisfy the plane equation at endpoints within tolerance."""
-    cut_list_path = Path("outputs/fabrication/cut-list.json")
+    cut_list_path = _find_cut_list()
     with open(cut_list_path, encoding="utf-8") as f:
         data = json.load(f)
     

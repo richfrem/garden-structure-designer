@@ -133,7 +133,7 @@ def test_t2_1_sides_vs_post_count_mismatch_fails_at_stage_0_5(tmp_path, post_cou
 
 def test_t2_1_reserved_family_is_not_implemented(tmp_path):
     intent = _valid_intent()
-    intent["meta"]["topology_family"] = "OrthogonalGridTopology"
+    intent["meta"]["topology_family"] = "HipRidgeTopology"
     result = _run(tmp_path, intent)
     _assert_failed_closed(result, TopologyErrorCode.TOPOLOGY_NOT_IMPLEMENTED, "0.5")
 

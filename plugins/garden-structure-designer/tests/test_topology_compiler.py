@@ -22,7 +22,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-from topology_compiler import compile_topology, enrich_structure
+from topology_compiler import compile_topology, enrich_structure, validate_sealed
 
 # ---------------------------------------------------------------------------
 # Minimal sealed structure fixture
@@ -203,3 +203,44 @@ def test_round_trip_idempotent():
     topo1 = compile_topology(s)
     topo2 = compile_topology(s)
     assert topo1 == topo2, "compile_topology is not idempotent — result changed on second call"
+
+
+# ---------------------------------------------------------------------------
+# 9. OrthogonalGridTopology compiles and validates
+# ---------------------------------------------------------------------------
+
+def test_orthogonal_grid_topology_compiles_and_validates():
+    s = {
+        "meta": {"topology_family": "OrthogonalGridTopology"},
+        "structure": {"type": "pergola", "shape": "rectangle", "sides": 4},
+        "layout": {"post_count": 6, "shape": "rectangle", "length_ft": 18.0, "width_ft": 12.0},
+        "roof": {"pitch": "0:12", "primary_rafters": {"count": 7}},
+        "hub": {"type": "none"},
+        "geometry": {
+            "_sealed": True,
+            "joints": {
+                "layout": {
+                    "post_count": 6,
+                    "post_xy": [
+                        [9.0, -6.0], [9.0, 6.0], [0.0, 6.0],
+                        [-9.0, 6.0], [-9.0, -6.0], [0.0, -6.0],
+                    ],
+                    "beam_segments": [
+                        {"id": f"B{i+1}", "i0": i, "i1": (i+1) % 6} for i in range(6)
+                    ],
+                },
+                "hub": {"type": "none", "radius_ft": 0.0, "height_ft": 0.0, "face_planes": {"planes": []}},
+                "primary_rafters": [
+                    {"id": f"R{i+1}", "start": [-9.0 + i * 3.0, -7.0, 10.0], "end": [-9.0 + i * 3.0, 7.0, 10.0], "seat_point": [-9.0 + i * 3.0, -6.0, 10.0], "seat_depth_ft": 0.25}
+                    for i in range(7)
+                ],
+                "braces": {"enabled": False, "endpoints": []},
+            },
+        },
+    }
+    result = validate_sealed(s)
+    assert result.get("valid") is True, f"Validation failed: {result}"
+    topo = result["topology"]
+    assert topo["member_count"] == 6 + 6 + 7  # 6 posts, 6 beams, 7 rafters = 19 members
+    enrich_structure(s)
+    assert s["geometry"]["joints"]["topology"] == topo

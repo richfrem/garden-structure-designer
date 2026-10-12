@@ -24,6 +24,7 @@ allowed-tools: Read, Write, Bash
 ```bash
 python3 scripts/compile_package.py [staging_dir] [outputs_dir] [md_filename]
 python3 scripts/package_consistency_validator.py
+python3 scripts/open_in_cadcraft.py outputs/cad/SB01-structure.dxf
 ```
 Run commands from the skill root. `scripts/` entries are file-level symlinks to the plugin's canonical `scripts/` (dereferenced on install); never edit them through the symlink.
 

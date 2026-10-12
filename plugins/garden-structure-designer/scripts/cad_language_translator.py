@@ -143,11 +143,13 @@ def build_roof_slope_planes(
     z_beam_top: float,
     z_apex: float,
     v_shift: float,
+    r_count: int = 0,
 ) -> List[Dict[str, Any]]:
     """Generates roof sloping facet reference planes for rectangular or polygonal hips."""
     planes: List[Dict[str, Any]] = []
     if shape == "rectangle":
-        for i in range(qty):
+        count = r_count if r_count > 0 else qty
+        for i in range(count):
             planes.append({
                 "id": f"roof_plane_{i}",
                 "type": "roof_plane",
@@ -171,8 +173,15 @@ def build_roof_slope_planes(
     return planes
 
 
-def build_hub_face_planes(qty: int, hub_r: float, z_apex: float) -> List[Dict[str, Any]]:
+def build_hub_face_planes(
+    qty: int,
+    hub_r: float,
+    z_apex: float,
+    hub_type: str | None = None,
+) -> List[Dict[str, Any]]:
     """Generates polygonal vertical facet planes for apex hub rafter termination."""
+    if hub_type in ("none", "", None):
+        return []
     planes: List[Dict[str, Any]] = []
     hub_r_face = hub_r * math.cos(math.pi / qty)
     for i in range(qty):
@@ -227,20 +236,22 @@ def build_rafter_constraints(
     """Builds rafter birdsmouth seats, overhang, and apex hub connection constraints."""
     overhang = structure["roof"]["primary_rafters"]["overhang_ft"]
     constraints: List[Dict[str, Any]] = []
-    for i in range(qty):
+    r_count = structure["roof"]["primary_rafters"]["count"] if shape == "rectangle" else qty
+    for i in range(r_count):
+        beam_idx = (i % qty) + 1
         constraints.append({
             "member_id": f"R{i+1}",
             "constraints": {
-                "tail_constraint": {"type": "overhang_past_beam", "beam_id": f"B{i+1}", "overhang_ft": overhang},
+                "tail_constraint": {"type": "overhang_past_beam", "beam_id": f"B{beam_idx}", "overhang_ft": overhang},
                 "hub_constraint": {
                     "type": "none" if shape == "rectangle" else "hub_face",
-                    "hub_id": "HUB",
+                    "hub_id": "none" if shape == "rectangle" else "HUB",
                     "face_index": i,
                 },
                 "seat_constraint": {
                     "type": "birdsmouth",
-                    "surface": f"beam_top_B{i+1}",
-                    "beam_id": f"B{i+1}",
+                    "surface": f"beam_top_B{beam_idx}",
+                    "beam_id": f"B{beam_idx}",
                     "seat_depth_ratio": 0.333,
                 },
                 "plane_constraint": {"type": "roof_plane", "plane_id": f"roof_plane_{i}", "pitch": pitch_str},
@@ -297,15 +308,16 @@ def build_member_constraints(
         constraints.extend(build_bracing_constraints(post_xy, qty, run_t))
 
     constraints.extend(build_rafter_constraints(structure, qty, shape, pitch_str))
-    constraints.append({
-        "member_id": "HUB",
-        "constraints": {
-            "type": "rafter_termination_block",
-            "faces_defined_by": "rafter_count",
-            "height_constraint": "rafter_depth",
-            "radius_constraint": "auto_from_rafter_width",
-        },
-    })
+    if structure.get("hub", {}).get("type") not in ("none", "", None):
+        constraints.append({
+            "member_id": "HUB",
+            "constraints": {
+                "type": "rafter_termination_block",
+                "faces_defined_by": "rafter_count",
+                "height_constraint": "rafter_depth",
+                "radius_constraint": "auto_from_rafter_width",
+            },
+        })
     return constraints
 
 
@@ -355,17 +367,19 @@ def translate_to_constraints(structure: dict[str, Any]) -> None:
     post_xy = derive_post_coordinates(shape, qty, r_ft, len_ft, wid_ft)
     ref_planes = build_footing_and_post_planes(post_xy, qty, z_grade, phw)
     ref_planes.extend(build_beam_planes(post_xy, qty, z_post_top, z_beam_top))
-    ref_planes.extend(build_roof_slope_planes(post_xy, qty, shape, z_beam_top, z_apex, v_shift))
-    ref_planes.extend(build_hub_face_planes(qty, hub_r, z_apex))
+    r_count = structure.get("roof", {}).get("primary_rafters", {}).get("count") or qty
+    ref_planes.extend(build_roof_slope_planes(post_xy, qty, shape, z_beam_top, z_apex, v_shift, r_count))
+    ref_planes.extend(build_hub_face_planes(qty, hub_r, z_apex, structure.get("hub", {}).get("type")))
 
     member_constraints = build_member_constraints(structure, post_xy, qty, shape, pitch_str)
+    roof_count = r_count if shape == "rectangle" else qty
     roof_planes_global = [
         {
             "id": f"roof_plane_{i}",
-            "defined_by": [f"P{i+1}_top", f"P{(i+2 if (i+2) <= qty else 1)}_top", "HUB_apex"],
+            "defined_by": [f"P{i+1}_top", f"P{(i+2 if (i+2) <= qty else 1)}_top", "roof_plane"] if shape == "rectangle" else [f"P{i+1}_top", f"P{(i+2 if (i+2) <= qty else 1)}_top", "HUB_apex"],
             "pitch": pitch_str,
         }
-        for i in range(qty)
+        for i in range(roof_count)
     ]
     global_constraints = {
         "roof_planes": roof_planes_global,
