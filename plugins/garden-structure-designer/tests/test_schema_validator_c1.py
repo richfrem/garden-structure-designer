@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from test_geometry_engine import STRUCTURE_SEED  # type: ignore[import]  # noqa: E402
 
 PLUGIN = Path(__file__).parent.parent
-SCHEMA = json.loads((PLUGIN / "schemas" / "structure.schema.json").read_text())
+SCHEMA = json.loads((PLUGIN / "assets" / "schemas" / "structure.schema.json").read_text())
 SCRIPT = PLUGIN / "scripts" / "schema_validator.py"
 
 
@@ -51,7 +51,7 @@ def _run(tmp_path, structure, *extra):
     (staging / "structure.json").write_text(json.dumps(structure))
     out = tmp_path / "report.json"
     proc = subprocess.run(
-        [sys.executable, str(SCRIPT), str(staging), str(PLUGIN / "schemas"), "--json-output", str(out), *extra],
+        [sys.executable, str(SCRIPT), str(staging), str(PLUGIN / "assets" / "schemas"), "--json-output", str(out), *extra],
         capture_output=True, text=True,
     )
     return proc, json.loads(out.read_text())

@@ -54,8 +54,8 @@ def outputs_dir(start: str | Path | None = None, subdir: str | Path | None = Non
 
 
 def schemas_dir(start: str | Path | None = None) -> Path:
-    """Schemas directory inside the plugin."""
-    return plugin_root(start) / "schemas"
+    """Schemas directory inside the plugin (assets/schemas)."""
+    return plugin_root(start) / "assets" / "schemas"
 
 def scripts_dir(start: str | Path | None = None) -> Path:
     """Canonical scripts directory inside the plugin."""
