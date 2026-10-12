@@ -188,22 +188,49 @@ def _camera(view_type: str) -> tuple[float, float, float]:
     return vnorm((1.0, -1.0, 1.0))  # isometric
 
 
-# Rafters and beams physically sit above posts and footings
-_ROLE_BIASES = {"rafter": 0.08, "purlin": 0.07, "beam": 0.04, "hub": 0.03, "brace": 0.02, "post": 0.01, "footing": -10.0}
+_ROLE_BIASES = {
+    "footing": -0.05,
+    "post": 0.0,
+    "brace": 0.02,
+    "beam": 0.04,
+    "hub": 0.05,
+    "rafter": 0.08,
+    "purlin": 0.09,
+}
 
 
 def _depth_sorted_faces(scene: Any, cam: tuple, should_suppress: Callable[[Any], bool]) -> list:
-    """Back-face-culled (depth + role bias, face, solid) entries sorted far to near."""
-    face_entries = []
+    """Solid-grouped, back-face-culled (depth + role bias, face, solid) entries sorted far to near."""
+    solid_entries = []
     for solid in scene.solids:
-        if should_suppress(solid): continue
+        if should_suppress(solid):
+            continue
+        # Use solid center projected along the camera ray
+        if solid.role == "footing":
+            c_solid = (solid.p1[0], solid.p1[1], -0.5)
+        else:
+            c_solid = vcent([solid.p0, solid.p1])
+        s_depth = vdot(c_solid, cam) + _ROLE_BIASES.get(solid.role, 0.0)
+
+        visible_faces = []
         for face in solid.faces:
-            if solid.role != "footing" and vdot(face.normal, cam) < -0.1: continue # Backface cull
-            c = vcent(face.verts); depth = vdot(c, cam)
-            bias = _ROLE_BIASES[solid.role] if solid.role in _ROLE_BIASES else 0.0
-            face_entries.append((depth + bias, face, solid))
-    face_entries.sort(key=lambda t: t[0])
-    return face_entries
+            # Backface culling: normals facing away from camera are culled
+            if vdot(face.normal, cam) < -0.05:
+                continue
+            c_f = vcent(face.verts)
+            f_depth = vdot(c_f, cam)
+            visible_faces.append((f_depth, face))
+        visible_faces.sort(key=lambda t: t[0])
+        solid_entries.append((s_depth, solid, visible_faces))
+
+    solid_entries.sort(key=lambda t: t[0])
+
+    flat_entries = []
+    for s_depth, solid, vfaces in solid_entries:
+        for f_depth, face in vfaces:
+            flat_entries.append((s_depth, face, solid))
+    return flat_entries
+
 
 
 def _member_polygons(face_entries: list, palette: dict, is_blueprint: bool, proj_func, scale: float, cx: float, cy: float) -> list[str]:

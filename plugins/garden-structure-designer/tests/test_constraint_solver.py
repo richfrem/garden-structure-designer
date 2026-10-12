@@ -126,6 +126,16 @@ def test_missing_z_plane_key_fails():
     assert "Z_APEX" in z_r["detail"]
 
 
+def test_flat_roof_allows_apex_at_beam_top():
+    """A declared 0:12 roof has no rise, so its apex plane equals the beam-top plane."""
+    s = copy.deepcopy(VALID_STRUCTURE)
+    s["roof"] = {"pitch": "0:12"}
+    s["geometry"]["joints"]["z_planes"]["Z_APEX"] = s["geometry"]["joints"]["z_planes"]["Z_BEAM_TOP"]
+    results = solve_connections(s)
+    z_r = next(r for r in results if r["name"] == "z_plane_ordering")
+    assert z_r["status"] == "PASS"
+
+
 # ---------------------------------------------------------------------------
 # 4. hub_radius_within_beam_ring → FAIL when hub overflows
 # ---------------------------------------------------------------------------

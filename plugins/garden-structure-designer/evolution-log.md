@@ -51,3 +51,14 @@
   5. Re-ran complete deterministic pipeline (Stages 0–7) for the 12' × 18' Saanich BC rectangular pergola: 150/150 pytest tests passing, visual smoke tests passing, drawing red-team gate approved (`may_claim_success: true`), and generated the master `outputs/pergola_plan.pdf`.
 - **Outcome**: 100% clean outputs with zero cross-project contamination, fully verified rectangular pergola blueprints, and strict prevention of premature completion claims.
 
+## [2026-10-11] 10 ft Hex Pergola Pipeline Gate Repairs and Raster Blocker
+
+- **Tier**: Tier 2 (Failure / Partial Repair)
+- **Target**: `geometry_engine.py`, `cad_language_translator.py`, `constraint_solver.py`, `builder_docs_compiler.py`, visual raster gate
+- **Outcome**:
+  - Replaced six silent structural numeric fallbacks with fail-closed access and added a default-target cleanliness regression test.
+  - Added explicit `0:12` flat-roof support to Z-plane ordering with a red-to-green regression test.
+  - Aligned builder documents with schema-authoritative `intent.jurisdiction` and declared footing diameter/depth/grade; added regression coverage.
+  - Geometry, topology, physics, connection, SVG, DXF, fabrication, builder-doc, and cross-artifact stages passed for the new hex pergola.
+  - Visual evidence remained blocked after Quick Look, Playwright, and CairoSVG attempts failed in the managed runtime. The pipeline halted before red-team approval and package compilation; see `references/map-debt.md`.
+
