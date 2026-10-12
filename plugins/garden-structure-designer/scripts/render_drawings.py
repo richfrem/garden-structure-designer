@@ -549,9 +549,15 @@ def generate_svg(filename: str, structure: dict, output_path: str) -> None:
 
 def main():
     """CLI entrypoint: render all eight sheets from structure.json into the outputs directory."""
-    struct_path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")
-    with open(struct_path) as f: s = json.load(f)
-    out_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else outputs_dir()
+    import argparse
+    parser = argparse.ArgumentParser(description="Render all 8 sheets from structure.json.")
+    parser.add_argument("structure", nargs="?", default=str(staging_dir() / "structure.json"), help="Path to structure.json")
+    parser.add_argument("out_dir", nargs="?", default=None, help="Output directory")
+    parser.add_argument("--output-dir", dest="output_dir_flag", default=None, help="Output directory flag")
+    args = parser.parse_args()
+    with open(args.structure) as f: s = json.load(f)
+    out_dir_val = args.output_dir_flag or args.out_dir
+    out_dir = Path(out_dir_val) if out_dir_val else outputs_dir()
     render_all_sheets(s, out_dir)
     for f in SVG_SHEET_FILENAMES:
         print(f"  ✓ {f}")

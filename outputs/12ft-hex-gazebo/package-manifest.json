@@ -1,0 +1,214 @@
+{
+  "version": "1.5",
+  "revision_id": "3bd88e39-cba8-4a7f-a368-c4ec3e2b28f8",
+  "revision_hash": "aa9201c9ffce1efec3aa94a36f5c86ad8afedc7b25942676a3c0ffc57be79185",
+  "schema_version": "2.0",
+  "topology_family": "RadialHubTopology",
+  "artifacts": [
+    {
+      "path": "COMPILATION_BLOCKED.md",
+      "sha256": "9fd65c0daeaaf6c63540f36b5e192df08576c41df044e4d73243d2e2f428bfb5",
+      "size_bytes": 125
+    },
+    {
+      "path": "assembly-guide.md",
+      "sha256": "b304960a0ca5a27ef338ba7272433ae3c37ff3f392f609c57d36b765e19c2114",
+      "size_bytes": 1621
+    },
+    {
+      "path": "assembly.glb",
+      "sha256": "b93b49ba3d37d74c45db3a9835e5b22394221b1d9456931d71c593388aa369bb",
+      "size_bytes": 161880
+    },
+    {
+      "path": "assembly.glb.manifest.json",
+      "sha256": "890943df2409eda6c10733568d08087d16ff5270102e3f939be90f0b330bee73",
+      "size_bytes": 26498
+    },
+    {
+      "path": "blueprint-component-isolation.svg",
+      "sha256": "0140d7634c7a93211a0bc0b5d506da004501749784ca7fb2f89ee4e6f930d638",
+      "size_bytes": 8847
+    },
+    {
+      "path": "blueprint-elevation.svg",
+      "sha256": "e2cba3561ee05f5cb6c310fb51a386b8c6e9c2f71acc6d2dfb3bf74a17375a1a",
+      "size_bytes": 56556
+    },
+    {
+      "path": "blueprint-isometric.svg",
+      "sha256": "522def8411728266cd4f680735db40a65f0b11697cfae6166d8e965caf520ad1",
+      "size_bytes": 102759
+    },
+    {
+      "path": "blueprint-plan.svg",
+      "sha256": "a266a607ad414ce4f16060f1292b6ba22b64a762090681255d896209654ad8ef",
+      "size_bytes": 67902
+    },
+    {
+      "path": "budget-estimate.md",
+      "sha256": "e38fad6ed48ba1df61c89f3d3ded6495cc53c305c8c8b111e8982249ba7b048b",
+      "size_bytes": 768
+    },
+    {
+      "path": "cad/SB01-structure.dxf",
+      "sha256": "ad4b1056d7b9ac92855c06a4fd9446e17ad3d4a2d5a8de465641dcb645a0448b",
+      "size_bytes": 191827
+    },
+    {
+      "path": "cad/SB02-plan.dxf",
+      "sha256": "bfba53e7c28e88e6eb904cfea41d000c4f0fa07ad7fed247a08001c8543e2f31",
+      "size_bytes": 183991
+    },
+    {
+      "path": "drawing-elevation-view.svg",
+      "sha256": "a4a1d2247a75aed7642160b457328dbd529e4adf1d0140ddecfddcd0bd600aae",
+      "size_bytes": 58285
+    },
+    {
+      "path": "drawing-isometric-view.svg",
+      "sha256": "c44083009db8e2bdc4ae221cd5351dcb2ba0a3c2f8829841565dfcb3790b71cb",
+      "size_bytes": 150863
+    },
+    {
+      "path": "drawing-perspective-view.svg",
+      "sha256": "8c76055db1b7bc914b68b962961e39a59cb7e950fd82f2977e24f26904aa9525",
+      "size_bytes": 102583
+    },
+    {
+      "path": "drawing-plan-view.svg",
+      "sha256": "31acad09645218b38d087c4aa6b0cbae17089c00bcbbf3218561fda85abd6329",
+      "size_bytes": 86529
+    },
+    {
+      "path": "drawing-red-team-report.md",
+      "sha256": "88c51d7494969e7fff8616169ad97660549d16a28fd62a84c177d44a6beaf4dd",
+      "size_bytes": 3516
+    },
+    {
+      "path": "fabrication/cut-list.json",
+      "sha256": "cf93e68549f3fd5d7d0b5dffad9a38c0efc76b72453b8cf807704c3db2a78853",
+      "size_bytes": 61832
+    },
+    {
+      "path": "gazebo_plan.md",
+      "sha256": "4f9d2b3eff9e76fcc476d7bb3429653b0745b638ee82f610aa656d6e187a781a",
+      "size_bytes": 2858
+    },
+    {
+      "path": "gazebo_plan.pdf",
+      "sha256": "21e3f50b9324233c9182f3c1dddd2d649b908b11f50a42e07971b806de3c69ed",
+      "size_bytes": 697681
+    },
+    {
+      "path": "gazebo_plan_embedded.md",
+      "sha256": "e70ec2b6ec59aa5b680b27c156b295c5f63e8ec699a10a68da5182399f9a0300",
+      "size_bytes": 837099
+    },
+    {
+      "path": "high-resolution-image/hexagonal_gazebo_render_1.png",
+      "sha256": "70fabd735d20b4cce6e93d15179524bbfe585465f4e3805f4f1afa01ca28dab3",
+      "size_bytes": 149381
+    },
+    {
+      "path": "lumber-purchase-list.md",
+      "sha256": "a69fa3cd7d24a9b6e354b15843962938c06e6b03d477d557cf3c1f429ce56ef6",
+      "size_bytes": 847
+    },
+    {
+      "path": "render-elev.png",
+      "sha256": "ad9cdcac9aee222fe6190993691dc33f8a80c92bba2ddfbb540ff640d4d824eb",
+      "size_bytes": 31787
+    },
+    {
+      "path": "render-iso.png",
+      "sha256": "0708407261ebaffb2233a5c3b29b48c1d46ad150349ef55d7674b9ac58781227",
+      "size_bytes": 100999
+    },
+    {
+      "path": "render-persp.png",
+      "sha256": "7558837a7acf788f8da7348be5d5c9caee02721ea74202e9a7b5c8e5221c0c32",
+      "size_bytes": 64795
+    },
+    {
+      "path": "render-plan.png",
+      "sha256": "88a6539b218c6b5d5db3003c6279fc87c24c9bf6ef98a088e36ed7f42a61ae75",
+      "size_bytes": 52971
+    },
+    {
+      "path": "shop-blueprint/SB01-cut-list.json",
+      "sha256": "a808547e1bb1921542206a53940a8367f76065aa8bc59bcef52f70d45923963f",
+      "size_bytes": 1577
+    },
+    {
+      "path": "visual-smoke/blueprint-component-isolation.png",
+      "sha256": "f40061ebfaffff5d86e8d21c6ec8fb08777f71659cd868637f1dc23e8a5b9c09",
+      "size_bytes": 89584
+    },
+    {
+      "path": "visual-smoke/blueprint-elevation.png",
+      "sha256": "27e15154f11d8794e0f7dd3d7c0403f78b42f8727cd828ab1db62a549ab934b5",
+      "size_bytes": 148525
+    },
+    {
+      "path": "visual-smoke/blueprint-isometric.hub.png",
+      "sha256": "aa356d2b75462b20cc9e3488a0cdfe3a052f34f106f1de502b80d3073b398937",
+      "size_bytes": 25757
+    },
+    {
+      "path": "visual-smoke/blueprint-isometric.png",
+      "sha256": "4129f47929f49e3c799165397a197a4ebbcd1e067422945a4f972b61e7ace14c",
+      "size_bytes": 364592
+    },
+    {
+      "path": "visual-smoke/blueprint-plan.hub.png",
+      "sha256": "ac4a6d1751da669e63463c78484a0560e36fe7ab73661e713ca8ddbb72107ee4",
+      "size_bytes": 14744
+    },
+    {
+      "path": "visual-smoke/blueprint-plan.png",
+      "sha256": "665c18246765987ed8be11103140b7e94378e2537f43b23d293bb26b05601e30",
+      "size_bytes": 263969
+    },
+    {
+      "path": "visual-smoke/drawing-elevation-view.png",
+      "sha256": "24a83e19ae9d86aa1844a51b3d9add9d43f15dd98199cf3999e70a71ba845137",
+      "size_bytes": 171284
+    },
+    {
+      "path": "visual-smoke/drawing-isometric-view.hub.png",
+      "sha256": "84c59c1c60cc6aff1c2d671819354065541f16794eebccb2ca55248c5b082d95",
+      "size_bytes": 22172
+    },
+    {
+      "path": "visual-smoke/drawing-isometric-view.png",
+      "sha256": "89d013e3d202caa2c4e63460d43ab15f6be1cd724e57d7ab69e02d650dd85f6d",
+      "size_bytes": 375886
+    },
+    {
+      "path": "visual-smoke/drawing-perspective-view.hub.png",
+      "sha256": "9fab882be28bfa4b230bdb1addac156b46687d8dbc45c6fd3f0802dec0b87875",
+      "size_bytes": 13671
+    },
+    {
+      "path": "visual-smoke/drawing-perspective-view.png",
+      "sha256": "8ee3a131e55b5b9a7fc5bfaaf71071bc5779ecedb3247b9ecb7e6ebcafc5f0aa",
+      "size_bytes": 274618
+    },
+    {
+      "path": "visual-smoke/drawing-plan-view.hub.png",
+      "sha256": "c3f91be15f02e17f85789f43c29993a231d44986317ddabd3431e52c4d2eeae3",
+      "size_bytes": 11780
+    },
+    {
+      "path": "visual-smoke/drawing-plan-view.png",
+      "sha256": "6180c423177973ab2102faeff5db2a23f9504d48931b9cf3ad9e4e6f045f4c2c",
+      "size_bytes": 247713
+    },
+    {
+      "path": "visual-smoke-report.md",
+      "sha256": "c14cfa5358cc7d435ef0155ff9b35973b058229b0184aa99239deeb6b9e39d1f",
+      "size_bytes": 7946
+    }
+  ]
+}

@@ -126,10 +126,15 @@ def build_member_solid(m: Dict[str, Any], structure: Dict[str, Any], ft_to_mm: f
     """Translates a resolved member axis and bounding profile into a build123d Solid."""
     # If the resolved model includes exact faces and vertices (e.g. notched rafters, mitered beams)
     if "faces" in m and "vertices" in m and m["faces"] and m["vertices"]:
-        ocp_solid = make_solid_from_faces(m["vertices"], m["faces"], ft_to_mm)
-        s = b3d.Solid(ocp_solid)
-        s.label = m.get("id", "MEMBER")
-        return s
+        try:
+            ocp_solid = make_solid_from_faces(m["vertices"], m["faces"], ft_to_mm)
+            an = BRepCheck_Analyzer(ocp_solid)
+            if an.IsValid() and not ocp_solid.IsNull():
+                s = b3d.Solid(ocp_solid)
+                s.label = m.get("id", "MEMBER")
+                return s
+        except Exception:
+            pass
 
     p0 = [x * ft_to_mm for x in m["p0"]]
     p1 = [x * ft_to_mm for x in m["p1"]]
