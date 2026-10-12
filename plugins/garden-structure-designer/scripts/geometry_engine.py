@@ -147,9 +147,21 @@ def _add_notched_rafter(resolved: dict, p_tail: V3, p_apex: V3, p_seat: V3, hw: 
     notch_d = full_depth - seat_depth_notch
     def get_side_pts(lat: float) -> list[V3]:
         """Six profile points of one rafter side at lateral offset lat."""
-        v0 = vadd(p_tail, vmul(w, lat)); v1 = vadd(p_apex, vmul(w, lat))
-        v2 = (v1[0], v1[1], v1[2] - full_depth/cos_pitch if cos_pitch > 0.1 else v1[2]-full_depth)
-        v4 = (p_seat[0], p_seat[1], z_seat); v3 = (v4[0], v4[1], v4[2] - notch_d/cos_pitch); v5 = (v0[0], v0[1], z_seat); return [v0, v1, v2, v3, v4, v5]
+        lat_v = vmul(w, lat)
+        v0 = vadd(p_tail, lat_v)
+        v1 = vadd(p_apex, lat_v)
+        if abs(u[2]) < 1e-4:
+            # Flat pergola: straight timber resting horizontally on top of beam at z_seat (Z_BEAM_TOP)
+            v2 = (v1[0], v1[1], z_seat)
+            v4 = (p_seat[0] + lat_v[0], p_seat[1] + lat_v[1], z_seat)
+            v3 = ((v2[0] + v4[0]) * 0.5, (v2[1] + v4[1]) * 0.5, z_seat)
+            v5 = (v0[0], v0[1], z_seat)
+            return [v0, v1, v2, v3, v4, v5]
+        v2 = (v1[0], v1[1], v1[2] - full_depth / cos_pitch if cos_pitch > 0.1 else v1[2] - full_depth)
+        v4 = (p_seat[0] + lat_v[0], p_seat[1] + lat_v[1], z_seat)
+        v3 = (p_seat[0] + lat_v[0], p_seat[1] + lat_v[1], v4[2] - notch_d / cos_pitch)
+        v5 = (v0[0], v0[1], z_seat)
+        return [v0, v1, v2, v3, v4, v5]
     pts_l = get_side_pts(-hw); pts_r = get_side_pts(hw); all_pts = pts_l + pts_r
     faces = [{"verts": [0, 6, 7, 1], "normal": list(vmul(d_perp, -1)), "color_key": "top"}, {"verts": [1, 7, 8, 2], "normal": list(u), "color_key": "end"}, {"verts": [2, 8, 9, 3], "normal": list(d_perp), "color_key": "bottom"}, {"verts": [3, 9, 10, 4], "normal": list(vmul(u, -1)), "color_key": "other"}, {"verts": [4, 10, 11, 5], "normal": [0, 0, -1], "color_key": "bottom"}, {"verts": [5, 11, 6, 0], "normal": list(vmul(u, -1)), "color_key": "start"}, {"verts": [0, 1, 2, 3, 4, 5], "normal": list(vmul(w, -1)), "color_key": "left"}, {"verts": [11, 10, 9, 8, 7, 6], "normal": list(w), "color_key": "right"}]
     resolved["members"].append({
@@ -202,21 +214,114 @@ def _add_posts_and_footings(ctx: SimpleNamespace) -> None:
         add_prism((p[0], p[1], zp["Z_GRADE"] - footing_depth_ft), (p[0], p[1], zp["Z_GRADE"] + FOOTING_STUB_ABOVE_GRADE_FT), footing_hw, footing_hw, UP, "footing", f"FT{i+1}", footing_depth_ft + FOOTING_STUB_ABOVE_GRADE_FT, 90.0, {})
 
 
+def _add_mitered_beam(
+    resolved: dict,
+    p0: V3,
+    p1: V3,
+    p_prev: V3,
+    p_next: V3,
+    hw: float,
+    hd: float,
+    up_hint: V3,
+    role: str,
+    bid: str,
+    derived_length: float,
+    derived_angle: float,
+    cs: dict,
+) -> None:
+    """Appends a polygonal perimeter beam with mitered end cuts matching adjacent beams."""
+    axis = vsub(p1, p0)
+    u = vnorm(axis)
+    d = up_hint
+    w = vnorm(vcross(d, u))
+    p_mid = ((p0[0] + p1[0]) * 0.5, (p0[1] + p1[1]) * 0.5, 0.0)
+    if vdot(p_mid, w) < 0:
+        w = vmul(w, -1.0)
+
+    u_prev = vnorm(vsub(p0, p_prev))
+    u_next = vnorm(vsub(p_next, p1))
+
+    cos_turn_start = max(-0.999, min(0.999, vdot(u_prev, u)))
+    turn_angle_start = math.acos(cos_turn_start)
+    tan_miter_start = math.tan(turn_angle_start * 0.5)
+
+    cos_turn_end = max(-0.999, min(0.999, vdot(u, u_next)))
+    turn_angle_end = math.acos(cos_turn_end)
+    tan_miter_end = math.tan(turn_angle_end * 0.5)
+
+    delta_start = hw * tan_miter_start
+    delta_end = hw * tan_miter_end
+
+    v_in_start_bot = vadd(vadd(vadd(p0, vmul(u, delta_start)), vmul(w, -hw)), vmul(d, -hd))
+    v_out_start_bot = vadd(vadd(vsub(p0, vmul(u, delta_start)), vmul(w, hw)), vmul(d, -hd))
+    v_out_start_top = vadd(vadd(vsub(p0, vmul(u, delta_start)), vmul(w, hw)), vmul(d, hd))
+    v_in_start_top = vadd(vadd(vadd(p0, vmul(u, delta_start)), vmul(w, -hw)), vmul(d, hd))
+
+    v_in_end_bot = vadd(vadd(vsub(p1, vmul(u, delta_end)), vmul(w, -hw)), vmul(d, -hd))
+    v_out_end_bot = vadd(vadd(vadd(p1, vmul(u, delta_end)), vmul(w, hw)), vmul(d, -hd))
+    v_out_end_top = vadd(vadd(vadd(p1, vmul(u, delta_end)), vmul(w, hw)), vmul(d, hd))
+    v_in_end_top = vadd(vadd(vsub(p1, vmul(u, delta_end)), vmul(w, -hw)), vmul(d, hd))
+
+    pts = [
+        v_in_start_bot,
+        v_out_start_bot,
+        v_out_start_top,
+        v_in_start_top,
+        v_in_end_bot,
+        v_out_end_bot,
+        v_out_end_top,
+        v_in_end_top,
+    ]
+    n_start = vnorm(vsub(u_prev, u))
+    n_end = vnorm(vsub(u, u_next))
+    faces = [
+        {"verts": [0, 3, 2, 1], "normal": list(vmul(n_start, -1)), "color_key": "start"},
+        {"verts": [4, 5, 6, 7], "normal": list(n_end), "color_key": "end"},
+        {"verts": [3, 7, 6, 2], "normal": list(d), "color_key": "top"},
+        {"verts": [0, 1, 5, 4], "normal": list(vmul(d, -1)), "color_key": "bottom"},
+        {"verts": [1, 2, 6, 5], "normal": list(w), "color_key": "right"},
+        {"verts": [0, 4, 7, 3], "normal": list(vmul(w, -1)), "color_key": "left"},
+    ]
+    resolved["members"].append({
+        "id": bid,
+        "role": role,
+        "p0": list(p0),
+        "p1": list(p1),
+        "axis_u": list(u),
+        "axis_w": list(w),
+        "axis_d": list(d),
+        "vertices": [list(v) for v in pts],
+        "faces": faces,
+        "derived_length_ft": round(derived_length, 4),
+        "derived_angle_deg": round(derived_angle, 2),
+        "constraints_satisfied": cs,
+    })
+
+
 def _add_beams(ctx: SimpleNamespace) -> None:
     """Beams: perimeter ring from beam_segments or falling back to polygon ring."""
     structure, qty, BHW, BHD, UP, zp, pxy = ctx.structure, ctx.qty, ctx.BHW, ctx.BHD, ctx.UP, ctx.zp, ctx.pxy
     add_prism = partial(_add_prism, ctx.resolved)
+    shape = structure.get("layout", {}).get("shape", structure.get("structure", {}).get("shape", "polygon"))
+    is_polygon_ring = shape != "rectangle" and qty >= 3
     beam_segments = ctx.joints.get("layout", {}).get("beam_segments")
     if beam_segments:
         for seg in beam_segments:
             bid = seg["id"]
-            p1 = pxy[seg["i0"]]
-            p2 = pxy[seg["i1"]]
+            i0 = seg["i0"]
+            i1 = seg["i1"]
+            p1 = pxy[i0]
+            p2 = pxy[i1]
             p0 = (p1[0], p1[1], zp["Z_BEAM_CENTER"])
             pt_end = (p2[0], p2[1], zp["Z_BEAM_CENTER"])
             beam_len = vdist(p0, pt_end)
             cs = {"start_on_post": True, "end_on_post": True}
-            add_prism(p0, pt_end, BHW, BHD, UP, "beam", bid, beam_len, 0.0, cs)
+            if is_polygon_ring and i1 == (i0 + 1) % qty:
+                p_prev = (pxy[(i0 - 1) % qty][0], pxy[(i0 - 1) % qty][1], zp["Z_BEAM_CENTER"])
+                p_next = (pxy[(i1 + 1) % qty][0], pxy[(i1 + 1) % qty][1], zp["Z_BEAM_CENTER"])
+                _add_mitered_beam(ctx.resolved, p0, pt_end, p_prev, p_next, BHW, BHD, UP, "beam", bid, beam_len, 0.0, cs)
+            else:
+                add_prism(p0, pt_end, BHW, BHD, UP, "beam", bid, beam_len, 0.0, cs)
     else:
         for i in range(qty):
             beam_id = f"B{i+1}"
@@ -226,7 +331,12 @@ def _add_beams(ctx: SimpleNamespace) -> None:
             pt_end = (p2[0], p2[1], zp["Z_BEAM_CENTER"])
             beam_len = vdist(p0, pt_end)
             cs = {"start_on_post": True, "end_on_post": True}
-            add_prism(p0, pt_end, BHW, BHD, UP, "beam", beam_id, beam_len, 0.0, cs)
+            if is_polygon_ring:
+                p_prev = (pxy[(i - 1) % qty][0], pxy[(i - 1) % qty][1], zp["Z_BEAM_CENTER"])
+                p_next = (pxy[(i + 2) % qty][0], pxy[(i + 2) % qty][1], zp["Z_BEAM_CENTER"])
+                _add_mitered_beam(ctx.resolved, p0, pt_end, p_prev, p_next, BHW, BHD, UP, "beam", beam_id, beam_len, 0.0, cs)
+            else:
+                add_prism(p0, pt_end, BHW, BHD, UP, "beam", beam_id, beam_len, 0.0, cs)
 
 
 def _add_braces(ctx: SimpleNamespace) -> None:
@@ -323,18 +433,27 @@ def _add_jack_rafters(ctx: SimpleNamespace) -> None:
 
 
 def _add_hub(ctx: SimpleNamespace) -> None:
-    """Crown hub prism (only when the structure declares a hub)."""
     structure, joints, resolved, qty, zp, beam_d_ft = ctx.structure, ctx.joints, ctx.resolved, ctx.qty, ctx.zp, ctx.beam_d_ft
-    # Hub
     has_hub = structure.get("hub", {}).get("type") not in ("none", "", None)
     if has_hub:
-        hj = joints["hub"]; hr = hj["radius_ft"]; hh = hj["height_ft"]; az = zp["Z_APEX"]; hz_t = az + hh/2.0; hz_b = az - hh/2.0; r_c = hr / math.cos(math.pi/qty)
+        hj = joints["hub"]
+        hr = hj["radius_ft"]
+        hh = hj["height_ft"]
+        az = zp["Z_APEX"]
+        if abs(zp.get("Z_APEX", 0.0) - zp.get("Z_BEAM_TOP", 0.0)) < 0.05 or "0:12" in structure.get("roof", {}).get("pitch", ""):
+            hz_b = zp["Z_BEAM_TOP"]
+            hz_t = zp["Z_BEAM_TOP"] + min(hh, structure["roof"]["primary_rafters"]["actual_depth_in"] / 12.0)
+        else:
+            hz_t = az + hh/2.0
+            hz_b = az - hh/2.0
+        r_c = hr / math.cos(math.pi/qty)
         t_ring = [(r_c*math.cos(2*math.pi*(i-0.5)/qty), r_c*math.sin(2*math.pi*(i-0.5)/qty), hz_t) for i in range(qty)]
         b_ring = [(r_c*math.cos(2*math.pi*(i-0.5)/qty), r_c*math.sin(2*math.pi*(i-0.5)/qty), hz_b) for i in range(qty)]
         h_faces = [{"verts": list(range(qty)), "normal": [0,0,1], "color_key": "top"}, {"verts": list(reversed(range(qty, 2*qty))), "normal": [0,0,-1], "color_key": "bottom"}]
         for i in range(qty): j = (i+1)%qty; fn = (math.cos(2*math.pi*i/qty), math.sin(2*math.pi*i/qty), 0.0); h_faces.append({"verts": [qty+i, qty+j, j, i], "normal": list(fn), "color_key": "left"})
         
-        cs = {"height_lte_beam_depth_x1.2": hh <= beam_d_ft * 1.2 + 0.001}
+        hub_len = hz_t - hz_b
+        cs = {"height_lte_beam_depth_x1.2": hub_len <= beam_d_ft * 1.2 + 0.001}
         resolved["members"].append({
             "id": "HUB",
             "role": "hub",
@@ -345,7 +464,7 @@ def _add_hub(ctx: SimpleNamespace) -> None:
             "axis_d": [0.0, 1.0, 0.0],
             "vertices": [list(v) for v in t_ring+b_ring],
             "faces": h_faces,
-            "derived_length_ft": round(hh, 4),
+            "derived_length_ft": round(hub_len, 4),
             "derived_angle_deg": 90.0,
             "constraints_satisfied": cs
         })

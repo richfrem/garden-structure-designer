@@ -47,7 +47,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 sys.path.append(str(Path(__file__).parent))
-from cad_scene import build_structure_scene, validate_scene_geometry, vcent, vdot, vsub, vlen, vnorm
+from cad_scene import Face, build_structure_scene, validate_scene_geometry, vcent, vdot, vsub, vlen, vnorm
 from constants import (
     LW_DIMENSION, LW_GROUND_LINE, LW_LEADER, LW_MEMBER_BLUEPRINT,
     LW_MEMBER_DRAWING, LW_TITLE_BORDER, LW_TITLE_RULE, SVG_SHEET_FILENAMES,
@@ -199,21 +199,28 @@ _ROLE_BIASES = {
 }
 
 
-def _depth_sorted_faces(scene: Any, cam: tuple, should_suppress: Callable[[Any], bool]) -> list:
+def _depth_sorted_faces(scene: Any, cam: tuple, should_suppress: Callable[[Any], bool], view_type: str = "isometric") -> list:
     """Solid-grouped, back-face-culled (depth + role bias, face, solid) entries sorted far to near."""
     solid_entries = []
+    is_3d = view_type in ("isometric", "perspective")
     for solid in scene.solids:
         if should_suppress(solid):
             continue
         # Use solid center projected along the camera ray
         if solid.role == "footing":
-            c_solid = (solid.p1[0], solid.p1[1], -0.5)
+            c_solid = (solid.p1[0], solid.p1[1], 0.165 if is_3d else -0.5)
         else:
             c_solid = vcent([solid.p0, solid.p1])
         s_depth = vdot(c_solid, cam) + _ROLE_BIASES.get(solid.role, 0.0)
 
         visible_faces = []
         for face in solid.faces:
+            # In 3D views: clip footing subterranean geometry to grade (Z >= 0) so no floating box hangs below
+            if is_3d and solid.role == "footing":
+                if all(v[2] < 1e-4 for v in face.verts):
+                    continue
+                clipped_verts = [(v[0], v[1], max(0.0, v[2])) for v in face.verts]
+                face = Face(verts=clipped_verts, normal=face.normal, color=face.color, role=face.role, tag=face.tag)
             # Backface culling: normals facing away from camera are culled
             if vdot(face.normal, cam) < -0.05:
                 continue
@@ -317,7 +324,7 @@ def render_generic_view(structure: dict, filename: str, proj_func, view_type: st
     should_suppress = _visibility(structure, is_blueprint)
 
     scale = coords["scale_px_per_ft"]; cx, cy = coords["width_px"] / 2, coords["grade_y"] if "elevation" in view_type else coords["height_px"] / 2
-    face_entries = _depth_sorted_faces(scene, _camera(view_type), should_suppress)
+    face_entries = _depth_sorted_faces(scene, _camera(view_type), should_suppress, view_type=view_type)
 
     svg_list = _member_polygons(face_entries, palette, is_blueprint, proj_func, scale, cx, cy)
     # Annotations pass (Top Layer)
