@@ -41,8 +41,10 @@ from pathlib import Path
 from typing import Callable, Mapping, Optional
 
 from constants import ERROR_RECOVERY_REQUIRED, ERROR_STALE_REVISION
+from path_utils import outputs_dir as default_outputs_dir
 
 STAGE_ORDER = ("0", "0.5", "1", "2", "3", "4", "5.5", "5.6", "6", "5", "7")
+
 
 StageFn = Callable[[dict, Path, Path], dict]
 
@@ -118,7 +120,8 @@ def run_pipeline(
         raise ValueError(f"Unknown stop_after_stage: {stop_after_stage!r}")
 
     reports_path = Path(reports_dir) if reports_dir is not None else structure_path.parent / "reports"
-    outputs_path = Path(outputs_dir) if outputs_dir is not None else structure_path.parent / "outputs"
+    outputs_path = Path(outputs_dir) if outputs_dir is not None else default_outputs_dir()
+
 
     structure = json.loads(structure_path.read_text(encoding="utf-8"))
     completed: list[str] = []
