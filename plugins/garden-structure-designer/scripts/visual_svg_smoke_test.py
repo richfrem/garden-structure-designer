@@ -402,12 +402,13 @@ def extract_expected_topology(structure: dict[str, typing.Any]) -> dict[str, int
     }
 
 # External Comment: Use Canny edges and Hough lines to detect posts, beams, rafters
-def detect_components(image: np.ndarray) -> dict[str, int]:
+def detect_components(image: np.ndarray, sheet_key: str = "") -> dict[str, int]:
     """
     Applies Canny filtering and probabilistic Hough line transforms to identify elements.
     
     Args:
         image: Multi-channel input image in BGR format.
+        sheet_key: Optional sheet key to calibrate perspective foreshortening.
         
     Returns:
         Dictionary mapping structural component types to estimated counts.
@@ -415,7 +416,12 @@ def detect_components(image: np.ndarray) -> dict[str, int]:
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(gray, 50, 150)
 
-    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 50, minLineLength=50, maxLineGap=10)
+    is_persp = "perspective" in sheet_key
+    thresh = 20 if is_persp else 50
+    min_len = 20 if is_persp else 50
+    post_min_len = 35 if is_persp else 80
+
+    lines = cv2.HoughLinesP(edges, 1, np.pi/180, thresh, minLineLength=min_len, maxLineGap=10)
 
     posts = beams = rafters = 0
 
@@ -428,7 +434,7 @@ def detect_components(image: np.ndarray) -> dict[str, int]:
         angle = abs(np.degrees(np.arctan2(dy, dx)))
         length = (dx * dx + dy * dy) ** 0.5
 
-        if 80 < angle < 100 and length > 80:
+        if 75 < angle < 105 and length > post_min_len:
             posts += 1
         elif angle < 10 or angle > 170:
             beams += 1
@@ -491,7 +497,7 @@ def full_visual_validation(
         List of failure codes. Empty list implies perfect validation.
     """
     expected = extract_expected_topology(structure)
-    detected = detect_components(image)
+    detected = detect_components(image, sheet_key=sheet_key)
 
     failures: list[str] = []
 
@@ -546,7 +552,7 @@ def evaluate_image_cv(
             return {}, ["IMAGE_LOAD_FAILED"]
 
         expected = extract_expected_topology(structure)
-        detected = detect_components(image)
+        detected = detect_components(image, sheet_key=sheet_key)
         content_ratio = compute_content_ratio(image)
         hub_density = detect_hub_density(image)
 

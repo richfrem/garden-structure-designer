@@ -1,0 +1,1 @@
+../../../scripts/cad_export_glb.py

@@ -136,7 +136,13 @@ DEFAULT_REQUIREMENTS: dict = {
 ALL_SEMANTIC_ROLES = [
     "post", "beam", "rafter", "brace", "footing",
     "dimension", "component", "title-block",
+    "label", "presentation-canvas",
 ]
+
+
+def _is_raster_presentation(raw: str) -> bool:
+    """True when the sheet embeds a WebGL presentation raster (Option C drawing-* sheets)."""
+    return 'data-role="presentation-canvas"' in raw
 
 
 # ---------------------------------------------------------------------------
@@ -196,12 +202,12 @@ def _has_member_ids(raw: str) -> bool:
 
 def _has_braces(raw: str) -> bool:
     """True when brace elements or brace text appear."""
-    return 'data-role="brace"' in raw or bool(re.search(r"(knee\s*brace|brace|kicker)", raw, re.IGNORECASE))
+    return 'data-role="brace"' in raw or 'data-member-role="brace"' in raw or bool(re.search(r"(knee\s*brace|brace|kicker)", raw, re.IGNORECASE))
 
 
 def _has_footings(raw: str) -> bool:
     """True when footing elements or footing text appear."""
-    return 'data-role="footing"' in raw or bool(re.search(r"(footing|caisson|pad|pier)", raw, re.IGNORECASE))
+    return 'data-role="footing"' in raw or 'data-member-role="footing"' in raw or bool(re.search(r"(footing|caisson|pad|pier)", raw, re.IGNORECASE))
 
 
 def _count_component_panels(raw: str, model: dict) -> int:
@@ -310,15 +316,24 @@ def _check_sheet(svg_path: str, raw: str, model: dict) -> tuple[list[str], dict]
         "semantic_counts": roles,
     }
 
+    raster = _is_raster_presentation(raw)
     # Absolute blank / placeholder: no point running further checks
-    if total_elements < 5:
+    if total_elements < 5 and not raster:
         return [f"SVG_PLACEHOLDER_GEOMETRY: Only {total_elements} geometric elements — essentially blank."], counts
 
-    errors = _density_errors(sheet, req, counts, raw, model)
-    errors += [
-        f"SVG_MISSING_REQUIRED_ROLE: data-role=\"{role}\" not found on sheet '{sheet}'."
-        for role in req.get("required_roles", []) if (roles.get(role) or 0) == 0
-    ]
+    if raster:
+        # A raster cannot expose one SVG path per timber: require the embedded canvas plus visible member labels.
+        required = ["presentation-canvas", "label"]
+        errors = [
+            f"SVG_MISSING_REQUIRED_ROLE: data-role=\"{role}\" not found on sheet '{sheet}'."
+            for role in required if (roles.get(role) or 0) == 0
+        ]
+    else:
+        errors = _density_errors(sheet, req, counts, raw, model)
+        errors += [
+            f"SVG_MISSING_REQUIRED_ROLE: data-role=\"{role}\" not found on sheet '{sheet}'."
+            for role in req.get("required_roles", []) if (roles.get(role) or 0) == 0
+        ]
     if _is_top_left_clustered(raw):
         errors.append(
             "SVG_CONTENT_TOP_LEFT_CLUSTER: All geometry in top-left 20% of viewBox — "

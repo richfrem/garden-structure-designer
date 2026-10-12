@@ -98,6 +98,12 @@ LW_GROUND_LINE = 2.0
 LW_MEMBER_DRAWING = 1.2
 LW_MEMBER_BLUEPRINT = 3.0
 
+# --- Camera & Viewport Standards (C1/C4/Option C) ---
+VIEWPORT_MARGIN_PX = 40.0
+ISOMETRIC_OUTWARD_VECTOR = (1.0, -1.0, 1.0)  # Unnormalized direction
+PERSPECTIVE_DEFAULT_FOV_DEG = 60.0
+
+
 # --- Validation tolerances ---
 DXF_BOUNDS_TOL_MM = 0.01  # C4: max absolute exchange error vs sealed solved geometry (WCS mm)
 DXF_PLANAR_TOL_MM = 1e-6  # SB02 must be planar (|Z| <= tol)

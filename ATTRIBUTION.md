@@ -21,10 +21,26 @@
 
 ---
 
-## 2. Python Ecosystem & Core Libraries
+## 2. 3D CAD Kernels & Rendering Engines (Option C Dual-Path)
+
+- **Three.js**: [three.js](https://github.com/mrdoob/three.js)
+  - **Copyright**: (c) 2010-2026 Three.js Authors
+  - **License**: **MIT License**
+  - **Usage**: Located in `presentation_viewer/vendor/three.module.js` and `presentation_viewer/vendor/GLTFLoader.js`. Powers hardware-accelerated WebGL rendering with >=24-bit depth buffering for shaded architectural presentation sheets (`render_presentation_webgl.py`).
+- **OpenCASCADE / OCP**: [OpenCASCADE Technology (OCCT)](https://www.opencascade.com/) / [OCP](https://github.com/CadQuery/OCP)
+  - **Copyright**: (c) Open CASCADE S.A.S.
+  - **License**: **GNU Lesser General Public License 2.1 (LGPL-2.1)** with Open CASCADE exception.
+  - **Usage**: Parametric boundary-representation (B-Rep) solid geometry engine and Hidden Line Removal (`HLRBRep_Algo`) used in `cad_projection_hlr.py` for deterministic orthographic and isometric vector blueprints.
+- **build123d**: [build123d](https://github.com/gumyr/build123d)
+  - **Copyright**: (c) build123d contributors
+  - **License**: **Apache License 2.0**
+  - **Usage**: Pythonic parametric 3D CAD modeling framework (`cad_backend_build123d.py`) driving compound timber solids and binary glTF (`cad_export_glb.py`) generation.
+
+---
+
+## 3. Python Ecosystem & Core Libraries
 
 - **ezdxf**: [ezdxf](https://github.com/mozman/ezdxf) - MIT License. Used for DXF generation, entity auditing, block parsing, and XDATA validation.
-- **build123d**: [build123d](https://github.com/gumyr/build123d) - Apache License 2.0. Parametric 3D CAD modeling.
-- **OpenCV**: [OpenCV](https://opencv.org/) - Apache License 2.0. Visual smoke testing and computer vision heuristics.
-- **Playwright**: [Playwright](https://playwright.dev/) - Apache License 2.0. Headless Chromium rendering for drawing verification.
-- **ReportLab**: [ReportLab](https://www.reportlab.com/) - BSD License. Architectural PDF compilation.
+- **Playwright**: [Playwright](https://playwright.dev/) - Apache License 2.0. Headless Chromium loopback capture harness for WebGL depth-tested presentation rendering and drawing visual verification.
+- **OpenCV**: [OpenCV](https://opencv.org/) - Apache License 2.0. Visual smoke testing, bounding box heuristics, and edge density checks.
+- **ReportLab**: [ReportLab](https://www.reportlab.com/) - BSD License. Architectural PDF construction package compilation.

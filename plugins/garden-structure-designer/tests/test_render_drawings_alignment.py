@@ -59,8 +59,9 @@ def test_every_data_id_has_a_matching_data_tag(hex_structure, tmp_path, sheet):
 @pytest.mark.parametrize("sheet", SHEETS)
 def test_data_tags_are_real_member_ids(hex_structure, tmp_path, sheet):
     members = {m["id"] for m in hex_structure["geometry"]["joints"]["resolved_model"]["members"]}
-    tags = set(re.findall(r'data-tag="([^"]+)"', _render(hex_structure, sheet, tmp_path)))
-    assert tags and tags <= members, sorted(tags - members)
+    raw_tags = set(re.findall(r'data-tag="([^"]+)"', _render(hex_structure, sheet, tmp_path)))
+    member_tags = {t for t in raw_tags if not t.startswith("sheet:")}
+    assert member_tags and member_tags <= members, sorted(member_tags - members)
 
 
 def test_hub_panel_seat_count_follows_sides(tmp_path):

@@ -7,6 +7,10 @@ sequenceDiagram
     participant Runner as pipeline_runner.py
     participant Geo as geometry_engine.py (Python)
     participant Topo as topology_compiler.py (Python)
+    participant Solid as cad_backend_build123d.py (B-Rep Assembly)
+    participant HLR as cad_projection_hlr.py (OpenCASCADE C++)
+    participant WebGL as render_presentation_webgl.py (Three.js)
+    participant Composer as sheet_composer.py
     participant Export as export_cad.py (Service)
     participant Adapter as cadcraft_adapter.py
     participant CLI as vendor/cadcraft-cli (Rust Binary)
@@ -26,22 +30,32 @@ sequenceDiagram
     Runner->>Topo: Stage 2: Validate sealed arrays & build graph
     Topo-->>Runner: Return validated topology graph
 
-    %% Phase 3: CAD Export & CLI Communication Boundary
+    %% Phase 3: Option C Dual-Path CAD Projection & GLB Export
+    Runner->>Solid: Stage 4: build_assembly_from_structure(structure)
+    Solid-->>Runner: Return TopoDS_Compound solid assembly
+    Runner->>Solid: Export outputs/{project}/assembly.glb (RH_Z_UP + manifest)
+    Runner->>HLR: Project blueprints (ISO, Plan, Elev, Component) via HLRBRep_Algo
+    HLR-->>Composer: Return crisp occlusion-sorted vector paths
+    Runner->>WebGL: Render shaded presentation (Iso, Persp, Plan, Elev) via presentation_viewer/
+    WebGL-->>Composer: Return 24-bit depth-tested WebGL PNG buffers
+    Composer-->>Runner: Emit 8 semantic SVG sheets to outputs/{project}/
+
+    %% Phase 4: CAD Export & CLI Communication Boundary
     Runner->>Export: Stage 4: export_sheets(structure, output_dir)
     Export->>Adapter: export_sheet("SB01", "SB02")
     Note over Adapter,CLI: Subprocess CLI Execution Boundary (15s timeout)
-    Adapter->>CLI: exec: cadcraft-cli run --cmd "..." --save "outputs/cad/..."
+    Adapter->>CLI: exec: cadcraft-cli run --cmd "..." --save "outputs/{project}/cad/..."
     CLI-->>Adapter: Return entity handles & exit code 0
     Adapter->>Export: Stamp GSD XDATA on handles (MEMBER_ID, ROLE, REVISION_ID)
 
-    %% Phase 4: Parsed Validation Gate
+    %% Phase 5: Parsed Validation Gate
     Runner->>Validator: Stage 5.5: validate_dxf_artifacts()
     Note over Validator: ezdxf readfile: Assert 0 errors, 1:1 ID parity, 3D bounds
     Validator-->>Runner: PASS ✓
 
-    %% Phase 5: Adversarial Review & Package Compilation
+    %% Phase 6: Adversarial Review & Package Compilation
     Runner->>RedTeam: Stage 5: run_drawing_red_team.py
     RedTeam-->>Runner: may_claim_success: true ✓
     Runner->>Compiler: Stage 7: compile_package.py
-    Compiler-->>DO: Emits outputs/pergola_plan.pdf & outputs/cad/*.dxf
+    Compiler-->>DO: Emits outputs/{project}/pergola_plan.pdf & CAD package
     DO-->>User: Present complete verified construction package

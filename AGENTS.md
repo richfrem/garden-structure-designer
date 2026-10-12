@@ -23,6 +23,8 @@ Skills, agents, rules and hooks are loaded on demand. Desired state lives in `.a
 6. **Stop-and-Diagnose**: MUST halt and diagnose root cause when reports conflict or outputs fail before touching code.
 7. **Adversarial Drawing Gate**: Drawing success MUST NOT be self-certified; `drawing-red-team-agent` approval required (`may_claim_success: true`).
 8. **Package Completion**: Construction package MUST include valid `structure.json`, SVGs, cut-lists, and compiled PDF.
+9. **Authoritative Solid Kernel (Option C Dual-Path)**: Visual drawings MUST NOT use painter's sorting. Blueprints (`blueprint-*.svg`) MUST project through OpenCASCADE C++ HLR (`HLRBRep_Algo`). Shaded presentation renderings (`drawing-*.svg`) MUST render the solid assembly via Three.js with verified >=24-bit depth testing in headless Chromium loopback (`presentation_viewer/`).
+10. **Authoritative 3D GLB Exchange**: Solid assemblies exported to binary glTF (`assembly.glb`) MUST be in native right-handed +Z-up coordinates (`RH_Z_UP`) matching the CAD world, with companion manifest (`assembly.glb.manifest.json`) verifying SHA-256 and member bounds.
 
 ## Non-Negotiable Rules
 Detailed policy documents live in [`.agent/rules/`](.agent/rules/). Key invariants:

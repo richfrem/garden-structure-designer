@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "lifecycle": "GEOMETRY_SEALED",
+    "source_hash": "fixture_crossing_timbers_20261011",
+    "revision_id": "rev-crossing-timbers-001"
+  },
+  "intent": {
+    "jurisdiction": "TEST",
+    "material_preference": "Cedar"
+  },
+  "structure": {
+    "type": "test_rig",
+    "shape": "rectangle",
+    "sides": 4
+  },
+  "layout": {
+    "shape": "rectangle",
+    "post_count": 1,
+    "length_ft": 10.0,
+    "width_ft": 10.0
+  },
+  "members": {
+    "posts": {
+      "nominal_size": "8x8",
+      "actual_width_in": 7.5,
+      "actual_depth_in": 7.5,
+      "cut_length_ft": 10.0
+    },
+    "beams": {
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "cut_length_ft": 10.0
+    }
+  },
+  "roof": {
+    "type": "flat",
+    "pitch": "0:12",
+    "primary_rafters": {
+      "count": 1,
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "overhang_ft": 0.0
+    }
+  },
+  "bracing": {
+    "brace": {
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5
+    }
+  },
+  "geometry": {
+    "svg_coordinates": {
+      "width_px": 1000,
+      "height_px": 800,
+      "scale_px_per_ft": 40.0,
+      "grade_y": 700
+    },
+    "joints": {
+      "layout": {
+        "post_count": 1,
+        "post_xy": [[0.0, 0.0]]
+      },
+      "z_planes": {
+        "Z_GRADE": 0.0,
+        "Z_POST_TOP": 10.0,
+        "Z_BEAM_TOP": 11.0,
+        "Z_APEX": 11.5
+      },
+      "hub": {
+        "radius_ft": 0.5,
+        "height_ft": 1.0
+      },
+      "resolved_model": {
+        "constraints_resolved": true,
+        "members": [
+          {
+            "id": "P1",
+            "role": "post",
+            "p0": [0.0, -5.0, 5.0],
+            "p1": [0.0, 5.0, 5.0],
+            "axis_u": [0.0, 1.0, 0.0],
+            "axis_d": [1.0, 0.0, 0.0],
+            "vertices": [
+              [-0.3125, -5.0, 4.6875],
+              [0.3125, -5.0, 4.6875],
+              [0.3125, 5.0, 4.6875],
+              [-0.3125, 5.0, 4.6875],
+              [-0.3125, -5.0, 5.3125],
+              [0.3125, -5.0, 5.3125],
+              [0.3125, 5.0, 5.3125],
+              [-0.3125, 5.0, 5.3125]
+            ],
+            "faces": [
+              {"verts": [0, 1, 2, 3], "normal": [0.0, 0.0, -1.0], "color_key": "front"},
+              {"verts": [4, 5, 6, 7], "normal": [0.0, 0.0, 1.0], "color_key": "top"},
+              {"verts": [0, 4, 7, 3], "normal": [-1.0, 0.0, 0.0], "color_key": "left"},
+              {"verts": [1, 5, 6, 2], "normal": [1.0, 0.0, 0.0], "color_key": "right"},
+              {"verts": [0, 1, 5, 4], "normal": [0.0, -1.0, 0.0], "color_key": "bottom"},
+              {"verts": [3, 2, 6, 7], "normal": [0.0, 1.0, 0.0], "color_key": "top"}
+            ]
+          },
+          {
+            "id": "R1",
+            "role": "rafter",
+            "p0": [-5.0, 0.0, 0.0],
+            "p1": [5.0, 0.0, 0.0],
+            "axis_u": [1.0, 0.0, 0.0],
+            "axis_d": [0.0, 1.0, 0.0],
+            "vertices": [
+              [-5.0, -0.1458, -0.2291],
+              [5.0, -0.1458, -0.2291],
+              [5.0, 0.1458, -0.2291],
+              [-5.0, 0.1458, -0.2291],
+              [-5.0, -0.1458, 0.2291],
+              [5.0, -0.1458, 0.2291],
+              [5.0, 0.1458, 0.2291],
+              [-5.0, 0.1458, 0.2291]
+            ],
+            "faces": [
+              {"verts": [0, 1, 2, 3], "normal": [0.0, 0.0, -1.0], "color_key": "bottom"},
+              {"verts": [4, 5, 6, 7], "normal": [0.0, 0.0, 1.0], "color_key": "top"},
+              {"verts": [0, 4, 7, 3], "normal": [-1.0, 0.0, 0.0], "color_key": "left"},
+              {"verts": [1, 5, 6, 2], "normal": [1.0, 0.0, 0.0], "color_key": "right"},
+              {"verts": [0, 1, 5, 4], "normal": [0.0, -1.0, 0.0], "color_key": "front"},
+              {"verts": [3, 2, 6, 7], "normal": [0.0, 1.0, 0.0], "color_key": "back"}
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

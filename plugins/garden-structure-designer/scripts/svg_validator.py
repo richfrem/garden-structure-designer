@@ -180,11 +180,19 @@ def _check_topology_count(raw: str, model: dict) -> list[str]:
         posts = members.get("posts", {})
         expected_qty = posts.get("quantity") or posts.get("count") or 6
 
-    # Count elements with the canonical post cedar fill colour or data-role
-    found = len(re.findall(r'data-role="post"', raw))
-    if found == 0:
-        # Fallback to color-based (legacy SVGs)
-        found = len(re.findall(r'fill="#c8a96e"', raw))
+    # Count posts:
+    # 1. Option C / Semantic SVGs: count unique post tags (e.g. data-tag="P1" .. "P6") or post labels
+    post_tags = set(re.findall(r'data-role="post"[^>]*\bdata-tag="([^"]+)"', raw))
+    label_post_tags = set(re.findall(r'data-role="label"[^>]*\bdata-tag="(P[^"]+)"', raw))
+    post_tags = post_tags.union(label_post_tags)
+
+    if post_tags:
+        found = len(post_tags)
+    else:
+        # Legacy: count raw occurrences of data-role="post" or fill="#c8a96e"
+        found = len(re.findall(r'data-role="post"', raw))
+        if found == 0:
+            found = len(re.findall(r'fill="#c8a96e"', raw))
 
     if found != expected_qty:
         return [
@@ -278,7 +286,7 @@ def _tag_problems(element: ET.Element, ids: set, roles: set, in_component: bool)
         problems.append(f"SVG_MEMBER_TAG_MISSING: <{name}> data-id={ident!r} has no data-tag.")
     elif role in roles and not tag and not ident and not in_component:
         problems.append(f"SVG_MEMBER_TAG_MISSING: <{name}> data-role={role!r} has no data-tag.")
-    if tag and tag not in ids:
+    if tag and not tag.startswith("sheet:") and tag not in ids:
         problems.append(f"SVG_UNKNOWN_MEMBER_TAG: data-tag={tag!r} is not a member of structure.json.")
     return problems
 
