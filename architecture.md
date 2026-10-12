@@ -65,7 +65,7 @@ This is the normative v1.4 target contract, not a claim that the current impleme
 
 Initial production release enables **only `RadialHubTopology`**, regular polygonal gazebos with integer N >= 5. Unsupported secondary framing, irregular footprints, grids, and ridge roofs fail closed. No feature flag may promote unsupported topology into this production release. Grid and ridge implementations require separate later milestones and independent acceptance.
 
-Paths are relative to the repository root. Existing schema is `plugins/garden-structure-designer/schemas/structure.schema.json`; update its generator as well as the generated schema. New fields below are explicit v1.4 additions, not existing capabilities. Continue JSON Schema draft-07 and preserve existing required engineering fields. Use conditional family schemas plus semantic validators for cross-field arithmetic.
+Paths are relative to the repository root. Existing schema is `plugins/garden-structure-designer/assets/schemas/structure.schema.json`; update its generator as well as the generated schema. New fields below are explicit v1.4 additions, not existing capabilities. Continue JSON Schema draft-07 and preserve existing required engineering fields. Use conditional family schemas plus semantic validators for cross-field arithmetic.
 
 | Field | Contract |
 |---|---|

@@ -1,0 +1,1 @@
+../../../scripts/open_in_cadcraft.py

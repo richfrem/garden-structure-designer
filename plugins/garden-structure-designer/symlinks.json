@@ -3072,6 +3072,18 @@
       "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/sheet_composer.py",
       "strategy": "symlink",
       "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/open_in_cadcraft.py",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/scripts/open_in_cadcraft.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/open_in_cadcraft.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/open_in_cadcraft.py",
+      "strategy": "symlink",
+      "description": ""
     }
   ]
 }

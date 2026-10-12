@@ -33,9 +33,10 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent))
 from cadcraft_adapter import CadcraftAdapter, CadcraftError  # noqa: E402
-from constants import SHEET_FILENAMES  # noqa: E402,F401
+from constants import SHEET_FILENAMES  # noqa: E402
 from exchange_writer import ExchangeWriter  # noqa: E402
 from ezdxf_adapter import EzdxfAdapter  # noqa: E402
+from path_utils import outputs_dir as _outputs_dir, staging_dir as _staging_dir  # noqa: E402
 from revision_identity import compute_revision_hash  # noqa: E402
 
 
@@ -86,8 +87,8 @@ def export_sheets(
 def main(argv: list[str] | None = None) -> int:
     """CLI entry point."""
     parser = argparse.ArgumentParser(description="Export structure.json to DXF sheets")
-    parser.add_argument("--structure", required=True, type=Path)
-    parser.add_argument("--output-dir", required=True, type=Path)
+    parser.add_argument("--structure", default=_staging_dir() / "structure.json", type=Path)
+    parser.add_argument("--output-dir", default=_outputs_dir() / "cad", type=Path)
     parser.add_argument("--writer", choices=["auto", "cadcraft", "ezdxf"], default="auto")
     parser.add_argument("--open", action="store_true", help="Launch exported SB01 DXF in Cadcraft desktop app")
     args = parser.parse_args(argv)
