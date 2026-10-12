@@ -11,7 +11,7 @@ from geometry_engine import compute_from_structure  # type: ignore[import]
 from test_geometry_engine import STRUCTURE_SEED  # type: ignore[import]
 
 SCRIPTS = Path(__file__).parent.parent / "scripts"
-SCHEMAS = Path(__file__).parent.parent / "schemas"
+SCHEMAS = Path(__file__).parent.parent / "assets" / "schemas"
 
 
 def test_validates_valid_structure(tmp_path):

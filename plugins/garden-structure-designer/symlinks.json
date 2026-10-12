@@ -104,50 +104,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/bracing-system-designer/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -254,50 +254,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/builder-docs-generator/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -404,50 +404,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/building-code-validator/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/building-code-validator/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/building-code-validator/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/building-code-validator/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/building-code-validator/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/building-code-validator/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/building-code-validator/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/building-code-validator/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/building-code-validator/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -554,50 +554,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/document-compiler/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/document-compiler/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/document-compiler/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/document-compiler/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/document-compiler/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/document-compiler/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/document-compiler/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/document-compiler/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/document-compiler/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -704,50 +704,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/drawing-generator/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/drawing-generator/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/drawing-generator/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/drawing-generator/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/drawing-generator/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/drawing-generator/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/drawing-generator/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/drawing-generator/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -854,50 +854,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/intake-normalizer/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -1004,50 +1004,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/joinery-designer/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/joinery-designer/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/joinery-designer/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/joinery-designer/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/joinery-designer/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/joinery-designer/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/joinery-designer/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/joinery-designer/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/joinery-designer/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/joinery-designer/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/joinery-designer/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/joinery-designer/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/joinery-designer/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/joinery-designer/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/joinery-designer/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/joinery-designer/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -1154,50 +1154,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/photorealistic-renderer/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -1304,50 +1304,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -1454,50 +1454,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/structural-engine/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/structural-engine/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/structural-engine/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/structural-engine/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/structural-engine/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/structural-engine/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/structural-engine/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/structural-engine/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/structural-engine/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -2402,50 +2402,50 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/bracing-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/bracing-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/bracing-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/bracing-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/building-code.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/building-code.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/building-code.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/building-code.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cut-list.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/cut-list.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cut-list.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/cut-list.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/design-spec.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/design-spec.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/design-spec.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/design-spec.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/geometry-calculations.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/geometry-calculations.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/geometry-calculations.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/geometry-calculations.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/joinery-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/joinery-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/joinery-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/joinery-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/manifest.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/manifest.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/manifest.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/manifest.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structural-model.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/structural-model.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structural-model.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/structural-model.schema.json",
       "strategy": "symlink",
       "description": ""
     },
@@ -2540,14 +2540,14 @@
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/cad-constraints.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/cad-constraints.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/cad-constraints.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/cad-constraints.schema.json",
       "strategy": "symlink",
       "description": ""
     },
     {
-      "src": "plugins/garden-structure-designer/schemas/structure.schema.json",
-      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/schemas/structure.schema.json",
+      "src": "plugins/garden-structure-designer/assets/schemas/structure.schema.json",
+      "dst": "plugins/garden-structure-designer/skills/cad-language-translator/assets/schemas/structure.schema.json",
       "strategy": "symlink",
       "description": ""
     },
