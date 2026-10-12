@@ -23,8 +23,13 @@ graph TD
             S1["Stage 1: geometry_engine.py<br/>(Deterministic 3D vertex math, seals geometry)"]
             S2["Stage 2: topology_compiler.py<br/>(Graph enricher, in-process seal check)"]
             S3["Stage 3: structural_physics_validator.py<br/>(L/d <= 50, L/240 deflection checks)"]
-            S4["Stage 4: render_drawings.py<br/>(Projects 8 semantic SVG drawing sheets)"]
+            S4["Stage 4: render_drawings.py<br/>(Option C Dual-Path CAD Projection Engine)"]
             S4_CAD["Stage 4: export_cad.py<br/>(High-level CAD export service)"]
+            S4_BREP["cad_backend_build123d.py<br/>(Parametric Solid CAD Kernel)"]
+            S4_HLR["cad_projection_hlr.py<br/>(OpenCASCADE C++ HLR Vector Projection)"]
+            S4_GLB["cad_export_glb.py<br/>(Authoritative 3D GLB + Manifest)"]
+            S4_WEBGL["render_presentation_webgl.py<br/>(Three.js WebGL via presentation_viewer/)"]
+            S4_COMP["sheet_composer.py<br/>(Unified Vector & Shaded Sheet Composer)"]
             S55["Stage 5.5: cross_artifact_validator.py<br/>(Parsed DXF parity, zero auditor errors)"]
             S56["Stage 5.6: visual_svg_smoke_test.py<br/>(Headless Chromium edge & visual checks)"]
             S6["Stage 6: fabrication_builder.py<br/>(Generates cut-list.json & builder docs)"]
@@ -32,7 +37,11 @@ graph TD
             S7["Stage 7: compile_package.py<br/>(Master package assembler & PDF generator)"]
             
             PR --> S05 --> S1 --> S2 --> S3 --> S4
-            S4 --> S4_CAD --> S55 --> S56 --> S6 --> S5 --> S7
+            S4 --> S4_BREP
+            S4_BREP --> S4_HLR --> S4_COMP
+            S4_BREP --> S4_GLB
+            S4_BREP --> S4_WEBGL --> S4_COMP
+            S4_COMP --> S4_CAD --> S55 --> S56 --> S6 --> S5 --> S7
         end
 
         subgraph SharedStandards ["Plugin Shared Contracts & Authority"]
@@ -79,7 +88,9 @@ graph TD
     EA -.->|"Direct pure-Python DXF authoring (Fallback)"| CandidateDXF
 
     CandidateDXF --> S55
-    S7 --> FinalPackage[("outputs/pergola_plan.pdf<br/>outputs/cad/*.dxf<br/>outputs/fabrication/cut-list.json")]
+    S4_COMP --> OutputSVGs[("outputs/{project}/drawing-*.svg<br/>outputs/{project}/blueprint-*.svg")]
+    S4_GLB --> OutputGLB[("outputs/{project}/assembly.glb<br/>assembly.glb.manifest.json")]
+    S7 --> FinalPackage[("outputs/{project}/pergola_plan.pdf<br/>outputs/{project}/cad/*.dxf<br/>outputs/{project}/fabrication/cut-list.json")]
 
     %% -------------------------------------------------------------
     %% STYLES & HIGHLIGHTS

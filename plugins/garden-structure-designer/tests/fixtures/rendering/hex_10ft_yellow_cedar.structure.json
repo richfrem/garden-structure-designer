@@ -1,0 +1,8160 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "lifecycle": "GEOMETRY_SEALED",
+    "source_hash": "intent_10ft_hex_pergola_yellow_cedar_20261011",
+    "created_at": "2026-10-11T00:00:00-07:00",
+    "updated_at": "2026-10-12T02:11:07.970154+00:00",
+    "topology_family": "RadialHubTopology",
+    "revision_id": "rev-10ft-hex-pergola-20261011-001",
+    "revision_hash": "5d5b3de9609bfa3d06dde79c007a97dd0db1ed3c1dd72817de9196481fb9c773"
+  },
+  "intent": {
+    "jurisdiction": "BC_SAANICH",
+    "material_preference": "Yellow Cedar",
+    "joinery_style": "traditional_timber_frame"
+  },
+  "materials": {
+    "primary": "Yellow Cedar",
+    "secondary": "Yellow Cedar"
+  },
+  "structure": {
+    "type": "pergola",
+    "shape": "hexagon",
+    "sides": 6
+  },
+  "layout": {
+    "shape": "regular_polygon",
+    "post_count": 6,
+    "inscribed_radius_ft": 5.0,
+    "post_spacing_ft": 5.0
+  },
+  "members": {
+    "posts": {
+      "nominal_size": "8x8",
+      "actual_width_in": 7.5,
+      "actual_depth_in": 7.5,
+      "cut_length_ft": 9.0
+    },
+    "beams": {
+      "nominal_size": "6x12",
+      "actual_width_in": 6.0,
+      "actual_depth_in": 12.0,
+      "cut_length_ft": 5.0
+    }
+  },
+  "roof": {
+    "type": "flat",
+    "pitch": "0:12",
+    "pitch_defaulted": false,
+    "primary_rafters": {
+      "count": 6,
+      "nominal_size": "4x6",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5,
+      "overhang_ft": 0.75
+    },
+    "secondary_rafters": {
+      "enabled": false,
+      "count_per_side": 0,
+      "actual_width_in": 3.5,
+      "actual_depth_in": 5.5
+    }
+  },
+  "hub": {
+    "type": "hexagonal_prism",
+    "radius_ft": "auto",
+    "radius_min_ft": 0.6,
+    "height_ratio_to_rafter": 2.5,
+    "clearance_ft": 0.5,
+    "face_alignment": "mid_angle"
+  },
+  "bracing": {
+    "enabled": true,
+    "layout": "paired_per_post",
+    "brace": {
+      "nominal_size": "4x4",
+      "actual_width_in": 3.5,
+      "actual_depth_in": 3.5,
+      "count_per_post": 2,
+      "constraints": {
+        "start_surface": "post_face",
+        "end_surface": "beam_soffit",
+        "run_ft": 1.5
+      }
+    }
+  },
+  "footings": {
+    "type": "sonotube",
+    "diameter_in": 12,
+    "depth_in": 24,
+    "concrete_grade": "20MPa"
+  },
+  "joinery": {
+    "beam_seat_style": "exposed_tenon",
+    "rafter_tail": "decorative_scallop",
+    "rafter_seat_style": "birds_mouth"
+  },
+  "invariants": {
+    "rafter_count_equals_post_count": true,
+    "post_top_equals_beam_bottom": true,
+    "no_rafter_inside_hub_radius": true,
+    "brace_must_connect_to_surfaces": true,
+    "no_solid_intersections": true,
+    "member_counts_match_sections": true,
+    "no_zero_length_members": true,
+    "presentation_primary_counts_match": true
+  },
+  "presentation": {
+    "view_mode": "presentation",
+    "roof_style": "open_pergola",
+    "visibility_rules": {},
+    "labeling": {
+      "show_member_ids": true
+    },
+    "palette": "cedar_warm"
+  },
+  "code": {
+    "_sealed": false,
+    "edition": "BCBC_2024",
+    "municipality": "Saanich",
+    "region": "BC_SAANICH",
+    "design_scope": "screening_only"
+  },
+  "geometry": {
+    "_sealed": true,
+    "compound_cut": {
+      "miter_deg": 28.71,
+      "bevel_deg": 9.1
+    },
+    "beam_ring": {
+      "beam_miter_deg": 30.0,
+      "interior_angle_deg": 120.0
+    },
+    "rafter": {
+      "structural_length_ft": 5.0,
+      "total_with_overhang_ft": 5.75
+    },
+    "roof_rise": {
+      "rise_ft": 0.0
+    },
+    "total_height": {
+      "post_ft": 9.0,
+      "beam_depth_ft": 1.0,
+      "roof_rise_ft": 0.0,
+      "total_height_ft": 10.0
+    },
+    "hub_radius_ft": 0.75,
+    "svg_coordinates": {
+      "viewBox": "0 0 1600 1200",
+      "width_px": 1600,
+      "height_px": 1200,
+      "grade_y": 1080,
+      "scale_px_per_ft": 42.0,
+      "post_top_y": 702,
+      "beam_top_y": 660,
+      "hub_apex_y": 660
+    },
+    "joints": {
+      "units": "feet",
+      "coordinate_system": "right_handed_z_up",
+      "tolerance_ft": 0.0052,
+      "z_planes": {
+        "Z_GRADE": 0.0,
+        "Z_POST_TOP": 8.0,
+        "Z_BEAM_TOP": 9.0,
+        "Z_BEAM_CENTER": 8.5,
+        "Z_APEX": 9.0,
+        "Z_BEAM_SOFFIT": 8.0
+      },
+      "layout": {
+        "post_count": 6,
+        "post_radius_ft": 5.0,
+        "post_xy": [
+          [
+            5.0,
+            0.0
+          ],
+          [
+            2.5,
+            4.3301
+          ],
+          [
+            -2.5,
+            4.3301
+          ],
+          [
+            -5.0,
+            0.0
+          ],
+          [
+            -2.5,
+            -4.3301
+          ],
+          [
+            2.5,
+            -4.3301
+          ]
+        ],
+        "beam_segments": [
+          {
+            "id": "B1",
+            "i0": 0,
+            "i1": 1
+          },
+          {
+            "id": "B2",
+            "i0": 1,
+            "i1": 2
+          },
+          {
+            "id": "B3",
+            "i0": 2,
+            "i1": 3
+          },
+          {
+            "id": "B4",
+            "i0": 3,
+            "i1": 4
+          },
+          {
+            "id": "B5",
+            "i0": 4,
+            "i1": 5
+          },
+          {
+            "id": "B6",
+            "i0": 5,
+            "i1": 0
+          }
+        ]
+      },
+      "hub": {
+        "type": "hexagonal_prism",
+        "radius_ft": 0.75,
+        "height_ft": 1.2,
+        "face_planes": {
+          "planes": [
+            {
+              "id": "H1",
+              "point": [
+                0.75,
+                0.0,
+                9.0
+              ],
+              "normal": [
+                1.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "id": "H2",
+              "point": [
+                0.3750000000000001,
+                0.649519052838329,
+                9.0
+              ],
+              "normal": [
+                0.5000000000000001,
+                0.8660254037844386,
+                0.0
+              ]
+            },
+            {
+              "id": "H3",
+              "point": [
+                -0.3749999999999999,
+                0.649519052838329,
+                9.0
+              ],
+              "normal": [
+                -0.49999999999999983,
+                0.8660254037844387,
+                0.0
+              ]
+            },
+            {
+              "id": "H4",
+              "point": [
+                -0.75,
+                9.184850993605148e-17,
+                9.0
+              ],
+              "normal": [
+                -1.0,
+                1.2246467991473532e-16,
+                0.0
+              ]
+            },
+            {
+              "id": "H5",
+              "point": [
+                -0.37500000000000033,
+                -0.6495190528383288,
+                9.0
+              ],
+              "normal": [
+                -0.5000000000000004,
+                -0.8660254037844384,
+                0.0
+              ]
+            },
+            {
+              "id": "H6",
+              "point": [
+                0.3750000000000001,
+                -0.649519052838329,
+                9.0
+              ],
+              "normal": [
+                0.5000000000000001,
+                -0.8660254037844386,
+                0.0
+              ]
+            }
+          ]
+        }
+      },
+      "primary_rafters": [
+        {
+          "id": "R1",
+          "start": [
+            5.75,
+            0.0,
+            9.3056
+          ],
+          "end": [
+            0.6495,
+            0.0,
+            9.3056
+          ],
+          "seat_point": [
+            5.0,
+            0.0,
+            9.3056
+          ],
+          "seat_depth_ft": 0.3056
+        },
+        {
+          "id": "R2",
+          "start": [
+            2.875,
+            4.9796,
+            9.3056
+          ],
+          "end": [
+            0.3248,
+            0.5625,
+            9.3056
+          ],
+          "seat_point": [
+            2.5,
+            4.3301,
+            9.3056
+          ],
+          "seat_depth_ft": 0.3056
+        },
+        {
+          "id": "R3",
+          "start": [
+            -2.875,
+            4.9796,
+            9.3056
+          ],
+          "end": [
+            -0.3248,
+            0.5625,
+            9.3056
+          ],
+          "seat_point": [
+            -2.5,
+            4.3301,
+            9.3056
+          ],
+          "seat_depth_ft": 0.3056
+        },
+        {
+          "id": "R4",
+          "start": [
+            -5.75,
+            0.0,
+            9.3056
+          ],
+          "end": [
+            -0.6495,
+            0.0,
+            9.3056
+          ],
+          "seat_point": [
+            -5.0,
+            0.0,
+            9.3056
+          ],
+          "seat_depth_ft": 0.3056
+        },
+        {
+          "id": "R5",
+          "start": [
+            -2.875,
+            -4.9796,
+            9.3056
+          ],
+          "end": [
+            -0.3248,
+            -0.5625,
+            9.3056
+          ],
+          "seat_point": [
+            -2.5,
+            -4.3301,
+            9.3056
+          ],
+          "seat_depth_ft": 0.3056
+        },
+        {
+          "id": "R6",
+          "start": [
+            2.875,
+            -4.9796,
+            9.3056
+          ],
+          "end": [
+            0.3248,
+            -0.5625,
+            9.3056
+          ],
+          "seat_point": [
+            2.5,
+            -4.3301,
+            9.3056
+          ],
+          "seat_depth_ft": 0.3056
+        }
+      ],
+      "rafters": {
+        "hub_termination_points": {
+          "points": [
+            [
+              0.6495,
+              0.0,
+              9.3056
+            ],
+            [
+              0.3248,
+              0.5625,
+              9.3056
+            ],
+            [
+              -0.3248,
+              0.5625,
+              9.3056
+            ],
+            [
+              -0.6495,
+              0.0,
+              9.3056
+            ],
+            [
+              -0.3248,
+              -0.5625,
+              9.3056
+            ],
+            [
+              0.3248,
+              -0.5625,
+              9.3056
+            ]
+          ]
+        },
+        "primary_rafters": [
+          {
+            "id": "R1",
+            "start": [
+              5.75,
+              0.0,
+              9.3056
+            ],
+            "end": [
+              0.6495,
+              0.0,
+              9.3056
+            ],
+            "seat_point": [
+              5.0,
+              0.0,
+              9.3056
+            ],
+            "seat_depth_ft": 0.3056
+          },
+          {
+            "id": "R2",
+            "start": [
+              2.875,
+              4.9796,
+              9.3056
+            ],
+            "end": [
+              0.3248,
+              0.5625,
+              9.3056
+            ],
+            "seat_point": [
+              2.5,
+              4.3301,
+              9.3056
+            ],
+            "seat_depth_ft": 0.3056
+          },
+          {
+            "id": "R3",
+            "start": [
+              -2.875,
+              4.9796,
+              9.3056
+            ],
+            "end": [
+              -0.3248,
+              0.5625,
+              9.3056
+            ],
+            "seat_point": [
+              -2.5,
+              4.3301,
+              9.3056
+            ],
+            "seat_depth_ft": 0.3056
+          },
+          {
+            "id": "R4",
+            "start": [
+              -5.75,
+              0.0,
+              9.3056
+            ],
+            "end": [
+              -0.6495,
+              0.0,
+              9.3056
+            ],
+            "seat_point": [
+              -5.0,
+              0.0,
+              9.3056
+            ],
+            "seat_depth_ft": 0.3056
+          },
+          {
+            "id": "R5",
+            "start": [
+              -2.875,
+              -4.9796,
+              9.3056
+            ],
+            "end": [
+              -0.3248,
+              -0.5625,
+              9.3056
+            ],
+            "seat_point": [
+              -2.5,
+              -4.3301,
+              9.3056
+            ],
+            "seat_depth_ft": 0.3056
+          },
+          {
+            "id": "R6",
+            "start": [
+              2.875,
+              -4.9796,
+              9.3056
+            ],
+            "end": [
+              0.3248,
+              -0.5625,
+              9.3056
+            ],
+            "seat_point": [
+              2.5,
+              -4.3301,
+              9.3056
+            ],
+            "seat_depth_ft": 0.3056
+          }
+        ]
+      },
+      "jack_rafters": {
+        "enabled": false,
+        "endpoints": []
+      },
+      "braces": {
+        "enabled": true,
+        "endpoints": [
+          {
+            "id": "K1A",
+            "start": [
+              4.8437,
+              0.2706,
+              6.5
+            ],
+            "end": [
+              4.0937,
+              1.5697,
+              8.0
+            ]
+          },
+          {
+            "id": "K1B",
+            "start": [
+              2.6563,
+              4.0595,
+              6.5
+            ],
+            "end": [
+              3.4063,
+              2.7604,
+              8.0
+            ]
+          },
+          {
+            "id": "K2A",
+            "start": [
+              2.1875,
+              4.3301,
+              6.5
+            ],
+            "end": [
+              0.6875,
+              4.3301,
+              8.0
+            ]
+          },
+          {
+            "id": "K2B",
+            "start": [
+              -2.1875,
+              4.3301,
+              6.5
+            ],
+            "end": [
+              -0.6875,
+              4.3301,
+              8.0
+            ]
+          },
+          {
+            "id": "K3A",
+            "start": [
+              -2.6563,
+              4.0595,
+              6.5
+            ],
+            "end": [
+              -3.4063,
+              2.7604,
+              8.0
+            ]
+          },
+          {
+            "id": "K3B",
+            "start": [
+              -4.8437,
+              0.2706,
+              6.5
+            ],
+            "end": [
+              -4.0937,
+              1.5697,
+              8.0
+            ]
+          },
+          {
+            "id": "K4A",
+            "start": [
+              -4.8437,
+              -0.2706,
+              6.5
+            ],
+            "end": [
+              -4.0937,
+              -1.5697,
+              8.0
+            ]
+          },
+          {
+            "id": "K4B",
+            "start": [
+              -2.6563,
+              -4.0595,
+              6.5
+            ],
+            "end": [
+              -3.4063,
+              -2.7604,
+              8.0
+            ]
+          },
+          {
+            "id": "K5A",
+            "start": [
+              -2.1875,
+              -4.3301,
+              6.5
+            ],
+            "end": [
+              -0.6875,
+              -4.3301,
+              8.0
+            ]
+          },
+          {
+            "id": "K5B",
+            "start": [
+              2.1875,
+              -4.3301,
+              6.5
+            ],
+            "end": [
+              0.6875,
+              -4.3301,
+              8.0
+            ]
+          },
+          {
+            "id": "K6A",
+            "start": [
+              2.6563,
+              -4.0595,
+              6.5
+            ],
+            "end": [
+              3.4063,
+              -2.7604,
+              8.0
+            ]
+          },
+          {
+            "id": "K6B",
+            "start": [
+              4.8437,
+              -0.2706,
+              6.5
+            ],
+            "end": [
+              4.0937,
+              -1.5697,
+              8.0
+            ]
+          }
+        ]
+      },
+      "beam_ring": {
+        "beam_miter_deg": 30.0,
+        "interior_angle_deg": 120.0
+      },
+      "resolved_model": {
+        "constraints_resolved": true,
+        "members": [
+          {
+            "id": "P1",
+            "role": "post",
+            "p0": [
+              5.0,
+              0.0,
+              0.0
+            ],
+            "p1": [
+              5.0,
+              0.0,
+              8.0
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                5.3125,
+                0.3125,
+                0.0
+              ],
+              [
+                5.3125,
+                -0.3125,
+                0.0
+              ],
+              [
+                4.6875,
+                -0.3125,
+                0.0
+              ],
+              [
+                4.6875,
+                0.3125,
+                0.0
+              ],
+              [
+                5.3125,
+                0.3125,
+                8.0
+              ],
+              [
+                5.3125,
+                -0.3125,
+                8.0
+              ],
+              [
+                4.6875,
+                -0.3125,
+                8.0
+              ],
+              [
+                4.6875,
+                0.3125,
+                8.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 9.0,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {
+              "base_on_footing": true,
+              "top_on_beam": true
+            }
+          },
+          {
+            "id": "FT1",
+            "role": "footing",
+            "p0": [
+              5.0,
+              0.0,
+              -2.0
+            ],
+            "p1": [
+              5.0,
+              0.0,
+              0.33
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                5.5,
+                0.5,
+                -2.0
+              ],
+              [
+                5.5,
+                -0.5,
+                -2.0
+              ],
+              [
+                4.5,
+                -0.5,
+                -2.0
+              ],
+              [
+                4.5,
+                0.5,
+                -2.0
+              ],
+              [
+                5.5,
+                0.5,
+                0.33
+              ],
+              [
+                5.5,
+                -0.5,
+                0.33
+              ],
+              [
+                4.5,
+                -0.5,
+                0.33
+              ],
+              [
+                4.5,
+                0.5,
+                0.33
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.33,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {}
+          },
+          {
+            "id": "P2",
+            "role": "post",
+            "p0": [
+              2.5,
+              4.3301,
+              0.0
+            ],
+            "p1": [
+              2.5,
+              4.3301,
+              8.0
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                2.8125,
+                4.6426,
+                0.0
+              ],
+              [
+                2.8125,
+                4.0176,
+                0.0
+              ],
+              [
+                2.1875,
+                4.0176,
+                0.0
+              ],
+              [
+                2.1875,
+                4.6426,
+                0.0
+              ],
+              [
+                2.8125,
+                4.6426,
+                8.0
+              ],
+              [
+                2.8125,
+                4.0176,
+                8.0
+              ],
+              [
+                2.1875,
+                4.0176,
+                8.0
+              ],
+              [
+                2.1875,
+                4.6426,
+                8.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 9.0,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {
+              "base_on_footing": true,
+              "top_on_beam": true
+            }
+          },
+          {
+            "id": "FT2",
+            "role": "footing",
+            "p0": [
+              2.5,
+              4.3301,
+              -2.0
+            ],
+            "p1": [
+              2.5,
+              4.3301,
+              0.33
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                3.0,
+                4.8301,
+                -2.0
+              ],
+              [
+                3.0,
+                3.8301,
+                -2.0
+              ],
+              [
+                2.0,
+                3.8301,
+                -2.0
+              ],
+              [
+                2.0,
+                4.8301,
+                -2.0
+              ],
+              [
+                3.0,
+                4.8301,
+                0.33
+              ],
+              [
+                3.0,
+                3.8301,
+                0.33
+              ],
+              [
+                2.0,
+                3.8301,
+                0.33
+              ],
+              [
+                2.0,
+                4.8301,
+                0.33
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.33,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {}
+          },
+          {
+            "id": "P3",
+            "role": "post",
+            "p0": [
+              -2.5,
+              4.3301,
+              0.0
+            ],
+            "p1": [
+              -2.5,
+              4.3301,
+              8.0
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                -2.1875,
+                4.6426,
+                0.0
+              ],
+              [
+                -2.1875,
+                4.0176,
+                0.0
+              ],
+              [
+                -2.8125,
+                4.0176,
+                0.0
+              ],
+              [
+                -2.8125,
+                4.6426,
+                0.0
+              ],
+              [
+                -2.1875,
+                4.6426,
+                8.0
+              ],
+              [
+                -2.1875,
+                4.0176,
+                8.0
+              ],
+              [
+                -2.8125,
+                4.0176,
+                8.0
+              ],
+              [
+                -2.8125,
+                4.6426,
+                8.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 9.0,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {
+              "base_on_footing": true,
+              "top_on_beam": true
+            }
+          },
+          {
+            "id": "FT3",
+            "role": "footing",
+            "p0": [
+              -2.5,
+              4.3301,
+              -2.0
+            ],
+            "p1": [
+              -2.5,
+              4.3301,
+              0.33
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                -2.0,
+                4.8301,
+                -2.0
+              ],
+              [
+                -2.0,
+                3.8301,
+                -2.0
+              ],
+              [
+                -3.0,
+                3.8301,
+                -2.0
+              ],
+              [
+                -3.0,
+                4.8301,
+                -2.0
+              ],
+              [
+                -2.0,
+                4.8301,
+                0.33
+              ],
+              [
+                -2.0,
+                3.8301,
+                0.33
+              ],
+              [
+                -3.0,
+                3.8301,
+                0.33
+              ],
+              [
+                -3.0,
+                4.8301,
+                0.33
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.33,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {}
+          },
+          {
+            "id": "P4",
+            "role": "post",
+            "p0": [
+              -5.0,
+              0.0,
+              0.0
+            ],
+            "p1": [
+              -5.0,
+              0.0,
+              8.0
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                -4.6875,
+                0.3125,
+                0.0
+              ],
+              [
+                -4.6875,
+                -0.3125,
+                0.0
+              ],
+              [
+                -5.3125,
+                -0.3125,
+                0.0
+              ],
+              [
+                -5.3125,
+                0.3125,
+                0.0
+              ],
+              [
+                -4.6875,
+                0.3125,
+                8.0
+              ],
+              [
+                -4.6875,
+                -0.3125,
+                8.0
+              ],
+              [
+                -5.3125,
+                -0.3125,
+                8.0
+              ],
+              [
+                -5.3125,
+                0.3125,
+                8.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 9.0,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {
+              "base_on_footing": true,
+              "top_on_beam": true
+            }
+          },
+          {
+            "id": "FT4",
+            "role": "footing",
+            "p0": [
+              -5.0,
+              0.0,
+              -2.0
+            ],
+            "p1": [
+              -5.0,
+              0.0,
+              0.33
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                -4.5,
+                0.5,
+                -2.0
+              ],
+              [
+                -4.5,
+                -0.5,
+                -2.0
+              ],
+              [
+                -5.5,
+                -0.5,
+                -2.0
+              ],
+              [
+                -5.5,
+                0.5,
+                -2.0
+              ],
+              [
+                -4.5,
+                0.5,
+                0.33
+              ],
+              [
+                -4.5,
+                -0.5,
+                0.33
+              ],
+              [
+                -5.5,
+                -0.5,
+                0.33
+              ],
+              [
+                -5.5,
+                0.5,
+                0.33
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.33,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {}
+          },
+          {
+            "id": "P5",
+            "role": "post",
+            "p0": [
+              -2.5,
+              -4.3301,
+              0.0
+            ],
+            "p1": [
+              -2.5,
+              -4.3301,
+              8.0
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                -2.1875,
+                -4.0176,
+                0.0
+              ],
+              [
+                -2.1875,
+                -4.6426,
+                0.0
+              ],
+              [
+                -2.8125,
+                -4.6426,
+                0.0
+              ],
+              [
+                -2.8125,
+                -4.0176,
+                0.0
+              ],
+              [
+                -2.1875,
+                -4.0176,
+                8.0
+              ],
+              [
+                -2.1875,
+                -4.6426,
+                8.0
+              ],
+              [
+                -2.8125,
+                -4.6426,
+                8.0
+              ],
+              [
+                -2.8125,
+                -4.0176,
+                8.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 9.0,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {
+              "base_on_footing": true,
+              "top_on_beam": true
+            }
+          },
+          {
+            "id": "FT5",
+            "role": "footing",
+            "p0": [
+              -2.5,
+              -4.3301,
+              -2.0
+            ],
+            "p1": [
+              -2.5,
+              -4.3301,
+              0.33
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                -2.0,
+                -3.8301,
+                -2.0
+              ],
+              [
+                -2.0,
+                -4.8301,
+                -2.0
+              ],
+              [
+                -3.0,
+                -4.8301,
+                -2.0
+              ],
+              [
+                -3.0,
+                -3.8301,
+                -2.0
+              ],
+              [
+                -2.0,
+                -3.8301,
+                0.33
+              ],
+              [
+                -2.0,
+                -4.8301,
+                0.33
+              ],
+              [
+                -3.0,
+                -4.8301,
+                0.33
+              ],
+              [
+                -3.0,
+                -3.8301,
+                0.33
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.33,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {}
+          },
+          {
+            "id": "P6",
+            "role": "post",
+            "p0": [
+              2.5,
+              -4.3301,
+              0.0
+            ],
+            "p1": [
+              2.5,
+              -4.3301,
+              8.0
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                2.8125,
+                -4.0176,
+                0.0
+              ],
+              [
+                2.8125,
+                -4.6426,
+                0.0
+              ],
+              [
+                2.1875,
+                -4.6426,
+                0.0
+              ],
+              [
+                2.1875,
+                -4.0176,
+                0.0
+              ],
+              [
+                2.8125,
+                -4.0176,
+                8.0
+              ],
+              [
+                2.8125,
+                -4.6426,
+                8.0
+              ],
+              [
+                2.1875,
+                -4.6426,
+                8.0
+              ],
+              [
+                2.1875,
+                -4.0176,
+                8.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 9.0,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {
+              "base_on_footing": true,
+              "top_on_beam": true
+            }
+          },
+          {
+            "id": "FT6",
+            "role": "footing",
+            "p0": [
+              2.5,
+              -4.3301,
+              -2.0
+            ],
+            "p1": [
+              2.5,
+              -4.3301,
+              0.33
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                3.0,
+                -3.8301,
+                -2.0
+              ],
+              [
+                3.0,
+                -4.8301,
+                -2.0
+              ],
+              [
+                2.0,
+                -4.8301,
+                -2.0
+              ],
+              [
+                2.0,
+                -3.8301,
+                -2.0
+              ],
+              [
+                3.0,
+                -3.8301,
+                0.33
+              ],
+              [
+                3.0,
+                -4.8301,
+                0.33
+              ],
+              [
+                2.0,
+                -4.8301,
+                0.33
+              ],
+              [
+                2.0,
+                -3.8301,
+                0.33
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.33,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {}
+          },
+          {
+            "id": "B1",
+            "role": "beam",
+            "p0": [
+              5.0,
+              0.0,
+              8.5
+            ],
+            "p1": [
+              2.5,
+              4.3301,
+              8.5
+            ],
+            "axis_u": [
+              -0.5000023399164255,
+              0.8660240528288456,
+              0.0
+            ],
+            "axis_w": [
+              0.8660240528288456,
+              0.5000023399164255,
+              -0.0
+            ],
+            "axis_d": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "vertices": [
+              [
+                4.7113244150859535,
+                2.7755575615628914e-17,
+                8.0
+              ],
+              [
+                5.2886755849140465,
+                -2.7755575615628914e-17,
+                8.0
+              ],
+              [
+                5.2886755849140465,
+                -2.7755575615628914e-17,
+                9.0
+              ],
+              [
+                4.7113244150859535,
+                2.7755575615628914e-17,
+                9.0
+              ],
+              [
+                2.3556628830197193,
+                4.0801,
+                8.0
+              ],
+              [
+                2.6443371169802807,
+                4.5801,
+                8.0
+              ],
+              [
+                2.6443371169802807,
+                4.5801,
+                9.0
+              ],
+              [
+                2.3556628830197193,
+                4.0801,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.4999988300404185,
+                  0.8660260792598644,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.8660240528288456,
+                  0.5000023399164255,
+                  -0.0
+                ],
+                "color_key": "right"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.8660240528288456,
+                  -0.5000023399164255,
+                  0.0
+                ],
+                "color_key": "left"
+              }
+            ],
+            "derived_length_ft": 5.0,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "start_on_post": true,
+              "end_on_post": true
+            }
+          },
+          {
+            "id": "B2",
+            "role": "beam",
+            "p0": [
+              2.5,
+              4.3301,
+              8.5
+            ],
+            "p1": [
+              -2.5,
+              4.3301,
+              8.5
+            ],
+            "axis_u": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "axis_w": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axis_d": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "vertices": [
+              [
+                2.3556628830197197,
+                4.0801,
+                8.0
+              ],
+              [
+                2.6443371169802803,
+                4.5801,
+                8.0
+              ],
+              [
+                2.6443371169802803,
+                4.5801,
+                9.0
+              ],
+              [
+                2.3556628830197197,
+                4.0801,
+                9.0
+              ],
+              [
+                -2.3556628830197197,
+                4.0801,
+                8.0
+              ],
+              [
+                -2.6443371169802803,
+                4.5801,
+                8.0
+              ],
+              [
+                -2.6443371169802803,
+                4.5801,
+                9.0
+              ],
+              [
+                -2.3556628830197197,
+                4.0801,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.4999988300404185,
+                  -0.8660260792598644,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  -0.4999988300404185,
+                  0.8660260792598644,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "right"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "left"
+              }
+            ],
+            "derived_length_ft": 5.0,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "start_on_post": true,
+              "end_on_post": true
+            }
+          },
+          {
+            "id": "B3",
+            "role": "beam",
+            "p0": [
+              -2.5,
+              4.3301,
+              8.5
+            ],
+            "p1": [
+              -5.0,
+              0.0,
+              8.5
+            ],
+            "axis_u": [
+              -0.5000023399164255,
+              -0.8660240528288456,
+              0.0
+            ],
+            "axis_w": [
+              -0.8660240528288456,
+              0.5000023399164255,
+              -0.0
+            ],
+            "axis_d": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "vertices": [
+              [
+                -2.3556628830197193,
+                4.0801,
+                8.0
+              ],
+              [
+                -2.6443371169802807,
+                4.5801,
+                8.0
+              ],
+              [
+                -2.6443371169802807,
+                4.5801,
+                9.0
+              ],
+              [
+                -2.3556628830197193,
+                4.0801,
+                9.0
+              ],
+              [
+                -4.7113244150859535,
+                2.7755575615628914e-17,
+                8.0
+              ],
+              [
+                -5.2886755849140465,
+                -2.7755575615628914e-17,
+                8.0
+              ],
+              [
+                -5.2886755849140465,
+                -2.7755575615628914e-17,
+                9.0
+              ],
+              [
+                -4.7113244150859535,
+                2.7755575615628914e-17,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  0.4999988300404185,
+                  -0.8660260792598644,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  -0.8660240528288456,
+                  0.5000023399164255,
+                  -0.0
+                ],
+                "color_key": "right"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  0.8660240528288456,
+                  -0.5000023399164255,
+                  0.0
+                ],
+                "color_key": "left"
+              }
+            ],
+            "derived_length_ft": 5.0,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "start_on_post": true,
+              "end_on_post": true
+            }
+          },
+          {
+            "id": "B4",
+            "role": "beam",
+            "p0": [
+              -5.0,
+              0.0,
+              8.5
+            ],
+            "p1": [
+              -2.5,
+              -4.3301,
+              8.5
+            ],
+            "axis_u": [
+              0.5000023399164255,
+              -0.8660240528288456,
+              0.0
+            ],
+            "axis_w": [
+              -0.8660240528288456,
+              -0.5000023399164255,
+              0.0
+            ],
+            "axis_d": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "vertices": [
+              [
+                -4.7113244150859535,
+                -2.7755575615628914e-17,
+                8.0
+              ],
+              [
+                -5.2886755849140465,
+                2.7755575615628914e-17,
+                8.0
+              ],
+              [
+                -5.2886755849140465,
+                2.7755575615628914e-17,
+                9.0
+              ],
+              [
+                -4.7113244150859535,
+                -2.7755575615628914e-17,
+                9.0
+              ],
+              [
+                -2.3556628830197193,
+                -4.0801,
+                8.0
+              ],
+              [
+                -2.6443371169802807,
+                -4.5801,
+                8.0
+              ],
+              [
+                -2.6443371169802807,
+                -4.5801,
+                9.0
+              ],
+              [
+                -2.3556628830197193,
+                -4.0801,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  -0.4999988300404185,
+                  -0.8660260792598644,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  -0.8660240528288456,
+                  -0.5000023399164255,
+                  0.0
+                ],
+                "color_key": "right"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  0.8660240528288456,
+                  0.5000023399164255,
+                  -0.0
+                ],
+                "color_key": "left"
+              }
+            ],
+            "derived_length_ft": 5.0,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "start_on_post": true,
+              "end_on_post": true
+            }
+          },
+          {
+            "id": "B5",
+            "role": "beam",
+            "p0": [
+              -2.5,
+              -4.3301,
+              8.5
+            ],
+            "p1": [
+              2.5,
+              -4.3301,
+              8.5
+            ],
+            "axis_u": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "axis_w": [
+              -0.0,
+              -1.0,
+              -0.0
+            ],
+            "axis_d": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "vertices": [
+              [
+                -2.3556628830197197,
+                -4.0801,
+                8.0
+              ],
+              [
+                -2.6443371169802803,
+                -4.5801,
+                8.0
+              ],
+              [
+                -2.6443371169802803,
+                -4.5801,
+                9.0
+              ],
+              [
+                -2.3556628830197197,
+                -4.0801,
+                9.0
+              ],
+              [
+                2.3556628830197197,
+                -4.0801,
+                8.0
+              ],
+              [
+                2.6443371169802803,
+                -4.5801,
+                8.0
+              ],
+              [
+                2.6443371169802803,
+                -4.5801,
+                9.0
+              ],
+              [
+                2.3556628830197197,
+                -4.0801,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  0.4999988300404185,
+                  0.8660260792598644,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.4999988300404185,
+                  -0.8660260792598644,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  -0.0,
+                  -1.0,
+                  -0.0
+                ],
+                "color_key": "right"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "color_key": "left"
+              }
+            ],
+            "derived_length_ft": 5.0,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "start_on_post": true,
+              "end_on_post": true
+            }
+          },
+          {
+            "id": "B6",
+            "role": "beam",
+            "p0": [
+              2.5,
+              -4.3301,
+              8.5
+            ],
+            "p1": [
+              5.0,
+              0.0,
+              8.5
+            ],
+            "axis_u": [
+              0.5000023399164255,
+              0.8660240528288456,
+              0.0
+            ],
+            "axis_w": [
+              0.8660240528288456,
+              -0.5000023399164255,
+              -0.0
+            ],
+            "axis_d": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "vertices": [
+              [
+                2.3556628830197193,
+                -4.0801,
+                8.0
+              ],
+              [
+                2.6443371169802807,
+                -4.5801,
+                8.0
+              ],
+              [
+                2.6443371169802807,
+                -4.5801,
+                9.0
+              ],
+              [
+                2.3556628830197193,
+                -4.0801,
+                9.0
+              ],
+              [
+                4.7113244150859535,
+                -2.7755575615628914e-17,
+                8.0
+              ],
+              [
+                5.2886755849140465,
+                2.7755575615628914e-17,
+                8.0
+              ],
+              [
+                5.2886755849140465,
+                2.7755575615628914e-17,
+                9.0
+              ],
+              [
+                4.7113244150859535,
+                -2.7755575615628914e-17,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.4999988300404185,
+                  0.8660260792598644,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.8660240528288456,
+                  -0.5000023399164255,
+                  -0.0
+                ],
+                "color_key": "right"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.8660240528288456,
+                  0.5000023399164255,
+                  0.0
+                ],
+                "color_key": "left"
+              }
+            ],
+            "derived_length_ft": 5.0,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "start_on_post": true,
+              "end_on_post": true
+            }
+          },
+          {
+            "id": "K1A",
+            "role": "brace",
+            "p0": [
+              4.8437,
+              0.2706,
+              6.5
+            ],
+            "p1": [
+              4.0937,
+              1.5697,
+              8.0
+            ],
+            "axis_u": [
+              -0.35354707354916487,
+              0.6123906709969602,
+              0.7070941470983297
+            ],
+            "axis_w": [
+              -0.8660357189520761,
+              -0.4999821331799376,
+              0.0
+            ],
+            "axis_d": [
+              -0.35353444002527146,
+              0.6123687880491069,
+              -0.7071194150490324
+            ],
+            "vertices": [
+              [
+                5.02155398151753,
+                0.25421027949824615,
+                6.603121581361317
+              ],
+              [
+                4.768960230156508,
+                0.10838215732076434,
+                6.603121581361317
+              ],
+              [
+                4.66584601848247,
+                0.28698972050175386,
+                6.396878418638683
+              ],
+              [
+                4.918439769843492,
+                0.4328178426792356,
+                6.396878418638683
+              ],
+              [
+                4.27155398151753,
+                1.5533102794982463,
+                8.103121581361318
+              ],
+              [
+                4.018960230156508,
+                1.4074821573207645,
+                8.103121581361318
+              ],
+              [
+                3.91584601848247,
+                1.586089720501754,
+                7.896878418638683
+              ],
+              [
+                4.168439769843492,
+                1.7319178426792357,
+                7.896878418638683
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  0.35354707354916487,
+                  -0.6123906709969602,
+                  -0.7070941470983297
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  -0.35354707354916487,
+                  0.6123906709969602,
+                  0.7070941470983297
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  0.35353444002527146,
+                  -0.6123687880491069,
+                  0.7071194150490324
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -0.35353444002527146,
+                  0.6123687880491069,
+                  -0.7071194150490324
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  0.8660357189520761,
+                  0.4999821331799376,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  -0.8660357189520761,
+                  -0.4999821331799376,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1214,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K1B",
+            "role": "brace",
+            "p0": [
+              2.6563,
+              4.0595,
+              6.5
+            ],
+            "p1": [
+              3.4063,
+              2.7604,
+              8.0
+            ],
+            "axis_u": [
+              0.35354707354916487,
+              -0.61239067099696,
+              0.7070941470983297
+            ],
+            "axis_w": [
+              0.866035718952076,
+              0.4999821331799377,
+              -0.0
+            ],
+            "axis_d": [
+              0.3535344400252716,
+              -0.6123687880491071,
+              -0.7071194150490323
+            ],
+            "vertices": [
+              [
+                2.4784460184824697,
+                4.0758897205017535,
+                6.603121581361317
+              ],
+              [
+                2.731039769843492,
+                4.221717842679236,
+                6.603121581361317
+              ],
+              [
+                2.83415398151753,
+                4.043110279498246,
+                6.396878418638683
+              ],
+              [
+                2.5815602301565077,
+                3.897282157320764,
+                6.396878418638683
+              ],
+              [
+                3.2284460184824697,
+                2.7767897205017538,
+                8.103121581361318
+              ],
+              [
+                3.481039769843492,
+                2.922617842679236,
+                8.103121581361318
+              ],
+              [
+                3.58415398151753,
+                2.7440102794982466,
+                7.896878418638683
+              ],
+              [
+                3.3315602301565077,
+                2.5981821573207644,
+                7.896878418638683
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.35354707354916487,
+                  0.61239067099696,
+                  -0.7070941470983297
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.35354707354916487,
+                  -0.61239067099696,
+                  0.7070941470983297
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.3535344400252716,
+                  0.6123687880491071,
+                  0.7071194150490323
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.3535344400252716,
+                  -0.6123687880491071,
+                  -0.7071194150490323
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.866035718952076,
+                  -0.4999821331799377,
+                  0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.866035718952076,
+                  0.4999821331799377,
+                  -0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1214,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K2A",
+            "role": "brace",
+            "p0": [
+              2.1875,
+              4.3301,
+              6.5
+            ],
+            "p1": [
+              0.6875,
+              4.3301,
+              8.0
+            ],
+            "axis_u": [
+              -0.7071067811865476,
+              0.0,
+              0.7071067811865476
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -0.7071067811865476,
+              -0.0,
+              -0.7071067811865476
+            ],
+            "vertices": [
+              [
+                2.2906197389230383,
+                4.475933333333333,
+                6.603119738923038
+              ],
+              [
+                2.2906197389230383,
+                4.184266666666667,
+                6.603119738923038
+              ],
+              [
+                2.0843802610769617,
+                4.184266666666667,
+                6.396880261076962
+              ],
+              [
+                2.0843802610769617,
+                4.475933333333333,
+                6.396880261076962
+              ],
+              [
+                0.7906197389230382,
+                4.475933333333333,
+                8.103119738923038
+              ],
+              [
+                0.7906197389230382,
+                4.184266666666667,
+                8.103119738923038
+              ],
+              [
+                0.5843802610769618,
+                4.184266666666667,
+                7.896880261076962
+              ],
+              [
+                0.5843802610769618,
+                4.475933333333333,
+                7.896880261076962
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  0.7071067811865476,
+                  -0.0,
+                  -0.7071067811865476
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  -0.7071067811865476,
+                  0.0,
+                  0.7071067811865476
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  0.7071067811865476,
+                  0.0,
+                  0.7071067811865476
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -0.7071067811865476,
+                  -0.0,
+                  -0.7071067811865476
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1213,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K2B",
+            "role": "brace",
+            "p0": [
+              -2.1875,
+              4.3301,
+              6.5
+            ],
+            "p1": [
+              -0.6875,
+              4.3301,
+              8.0
+            ],
+            "axis_u": [
+              0.7071067811865476,
+              0.0,
+              0.7071067811865476
+            ],
+            "axis_w": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "axis_d": [
+              0.7071067811865476,
+              0.0,
+              -0.7071067811865476
+            ],
+            "vertices": [
+              [
+                -2.2906197389230383,
+                4.184266666666667,
+                6.603119738923038
+              ],
+              [
+                -2.2906197389230383,
+                4.475933333333333,
+                6.603119738923038
+              ],
+              [
+                -2.0843802610769617,
+                4.475933333333333,
+                6.396880261076962
+              ],
+              [
+                -2.0843802610769617,
+                4.184266666666667,
+                6.396880261076962
+              ],
+              [
+                -0.7906197389230382,
+                4.184266666666667,
+                8.103119738923038
+              ],
+              [
+                -0.7906197389230382,
+                4.475933333333333,
+                8.103119738923038
+              ],
+              [
+                -0.5843802610769618,
+                4.475933333333333,
+                7.896880261076962
+              ],
+              [
+                -0.5843802610769618,
+                4.184266666666667,
+                7.896880261076962
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.7071067811865476,
+                  -0.0,
+                  -0.7071067811865476
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.7071067811865476,
+                  0.0,
+                  0.7071067811865476
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.7071067811865476,
+                  -0.0,
+                  0.7071067811865476
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.7071067811865476,
+                  0.0,
+                  -0.7071067811865476
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  -1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1213,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K3A",
+            "role": "brace",
+            "p0": [
+              -2.6563,
+              4.0595,
+              6.5
+            ],
+            "p1": [
+              -3.4063,
+              2.7604,
+              8.0
+            ],
+            "axis_u": [
+              -0.35354707354916487,
+              -0.61239067099696,
+              0.7070941470983297
+            ],
+            "axis_w": [
+              0.866035718952076,
+              -0.4999821331799377,
+              0.0
+            ],
+            "axis_d": [
+              -0.3535344400252716,
+              -0.6123687880491071,
+              -0.7071194150490323
+            ],
+            "vertices": [
+              [
+                -2.731039769843492,
+                4.221717842679236,
+                6.603121581361317
+              ],
+              [
+                -2.4784460184824697,
+                4.0758897205017535,
+                6.603121581361317
+              ],
+              [
+                -2.5815602301565077,
+                3.897282157320764,
+                6.396878418638683
+              ],
+              [
+                -2.83415398151753,
+                4.043110279498246,
+                6.396878418638683
+              ],
+              [
+                -3.481039769843492,
+                2.922617842679236,
+                8.103121581361318
+              ],
+              [
+                -3.2284460184824697,
+                2.7767897205017538,
+                8.103121581361318
+              ],
+              [
+                -3.3315602301565077,
+                2.5981821573207644,
+                7.896878418638683
+              ],
+              [
+                -3.58415398151753,
+                2.7440102794982466,
+                7.896878418638683
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  0.35354707354916487,
+                  0.61239067099696,
+                  -0.7070941470983297
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  -0.35354707354916487,
+                  -0.61239067099696,
+                  0.7070941470983297
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  0.3535344400252716,
+                  0.6123687880491071,
+                  0.7071194150490323
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -0.3535344400252716,
+                  -0.6123687880491071,
+                  -0.7071194150490323
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.866035718952076,
+                  0.4999821331799377,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.866035718952076,
+                  -0.4999821331799377,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1214,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K3B",
+            "role": "brace",
+            "p0": [
+              -4.8437,
+              0.2706,
+              6.5
+            ],
+            "p1": [
+              -4.0937,
+              1.5697,
+              8.0
+            ],
+            "axis_u": [
+              0.35354707354916487,
+              0.6123906709969602,
+              0.7070941470983297
+            ],
+            "axis_w": [
+              -0.8660357189520761,
+              0.4999821331799376,
+              0.0
+            ],
+            "axis_d": [
+              0.35353444002527146,
+              0.6123687880491069,
+              -0.7071194150490324
+            ],
+            "vertices": [
+              [
+                -4.768960230156508,
+                0.10838215732076434,
+                6.603121581361317
+              ],
+              [
+                -5.02155398151753,
+                0.25421027949824615,
+                6.603121581361317
+              ],
+              [
+                -4.918439769843492,
+                0.4328178426792356,
+                6.396878418638683
+              ],
+              [
+                -4.66584601848247,
+                0.28698972050175386,
+                6.396878418638683
+              ],
+              [
+                -4.018960230156508,
+                1.4074821573207645,
+                8.103121581361318
+              ],
+              [
+                -4.27155398151753,
+                1.5533102794982463,
+                8.103121581361318
+              ],
+              [
+                -4.168439769843492,
+                1.7319178426792357,
+                7.896878418638683
+              ],
+              [
+                -3.91584601848247,
+                1.586089720501754,
+                7.896878418638683
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.35354707354916487,
+                  -0.6123906709969602,
+                  -0.7070941470983297
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.35354707354916487,
+                  0.6123906709969602,
+                  0.7070941470983297
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.35353444002527146,
+                  -0.6123687880491069,
+                  0.7071194150490324
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.35353444002527146,
+                  0.6123687880491069,
+                  -0.7071194150490324
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  0.8660357189520761,
+                  -0.4999821331799376,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  -0.8660357189520761,
+                  0.4999821331799376,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1214,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K4A",
+            "role": "brace",
+            "p0": [
+              -4.8437,
+              -0.2706,
+              6.5
+            ],
+            "p1": [
+              -4.0937,
+              -1.5697,
+              8.0
+            ],
+            "axis_u": [
+              0.35354707354916487,
+              -0.6123906709969602,
+              0.7070941470983297
+            ],
+            "axis_w": [
+              0.8660357189520761,
+              0.4999821331799376,
+              -0.0
+            ],
+            "axis_d": [
+              0.35353444002527146,
+              -0.6123687880491069,
+              -0.7071194150490324
+            ],
+            "vertices": [
+              [
+                -5.02155398151753,
+                -0.25421027949824615,
+                6.603121581361317
+              ],
+              [
+                -4.768960230156508,
+                -0.10838215732076434,
+                6.603121581361317
+              ],
+              [
+                -4.66584601848247,
+                -0.28698972050175386,
+                6.396878418638683
+              ],
+              [
+                -4.918439769843492,
+                -0.4328178426792356,
+                6.396878418638683
+              ],
+              [
+                -4.27155398151753,
+                -1.5533102794982463,
+                8.103121581361318
+              ],
+              [
+                -4.018960230156508,
+                -1.4074821573207645,
+                8.103121581361318
+              ],
+              [
+                -3.91584601848247,
+                -1.586089720501754,
+                7.896878418638683
+              ],
+              [
+                -4.168439769843492,
+                -1.7319178426792357,
+                7.896878418638683
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.35354707354916487,
+                  0.6123906709969602,
+                  -0.7070941470983297
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.35354707354916487,
+                  -0.6123906709969602,
+                  0.7070941470983297
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.35353444002527146,
+                  0.6123687880491069,
+                  0.7071194150490324
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.35353444002527146,
+                  -0.6123687880491069,
+                  -0.7071194150490324
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.8660357189520761,
+                  -0.4999821331799376,
+                  0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.8660357189520761,
+                  0.4999821331799376,
+                  -0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1214,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K4B",
+            "role": "brace",
+            "p0": [
+              -2.6563,
+              -4.0595,
+              6.5
+            ],
+            "p1": [
+              -3.4063,
+              -2.7604,
+              8.0
+            ],
+            "axis_u": [
+              -0.35354707354916487,
+              0.61239067099696,
+              0.7070941470983297
+            ],
+            "axis_w": [
+              -0.866035718952076,
+              -0.4999821331799377,
+              0.0
+            ],
+            "axis_d": [
+              -0.3535344400252716,
+              0.6123687880491071,
+              -0.7071194150490323
+            ],
+            "vertices": [
+              [
+                -2.4784460184824697,
+                -4.0758897205017535,
+                6.603121581361317
+              ],
+              [
+                -2.731039769843492,
+                -4.221717842679236,
+                6.603121581361317
+              ],
+              [
+                -2.83415398151753,
+                -4.043110279498246,
+                6.396878418638683
+              ],
+              [
+                -2.5815602301565077,
+                -3.897282157320764,
+                6.396878418638683
+              ],
+              [
+                -3.2284460184824697,
+                -2.7767897205017538,
+                8.103121581361318
+              ],
+              [
+                -3.481039769843492,
+                -2.922617842679236,
+                8.103121581361318
+              ],
+              [
+                -3.58415398151753,
+                -2.7440102794982466,
+                7.896878418638683
+              ],
+              [
+                -3.3315602301565077,
+                -2.5981821573207644,
+                7.896878418638683
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  0.35354707354916487,
+                  -0.61239067099696,
+                  -0.7070941470983297
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  -0.35354707354916487,
+                  0.61239067099696,
+                  0.7070941470983297
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  0.3535344400252716,
+                  -0.6123687880491071,
+                  0.7071194150490323
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -0.3535344400252716,
+                  0.6123687880491071,
+                  -0.7071194150490323
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  0.866035718952076,
+                  0.4999821331799377,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  -0.866035718952076,
+                  -0.4999821331799377,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1214,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K5A",
+            "role": "brace",
+            "p0": [
+              -2.1875,
+              -4.3301,
+              6.5
+            ],
+            "p1": [
+              -0.6875,
+              -4.3301,
+              8.0
+            ],
+            "axis_u": [
+              0.7071067811865476,
+              0.0,
+              0.7071067811865476
+            ],
+            "axis_w": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "axis_d": [
+              0.7071067811865476,
+              0.0,
+              -0.7071067811865476
+            ],
+            "vertices": [
+              [
+                -2.2906197389230383,
+                -4.475933333333333,
+                6.603119738923038
+              ],
+              [
+                -2.2906197389230383,
+                -4.184266666666667,
+                6.603119738923038
+              ],
+              [
+                -2.0843802610769617,
+                -4.184266666666667,
+                6.396880261076962
+              ],
+              [
+                -2.0843802610769617,
+                -4.475933333333333,
+                6.396880261076962
+              ],
+              [
+                -0.7906197389230382,
+                -4.475933333333333,
+                8.103119738923038
+              ],
+              [
+                -0.7906197389230382,
+                -4.184266666666667,
+                8.103119738923038
+              ],
+              [
+                -0.5843802610769618,
+                -4.184266666666667,
+                7.896880261076962
+              ],
+              [
+                -0.5843802610769618,
+                -4.475933333333333,
+                7.896880261076962
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.7071067811865476,
+                  -0.0,
+                  -0.7071067811865476
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.7071067811865476,
+                  0.0,
+                  0.7071067811865476
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.7071067811865476,
+                  -0.0,
+                  0.7071067811865476
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.7071067811865476,
+                  0.0,
+                  -0.7071067811865476
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  -1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1213,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K5B",
+            "role": "brace",
+            "p0": [
+              2.1875,
+              -4.3301,
+              6.5
+            ],
+            "p1": [
+              0.6875,
+              -4.3301,
+              8.0
+            ],
+            "axis_u": [
+              -0.7071067811865476,
+              0.0,
+              0.7071067811865476
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -0.7071067811865476,
+              -0.0,
+              -0.7071067811865476
+            ],
+            "vertices": [
+              [
+                2.2906197389230383,
+                -4.184266666666667,
+                6.603119738923038
+              ],
+              [
+                2.2906197389230383,
+                -4.475933333333333,
+                6.603119738923038
+              ],
+              [
+                2.0843802610769617,
+                -4.475933333333333,
+                6.396880261076962
+              ],
+              [
+                2.0843802610769617,
+                -4.184266666666667,
+                6.396880261076962
+              ],
+              [
+                0.7906197389230382,
+                -4.184266666666667,
+                8.103119738923038
+              ],
+              [
+                0.7906197389230382,
+                -4.475933333333333,
+                8.103119738923038
+              ],
+              [
+                0.5843802610769618,
+                -4.475933333333333,
+                7.896880261076962
+              ],
+              [
+                0.5843802610769618,
+                -4.184266666666667,
+                7.896880261076962
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  0.7071067811865476,
+                  -0.0,
+                  -0.7071067811865476
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  -0.7071067811865476,
+                  0.0,
+                  0.7071067811865476
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  0.7071067811865476,
+                  0.0,
+                  0.7071067811865476
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -0.7071067811865476,
+                  -0.0,
+                  -0.7071067811865476
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1213,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K6A",
+            "role": "brace",
+            "p0": [
+              2.6563,
+              -4.0595,
+              6.5
+            ],
+            "p1": [
+              3.4063,
+              -2.7604,
+              8.0
+            ],
+            "axis_u": [
+              0.35354707354916487,
+              0.61239067099696,
+              0.7070941470983297
+            ],
+            "axis_w": [
+              -0.866035718952076,
+              0.4999821331799377,
+              0.0
+            ],
+            "axis_d": [
+              0.3535344400252716,
+              0.6123687880491071,
+              -0.7071194150490323
+            ],
+            "vertices": [
+              [
+                2.731039769843492,
+                -4.221717842679236,
+                6.603121581361317
+              ],
+              [
+                2.4784460184824697,
+                -4.0758897205017535,
+                6.603121581361317
+              ],
+              [
+                2.5815602301565077,
+                -3.897282157320764,
+                6.396878418638683
+              ],
+              [
+                2.83415398151753,
+                -4.043110279498246,
+                6.396878418638683
+              ],
+              [
+                3.481039769843492,
+                -2.922617842679236,
+                8.103121581361318
+              ],
+              [
+                3.2284460184824697,
+                -2.7767897205017538,
+                8.103121581361318
+              ],
+              [
+                3.3315602301565077,
+                -2.5981821573207644,
+                7.896878418638683
+              ],
+              [
+                3.58415398151753,
+                -2.7440102794982466,
+                7.896878418638683
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  -0.35354707354916487,
+                  -0.61239067099696,
+                  -0.7070941470983297
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  0.35354707354916487,
+                  0.61239067099696,
+                  0.7070941470983297
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.3535344400252716,
+                  -0.6123687880491071,
+                  0.7071194150490323
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  0.3535344400252716,
+                  0.6123687880491071,
+                  -0.7071194150490323
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  0.866035718952076,
+                  -0.4999821331799377,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  -0.866035718952076,
+                  0.4999821331799377,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1214,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "K6B",
+            "role": "brace",
+            "p0": [
+              4.8437,
+              -0.2706,
+              6.5
+            ],
+            "p1": [
+              4.0937,
+              -1.5697,
+              8.0
+            ],
+            "axis_u": [
+              -0.35354707354916487,
+              -0.6123906709969602,
+              0.7070941470983297
+            ],
+            "axis_w": [
+              0.8660357189520761,
+              -0.4999821331799376,
+              0.0
+            ],
+            "axis_d": [
+              -0.35353444002527146,
+              -0.6123687880491069,
+              -0.7071194150490324
+            ],
+            "vertices": [
+              [
+                4.768960230156508,
+                -0.10838215732076434,
+                6.603121581361317
+              ],
+              [
+                5.02155398151753,
+                -0.25421027949824615,
+                6.603121581361317
+              ],
+              [
+                4.918439769843492,
+                -0.4328178426792356,
+                6.396878418638683
+              ],
+              [
+                4.66584601848247,
+                -0.28698972050175386,
+                6.396878418638683
+              ],
+              [
+                4.018960230156508,
+                -1.4074821573207645,
+                8.103121581361318
+              ],
+              [
+                4.27155398151753,
+                -1.5533102794982463,
+                8.103121581361318
+              ],
+              [
+                4.168439769843492,
+                -1.7319178426792357,
+                7.896878418638683
+              ],
+              [
+                3.91584601848247,
+                -1.586089720501754,
+                7.896878418638683
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                "normal": [
+                  0.35354707354916487,
+                  0.6123906709969602,
+                  -0.7070941470983297
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "normal": [
+                  -0.35354707354916487,
+                  -0.6123906709969602,
+                  0.7070941470983297
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  5,
+                  4
+                ],
+                "normal": [
+                  0.35353444002527146,
+                  0.6123687880491069,
+                  0.7071194150490324
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  3,
+                  7,
+                  6,
+                  2
+                ],
+                "normal": [
+                  -0.35353444002527146,
+                  -0.6123687880491069,
+                  -0.7071194150490324
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  0,
+                  4,
+                  7,
+                  3
+                ],
+                "normal": [
+                  -0.8660357189520761,
+                  0.4999821331799376,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  1,
+                  2,
+                  6,
+                  5
+                ],
+                "normal": [
+                  0.8660357189520761,
+                  -0.4999821331799376,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 2.1214,
+            "derived_angle_deg": 45.0,
+            "constraints_satisfied": {
+              "start_on_post_face": true,
+              "end_on_beam_soffit": true
+            }
+          },
+          {
+            "id": "R1",
+            "role": "rafter",
+            "p0": [
+              5.75,
+              0.0,
+              9.3056
+            ],
+            "p1": [
+              0.6495,
+              0.0,
+              9.3056
+            ],
+            "axis_u": [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            "axis_w": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "axis_d": [
+              -0.0,
+              -0.0,
+              -1.0
+            ],
+            "vertices": [
+              [
+                5.75,
+                0.14583333333333334,
+                9.3056
+              ],
+              [
+                0.6495,
+                0.14583333333333334,
+                9.3056
+              ],
+              [
+                0.6495,
+                0.14583333333333334,
+                9.0
+              ],
+              [
+                2.82475,
+                0.14583333333333334,
+                9.0
+              ],
+              [
+                5.0,
+                0.14583333333333334,
+                9.0
+              ],
+              [
+                5.75,
+                0.14583333333333334,
+                9.0
+              ],
+              [
+                5.75,
+                -0.14583333333333334,
+                9.3056
+              ],
+              [
+                0.6495,
+                -0.14583333333333334,
+                9.3056
+              ],
+              [
+                0.6495,
+                -0.14583333333333334,
+                9.0
+              ],
+              [
+                2.82475,
+                -0.14583333333333334,
+                9.0
+              ],
+              [
+                5.0,
+                -0.14583333333333334,
+                9.0
+              ],
+              [
+                5.75,
+                -0.14583333333333334,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  6,
+                  7,
+                  1
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  1,
+                  7,
+                  8,
+                  2
+                ],
+                "normal": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  2,
+                  8,
+                  9,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  3,
+                  9,
+                  10,
+                  4
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "other"
+              },
+              {
+                "verts": [
+                  4,
+                  10,
+                  11,
+                  5
+                ],
+                "normal": [
+                  0,
+                  0,
+                  -1
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  5,
+                  11,
+                  6,
+                  0
+                ],
+                "normal": [
+                  1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "normal": [
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  11,
+                  10,
+                  9,
+                  8,
+                  7,
+                  6
+                ],
+                "normal": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 5.1005,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "tail_on_roof_plane": true,
+              "hub_on_roof_plane": true,
+              "seat_on_roof_plane": true
+            }
+          },
+          {
+            "id": "R2",
+            "role": "rafter",
+            "p0": [
+              2.875,
+              4.9796,
+              9.3056
+            ],
+            "p1": [
+              0.3248,
+              0.5625,
+              9.3056
+            ],
+            "axis_u": [
+              -0.4999979598673162,
+              -0.8660265816523888,
+              0.0
+            ],
+            "axis_w": [
+              0.866026581652389,
+              -0.4999979598673163,
+              0.0
+            ],
+            "axis_d": [
+              0.0,
+              -0.0,
+              -1.0
+            ],
+            "vertices": [
+              [
+                2.74870445684236,
+                5.052516369147317,
+                9.3056
+              ],
+              [
+                0.1985044568423599,
+                0.6354163691473169,
+                9.3056
+              ],
+              [
+                0.1985044568423599,
+                0.6354163691473169,
+                9.0
+              ],
+              [
+                1.2861044568423599,
+                2.5192163691473173,
+                9.0
+              ],
+              [
+                2.37370445684236,
+                4.403016369147317,
+                9.0
+              ],
+              [
+                2.74870445684236,
+                5.052516369147317,
+                9.0
+              ],
+              [
+                3.00129554315764,
+                4.906683630852682,
+                9.3056
+              ],
+              [
+                0.45109554315764006,
+                0.489583630852683,
+                9.3056
+              ],
+              [
+                0.45109554315764006,
+                0.489583630852683,
+                9.0
+              ],
+              [
+                1.5386955431576401,
+                2.3733836308526826,
+                9.0
+              ],
+              [
+                2.62629554315764,
+                4.2571836308526825,
+                9.0
+              ],
+              [
+                3.00129554315764,
+                4.906683630852682,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  6,
+                  7,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  1,
+                  7,
+                  8,
+                  2
+                ],
+                "normal": [
+                  -0.4999979598673162,
+                  -0.8660265816523888,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  2,
+                  8,
+                  9,
+                  3
+                ],
+                "normal": [
+                  0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  3,
+                  9,
+                  10,
+                  4
+                ],
+                "normal": [
+                  0.4999979598673162,
+                  0.8660265816523888,
+                  -0.0
+                ],
+                "color_key": "other"
+              },
+              {
+                "verts": [
+                  4,
+                  10,
+                  11,
+                  5
+                ],
+                "normal": [
+                  0,
+                  0,
+                  -1
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  5,
+                  11,
+                  6,
+                  0
+                ],
+                "normal": [
+                  0.4999979598673162,
+                  0.8660265816523888,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "normal": [
+                  -0.866026581652389,
+                  0.4999979598673163,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  11,
+                  10,
+                  9,
+                  8,
+                  7,
+                  6
+                ],
+                "normal": [
+                  0.866026581652389,
+                  -0.4999979598673163,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 5.1004,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "tail_on_roof_plane": true,
+              "hub_on_roof_plane": true,
+              "seat_on_roof_plane": true
+            }
+          },
+          {
+            "id": "R3",
+            "role": "rafter",
+            "p0": [
+              -2.875,
+              4.9796,
+              9.3056
+            ],
+            "p1": [
+              -0.3248,
+              0.5625,
+              9.3056
+            ],
+            "axis_u": [
+              0.4999979598673162,
+              -0.8660265816523888,
+              0.0
+            ],
+            "axis_w": [
+              0.866026581652389,
+              0.4999979598673163,
+              -0.0
+            ],
+            "axis_d": [
+              0.0,
+              -0.0,
+              -1.0
+            ],
+            "vertices": [
+              [
+                -3.00129554315764,
+                4.906683630852682,
+                9.3056
+              ],
+              [
+                -0.45109554315764006,
+                0.489583630852683,
+                9.3056
+              ],
+              [
+                -0.45109554315764006,
+                0.489583630852683,
+                9.0
+              ],
+              [
+                -1.5386955431576401,
+                2.3733836308526826,
+                9.0
+              ],
+              [
+                -2.62629554315764,
+                4.2571836308526825,
+                9.0
+              ],
+              [
+                -3.00129554315764,
+                4.906683630852682,
+                9.0
+              ],
+              [
+                -2.74870445684236,
+                5.052516369147317,
+                9.3056
+              ],
+              [
+                -0.1985044568423599,
+                0.6354163691473169,
+                9.3056
+              ],
+              [
+                -0.1985044568423599,
+                0.6354163691473169,
+                9.0
+              ],
+              [
+                -1.2861044568423599,
+                2.5192163691473173,
+                9.0
+              ],
+              [
+                -2.37370445684236,
+                4.403016369147317,
+                9.0
+              ],
+              [
+                -2.74870445684236,
+                5.052516369147317,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  6,
+                  7,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  1,
+                  7,
+                  8,
+                  2
+                ],
+                "normal": [
+                  0.4999979598673162,
+                  -0.8660265816523888,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  2,
+                  8,
+                  9,
+                  3
+                ],
+                "normal": [
+                  0.0,
+                  -0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  3,
+                  9,
+                  10,
+                  4
+                ],
+                "normal": [
+                  -0.4999979598673162,
+                  0.8660265816523888,
+                  -0.0
+                ],
+                "color_key": "other"
+              },
+              {
+                "verts": [
+                  4,
+                  10,
+                  11,
+                  5
+                ],
+                "normal": [
+                  0,
+                  0,
+                  -1
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  5,
+                  11,
+                  6,
+                  0
+                ],
+                "normal": [
+                  -0.4999979598673162,
+                  0.8660265816523888,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "normal": [
+                  -0.866026581652389,
+                  -0.4999979598673163,
+                  0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  11,
+                  10,
+                  9,
+                  8,
+                  7,
+                  6
+                ],
+                "normal": [
+                  0.866026581652389,
+                  0.4999979598673163,
+                  -0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 5.1004,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "tail_on_roof_plane": true,
+              "hub_on_roof_plane": true,
+              "seat_on_roof_plane": true
+            }
+          },
+          {
+            "id": "R4",
+            "role": "rafter",
+            "p0": [
+              -5.75,
+              0.0,
+              9.3056
+            ],
+            "p1": [
+              -0.6495,
+              0.0,
+              9.3056
+            ],
+            "axis_u": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "axis_w": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "axis_d": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "vertices": [
+              [
+                -5.75,
+                -0.14583333333333334,
+                9.3056
+              ],
+              [
+                -0.6495,
+                -0.14583333333333334,
+                9.3056
+              ],
+              [
+                -0.6495,
+                -0.14583333333333334,
+                9.0
+              ],
+              [
+                -2.82475,
+                -0.14583333333333334,
+                9.0
+              ],
+              [
+                -5.0,
+                -0.14583333333333334,
+                9.0
+              ],
+              [
+                -5.75,
+                -0.14583333333333334,
+                9.0
+              ],
+              [
+                -5.75,
+                0.14583333333333334,
+                9.3056
+              ],
+              [
+                -0.6495,
+                0.14583333333333334,
+                9.3056
+              ],
+              [
+                -0.6495,
+                0.14583333333333334,
+                9.0
+              ],
+              [
+                -2.82475,
+                0.14583333333333334,
+                9.0
+              ],
+              [
+                -5.0,
+                0.14583333333333334,
+                9.0
+              ],
+              [
+                -5.75,
+                0.14583333333333334,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  6,
+                  7,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  1,
+                  7,
+                  8,
+                  2
+                ],
+                "normal": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  2,
+                  8,
+                  9,
+                  3
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  3,
+                  9,
+                  10,
+                  4
+                ],
+                "normal": [
+                  -1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "other"
+              },
+              {
+                "verts": [
+                  4,
+                  10,
+                  11,
+                  5
+                ],
+                "normal": [
+                  0,
+                  0,
+                  -1
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  5,
+                  11,
+                  6,
+                  0
+                ],
+                "normal": [
+                  -1.0,
+                  -0.0,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "normal": [
+                  -0.0,
+                  -1.0,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  11,
+                  10,
+                  9,
+                  8,
+                  7,
+                  6
+                ],
+                "normal": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 5.1005,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "tail_on_roof_plane": true,
+              "hub_on_roof_plane": true,
+              "seat_on_roof_plane": true
+            }
+          },
+          {
+            "id": "R5",
+            "role": "rafter",
+            "p0": [
+              -2.875,
+              -4.9796,
+              9.3056
+            ],
+            "p1": [
+              -0.3248,
+              -0.5625,
+              9.3056
+            ],
+            "axis_u": [
+              0.4999979598673162,
+              0.8660265816523888,
+              0.0
+            ],
+            "axis_w": [
+              -0.866026581652389,
+              0.4999979598673163,
+              0.0
+            ],
+            "axis_d": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "vertices": [
+              [
+                -2.74870445684236,
+                -5.052516369147317,
+                9.3056
+              ],
+              [
+                -0.1985044568423599,
+                -0.6354163691473169,
+                9.3056
+              ],
+              [
+                -0.1985044568423599,
+                -0.6354163691473169,
+                9.0
+              ],
+              [
+                -1.2861044568423599,
+                -2.5192163691473173,
+                9.0
+              ],
+              [
+                -2.37370445684236,
+                -4.403016369147317,
+                9.0
+              ],
+              [
+                -2.74870445684236,
+                -5.052516369147317,
+                9.0
+              ],
+              [
+                -3.00129554315764,
+                -4.906683630852682,
+                9.3056
+              ],
+              [
+                -0.45109554315764006,
+                -0.489583630852683,
+                9.3056
+              ],
+              [
+                -0.45109554315764006,
+                -0.489583630852683,
+                9.0
+              ],
+              [
+                -1.5386955431576401,
+                -2.3733836308526826,
+                9.0
+              ],
+              [
+                -2.62629554315764,
+                -4.2571836308526825,
+                9.0
+              ],
+              [
+                -3.00129554315764,
+                -4.906683630852682,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  6,
+                  7,
+                  1
+                ],
+                "normal": [
+                  -0.0,
+                  -0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  1,
+                  7,
+                  8,
+                  2
+                ],
+                "normal": [
+                  0.4999979598673162,
+                  0.8660265816523888,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  2,
+                  8,
+                  9,
+                  3
+                ],
+                "normal": [
+                  0.0,
+                  0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  3,
+                  9,
+                  10,
+                  4
+                ],
+                "normal": [
+                  -0.4999979598673162,
+                  -0.8660265816523888,
+                  -0.0
+                ],
+                "color_key": "other"
+              },
+              {
+                "verts": [
+                  4,
+                  10,
+                  11,
+                  5
+                ],
+                "normal": [
+                  0,
+                  0,
+                  -1
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  5,
+                  11,
+                  6,
+                  0
+                ],
+                "normal": [
+                  -0.4999979598673162,
+                  -0.8660265816523888,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "normal": [
+                  0.866026581652389,
+                  -0.4999979598673163,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  11,
+                  10,
+                  9,
+                  8,
+                  7,
+                  6
+                ],
+                "normal": [
+                  -0.866026581652389,
+                  0.4999979598673163,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 5.1004,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "tail_on_roof_plane": true,
+              "hub_on_roof_plane": true,
+              "seat_on_roof_plane": true
+            }
+          },
+          {
+            "id": "R6",
+            "role": "rafter",
+            "p0": [
+              2.875,
+              -4.9796,
+              9.3056
+            ],
+            "p1": [
+              0.3248,
+              -0.5625,
+              9.3056
+            ],
+            "axis_u": [
+              -0.4999979598673162,
+              0.8660265816523888,
+              0.0
+            ],
+            "axis_w": [
+              -0.866026581652389,
+              -0.4999979598673163,
+              0.0
+            ],
+            "axis_d": [
+              -0.0,
+              0.0,
+              -1.0
+            ],
+            "vertices": [
+              [
+                3.00129554315764,
+                -4.906683630852682,
+                9.3056
+              ],
+              [
+                0.45109554315764006,
+                -0.489583630852683,
+                9.3056
+              ],
+              [
+                0.45109554315764006,
+                -0.489583630852683,
+                9.0
+              ],
+              [
+                1.5386955431576401,
+                -2.3733836308526826,
+                9.0
+              ],
+              [
+                2.62629554315764,
+                -4.2571836308526825,
+                9.0
+              ],
+              [
+                3.00129554315764,
+                -4.906683630852682,
+                9.0
+              ],
+              [
+                2.74870445684236,
+                -5.052516369147317,
+                9.3056
+              ],
+              [
+                0.1985044568423599,
+                -0.6354163691473169,
+                9.3056
+              ],
+              [
+                0.1985044568423599,
+                -0.6354163691473169,
+                9.0
+              ],
+              [
+                1.2861044568423599,
+                -2.5192163691473173,
+                9.0
+              ],
+              [
+                2.37370445684236,
+                -4.403016369147317,
+                9.0
+              ],
+              [
+                2.74870445684236,
+                -5.052516369147317,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  6,
+                  7,
+                  1
+                ],
+                "normal": [
+                  0.0,
+                  -0.0,
+                  1.0
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  1,
+                  7,
+                  8,
+                  2
+                ],
+                "normal": [
+                  -0.4999979598673162,
+                  0.8660265816523888,
+                  0.0
+                ],
+                "color_key": "end"
+              },
+              {
+                "verts": [
+                  2,
+                  8,
+                  9,
+                  3
+                ],
+                "normal": [
+                  -0.0,
+                  0.0,
+                  -1.0
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  3,
+                  9,
+                  10,
+                  4
+                ],
+                "normal": [
+                  0.4999979598673162,
+                  -0.8660265816523888,
+                  -0.0
+                ],
+                "color_key": "other"
+              },
+              {
+                "verts": [
+                  4,
+                  10,
+                  11,
+                  5
+                ],
+                "normal": [
+                  0,
+                  0,
+                  -1
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  5,
+                  11,
+                  6,
+                  0
+                ],
+                "normal": [
+                  0.4999979598673162,
+                  -0.8660265816523888,
+                  -0.0
+                ],
+                "color_key": "start"
+              },
+              {
+                "verts": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "normal": [
+                  0.866026581652389,
+                  0.4999979598673163,
+                  -0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  11,
+                  10,
+                  9,
+                  8,
+                  7,
+                  6
+                ],
+                "normal": [
+                  -0.866026581652389,
+                  -0.4999979598673163,
+                  0.0
+                ],
+                "color_key": "right"
+              }
+            ],
+            "derived_length_ft": 5.1004,
+            "derived_angle_deg": 0.0,
+            "constraints_satisfied": {
+              "tail_on_roof_plane": true,
+              "hub_on_roof_plane": true,
+              "seat_on_roof_plane": true
+            }
+          },
+          {
+            "id": "HUB",
+            "role": "hub",
+            "p0": [
+              0.0,
+              0.0,
+              9.0
+            ],
+            "p1": [
+              0.0,
+              0.0,
+              9.458333333333334
+            ],
+            "axis_u": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "axis_w": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "axis_d": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "vertices": [
+              [
+                0.75,
+                -0.43301270189221924,
+                9.458333333333334
+              ],
+              [
+                0.75,
+                0.43301270189221924,
+                9.458333333333334
+              ],
+              [
+                5.302876193624534e-17,
+                0.8660254037844386,
+                9.458333333333334
+              ],
+              [
+                -0.75,
+                0.43301270189221924,
+                9.458333333333334
+              ],
+              [
+                -0.7500000000000001,
+                -0.43301270189221913,
+                9.458333333333334
+              ],
+              [
+                -1.5908628580873602e-16,
+                -0.8660254037844386,
+                9.458333333333334
+              ],
+              [
+                0.75,
+                -0.43301270189221924,
+                9.0
+              ],
+              [
+                0.75,
+                0.43301270189221924,
+                9.0
+              ],
+              [
+                5.302876193624534e-17,
+                0.8660254037844386,
+                9.0
+              ],
+              [
+                -0.75,
+                0.43301270189221924,
+                9.0
+              ],
+              [
+                -0.7500000000000001,
+                -0.43301270189221913,
+                9.0
+              ],
+              [
+                -1.5908628580873602e-16,
+                -0.8660254037844386,
+                9.0
+              ]
+            ],
+            "faces": [
+              {
+                "verts": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "color_key": "top"
+              },
+              {
+                "verts": [
+                  11,
+                  10,
+                  9,
+                  8,
+                  7,
+                  6
+                ],
+                "normal": [
+                  0,
+                  0,
+                  -1
+                ],
+                "color_key": "bottom"
+              },
+              {
+                "verts": [
+                  6,
+                  7,
+                  1,
+                  0
+                ],
+                "normal": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  7,
+                  8,
+                  2,
+                  1
+                ],
+                "normal": [
+                  0.5000000000000001,
+                  0.8660254037844386,
+                  0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  8,
+                  9,
+                  3,
+                  2
+                ],
+                "normal": [
+                  -0.49999999999999983,
+                  0.8660254037844387,
+                  0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  9,
+                  10,
+                  4,
+                  3
+                ],
+                "normal": [
+                  -1.0,
+                  1.2246467991473532e-16,
+                  0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  10,
+                  11,
+                  5,
+                  4
+                ],
+                "normal": [
+                  -0.5000000000000004,
+                  -0.8660254037844384,
+                  0.0
+                ],
+                "color_key": "left"
+              },
+              {
+                "verts": [
+                  11,
+                  6,
+                  0,
+                  5
+                ],
+                "normal": [
+                  0.5000000000000001,
+                  -0.8660254037844386,
+                  0.0
+                ],
+                "color_key": "left"
+              }
+            ],
+            "derived_length_ft": 0.4583,
+            "derived_angle_deg": 90.0,
+            "constraints_satisfied": {
+              "height_lte_beam_depth_x1.2": true
+            }
+          }
+        ]
+      }
+    }
+  },
+  "cad": {
+    "_sealed": false,
+    "units": "feet",
+    "coordinate_system": "right_handed_z_up",
+    "precision": 0.001
+  },
+  "cad_constraints": {
+    "reference_planes": [
+      {
+        "id": "footing_top_FT1",
+        "type": "footing_top",
+        "point": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "post_face_P1_toward_B1",
+        "type": "post_face",
+        "point": [
+          4.843749268776117,
+          0.27063251650901426,
+          0.0
+        ],
+        "normal": [
+          -0.5000023399164255,
+          0.8660240528288456,
+          0.0
+        ]
+      },
+      {
+        "id": "post_face_P1_toward_B6",
+        "type": "post_face",
+        "point": [
+          4.843749268776117,
+          -0.27063251650901426,
+          0.0
+        ],
+        "normal": [
+          -0.5000023399164255,
+          -0.8660240528288456,
+          0.0
+        ]
+      },
+      {
+        "id": "footing_top_FT2",
+        "type": "footing_top",
+        "point": [
+          2.5,
+          4.3301,
+          0.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "post_face_P2_toward_B2",
+        "type": "post_face",
+        "point": [
+          2.1875,
+          4.3301,
+          0.0
+        ],
+        "normal": [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "post_face_P2_toward_B1",
+        "type": "post_face",
+        "point": [
+          2.6562507312238828,
+          4.059467483490986,
+          0.0
+        ],
+        "normal": [
+          0.5000023399164255,
+          -0.8660240528288456,
+          0.0
+        ]
+      },
+      {
+        "id": "footing_top_FT3",
+        "type": "footing_top",
+        "point": [
+          -2.5,
+          4.3301,
+          0.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "post_face_P3_toward_B3",
+        "type": "post_face",
+        "point": [
+          -2.6562507312238828,
+          4.059467483490986,
+          0.0
+        ],
+        "normal": [
+          -0.5000023399164255,
+          -0.8660240528288456,
+          0.0
+        ]
+      },
+      {
+        "id": "post_face_P3_toward_B2",
+        "type": "post_face",
+        "point": [
+          -2.1875,
+          4.3301,
+          0.0
+        ],
+        "normal": [
+          1.0,
+          -0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "footing_top_FT4",
+        "type": "footing_top",
+        "point": [
+          -5.0,
+          0.0,
+          0.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "post_face_P4_toward_B4",
+        "type": "post_face",
+        "point": [
+          -4.843749268776117,
+          -0.27063251650901426,
+          0.0
+        ],
+        "normal": [
+          0.5000023399164255,
+          -0.8660240528288456,
+          0.0
+        ]
+      },
+      {
+        "id": "post_face_P4_toward_B3",
+        "type": "post_face",
+        "point": [
+          -4.843749268776117,
+          0.27063251650901426,
+          0.0
+        ],
+        "normal": [
+          0.5000023399164255,
+          0.8660240528288456,
+          0.0
+        ]
+      },
+      {
+        "id": "footing_top_FT5",
+        "type": "footing_top",
+        "point": [
+          -2.5,
+          -4.3301,
+          0.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "post_face_P5_toward_B5",
+        "type": "post_face",
+        "point": [
+          -2.1875,
+          -4.3301,
+          0.0
+        ],
+        "normal": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "post_face_P5_toward_B4",
+        "type": "post_face",
+        "point": [
+          -2.6562507312238828,
+          -4.059467483490986,
+          0.0
+        ],
+        "normal": [
+          -0.5000023399164255,
+          0.8660240528288456,
+          0.0
+        ]
+      },
+      {
+        "id": "footing_top_FT6",
+        "type": "footing_top",
+        "point": [
+          2.5,
+          -4.3301,
+          0.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "post_face_P6_toward_B6",
+        "type": "post_face",
+        "point": [
+          2.6562507312238828,
+          -4.059467483490986,
+          0.0
+        ],
+        "normal": [
+          0.5000023399164255,
+          0.8660240528288456,
+          0.0
+        ]
+      },
+      {
+        "id": "post_face_P6_toward_B5",
+        "type": "post_face",
+        "point": [
+          2.1875,
+          -4.3301,
+          0.0
+        ],
+        "normal": [
+          -1.0,
+          -0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "beam_soffit_B1",
+        "type": "beam_soffit",
+        "point": [
+          5.0,
+          0.0,
+          8.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      },
+      {
+        "id": "beam_top_B1",
+        "type": "beam_top",
+        "point": [
+          5.0,
+          0.0,
+          9.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "beam_soffit_B2",
+        "type": "beam_soffit",
+        "point": [
+          2.5,
+          4.3301,
+          8.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      },
+      {
+        "id": "beam_top_B2",
+        "type": "beam_top",
+        "point": [
+          2.5,
+          4.3301,
+          9.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "beam_soffit_B3",
+        "type": "beam_soffit",
+        "point": [
+          -2.5,
+          4.3301,
+          8.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      },
+      {
+        "id": "beam_top_B3",
+        "type": "beam_top",
+        "point": [
+          -2.5,
+          4.3301,
+          9.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "beam_soffit_B4",
+        "type": "beam_soffit",
+        "point": [
+          -5.0,
+          0.0,
+          8.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      },
+      {
+        "id": "beam_top_B4",
+        "type": "beam_top",
+        "point": [
+          -5.0,
+          0.0,
+          9.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "beam_soffit_B5",
+        "type": "beam_soffit",
+        "point": [
+          -2.5,
+          -4.3301,
+          8.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      },
+      {
+        "id": "beam_top_B5",
+        "type": "beam_top",
+        "point": [
+          -2.5,
+          -4.3301,
+          9.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "beam_soffit_B6",
+        "type": "beam_soffit",
+        "point": [
+          2.5,
+          -4.3301,
+          8.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      },
+      {
+        "id": "beam_top_B6",
+        "type": "beam_top",
+        "point": [
+          2.5,
+          -4.3301,
+          9.0
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "roof_plane_0",
+        "type": "roof_plane",
+        "point": [
+          5.0,
+          0.0,
+          9.305555555555555
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "roof_plane_1",
+        "type": "roof_plane",
+        "point": [
+          2.5,
+          4.3301,
+          9.305555555555555
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "roof_plane_2",
+        "type": "roof_plane",
+        "point": [
+          -2.5,
+          4.3301,
+          9.305555555555555
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "roof_plane_3",
+        "type": "roof_plane",
+        "point": [
+          -5.0,
+          0.0,
+          9.305555555555555
+        ],
+        "normal": [
+          -0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "roof_plane_4",
+        "type": "roof_plane",
+        "point": [
+          -2.5,
+          -4.3301,
+          9.305555555555555
+        ],
+        "normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "roof_plane_5",
+        "type": "roof_plane",
+        "point": [
+          2.5,
+          -4.3301,
+          9.305555555555555
+        ],
+        "normal": [
+          0.0,
+          -0.0,
+          1.0
+        ]
+      },
+      {
+        "id": "hub_face_H1",
+        "type": "hub_face",
+        "point": [
+          0.649519052838329,
+          0.0,
+          9.0
+        ],
+        "normal": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "hub_face_H2",
+        "type": "hub_face",
+        "point": [
+          0.32475952641916456,
+          0.5625,
+          9.0
+        ],
+        "normal": [
+          0.5000000000000001,
+          0.8660254037844386,
+          0.0
+        ]
+      },
+      {
+        "id": "hub_face_H3",
+        "type": "hub_face",
+        "point": [
+          -0.3247595264191644,
+          0.5625,
+          9.0
+        ],
+        "normal": [
+          -0.49999999999999983,
+          0.8660254037844387,
+          0.0
+        ]
+      },
+      {
+        "id": "hub_face_H4",
+        "type": "hub_face",
+        "point": [
+          -0.649519052838329,
+          7.954314290436802e-17,
+          9.0
+        ],
+        "normal": [
+          -1.0,
+          1.2246467991473532e-16,
+          0.0
+        ]
+      },
+      {
+        "id": "hub_face_H5",
+        "type": "hub_face",
+        "point": [
+          -0.3247595264191648,
+          -0.5624999999999999,
+          9.0
+        ],
+        "normal": [
+          -0.5000000000000004,
+          -0.8660254037844384,
+          0.0
+        ]
+      },
+      {
+        "id": "hub_face_H6",
+        "type": "hub_face",
+        "point": [
+          0.32475952641916456,
+          -0.5625,
+          9.0
+        ],
+        "normal": [
+          0.5000000000000001,
+          -0.8660254037844386,
+          0.0
+        ]
+      }
+    ],
+    "member_constraints": [
+      {
+        "member_id": "P1",
+        "constraints": {
+          "base_surface": "footing_top_FT1",
+          "top_surface": "beam_soffit_B1"
+        }
+      },
+      {
+        "member_id": "P2",
+        "constraints": {
+          "base_surface": "footing_top_FT2",
+          "top_surface": "beam_soffit_B2"
+        }
+      },
+      {
+        "member_id": "P3",
+        "constraints": {
+          "base_surface": "footing_top_FT3",
+          "top_surface": "beam_soffit_B3"
+        }
+      },
+      {
+        "member_id": "P4",
+        "constraints": {
+          "base_surface": "footing_top_FT4",
+          "top_surface": "beam_soffit_B4"
+        }
+      },
+      {
+        "member_id": "P5",
+        "constraints": {
+          "base_surface": "footing_top_FT5",
+          "top_surface": "beam_soffit_B5"
+        }
+      },
+      {
+        "member_id": "P6",
+        "constraints": {
+          "base_surface": "footing_top_FT6",
+          "top_surface": "beam_soffit_B6"
+        }
+      },
+      {
+        "member_id": "B1",
+        "constraints": {
+          "start_surface": "post_top_P1",
+          "end_surface": "post_top_P2",
+          "seating_rule": "beam_bottom_z == post_top_z"
+        }
+      },
+      {
+        "member_id": "B2",
+        "constraints": {
+          "start_surface": "post_top_P2",
+          "end_surface": "post_top_P3",
+          "seating_rule": "beam_bottom_z == post_top_z"
+        }
+      },
+      {
+        "member_id": "B3",
+        "constraints": {
+          "start_surface": "post_top_P3",
+          "end_surface": "post_top_P4",
+          "seating_rule": "beam_bottom_z == post_top_z"
+        }
+      },
+      {
+        "member_id": "B4",
+        "constraints": {
+          "start_surface": "post_top_P4",
+          "end_surface": "post_top_P5",
+          "seating_rule": "beam_bottom_z == post_top_z"
+        }
+      },
+      {
+        "member_id": "B5",
+        "constraints": {
+          "start_surface": "post_top_P5",
+          "end_surface": "post_top_P6",
+          "seating_rule": "beam_bottom_z == post_top_z"
+        }
+      },
+      {
+        "member_id": "B6",
+        "constraints": {
+          "start_surface": "post_top_P6",
+          "end_surface": "post_top_P1",
+          "seating_rule": "beam_bottom_z == post_top_z"
+        }
+      },
+      {
+        "member_id": "K1A",
+        "constraints": {
+          "start_surface": "post_face_P1_toward_B1",
+          "end_surface": "beam_soffit_B1",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K1B",
+        "constraints": {
+          "start_surface": "post_face_P2_toward_B1",
+          "end_surface": "beam_soffit_B1",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K2A",
+        "constraints": {
+          "start_surface": "post_face_P2_toward_B2",
+          "end_surface": "beam_soffit_B2",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K2B",
+        "constraints": {
+          "start_surface": "post_face_P3_toward_B2",
+          "end_surface": "beam_soffit_B2",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K3A",
+        "constraints": {
+          "start_surface": "post_face_P3_toward_B3",
+          "end_surface": "beam_soffit_B3",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K3B",
+        "constraints": {
+          "start_surface": "post_face_P4_toward_B3",
+          "end_surface": "beam_soffit_B3",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K4A",
+        "constraints": {
+          "start_surface": "post_face_P4_toward_B4",
+          "end_surface": "beam_soffit_B4",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K4B",
+        "constraints": {
+          "start_surface": "post_face_P5_toward_B4",
+          "end_surface": "beam_soffit_B4",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K5A",
+        "constraints": {
+          "start_surface": "post_face_P5_toward_B5",
+          "end_surface": "beam_soffit_B5",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K5B",
+        "constraints": {
+          "start_surface": "post_face_P6_toward_B5",
+          "end_surface": "beam_soffit_B5",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K6A",
+        "constraints": {
+          "start_surface": "post_face_P6_toward_B6",
+          "end_surface": "beam_soffit_B6",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "K6B",
+        "constraints": {
+          "start_surface": "post_face_P1_toward_B6",
+          "end_surface": "beam_soffit_B6",
+          "run_ft": 1.5
+        }
+      },
+      {
+        "member_id": "R1",
+        "constraints": {
+          "tail_constraint": {
+            "type": "overhang_past_beam",
+            "beam_id": "B1",
+            "overhang_ft": 0.75
+          },
+          "hub_constraint": {
+            "type": "hub_face",
+            "hub_id": "HUB",
+            "face_index": 0
+          },
+          "seat_constraint": {
+            "type": "birdsmouth",
+            "surface": "beam_top_B1",
+            "beam_id": "B1",
+            "seat_depth_ratio": 0.333
+          },
+          "plane_constraint": {
+            "type": "roof_plane",
+            "plane_id": "roof_plane_0",
+            "pitch": "0:12"
+          }
+        }
+      },
+      {
+        "member_id": "R2",
+        "constraints": {
+          "tail_constraint": {
+            "type": "overhang_past_beam",
+            "beam_id": "B2",
+            "overhang_ft": 0.75
+          },
+          "hub_constraint": {
+            "type": "hub_face",
+            "hub_id": "HUB",
+            "face_index": 1
+          },
+          "seat_constraint": {
+            "type": "birdsmouth",
+            "surface": "beam_top_B2",
+            "beam_id": "B2",
+            "seat_depth_ratio": 0.333
+          },
+          "plane_constraint": {
+            "type": "roof_plane",
+            "plane_id": "roof_plane_1",
+            "pitch": "0:12"
+          }
+        }
+      },
+      {
+        "member_id": "R3",
+        "constraints": {
+          "tail_constraint": {
+            "type": "overhang_past_beam",
+            "beam_id": "B3",
+            "overhang_ft": 0.75
+          },
+          "hub_constraint": {
+            "type": "hub_face",
+            "hub_id": "HUB",
+            "face_index": 2
+          },
+          "seat_constraint": {
+            "type": "birdsmouth",
+            "surface": "beam_top_B3",
+            "beam_id": "B3",
+            "seat_depth_ratio": 0.333
+          },
+          "plane_constraint": {
+            "type": "roof_plane",
+            "plane_id": "roof_plane_2",
+            "pitch": "0:12"
+          }
+        }
+      },
+      {
+        "member_id": "R4",
+        "constraints": {
+          "tail_constraint": {
+            "type": "overhang_past_beam",
+            "beam_id": "B4",
+            "overhang_ft": 0.75
+          },
+          "hub_constraint": {
+            "type": "hub_face",
+            "hub_id": "HUB",
+            "face_index": 3
+          },
+          "seat_constraint": {
+            "type": "birdsmouth",
+            "surface": "beam_top_B4",
+            "beam_id": "B4",
+            "seat_depth_ratio": 0.333
+          },
+          "plane_constraint": {
+            "type": "roof_plane",
+            "plane_id": "roof_plane_3",
+            "pitch": "0:12"
+          }
+        }
+      },
+      {
+        "member_id": "R5",
+        "constraints": {
+          "tail_constraint": {
+            "type": "overhang_past_beam",
+            "beam_id": "B5",
+            "overhang_ft": 0.75
+          },
+          "hub_constraint": {
+            "type": "hub_face",
+            "hub_id": "HUB",
+            "face_index": 4
+          },
+          "seat_constraint": {
+            "type": "birdsmouth",
+            "surface": "beam_top_B5",
+            "beam_id": "B5",
+            "seat_depth_ratio": 0.333
+          },
+          "plane_constraint": {
+            "type": "roof_plane",
+            "plane_id": "roof_plane_4",
+            "pitch": "0:12"
+          }
+        }
+      },
+      {
+        "member_id": "R6",
+        "constraints": {
+          "tail_constraint": {
+            "type": "overhang_past_beam",
+            "beam_id": "B6",
+            "overhang_ft": 0.75
+          },
+          "hub_constraint": {
+            "type": "hub_face",
+            "hub_id": "HUB",
+            "face_index": 5
+          },
+          "seat_constraint": {
+            "type": "birdsmouth",
+            "surface": "beam_top_B6",
+            "beam_id": "B6",
+            "seat_depth_ratio": 0.333
+          },
+          "plane_constraint": {
+            "type": "roof_plane",
+            "plane_id": "roof_plane_5",
+            "pitch": "0:12"
+          }
+        }
+      },
+      {
+        "member_id": "HUB",
+        "constraints": {
+          "type": "rafter_termination_block",
+          "faces_defined_by": "rafter_count",
+          "height_constraint": "rafter_depth",
+          "radius_constraint": "auto_from_rafter_width"
+        }
+      }
+    ],
+    "global_constraints": {
+      "roof_planes": [
+        {
+          "id": "roof_plane_0",
+          "defined_by": [
+            "P1_top",
+            "P2_top",
+            "HUB_apex"
+          ],
+          "pitch": "0:12"
+        },
+        {
+          "id": "roof_plane_1",
+          "defined_by": [
+            "P2_top",
+            "P3_top",
+            "HUB_apex"
+          ],
+          "pitch": "0:12"
+        },
+        {
+          "id": "roof_plane_2",
+          "defined_by": [
+            "P3_top",
+            "P4_top",
+            "HUB_apex"
+          ],
+          "pitch": "0:12"
+        },
+        {
+          "id": "roof_plane_3",
+          "defined_by": [
+            "P4_top",
+            "P5_top",
+            "HUB_apex"
+          ],
+          "pitch": "0:12"
+        },
+        {
+          "id": "roof_plane_4",
+          "defined_by": [
+            "P5_top",
+            "P6_top",
+            "HUB_apex"
+          ],
+          "pitch": "0:12"
+        },
+        {
+          "id": "roof_plane_5",
+          "defined_by": [
+            "P6_top",
+            "P1_top",
+            "HUB_apex"
+          ],
+          "pitch": "0:12"
+        }
+      ],
+      "proportion_rules": {
+        "beam_depth_gt_rafter_depth": true,
+        "hub_height_lte_beam_depth_x1.2": true,
+        "brace_length_lte_post_height_x0.4": true
+      },
+      "symmetry": "radial_from_center"
+    }
+  }
+}

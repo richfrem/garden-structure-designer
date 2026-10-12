@@ -11,6 +11,12 @@ Canonical constraints, CAD invariants, and non-negotiables live in [`AGENTS.md`]
 git submodule update --init --recursive
 python3 plugins/garden-structure-designer/scripts/build_cadcraft.py
 
+# Regenerate all 8 Option C sheets (OpenCASCADE HLR + Three.js presentation_viewer)
+python3 -c "import json, sys; sys.path.insert(0, 'plugins/garden-structure-designer/scripts'); from render_drawings import render_all_sheets; s = json.load(open('context/staging/structure.json')); render_all_sheets(s, 'outputs')"
+
+# Run Stage 5 Adversarial Drawing Red-Team Gate
+python3 plugins/garden-structure-designer/scripts/run_drawing_red_team.py --svg-dir outputs --model context/staging/structure.json --report-dir context/staging --md-dir outputs
+
 # Antigravity / CLI environments via uvx
 uvx --from git+https://github.com/richfrem/agent-plugins-skills plugin-add plugins/ 
 uvx --from git+https://github.com/richfrem/agent-plugins-skills plugin-add richfrem/garden-structure-designers

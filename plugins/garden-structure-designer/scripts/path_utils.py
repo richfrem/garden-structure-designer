@@ -62,8 +62,8 @@ def scripts_dir(start: str | Path | None = None) -> Path:
     return plugin_root(start) / "scripts"
 
 def agent_workspace_dir(start: str | Path | None = None) -> Path:
-    """Agent workspace: <repo>/agent-workspace/garden-structure-designer."""
-    return find_repo_root(start) / "agent-workspace" / "garden-structure-designer"
+    """Agent workspace: <repo>/temp/agent-workspace/garden-structure-designer."""
+    return find_repo_root(start) / "temp" / "agent-workspace" / "garden-structure-designer"
 
 def ensure_dirs() -> None:
     """Creates the standard working directories (staging, outputs, schemas, scripts, agent workspace)."""

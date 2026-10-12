@@ -372,15 +372,22 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
     layout_xy = structure["geometry"]["joints"]["layout"]["post_xy"]
     beam_span_ft = structure["layout"]["post_spacing_ft"] if "post_spacing_ft" in structure["layout"] else math.dist(layout_xy[0], layout_xy[1])
     has_hub = structure.get("hub", {}).get("type") not in ("none", "", None)
-    brace = structure["bracing"]["brace"]
-    ids = {role: _first_member_id(structure, role) for role in ("post", "beam", "rafter", "brace", "footing")}
+    has_braces = bool(structure.get("bracing", {}).get("enabled", True))
+    roles_needed = ["post", "beam", "rafter", "footing"]
+    if has_braces:
+        roles_needed.append("brace")
+    ids = {role: _first_member_id(structure, role) for role in roles_needed}
 
     panels = [
         ("post", "POST P1 DETAIL", f"{post_size} {species} ({post_h} FT)", "post", ids["post"], 60, 120, 260, 420),
         ("beam", "BEAM B1 DETAIL", f"{beams['nominal_size']} {species} ({beam_span_ft:.2f} FT, Miter {beam_miter:.2f}°)", "beam", ids["beam"], 360, 120, 260, 420),
         ("rafter", "RAFTER R1 DETAIL", f"{structure['roof']['primary_rafters']['nominal_size']} {species} ({rafter_len:.2f} FT, Pitch {pitch})", "rafter", ids["rafter"], 660, 120, 260, 420),
-        ("brace", "KNEE BRACE K1A DETAIL", f"{brace['nominal_size']} {species} ({_brace_angle_deg(structure):.2f}° Miter)", "brace", ids["brace"], 960, 120, 260, 420),
     ]
+    if has_braces and "brace" in ids:
+        brace = structure["bracing"]["brace"]
+        panels.append(
+            ("brace", "KNEE BRACE K1A DETAIL", f"{brace['nominal_size']} {species} ({_brace_angle_deg(structure):.2f}° Miter)", "brace", ids["brace"], 960, 120, 260, 420)
+        )
     if has_hub:
         panels.append(("hub", "HUB ASSEMBLY DETAIL", "Polygonal Crown Block", "hub", "HUB", 1260, 120, 260, 420))
 
@@ -432,30 +439,122 @@ def render_component_isolation_view(structure: dict, filename: str) -> list[str]
         
     return svg_list
 
+def render_all_sheets(structure: dict, out_dir: Path | str) -> None:
+    """
+    Renders all 8 sheets using Option C (One Authoritative Solid Assembly with Two Rendering Paths):
+    - blueprint-plan.svg: Orthographic Plan HLR
+    - blueprint-elevation.svg: Orthographic Front Elevation HLR
+    - blueprint-isometric.svg: Isometric HLR
+    - blueprint-component-isolation.svg: Component Detail Blueprints
+    - drawing-plan-view.svg: Orthographic Plan WebGL Shaded Presentation
+    - drawing-elevation-view.svg: Orthographic Elevation WebGL Shaded Presentation
+    - drawing-isometric-view.svg: Isometric WebGL Shaded Presentation
+    - drawing-perspective-view.svg: Perspective WebGL Shaded Presentation
+    """
+    from cad_backend_build123d import build_solid_assembly
+    from cad_camera import create_standard_camera, create_perspective_camera
+    from cad_projection_hlr import project_assembly_hlr
+    from cad_export_glb import export_assembly_glb
+    from render_presentation_webgl import render_presentation_screenshot
+    from sheet_composer import SheetSpec, compose_sheet
+
+    out_dir = Path(out_dir).resolve()
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # 1. Authoritative 3D Solid Assembly
+    assembly = build_solid_assembly(structure)
+
+    # 2. Export GLB for Presentation Renderings
+    glb_path = out_dir / "assembly.glb"
+    export_assembly_glb(assembly, glb_path)
+
+    # Standard cameras
+    cam_plan = create_standard_camera("plan", target_mm=(0.0, 0.0, 0.0))
+    cam_elev = create_standard_camera("front_elevation", target_mm=(0.0, 0.0, 1500.0))
+    cam_iso = create_standard_camera("isometric", target_mm=(0.0, 0.0, 1500.0))
+
+    coords = structure.get("geometry", {}).get("svg_coordinates", {})
+    w, h = coords.get("width_px", 1600), coords.get("height_px", 1200)
+
+    # 3. Render Blueprints via OpenCASCADE HLR
+    # SB02: blueprint-plan.svg
+    hlr_plan = project_assembly_hlr(assembly, cam_plan)
+    spec_bp_plan = SheetSpec("SB02", "Plan View Framing Blueprint", is_blueprint=True, width_px=w, height_px=h)
+    (out_dir / "blueprint-plan.svg").write_text(compose_sheet(assembly, cam_plan, spec_bp_plan, hlr_plan, structure), encoding="utf-8")
+
+    # blueprint-elevation.svg
+    hlr_elev = project_assembly_hlr(assembly, cam_elev)
+    spec_bp_elev = SheetSpec("SB03", "Elevation Framing Blueprint", is_blueprint=True, width_px=w, height_px=h)
+    (out_dir / "blueprint-elevation.svg").write_text(compose_sheet(assembly, cam_elev, spec_bp_elev, hlr_elev, structure), encoding="utf-8")
+
+    # SB01: blueprint-isometric.svg
+    hlr_iso = project_assembly_hlr(assembly, cam_iso)
+    spec_bp_iso = SheetSpec("SB01", "Isometric Framing Blueprint", is_blueprint=True, width_px=w, height_px=h)
+    (out_dir / "blueprint-isometric.svg").write_text(compose_sheet(assembly, cam_iso, spec_bp_iso, hlr_iso, structure), encoding="utf-8")
+
+    # blueprint-component-isolation.svg
+    comp_content = render_component_isolation_view(structure, "blueprint-component-isolation.svg")
+    comp_header = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">', '  <rect width="100%" height="100%" fill="#12253a" />']
+    draw_title_block(comp_content, structure, "COMPONENT ISOLATION DETAIL", True)
+    draw_validator_anchors(comp_content, structure)
+    (out_dir / "blueprint-component-isolation.svg").write_text("\n".join(comp_header + comp_content + ["</svg>"]), encoding="utf-8")
+
+    # 4. Render Shaded Presentations via Three.js / WebGL Screenshots
+    (min_b, max_b) = assembly.bounds_mm
+    mid_z = (min_b[2] + max_b[2]) / 2.0
+    span = max(max_b[0] - min_b[0], max_b[1] - min_b[1], max_b[2] - min_b[2])
+    target_center = (0.0, 0.0, mid_z)
+    eye_persp = (target_center[0] + span * 1.5, target_center[1] - span * 1.8, target_center[2] + span * 1.2)
+    cam_persp = create_perspective_camera(
+        eye_mm=eye_persp,
+        target_mm=target_center,
+        fov_y_deg=50.0,
+        aspect_ratio=w / h if h else 1.0,
+    )
+
+    # drawing-plan-view.svg
+    png_plan = out_dir / "render-plan.png"
+    render_presentation_screenshot(glb_path, png_plan, "plan", w, h)
+    spec_dwg_plan = SheetSpec("DWG-01", "Plan View Shaded Presentation", is_blueprint=False, width_px=w, height_px=h)
+    (out_dir / "drawing-plan-view.svg").write_text(compose_sheet(assembly, cam_plan, spec_dwg_plan, png_plan, structure), encoding="utf-8")
+
+    # drawing-elevation-view.svg
+    png_elev = out_dir / "render-elev.png"
+    render_presentation_screenshot(glb_path, png_elev, "elevation", w, h)
+    spec_dwg_elev = SheetSpec("DWG-02", "Elevation Shaded Presentation", is_blueprint=False, width_px=w, height_px=h)
+    (out_dir / "drawing-elevation-view.svg").write_text(compose_sheet(assembly, cam_elev, spec_dwg_elev, png_elev, structure), encoding="utf-8")
+
+    # drawing-isometric-view.svg
+    png_iso = out_dir / "render-iso.png"
+    render_presentation_screenshot(glb_path, png_iso, "isometric", w, h)
+    spec_dwg_iso = SheetSpec("DWG-03", "Isometric Shaded Presentation", is_blueprint=False, width_px=w, height_px=h)
+    (out_dir / "drawing-isometric-view.svg").write_text(compose_sheet(assembly, cam_iso, spec_dwg_iso, png_iso, structure), encoding="utf-8")
+
+    # drawing-perspective-view.svg
+    png_persp = out_dir / "render-persp.png"
+    render_presentation_screenshot(glb_path, png_persp, "perspective", w, h)
+    spec_dwg_persp = SheetSpec("DWG-04", "Perspective Shaded Presentation", is_blueprint=False, width_px=w, height_px=h)
+    (out_dir / "drawing-perspective-view.svg").write_text(compose_sheet(assembly, cam_persp, spec_dwg_persp, png_persp, structure), encoding="utf-8")
+
+
 def generate_svg(filename: str, structure: dict, output_path: str) -> None:
-    """Renders one named sheet to ``output_path`` (body + title block + validator anchors)."""
-    coords = structure["geometry"]["svg_coordinates"]
-    w, h = coords["width_px"], coords["height_px"]; is_bp = "blueprint" in filename
-    header = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">', f'  <rect width="100%" height="100%" fill="{"#12253a" if is_bp else "#ffffff"}" />']
-    if "component-isolation" in filename: content = render_component_isolation_view(structure, filename)
-    elif "plan" in filename: content = render_generic_view(structure, filename, project_plan, "plan")
-    elif "elevation" in filename: content = render_generic_view(structure, filename, project_elev, "elevation")
-    else: content = render_generic_view(structure, filename, project_iso, "isometric")
-    
-    dwg_title = filename.replace("blueprint-", "blueprint ").replace("drawing-", "drawing ").replace(".svg", "").replace("-", " ")
-    draw_title_block(content, structure, dwg_title, is_bp)
-    draw_validator_anchors(content, structure)
-    with open(output_path, "w") as f: f.write("\n".join(header + content + ["</svg>"]))
+    """Compatibility adapter for rendering one sheet."""
+    out_p = Path(output_path).resolve()
+    temp_dir = out_p.parent / ".temp_render"
+    render_all_sheets(structure, temp_dir)
+    target = temp_dir / filename
+    if target.exists():
+        out_p.write_text(target.read_text(encoding="utf-8"), encoding="utf-8")
+
 
 def main():
     """CLI entrypoint: render all eight sheets from structure.json into the outputs directory."""
     struct_path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")
     with open(struct_path) as f: s = json.load(f)
     out_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else outputs_dir()
-    out_dir.mkdir(parents=True, exist_ok=True)
+    render_all_sheets(s, out_dir)
     for f in SVG_SHEET_FILENAMES:
-        generate_svg(f, s, str(out_dir / f))
         print(f"  ✓ {f}")
 
-if __name__ == "__main__": main()
-
+if __name__ == "__main__":
+    main()

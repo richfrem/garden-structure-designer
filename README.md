@@ -46,7 +46,10 @@ python3 plugins/garden-structure-designer/scripts/compile_package.py
 
 Unlike typical AI assistants that guess geometry or hallucinate cut angles:
 - **Zero Hallucinated Math**: Roof pitches, compound miter cuts, and beam spans are calculated deterministically by `geometry_engine.py`.
-- **3D Solid Geometry Kernel**: Visual drawings are projected via `cad_scene.py` using face-depth sorted painter's algorithm projection.
+- **Option C Dual-Path 3D Solid Kernel**: Eliminates 2D face popping and painter's sorting artifacts by maintaining one authoritative 3D solid assembly (`build123d`).
+  - **Vector Blueprints (`blueprint-*.svg`)**: Vector line art projected through OpenCASCADE C++ Hidden Line Removal (`HLRBRep_Algo`) with exact occlusion.
+  - **Shaded Presentations (`drawing-*.svg`)**: 3D timber renderings computed via hardware/software Three.js WebGL with verified $\ge 24$-bit depth testing (`presentation_viewer/`).
+  - **Authoritative 3D Exchange (`assembly.glb`)**: Native right-handed +Z-up binary glTF assembly with cryptographic manifest.
 - **Traceable Member IDs**: Every structural component carries a stable, immutable identifier (`P1`, `B1`, `R1`, `HUB`, `FT1`, `Brace1a`) synced across JSON models, SVG `data-tag` attributes, and QA reports.
 - **Adversarial Red-Team QA**: Drawing generators cannot certify their own work; `drawing-red-team-agent` independently validates builder-usefulness (`may_claim_success: true` gate).
 - **Computer Vision Verification**: Headless Chromium and OpenCV transforms verify SVG topology against structural expectations to ensure zero blank or corrupted views.

@@ -7,22 +7,22 @@ The pipeline uses `context/staging/structure.json` as the sole canonical data bu
 
 ```mermaid
 flowchart TD
-    User([User Request]) --> ID[interactive-designer Agent]
-    ID -->|Normalized Spec| Staging[(context/staging/structure.json)]
-    Staging --> DO[design-orchestrator Agent]
-    DO --> S0[Stage 0: Lessons & Intent Pre-Gate]
-    S0 --> S05[Stage 0.5: Topology Intent Pre-Gate (Fail-Closed on Unsealed Spec)]
-    S05 --> S1[Stage 1: Code & Geometry Engine (Seals geometry)]
-    S1 --> S2[Stage 2: Topology Compiler & Graph Enricher (Validates & Enriches Sealed Graph)]
-    S2 --> S3[Stage 3: Structural Physics QA (L/d <= 50, L/240)]
-    S3 --> S4[Stage 4: Deterministic 3D CAD & Drafting Engine]
-    S4 --> S55[Stage 5.5: Parsed DXF Validation & Dimension Parity]
-    S55 --> S56[Stage 5.6: Visual Smoke & CV Heuristics]
-    S56 --> S6[Stage 6: Fabrication Cut-Lists & Builder Docs]
-    S6 --> S5[Stage 5: Blueprint & Drawing Red-Team QA (Covers ALL Artifacts)]
-    S5 --> S7[Stage 7: Package & Multi-Layer DXF/PDF Compilation]
-    S7 --> Out([outputs/pergola_plan.pdf & outputs/cad/*.dxf])
-    S5 -.->|Failures| S8[Stage 8: Repair Orchestrator & PyTest Scaffolding]
+    User(["User Request"]) --> ID["interactive-designer Agent"]
+    ID -->|Normalized Spec| Staging[("context/staging/structure.json")]
+    Staging --> DO["design-orchestrator Agent"]
+    DO --> S0["Stage 0: Lessons & Intent Pre-Gate"]
+    S0 --> S05["Stage 0.5: Topology Intent Pre-Gate (Fail-Closed on Unsealed Spec)"]
+    S05 --> S1["Stage 1: Code & Geometry Engine (Seals geometry)"]
+    S1 --> S2["Stage 2: Topology Compiler & Graph Enricher (Validates & Enriches Sealed Graph)"]
+    S2 --> S3["Stage 3: Structural Physics QA (L/d <= 50, L/240)"]
+    S3 --> S4["Stage 4: Option C Dual-Path 3D CAD & Drafting Engine"]
+    S4 --> S55["Stage 5.5: Parsed DXF Validation & Dimension Parity"]
+    S55 --> S56["Stage 5.6: Visual Smoke & CV Heuristics"]
+    S56 --> S6["Stage 6: Fabrication Cut-Lists & Builder Docs"]
+    S6 --> S5["Stage 5: Blueprint & Drawing Red-Team QA (Covers ALL Artifacts)"]
+    S5 --> S7["Stage 7: Package & Multi-Layer DXF/PDF Compilation"]
+    S7 --> Out(["outputs/pergola_plan.pdf & outputs/cad/*.dxf"])
+    S5 -.->|Failures| S8["Stage 8: Repair Orchestrator & PyTest Scaffolding"]
     S8 -.->|Lessons| S0
 ```
 
@@ -47,7 +47,7 @@ flowchart TD
 | **1** | **Building Code & Math Engine** | `building-code-validator`, `geometry_engine.py` | `geometry-calculations.json` | Exact 3D vertices, roof pitches, beam miter angles calculated. Geometry sealed (`geometry._sealed = true`). |
 | **2** | **Connections & Topology Graph Enricher** | `topology_compiler.py`, `joinery-designer` | `geometry.joints.topology` | Post-seal graph enrichment. In-process validation against dangling nodes or duplicate members. Model locked. |
 | **3** | **Physics Validation** | `structural_physics_validator.py` | `physics-validation-report.json` | $L/d \le 50$ (slenderness), $L/240$ (deflection), footing bearing PASS. |
-| **4** | **3D CAD & Blueprint Drafting** | `render_drawings.py`, `export_cad.py` (`ExchangeWriter`) | 8 SVG sheets, candidate DXFs | Semantic SVG elements rendered with `data-role` and `data-tag`. Full-scale 3D wireframe (`SB01`) and 2D plan (`SB02`) drafted. |
+| **4** | **3D Solid Kernel & Dual-Path Drafting** | `cad_backend_build123d.py`, `cad_projection_hlr.py`, `presentation_viewer/`, `cad_export_glb.py`, `render_drawings.py` | 8 SVG sheets, `assembly.glb`, candidate DXFs | **Option C Dual-Path Engine**: Solid B-Rep assembly (`build123d`), OpenCASCADE C++ HLR vector blueprints (`blueprint-*.svg`), Three.js WebGL with >=24-bit depth testing for shaded presentations (`drawing-*.svg`), native RH_Z_UP `assembly.glb`. |
 | **5.5** | **Parsed DXF Validation** | `cross_artifact_validator.py` | Parsed DXF report | `ezdxf` parsed entity check: 1:1 member ID xdata parity, 3D bounds for SB01, 2D projected XY for SB02. |
 | **5.6** | **Visual Smoke & Computer Vision** | `visual_svg_smoke_test.py` | Visual raster report | Headless Chromium raster checks; edge/Hough transform topology match. |
 | **6** | **Fabrication & Builder Documents** | `fabrication_builder.py`, `builder_docs_compiler.py` | `outputs/fabrication/cut-list.json`, assembly guide, bill of materials | Tripod-first assembly sequence and accurate board footage verified. |

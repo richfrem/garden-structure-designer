@@ -1,226 +1,171 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200">
-  <rect width="100%" height="100%" fill="#12253a" />
-    <polygon data-role="footing" data-id="FT2" data-tag="FT2" points="926.0,1164.0 884.0,1164.0 884.0,1164.0 926.0,1164.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="926.0,1066.1 926.0,1066.1 884.0,1066.1 884.0,1066.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="926.0,1164.0 926.0,1164.0 926.0,1066.1 926.0,1066.1" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="884.0,1164.0 884.0,1066.1 884.0,1066.1 884.0,1164.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="926.0,1164.0 884.0,1164.0 884.0,1066.1 926.0,1066.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="footing" data-id="FT3" data-tag="FT3" points="716.0,1164.0 674.0,1164.0 674.0,1164.0 716.0,1164.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="716.0,1066.1 716.0,1066.1 674.0,1066.1 674.0,1066.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="716.0,1164.0 716.0,1164.0 716.0,1066.1 716.0,1066.1" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="674.0,1164.0 674.0,1066.1 674.0,1066.1 674.0,1164.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="716.0,1164.0 674.0,1164.0 674.0,1066.1 716.0,1066.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="post" data-id="P2" data-tag="P2" points="918.1,1080.0 891.9,1080.0 891.9,1080.0 918.1,1080.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="918.1,744.0 918.1,744.0 891.9,744.0 891.9,744.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="918.1,1080.0 918.1,1080.0 918.1,744.0 918.1,744.0" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="891.9,1080.0 891.9,744.0 891.9,744.0 891.9,1080.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="918.1,1080.0 891.9,1080.0 891.9,744.0 918.1,744.0" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="post" data-id="P3" data-tag="P3" points="708.1,1080.0 681.9,1080.0 681.9,1080.0 708.1,1080.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="708.1,744.0 708.1,744.0 681.9,744.0 681.9,744.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="708.1,1080.0 708.1,1080.0 708.1,744.0 708.1,744.0" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="681.9,1080.0 681.9,744.0 681.9,744.0 681.9,1080.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="708.1,1080.0 681.9,1080.0 681.9,744.0 708.1,744.0" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K2A" data-tag="K2A" points="896.2,802.7 887.5,811.3 887.5,811.3 896.2,802.7" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="833.2,739.7 833.2,739.7 824.5,748.3 824.5,748.3" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="896.2,802.7 896.2,802.7 833.2,739.7 833.2,739.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="887.5,811.3 824.5,748.3 824.5,748.3 887.5,811.3" fill="#0d1f32" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="896.2,802.7 887.5,811.3 824.5,748.3 833.2,739.7" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K2B" data-tag="K2B" points="703.8,802.7 712.5,811.3 712.5,811.3 703.8,802.7" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="766.8,739.7 766.8,739.7 775.5,748.3 775.5,748.3" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="703.8,802.7 703.8,802.7 766.8,739.7 766.8,739.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="712.5,811.3 775.5,748.3 775.5,748.3 712.5,811.3" fill="#0d1f32" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="703.8,802.7 766.8,739.7 775.5,748.3 712.5,811.3" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="beam" data-id="B2" data-tag="B2" points="898.9,744.0 898.9,702.0 911.1,702.0 911.1,744.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="898.9,702.0 701.1,702.0 688.9,702.0 911.1,702.0" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="898.9,744.0 911.1,744.0 688.9,744.0 701.1,744.0" fill="#0c1d2e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="898.9,744.0 701.1,744.0 701.1,702.0 898.9,702.0" fill="#122840" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K1B" data-tag="K1B" points="904.1,802.7 935.6,739.7 939.9,748.3 908.4,811.3" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="908.4,811.3 939.9,748.3 950.5,748.3 919.0,811.3" fill="#0d1f32" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="935.6,739.7 946.2,739.7 950.5,748.3 939.9,748.3" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K3A" data-tag="K3A" points="695.9,802.7 691.6,811.3 660.1,748.3 664.4,739.7" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="681.0,811.3 649.5,748.3 660.1,748.3 691.6,811.3" fill="#0d1f32" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="653.8,739.7 664.4,739.7 660.1,748.3 649.5,748.3" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="rafter" data-id="R2" data-tag="R2" points="899.7,702.0 910.3,702.0 926.1,702.0 915.4,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="926.1,702.0 910.3,702.0 864.6,702.0 818.9,702.0 818.9,689.2 926.1,689.2" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="915.4,689.2 926.1,689.2 818.9,689.2 808.3,689.2" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="808.3,702.0 818.9,702.0 864.6,702.0 854.0,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="808.3,689.2 818.9,689.2 818.9,702.0 808.3,702.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="rafter" data-id="R3" data-tag="R3" points="689.7,702.0 700.3,702.0 684.6,702.0 673.9,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="673.9,689.2 781.1,689.2 781.1,702.0 735.4,702.0 689.7,702.0 673.9,702.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="673.9,689.2 684.6,689.2 791.7,689.2 781.1,689.2" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="781.1,702.0 791.7,702.0 746.0,702.0 735.4,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="781.1,689.2 791.7,689.2 791.7,702.0 781.1,702.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="beam" data-id="B1" data-tag="B1" points="997.9,702.0 898.9,702.0 911.1,702.0 1022.1,702.0" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="997.9,744.0 1022.1,744.0 911.1,744.0 898.9,744.0" fill="#0c1d2e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="997.9,744.0 898.9,744.0 898.9,702.0 997.9,702.0" fill="#122840" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="997.9,744.0 997.9,702.0 1022.1,702.0 1022.1,744.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="beam" data-id="B3" data-tag="B3" points="701.1,744.0 701.1,702.0 688.9,702.0 688.9,744.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="701.1,702.0 602.1,702.0 577.9,702.0 688.9,702.0" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="701.1,744.0 688.9,744.0 577.9,744.0 602.1,744.0" fill="#0c1d2e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="701.1,744.0 602.1,744.0 602.1,702.0 701.1,702.0" fill="#122840" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="602.1,744.0 577.9,744.0 577.9,702.0 602.1,702.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K1A" data-tag="K1A" points="1000.3,802.7 996.0,811.3 964.5,748.3 968.8,739.7" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1010.9,802.7 1000.3,802.7 968.8,739.7 979.4,739.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1010.9,802.7 1006.6,811.3 996.0,811.3 1000.3,802.7" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K3B" data-tag="K3B" points="599.7,802.7 631.2,739.7 635.5,748.3 604.0,811.3" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="599.7,802.7 589.1,802.7 620.6,739.7 631.2,739.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="599.7,802.7 604.0,811.3 593.4,811.3 589.1,802.7" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="footing" data-id="FT1" data-tag="FT1" points="1031.0,1164.0 989.0,1164.0 989.0,1164.0 1031.0,1164.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1031.0,1066.1 1031.0,1066.1 989.0,1066.1 989.0,1066.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1031.0,1164.0 1031.0,1164.0 1031.0,1066.1 1031.0,1066.1" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="989.0,1164.0 989.0,1066.1 989.0,1066.1 989.0,1164.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1031.0,1164.0 989.0,1164.0 989.0,1066.1 1031.0,1066.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="footing" data-id="FT4" data-tag="FT4" points="611.0,1164.0 569.0,1164.0 569.0,1164.0 611.0,1164.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="611.0,1066.1 611.0,1066.1 569.0,1066.1 569.0,1066.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="611.0,1164.0 611.0,1164.0 611.0,1066.1 611.0,1066.1" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="569.0,1164.0 569.0,1066.1 569.0,1066.1 569.0,1164.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="611.0,1164.0 569.0,1164.0 569.0,1066.1 611.0,1066.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="post" data-id="P1" data-tag="P1" points="1023.1,1080.0 996.9,1080.0 996.9,1080.0 1023.1,1080.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1023.1,744.0 1023.1,744.0 996.9,744.0 996.9,744.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1023.1,1080.0 1023.1,1080.0 1023.1,744.0 1023.1,744.0" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="996.9,1080.0 996.9,744.0 996.9,744.0 996.9,1080.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1023.1,1080.0 996.9,1080.0 996.9,744.0 1023.1,744.0" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="post" data-id="P4" data-tag="P4" points="603.1,1080.0 576.9,1080.0 576.9,1080.0 603.1,1080.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="603.1,744.0 603.1,744.0 576.9,744.0 576.9,744.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="603.1,1080.0 603.1,1080.0 603.1,744.0 603.1,744.0" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="576.9,1080.0 576.9,744.0 576.9,744.0 576.9,1080.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="603.1,1080.0 576.9,1080.0 576.9,744.0 603.1,744.0" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="hub" data-id="HUB" data-tag="HUB" points="768.5,702.0 768.5,702.0 768.5,682.8 768.5,682.8" fill="#1a3868" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="831.5,682.8 831.5,682.8 800.0,682.8 768.5,682.8 768.5,682.8 800.0,682.8" fill="#204878" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="800.0,702.0 768.5,702.0 768.5,702.0 800.0,702.0 831.5,702.0 831.5,702.0" fill="#0e2035" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="831.5,702.0 831.5,702.0 831.5,682.8 831.5,682.8" fill="#1a3868" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="768.5,702.0 800.0,702.0 800.0,682.8 768.5,682.8" fill="#1a3868" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="800.0,702.0 831.5,702.0 831.5,682.8 800.0,682.8" fill="#1a3868" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="rafter" data-id="R1" data-tag="R1" points="1041.5,689.2 1041.5,689.2 827.3,689.2 827.3,689.2" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="827.3,689.2 827.3,689.2 827.3,702.0 827.3,702.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="827.3,702.0 827.3,702.0 918.6,702.0 918.6,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="918.6,702.0 918.6,702.0 1010.0,702.0 1010.0,702.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1010.0,702.0 1010.0,702.0 1041.5,702.0 1041.5,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1041.5,702.0 1041.5,702.0 1041.5,689.2 1041.5,689.2" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="1041.5,702.0 1010.0,702.0 918.6,702.0 827.3,702.0 827.3,689.2 1041.5,689.2" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="rafter" data-id="R4" data-tag="R4" points="558.5,689.2 558.5,689.2 772.7,689.2 772.7,689.2" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="772.7,689.2 772.7,689.2 772.7,702.0 772.7,702.0" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="772.7,702.0 772.7,702.0 681.4,702.0 681.4,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="681.4,702.0 681.4,702.0 590.0,702.0 590.0,702.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="590.0,702.0 590.0,702.0 558.5,702.0 558.5,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="558.5,702.0 558.5,702.0 558.5,689.2 558.5,689.2" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="558.5,689.2 772.7,689.2 772.7,702.0 681.4,702.0 590.0,702.0 558.5,702.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K4A" data-tag="K4A" points="589.1,802.7 620.6,739.7 624.9,748.3 593.4,811.3" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="593.4,811.3 624.9,748.3 635.5,748.3 604.0,811.3" fill="#0d1f32" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="620.6,739.7 631.2,739.7 635.5,748.3 624.9,748.3" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K6B" data-tag="K6B" points="1010.9,802.7 1006.6,811.3 975.1,748.3 979.4,739.7" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="996.0,811.3 964.5,748.3 975.1,748.3 1006.6,811.3" fill="#0d1f32" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="968.8,739.7 979.4,739.7 975.1,748.3 964.5,748.3" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="beam" data-id="B4" data-tag="B4" points="602.1,744.0 602.1,702.0 577.9,702.0 577.9,744.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="602.1,702.0 701.1,702.0 688.9,702.0 577.9,702.0" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="602.1,744.0 577.9,744.0 688.9,744.0 701.1,744.0" fill="#0c1d2e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="577.9,744.0 577.9,702.0 688.9,702.0 688.9,744.0" fill="#0d2035" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="701.1,744.0 688.9,744.0 688.9,702.0 701.1,702.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="beam" data-id="B6" data-tag="B6" points="997.9,744.0 1022.1,744.0 1022.1,702.0 997.9,702.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="898.9,702.0 997.9,702.0 1022.1,702.0 911.1,702.0" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="898.9,744.0 911.1,744.0 1022.1,744.0 997.9,744.0" fill="#0c1d2e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="911.1,744.0 911.1,702.0 1022.1,702.0 1022.1,744.0" fill="#0d2035" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="rafter" data-id="R5" data-tag="R5" points="791.7,702.0 781.1,702.0 735.4,702.0 746.0,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="684.6,689.2 673.9,689.2 781.1,689.2 791.7,689.2" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="684.6,689.2 791.7,689.2 791.7,702.0 746.0,702.0 700.3,702.0 684.6,702.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="746.0,702.0 735.4,702.0 689.7,702.0 700.3,702.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="700.3,702.0 689.7,702.0 673.9,702.0 684.6,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="684.6,702.0 673.9,702.0 673.9,689.2 684.6,689.2" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="rafter" data-id="R6" data-tag="R6" points="818.9,702.0 808.3,702.0 854.0,702.0 864.6,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="926.1,689.2 915.4,689.2 808.3,689.2 818.9,689.2" fill="#1f4070" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="915.4,702.0 899.7,702.0 854.0,702.0 808.3,702.0 808.3,689.2 915.4,689.2" fill="#0e2234" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="864.6,702.0 854.0,702.0 899.7,702.0 910.3,702.0" fill="#132842" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="910.3,702.0 899.7,702.0 915.4,702.0 926.1,702.0" fill="#0e2032" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="926.1,702.0 915.4,702.0 915.4,689.2 926.1,689.2" fill="#172d4c" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K4B" data-tag="K4B" points="685.3,802.7 681.0,811.3 649.5,748.3 653.8,739.7" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="695.9,802.7 685.3,802.7 653.8,739.7 664.4,739.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="695.9,802.7 691.6,811.3 681.0,811.3 685.3,802.7" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K6A" data-tag="K6A" points="914.7,802.7 946.2,739.7 950.5,748.3 919.0,811.3" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="914.7,802.7 904.1,802.7 935.6,739.7 946.2,739.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="914.7,802.7 919.0,811.3 908.4,811.3 904.1,802.7" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="footing" data-id="FT5" data-tag="FT5" points="716.0,1164.0 674.0,1164.0 674.0,1164.0 716.0,1164.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="716.0,1066.1 716.0,1066.1 674.0,1066.1 674.0,1066.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="716.0,1164.0 716.0,1164.0 716.0,1066.1 716.0,1066.1" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="674.0,1164.0 674.0,1066.1 674.0,1066.1 674.0,1164.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="716.0,1164.0 674.0,1164.0 674.0,1066.1 716.0,1066.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="footing" data-id="FT6" data-tag="FT6" points="926.0,1164.0 884.0,1164.0 884.0,1164.0 926.0,1164.0" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="926.0,1066.1 926.0,1066.1 884.0,1066.1 884.0,1066.1" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="926.0,1164.0 926.0,1164.0 926.0,1066.1 926.0,1066.1" fill="#183050" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="884.0,1164.0 884.0,1066.1 884.0,1066.1 884.0,1164.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="926.0,1164.0 884.0,1164.0 884.0,1066.1 926.0,1066.1" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="post" data-id="P5" data-tag="P5" points="708.1,1080.0 681.9,1080.0 681.9,1080.0 708.1,1080.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="708.1,744.0 708.1,744.0 681.9,744.0 681.9,744.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="708.1,1080.0 708.1,1080.0 708.1,744.0 708.1,744.0" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="681.9,1080.0 681.9,744.0 681.9,744.0 681.9,1080.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="708.1,1080.0 681.9,1080.0 681.9,744.0 708.1,744.0" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="post" data-id="P6" data-tag="P6" points="918.1,1080.0 891.9,1080.0 891.9,1080.0 918.1,1080.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="918.1,744.0 918.1,744.0 891.9,744.0 891.9,744.0" fill="#1a3560" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="918.1,1080.0 918.1,1080.0 918.1,744.0 918.1,744.0" fill="#1e4272" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="891.9,1080.0 891.9,744.0 891.9,744.0 891.9,1080.0" fill="#0d1e30" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="918.1,1080.0 891.9,1080.0 891.9,744.0 918.1,744.0" fill="#0f2238" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K5A" data-tag="K5A" points="703.8,802.7 712.5,811.3 712.5,811.3 703.8,802.7" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="766.8,739.7 766.8,739.7 775.5,748.3 775.5,748.3" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="703.8,802.7 703.8,802.7 766.8,739.7 766.8,739.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="712.5,811.3 775.5,748.3 775.5,748.3 712.5,811.3" fill="#0d1f32" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="703.8,802.7 766.8,739.7 775.5,748.3 712.5,811.3" fill="#132440" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="brace" data-id="K5B" data-tag="K5B" points="896.2,802.7 887.5,811.3 887.5,811.3 896.2,802.7" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="833.2,739.7 833.2,739.7 824.5,748.3 824.5,748.3" fill="#162c4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="896.2,802.7 896.2,802.7 833.2,739.7 833.2,739.7" fill="#1b3760" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="887.5,811.3 824.5,748.3 824.5,748.3 887.5,811.3" fill="#0d1f32" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="896.2,802.7 887.5,811.3 824.5,748.3 833.2,739.7" fill="#0e1e34" stroke="#00ffff" stroke-width="3.0" />
-    <polygon data-role="beam" data-id="B5" data-tag="B5" points="898.9,744.0 911.1,744.0 911.1,702.0 898.9,702.0" fill="#162e4e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="701.1,702.0 898.9,702.0 911.1,702.0 688.9,702.0" fill="#1d3e68" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="701.1,744.0 688.9,744.0 911.1,744.0 898.9,744.0" fill="#0c1d2e" stroke="#00ffff" stroke-width="3.0" />
-    <polygon points="688.9,744.0 688.9,702.0 911.1,702.0 911.1,744.0" fill="#0d2035" stroke="#00ffff" stroke-width="3.0" />
-  <g id="annotation-labels-layer">
-    <text x="1025.0" y="912.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P1">P1</text>
-    <text x="920.0" y="912.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P2">P2</text>
-    <text x="710.0" y="912.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P3">P3</text>
-    <text x="605.0" y="912.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P4">P4</text>
-    <text x="725.0" y="912.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P5">P5</text>
-    <text x="935.0" y="912.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="P6">P6</text>
-    <text x="957.5" y="708.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B1">B1</text>
-    <text x="800.0" y="708.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B2">B2</text>
-    <text x="642.5" y="708.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B3">B3</text>
-    <text x="657.5" y="708.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B4">B4</text>
-    <text x="815.0" y="708.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B5">B5</text>
-    <text x="972.5" y="708.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="B6">B6</text>
-    <text x="987.7" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K1A">K1A</text>
-    <text x="927.3" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K1B">K1B</text>
-    <text x="860.4" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K2A">K2A</text>
-    <text x="739.6" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K2B">K2B</text>
-    <text x="672.7" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K3A">K3A</text>
-    <text x="612.3" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K3B">K3B</text>
-    <text x="627.3" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K4A">K4A</text>
-    <text x="687.7" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K4B">K4B</text>
-    <text x="754.6" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K5A">K5A</text>
-    <text x="875.4" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K5B">K5B</text>
-    <text x="942.3" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K6A">K6A</text>
-    <text x="1002.7" y="775.5" text-anchor="middle" font-size="8" font-weight="normal" fill="#00ffff" opacity="0.75" data-label="K6B">K6B</text>
-    <text x="934.4" y="689.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R1">R1</text>
-    <text x="867.2" y="689.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R2">R2</text>
-    <text x="732.8" y="689.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R3">R3</text>
-    <text x="665.6" y="689.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R4">R4</text>
-    <text x="747.8" y="689.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R5">R5</text>
-    <text x="882.2" y="689.2" text-anchor="middle" font-size="10" font-weight="normal" fill="#00ffff" opacity="0.9" data-label="R6">R6</text>
-    <text x="800.0" y="672.4" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffff" opacity="1.0" data-label="HUB">HUB</text>
-  </g>
-    <g data-role="dimension">
-        <line x1="600.0" y1="1080" x2="600.0" y2="744.0" stroke="#00e5ff" stroke-width="1.2" />
-        <text x="585.0" y="912.0" text-anchor="middle" transform="rotate(-90,585.0,912.0)" font-family="monospace" font-size="13" font-weight="bold" fill="#00e5ff">POST: 8.0 FT</text>
-    </g>
-  <line x1="100" y1="1080" x2="1500" y2="1080" stroke="#00ffff" stroke-width="2.0" />
-    <g data-role="title-block" transform="translate(1180, 1030)">
-        <rect width="400" height="150" fill="#12253a" stroke="#00ffff" stroke-width="1.8" />
-        <line x1="0" y1="40" x2="400" y2="40" stroke="#00ffff" stroke-width="1.0" />
-        <text x="15" y="28" font-family="monospace" font-size="18" font-weight="bold" fill="#00ffff">BLUEPRINT ELEVATION</text>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1600 1200" width="1600" height="1200">
+  <rect width="100%" height="100%" fill="#0a192f" />
+  <path data-projection="hlr" data-role="post" data-id="P1" data-tag="P1" data-visibility="visible" d="M 1119.33 875.98 L 1119.33 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P1" data-tag="P1" data-visibility="visible" d="M 1119.33 414.94 L 1081.76 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P1" data-tag="P1" data-visibility="visible" d="M 1081.76 414.94 L 1081.76 458.74" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P1" data-tag="P1" data-visibility="visible" d="M 1081.76 483.54 L 1081.76 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT1" data-tag="FT1" data-visibility="visible" d="M 1070.49 1016.03 L 1130.60 1016.03" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT1" data-tag="FT1" data-visibility="visible" d="M 1130.60 1016.03 L 1130.60 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT1" data-tag="FT1" data-visibility="visible" d="M 1130.60 875.98 L 1070.49 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT1" data-tag="FT1" data-visibility="visible" d="M 1070.49 875.98 L 1070.49 1016.03" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P4" data-tag="P4" data-visibility="visible" d="M 518.24 875.98 L 518.24 483.54" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P4" data-tag="P4" data-visibility="visible" d="M 518.24 458.74 L 518.24 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P4" data-tag="P4" data-visibility="visible" d="M 518.24 414.94 L 480.67 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P4" data-tag="P4" data-visibility="visible" d="M 480.67 414.94 L 480.67 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT4" data-tag="FT4" data-visibility="visible" d="M 469.40 1016.03 L 529.51 1016.03" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT4" data-tag="FT4" data-visibility="visible" d="M 529.51 1016.03 L 529.51 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT4" data-tag="FT4" data-visibility="visible" d="M 529.51 875.98 L 469.40 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT4" data-tag="FT4" data-visibility="visible" d="M 469.40 875.98 L 469.40 1016.03" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P5" data-tag="P5" data-visibility="visible" d="M 668.51 875.98 L 668.51 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P5" data-tag="P5" data-visibility="visible" d="M 668.51 414.94 L 630.94 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P5" data-tag="P5" data-visibility="visible" d="M 630.94 414.94 L 630.94 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT5" data-tag="FT5" data-visibility="visible" d="M 619.67 1016.03 L 679.78 1016.03" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT5" data-tag="FT5" data-visibility="visible" d="M 679.78 1016.03 L 679.78 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT5" data-tag="FT5" data-visibility="visible" d="M 679.78 875.98 L 619.67 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT5" data-tag="FT5" data-visibility="visible" d="M 619.67 875.98 L 619.67 1016.03" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P6" data-tag="P6" data-visibility="visible" d="M 969.06 875.98 L 969.06 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P6" data-tag="P6" data-visibility="visible" d="M 969.06 414.94 L 931.49 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="post" data-id="P6" data-tag="P6" data-visibility="visible" d="M 931.49 414.94 L 931.49 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT6" data-tag="FT6" data-visibility="visible" d="M 920.22 1016.03 L 980.33 1016.03" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT6" data-tag="FT6" data-visibility="visible" d="M 980.33 1016.03 L 980.33 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT6" data-tag="FT6" data-visibility="visible" d="M 980.33 875.98 L 920.22 875.98" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="footing" data-id="FT6" data-tag="FT6" data-visibility="visible" d="M 920.22 875.98 L 920.22 1016.03" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B1" data-tag="B1" data-visibility="visible" d="M 1117.90 354.83 L 1117.90 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B3" data-tag="B3" data-visibility="visible" d="M 482.10 414.94 L 482.10 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B4" data-tag="B4" data-visibility="visible" d="M 641.05 414.94 L 641.05 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B4" data-tag="B4" data-visibility="visible" d="M 641.05 354.83 L 634.78 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B4" data-tag="B4" data-visibility="visible" d="M 619.59 354.83 L 482.10 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B4" data-tag="B4" data-visibility="visible" d="M 482.10 414.94 L 630.94 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B5" data-tag="B5" data-visibility="visible" d="M 958.95 414.94 L 958.95 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B5" data-tag="B5" data-visibility="visible" d="M 958.95 354.83 L 641.05 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B5" data-tag="B5" data-visibility="visible" d="M 668.51 414.94 L 931.49 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B6" data-tag="B6" data-visibility="visible" d="M 1117.90 354.83 L 980.41 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B6" data-tag="B6" data-visibility="visible" d="M 965.22 354.83 L 958.95 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="beam" data-id="B6" data-tag="B6" data-visibility="visible" d="M 969.06 414.94 L 1117.90 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4A" data-tag="K4A" data-visibility="visible" d="M 498.16 498.90 L 504.36 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4A" data-tag="K4A" data-visibility="visible" d="M 504.36 511.30 L 519.54 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4A" data-tag="K4A" data-visibility="visible" d="M 540.14 414.94 L 498.16 498.90" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4A" data-tag="K4A" data-visibility="visible" d="M 561.52 414.94 L 564.62 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4A" data-tag="K4A" data-visibility="visible" d="M 564.62 421.14 L 549.44 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4A" data-tag="K4A" data-visibility="visible" d="M 549.44 421.14 L 546.34 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4A" data-tag="K4A" data-visibility="visible" d="M 504.36 511.30 L 549.44 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4A" data-tag="K4A" data-visibility="visible" d="M 564.62 421.14 L 519.54 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4B" data-tag="K4B" data-visibility="visible" d="M 630.94 511.30 L 629.64 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4B" data-tag="K4B" data-visibility="visible" d="M 629.64 511.30 L 630.94 508.70" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4B" data-tag="K4B" data-visibility="visible" d="M 630.94 489.11 L 593.86 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4B" data-tag="K4B" data-visibility="visible" d="M 609.04 414.94 L 630.94 458.74" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4B" data-tag="K4B" data-visibility="visible" d="M 587.66 414.94 L 584.56 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K4B" data-tag="K4B" data-visibility="visible" d="M 584.56 421.14 L 629.64 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K5A" data-tag="K5A" data-visibility="visible" d="M 668.51 505.10 L 674.71 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K5A" data-tag="K5A" data-visibility="visible" d="M 746.28 414.94 L 668.51 492.71" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K5A" data-tag="K5A" data-visibility="visible" d="M 764.87 421.14 L 758.67 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K5A" data-tag="K5A" data-visibility="visible" d="M 674.71 511.30 L 764.87 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K5B" data-tag="K5B" data-visibility="visible" d="M 925.29 511.30 L 931.49 505.10" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K5B" data-tag="K5B" data-visibility="visible" d="M 931.49 492.71 L 853.72 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K5B" data-tag="K5B" data-visibility="visible" d="M 841.33 414.94 L 835.13 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K5B" data-tag="K5B" data-visibility="visible" d="M 835.13 421.14 L 925.29 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6A" data-tag="K6A" data-visibility="visible" d="M 969.06 508.70 L 970.36 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6A" data-tag="K6A" data-visibility="visible" d="M 970.36 511.30 L 969.06 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6A" data-tag="K6A" data-visibility="visible" d="M 969.06 458.74 L 990.96 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6A" data-tag="K6A" data-visibility="visible" d="M 1006.14 414.94 L 969.06 489.11" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6A" data-tag="K6A" data-visibility="visible" d="M 1015.44 421.14 L 1012.34 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6A" data-tag="K6A" data-visibility="visible" d="M 970.36 511.30 L 1015.44 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6B" data-tag="K6B" data-visibility="visible" d="M 1080.46 511.30 L 1095.64 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6B" data-tag="K6B" data-visibility="visible" d="M 1095.64 511.30 L 1101.84 498.90" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6B" data-tag="K6B" data-visibility="visible" d="M 1101.84 498.90 L 1059.86 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6B" data-tag="K6B" data-visibility="visible" d="M 1053.66 414.94 L 1050.56 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6B" data-tag="K6B" data-visibility="visible" d="M 1050.56 421.14 L 1035.38 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6B" data-tag="K6B" data-visibility="visible" d="M 1035.38 421.14 L 1038.48 414.94" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6B" data-tag="K6B" data-visibility="visible" d="M 1080.46 511.30 L 1035.38 421.14" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="brace" data-id="K6B" data-tag="K6B" data-visibility="visible" d="M 1050.56 421.14 L 1095.64 511.30" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R1" data-tag="R1" data-visibility="visible" d="M 1145.63 336.46 L 980.41 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R1" data-tag="R1" data-visibility="visible" d="M 965.22 336.46 L 839.04 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R1" data-tag="R1" data-visibility="visible" d="M 1100.55 354.83 L 1145.63 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R1" data-tag="R1" data-visibility="visible" d="M 1145.63 354.83 L 1145.63 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R4" data-tag="R4" data-visibility="visible" d="M 760.96 336.46 L 634.78 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R4" data-tag="R4" data-visibility="visible" d="M 619.59 336.46 L 454.37 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R4" data-tag="R4" data-visibility="visible" d="M 454.37 354.83 L 499.45 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R4" data-tag="R4" data-visibility="visible" d="M 454.37 336.46 L 454.37 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R5" data-tag="R5" data-visibility="visible" d="M 634.78 336.46 L 619.59 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R5" data-tag="R5" data-visibility="visible" d="M 634.78 336.46 L 772.88 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R5" data-tag="R5" data-visibility="visible" d="M 788.07 336.46 L 634.78 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R5" data-tag="R5" data-visibility="visible" d="M 619.59 354.83 L 634.78 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R5" data-tag="R5" data-visibility="visible" d="M 634.78 354.83 L 657.32 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R5" data-tag="R5" data-visibility="visible" d="M 619.59 354.83 L 619.59 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R5" data-tag="R5" data-visibility="visible" d="M 634.78 336.46 L 634.78 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R6" data-tag="R6" data-visibility="visible" d="M 980.41 336.46 L 965.22 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R6" data-tag="R6" data-visibility="visible" d="M 965.22 336.46 L 811.93 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R6" data-tag="R6" data-visibility="visible" d="M 827.12 336.46 L 965.22 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R6" data-tag="R6" data-visibility="visible" d="M 942.68 354.83 L 965.22 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R6" data-tag="R6" data-visibility="visible" d="M 965.22 354.83 L 980.41 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R6" data-tag="R6" data-visibility="visible" d="M 965.22 354.83 L 965.22 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="rafter" data-id="R6" data-tag="R6" data-visibility="visible" d="M 980.41 336.46 L 980.41 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 845.08 282.70 L 845.08 336.46" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 822.54 426.96 L 840.95 426.96" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 822.54 282.70 L 845.08 282.70" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 822.54 282.70 L 822.54 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 822.54 414.94 L 822.54 426.96" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 759.05 426.96 L 777.46 426.96" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 777.46 426.96 L 822.54 426.96" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 777.46 282.70 L 822.54 282.70" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 777.46 282.70 L 777.46 354.83" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 777.46 414.94 L 777.46 426.96" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 754.92 336.46 L 754.92 282.70" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-projection="hlr" data-role="hub" data-id="HUB" data-tag="HUB" data-visibility="visible" d="M 754.92 282.70 L 777.46 282.70" stroke="#00e5ff" stroke-width="3.0" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <g data-role="dimension" data-tag="sheet:dim-X"><line x1="454.4" y1="1016.0" x2="1145.6" y2="1016.0" stroke="#00e5ff" stroke-width="1.2" /><text x="800.0" y="1008.0" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#00e5ff">X: 3505 MM (11.50 FT)</text></g>
+  <g data-role="dimension" data-tag="sheet:dim-Z"><line x1="454.4" y1="1016.0" x2="454.4" y2="282.7" stroke="#00e5ff" stroke-width="1.2" /><text x="454.4" y="641.4" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#00e5ff">Z: 3719 MM (12.20 FT)</text></g>
+  <g data-role="post" data-id="P1" data-tag="P1" data-label="P1" data-member-role="post">    <text data-role="label" x="1100.5" y="655.4" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">P1</text>  </g>
+  <g data-role="footing" data-id="FT1" data-tag="FT1" data-label="FT1" data-member-role="footing">    <text data-role="label" x="1100.5" y="946.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">FT1</text>  </g>
+  <g data-role="post" data-id="P2" data-tag="P2" data-label="P2" data-member-role="post">    <text data-role="label" x="950.3" y="655.4" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">P2</text>  </g>
+  <g data-role="footing" data-id="FT2" data-tag="FT2" data-label="FT2" data-member-role="footing">    <text data-role="label" x="950.3" y="946.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">FT2</text>  </g>
+  <g data-role="post" data-id="P3" data-tag="P3" data-label="P3" data-member-role="post">    <text data-role="label" x="649.7" y="655.4" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">P3</text>  </g>
+  <g data-role="footing" data-id="FT3" data-tag="FT3" data-label="FT3" data-member-role="footing">    <text data-role="label" x="649.7" y="946.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">FT3</text>  </g>
+  <g data-role="post" data-id="P4" data-tag="P4" data-label="P4" data-member-role="post">    <text data-role="label" x="499.5" y="655.4" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">P4</text>  </g>
+  <g data-role="footing" data-id="FT4" data-tag="FT4" data-label="FT4" data-member-role="footing">    <text data-role="label" x="499.5" y="946.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">FT4</text>  </g>
+  <g data-role="post" data-id="P5" data-tag="P5" data-label="P5" data-member-role="post">    <text data-role="label" x="649.7" y="655.4" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">P5</text>  </g>
+  <g data-role="footing" data-id="FT5" data-tag="FT5" data-label="FT5" data-member-role="footing">    <text data-role="label" x="649.7" y="946.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">FT5</text>  </g>
+  <g data-role="post" data-id="P6" data-tag="P6" data-label="P6" data-member-role="post">    <text data-role="label" x="950.3" y="655.4" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">P6</text>  </g>
+  <g data-role="footing" data-id="FT6" data-tag="FT6" data-label="FT6" data-member-role="footing">    <text data-role="label" x="950.3" y="946.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">FT6</text>  </g>
+  <g data-role="beam" data-id="B1" data-tag="B1" data-label="B1" data-member-role="beam">    <text data-role="label" x="1025.4" y="384.9" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">B1</text>  </g>
+  <g data-role="beam" data-id="B2" data-tag="B2" data-label="B2" data-member-role="beam">    <text data-role="label" x="800.0" y="384.9" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">B2</text>  </g>
+  <g data-role="beam" data-id="B3" data-tag="B3" data-label="B3" data-member-role="beam">    <text data-role="label" x="574.6" y="384.9" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">B3</text>  </g>
+  <g data-role="beam" data-id="B4" data-tag="B4" data-label="B4" data-member-role="beam">    <text data-role="label" x="574.6" y="384.9" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">B4</text>  </g>
+  <g data-role="beam" data-id="B5" data-tag="B5" data-label="B5" data-member-role="beam">    <text data-role="label" x="800.0" y="384.9" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">B5</text>  </g>
+  <g data-role="beam" data-id="B6" data-tag="B6" data-label="B6" data-member-role="beam">    <text data-role="label" x="1025.4" y="384.9" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">B6</text>  </g>
+  <g data-role="brace" data-id="K1A" data-tag="K1A" data-label="K1A" data-member-role="brace">    <text data-role="label" x="1068.6" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K1A</text>  </g>
+  <g data-role="brace" data-id="K1B" data-tag="K1B" data-label="K1B" data-member-role="brace">    <text data-role="label" x="982.2" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K1B</text>  </g>
+  <g data-role="brace" data-id="K2A" data-tag="K2A" data-label="K2A" data-member-role="brace">    <text data-role="label" x="886.4" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K2A</text>  </g>
+  <g data-role="brace" data-id="K2B" data-tag="K2B" data-label="K2B" data-member-role="brace">    <text data-role="label" x="713.6" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K2B</text>  </g>
+  <g data-role="brace" data-id="K3A" data-tag="K3A" data-label="K3A" data-member-role="brace">    <text data-role="label" x="617.8" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K3A</text>  </g>
+  <g data-role="brace" data-id="K3B" data-tag="K3B" data-label="K3B" data-member-role="brace">    <text data-role="label" x="531.4" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K3B</text>  </g>
+  <g data-role="brace" data-id="K4A" data-tag="K4A" data-label="K4A" data-member-role="brace">    <text data-role="label" x="531.4" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K4A</text>  </g>
+  <g data-role="brace" data-id="K4B" data-tag="K4B" data-label="K4B" data-member-role="brace">    <text data-role="label" x="617.8" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K4B</text>  </g>
+  <g data-role="brace" data-id="K5A" data-tag="K5A" data-label="K5A" data-member-role="brace">    <text data-role="label" x="713.6" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K5A</text>  </g>
+  <g data-role="brace" data-id="K5B" data-tag="K5B" data-label="K5B" data-member-role="brace">    <text data-role="label" x="886.4" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K5B</text>  </g>
+  <g data-role="brace" data-id="K6A" data-tag="K6A" data-label="K6A" data-member-role="brace">    <text data-role="label" x="982.2" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K6A</text>  </g>
+  <g data-role="brace" data-id="K6B" data-tag="K6B" data-label="K6B" data-member-role="brace">    <text data-role="label" x="1068.6" y="460.0" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">K6B</text>  </g>
+  <g data-role="rafter" data-id="R1" data-tag="R1" data-label="R1" data-member-role="rafter">    <text data-role="label" x="992.3" y="336.5" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">R1</text>  </g>
+  <g data-role="rafter" data-id="R2" data-tag="R2" data-label="R2" data-member-role="rafter">    <text data-role="label" x="896.2" y="336.5" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">R2</text>  </g>
+  <g data-role="rafter" data-id="R3" data-tag="R3" data-label="R3" data-member-role="rafter">    <text data-role="label" x="703.8" y="336.5" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">R3</text>  </g>
+  <g data-role="rafter" data-id="R4" data-tag="R4" data-label="R4" data-member-role="rafter">    <text data-role="label" x="607.7" y="336.5" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">R4</text>  </g>
+  <g data-role="rafter" data-id="R5" data-tag="R5" data-label="R5" data-member-role="rafter">    <text data-role="label" x="703.8" y="336.5" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">R5</text>  </g>
+  <g data-role="rafter" data-id="R6" data-tag="R6" data-label="R6" data-member-role="rafter">    <text data-role="label" x="896.2" y="336.5" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">R6</text>  </g>
+  <g data-role="hub" data-id="HUB" data-tag="HUB" data-label="HUB" data-member-role="hub">    <text data-role="label" x="800.0" y="341.1" font-family="monospace" font-size="12" font-weight="bold" fill="#00ffff" text-anchor="middle" dominant-baseline="central">HUB</text>  </g>
+
+    <g data-role="title-block" transform="translate(1240, 1040)">
+        <rect width="340" height="140" fill="#12253a" stroke="#00ffff" stroke-width="1.8" />
+        <line x1="0" y1="40" x2="340" y2="40" stroke="#00ffff" stroke-width="1.0" />
+        <text x="15" y="28" font-family="monospace" font-size="18" font-weight="bold" fill="#00ffff">ELEVATION FRAMING BLUEPRINT</text>
         <text x="15" y="60" font-family="monospace" font-size="11" fill="#00ffff">STRUCTURE: PERGOLA</text>
         <text x="15" y="80" font-family="monospace" font-size="11" fill="#00ffff">JURISDICTION: BC_SAANICH</text>
         <text x="15" y="100" font-family="monospace" font-size="11" fill="#00ffff">SOURCE HASH: intent_1</text>
-        <text x="15" y="120" font-family="monospace" font-size="11" fill="#00ffff">REVISION: rev-10ft | SCALE: AUTO</text>
+        <text x="15" y="120" font-family="monospace" font-size="11" fill="#00ffff">REVISION: 8e093b56 | SCALE: AUTO</text>
     </g>
+
+
     <!-- VALIDATOR_ANCHORS: 0:12 28.71° 9.1° -->
     <!-- SAW_SETTINGS: {"miter_deg": 28.71, "bevel_deg": 9.1} -->
     <!-- COORDINATE MAP: {"viewBox": "0 0 1600 1200", "width_px": 1600, "height_px": 1200, "grade_y": 1080, "scale_px_per_ft": 42.0, "post_top_y": 702, "beam_top_y": 660, "hub_apex_y": 660} -->
     <g style="visibility:hidden; display:none;"><text>0:12</text><text>28.71</text><text>9.1</text></g>
+
 </svg>

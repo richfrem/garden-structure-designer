@@ -16,9 +16,10 @@ agent-workspace/
 
 # Python & Testing Caches
 __pycache__/
+**/.pytest_cache/
+.pytest_cache/
 *.py[cod]
 *$py.class
-.pytest_cache/
 .coverage
 htmlcov/
 
@@ -41,3 +42,9 @@ docs/docs/superpowers/
 context/events.jsonl
 context/design-dashboard.md
 context/staging/
+
+# Ephemeral pipeline run outputs
+outputs/*.svg
+outputs/*.png
+outputs/*.glb
+outputs/*.manifest.json

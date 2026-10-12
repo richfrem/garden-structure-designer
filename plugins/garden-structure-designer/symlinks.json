@@ -2964,6 +2964,114 @@
       "dst": "plugins/garden-structure-designer/skills/structural-engine/references/dispatch-strategy.md",
       "strategy": "symlink",
       "description": "agent reference shared with skill structural-engine"
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_camera.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cad_camera.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_export_glb.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cad_export_glb.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_projection_hlr.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cad_projection_hlr.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_render_contracts.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/cad_render_contracts.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/render_presentation_webgl.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/render_presentation_webgl.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/sheet_composer.py",
+      "dst": "plugins/garden-structure-designer/skills/drawing-generator/scripts/sheet_composer.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_camera.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cad_camera.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_export_glb.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cad_export_glb.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_projection_hlr.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cad_projection_hlr.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_render_contracts.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/cad_render_contracts.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/render_presentation_webgl.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/render_presentation_webgl.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/sheet_composer.py",
+      "dst": "plugins/garden-structure-designer/skills/timber-frame-cad/scripts/sheet_composer.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_camera.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/cad_camera.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_export_glb.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/cad_export_glb.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_projection_hlr.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/cad_projection_hlr.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/cad_render_contracts.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/cad_render_contracts.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/render_presentation_webgl.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/render_presentation_webgl.py",
+      "strategy": "symlink",
+      "description": ""
+    },
+    {
+      "src": "plugins/garden-structure-designer/scripts/sheet_composer.py",
+      "dst": "plugins/garden-structure-designer/skills/shop-blueprint-generator/scripts/sheet_composer.py",
+      "strategy": "symlink",
+      "description": ""
     }
   ]
 }
