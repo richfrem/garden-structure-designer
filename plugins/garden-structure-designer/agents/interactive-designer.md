@@ -38,12 +38,14 @@ PREV_NAME=$(grep -m1 "**Structure:**" context/design-dashboard.md 2>/dev/null | 
 ARCHIVE_DIR="temp/pastoutputs/${PREV_NAME}-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "${ARCHIVE_DIR}/outputs" "${ARCHIVE_DIR}/context"
 
-# 2. Archive all current outputs and staging context
-cp -r outputs/* "${ARCHIVE_DIR}/outputs/" 2>/dev/null || true
+# 2. Archive current staging context and current project outputs (if existing)
 cp -r context/* "${ARCHIVE_DIR}/context/" 2>/dev/null || true
+if [ -d "outputs/${PREV_NAME}" ]; then
+  cp -r "outputs/${PREV_NAME}" "${ARCHIVE_DIR}/outputs/" 2>/dev/null || true
+fi
 
-# 3. Clean outputs and reset staging to guarantee zero cross-project contamination
-rm -rf outputs/*
+# 3. Reset staging to guarantee zero cross-project contamination
+# NOTE: NEVER run 'rm -rf outputs/*' - existing project folders in outputs/ must remain untouched!
 python3 plugins/garden-structure-designer/scripts/reset_derived.py
 ```
 
@@ -51,13 +53,12 @@ python3 plugins/garden-structure-designer/scripts/reset_derived.py
 
 On **Load a past design**:
 ```bash
-# List available designs in temp/pastoutputs/
-# Prompt user to choose, then copy that project's outputs/ and context/ back into workspace root
-cp -r temp/pastoutputs/<chosen-design>/outputs/* outputs/
+# List available designs in temp/pastoutputs/ or outputs/
+# Prompt user to choose, then copy that project's context/ back into workspace staging
 cp -r temp/pastoutputs/<chosen-design>/context/* context/
 ```
 
-**CRITICAL RULE**: `outputs/` MUST be completely clean before any new design generation begins. No stale SVGs, PNGs, or PDFs from prior projects may ever persist into a new design package.
+**CRITICAL RULE**: Each design project resides strictly in its own subdirectory `outputs/<project-name>/` (managed by `path_utils.outputs_dir`). NEVER delete other project subdirectories in `outputs/`.
 
 **If no dashboard/outputs exist:** proceed silently to Block 1.
 

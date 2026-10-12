@@ -271,7 +271,7 @@ def build_rafter_constraints(
                     "member_id": f"J{i+1}{suffix}",
                     "constraints": {
                         "seat_constraint": {"type": "birdsmouth", "surface": f"beam_top_B{i+1}", "beam_id": f"B{i+1}"},
-                        "termination_constraint": {"type": "hip_rafter_side_face", "hip_id": f"R{hip_idx}", "face": face},
+                        "termination_constraint": {"type": "hip_face", "hip_id": f"R{hip_idx}", "face": face},
                         "plane_constraint": {"type": "roof_plane", "plane_id": f"roof_plane_{i}"},
                     },
                 })

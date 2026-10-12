@@ -1,0 +1,68 @@
+{
+  "schema": "garden-structure-designer/cut-list/1.0",
+  "source_hash": "intent_12ft_hex_gazebo_western_red_cedar_20261012",
+  "members": [
+    {
+      "id": "M01",
+      "name": "Main posts",
+      "profile": "7x7",
+      "width_in": 7.5,
+      "depth_in": 7.5,
+      "cut_length_ft": 8.5,
+      "qty": 6,
+      "order_length_ft": 10,
+      "bf_per_piece_net": 39.84,
+      "bf_per_piece_order": 46.88,
+      "bf_total_net": 239.06,
+      "bf_total_order": 281.25
+    },
+    {
+      "id": "M02",
+      "name": "Ring beams",
+      "profile": "5x9",
+      "width_in": 5.5,
+      "depth_in": 9.5,
+      "cut_length_ft": 6.93,
+      "qty": 6,
+      "order_length_ft": 8,
+      "bf_per_piece_net": 30.17,
+      "bf_per_piece_order": 34.83,
+      "bf_total_net": 181.0,
+      "bf_total_order": 209.0
+    },
+    {
+      "id": "M03",
+      "name": "Hip rafters",
+      "profile": "4x6",
+      "width_in": 4.0,
+      "depth_in": 6.0,
+      "cut_length_ft": 7.38,
+      "qty": 6,
+      "order_length_ft": 8,
+      "bf_per_piece_net": 14.76,
+      "bf_per_piece_order": 16.0,
+      "bf_total_net": 88.54,
+      "bf_total_order": 96.0
+    },
+    {
+      "id": "M04",
+      "name": "Central hub",
+      "profile": "7x7",
+      "width_in": 7.5,
+      "depth_in": 7.5,
+      "cut_length_ft": 2.0,
+      "qty": 1,
+      "order_length_ft": 8,
+      "bf_per_piece_net": 9.38,
+      "bf_per_piece_order": 37.5,
+      "bf_total_net": 9.38,
+      "bf_total_order": 37.5
+    }
+  ],
+  "totals": {
+    "bf_net": 518.0,
+    "bf_order": 623.8,
+    "waste_factor": 0.1,
+    "bf_with_waste": 686.1
+  }
+}

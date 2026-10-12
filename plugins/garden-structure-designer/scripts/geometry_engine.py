@@ -693,8 +693,27 @@ def _joints_jack_rafters(c: SimpleNamespace) -> None:
         for i in range(qty):
             p1_xy = post_xy[i]; p2_xy = post_xy[(i+1)%qty]; dx = p2_xy[0]-p1_xy[0]; dy = p2_xy[1]-p1_xy[1]; blen = math.sqrt(dx*dx + dy*dy); ux, uy = dx/blen, dy/blen; in_x, in_y = -uy, ux; spacing = blen / (jack_count + 1)
             for j_idx in range(jack_count):
-                dist = (j_idx + 1) * spacing; p_seat_xy = (p1_xy[0] + ux*dist, p1_xy[1] + uy*dist); p_seat_top = (p_seat_xy[0], p_seat_xy[1], Z_BEAM_TOP + v_shift_common); dir_jack = (in_x, in_y, roof_r / apothem); f = (j_idx + 1.0) / (jack_count + 1.0); hip_idx = i if f < 0.5 else (i+1)%qty; suffix = 'a' if f < 0.5 else 'b'; h_p0 = (post_xy[hip_idx][0], post_xy[hip_idx][1], Z_BEAM_TOP); h_dir = vnorm(vsub((0.0,0.0, Z_APEX + v_shift_common), (h_p0[0], h_p0[1], Z_BEAM_TOP + v_shift_common))); h_perp_raw = (-h_dir[1], h_dir[0], 0.0); h_perp = vmul(h_perp_raw, 1.0 if vdot(vsub(p_seat_top, h_p0), h_perp_raw) >= 0.0 else -1.0); p_side = vadd((post_xy[hip_idx][0], post_xy[hip_idx][1], Z_BEAM_TOP), vmul(h_perp, rafter_w_in/24.0)); p_end, _ = intersect_line_plane(p_seat_top, dir_jack, p_side, h_perp); p_tail = vadd(p_seat_top, vmul(dir_jack, -oh_ft / v2_radius(dir_jack)))
-                jack_endpoints.append({"id": f"J{i+1}{suffix}", "start": [round(x, 4) for x in p_tail], "end": [round(x, 4) for x in p_end], "seat_point": [round(x, 4) for x in p_seat_top], "mate_id": f"R{hip_idx+1}"})
+                dist = (j_idx + 1) * spacing
+                p_seat_xy = (p1_xy[0] + ux*dist, p1_xy[1] + uy*dist)
+                p_seat_top = (p_seat_xy[0], p_seat_xy[1], Z_BEAM_TOP + v_shift_common)
+                dir_jack = (in_x, in_y, roof_r / apothem)
+                f = (j_idx + 1.0) / (jack_count + 1.0)
+                hip_idx = i if f < 0.5 else (i+1)%qty
+                suffix = 'a' if f < 0.5 else 'b'
+                h_p0 = (post_xy[hip_idx][0], post_xy[hip_idx][1], Z_BEAM_TOP)
+                h_dir = vnorm(vsub((0.0, 0.0, Z_APEX + v_shift_common), (h_p0[0], h_p0[1], Z_BEAM_TOP + v_shift_common)))
+                h_perp_raw = (-h_dir[1], h_dir[0], 0.0)
+                h_perp = vmul(h_perp_raw, 1.0 if vdot(vsub(p_seat_top, h_p0), h_perp_raw) >= 0.0 else -1.0)
+                p_side = vadd((post_xy[hip_idx][0], post_xy[hip_idx][1], Z_BEAM_TOP), vmul(h_perp, rafter_w_in/24.0))
+                p_end, _ = intersect_line_plane(p_seat_top, dir_jack, p_side, h_perp)
+                p_tail = vadd(p_seat_top, vmul(dir_jack, -oh_ft / v2_radius(dir_jack)))
+                jack_endpoints.append({
+                    "id": f"J{i+1}{suffix}",
+                    "start": [round(x, 4) for x in p_tail],
+                    "end": [round(x, 4) for x in p_end],
+                    "seat_point": [round(x, 4) for x in p_seat_top],
+                    "mate_id": f"R{hip_idx+1}"
+                })
     joints["jack_rafters"] = {"enabled": jack_enabled, "endpoints": jack_endpoints}
 
 
