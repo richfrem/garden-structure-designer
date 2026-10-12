@@ -48,3 +48,48 @@ def test_family_registry_is_single_sourced():
     assert stage05.RESERVED_FAMILIES is constants.RESERVED_FAMILIES
     assert topology_compiler.IMPLEMENTED_FAMILIES is constants.IMPLEMENTED_FAMILIES
     assert topology_compiler.RESERVED_FAMILIES is constants.RESERVED_FAMILIES
+
+
+def test_valid_orthogonal_grid_passes():
+    structure = {
+        "meta": {"topology_family": "OrthogonalGridTopology"},
+        "structure": {"sides": 4, "shape": "rectangle"},
+        "layout": {"post_count": 6, "grid": {"rows": 2, "cols": 3}},
+        "roof": {"primary_rafters": {"count": 7}},
+        "hub": {"type": "none"},
+    }
+    assert _run(structure) is structure
+
+
+def test_orthogonal_grid_invalid_sides_fails():
+    structure = {
+        "meta": {"topology_family": "OrthogonalGridTopology"},
+        "structure": {"sides": 6, "shape": "rectangle"},
+        "layout": {"post_count": 6},
+        "roof": {"primary_rafters": {"count": 6}},
+        "hub": {"type": "none"},
+    }
+    assert _run(structure)["error_code"] is TopologyErrorCode.GEOMETRY_INVALID
+
+
+def test_orthogonal_grid_hub_type_mismatch_fails():
+    structure = {
+        "meta": {"topology_family": "OrthogonalGridTopology"},
+        "structure": {"sides": 4, "shape": "rectangle"},
+        "layout": {"post_count": 6},
+        "roof": {"primary_rafters": {"count": 6}},
+        "hub": {"type": "hexagonal_prism"},
+    }
+    assert _run(structure)["error_code"] is TopologyErrorCode.HUB_TYPE_MISMATCH
+
+
+def test_orthogonal_grid_cardinality_mismatch_fails():
+    structure = {
+        "meta": {"topology_family": "OrthogonalGridTopology"},
+        "structure": {"sides": 4, "shape": "rectangle"},
+        "layout": {"post_count": 6, "grid": {"rows": 2, "cols": 4}},
+        "roof": {"primary_rafters": {"count": 6}},
+        "hub": {"type": "none"},
+    }
+    assert _run(structure)["error_code"] is TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH
+

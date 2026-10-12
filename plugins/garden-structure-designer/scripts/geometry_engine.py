@@ -177,7 +177,7 @@ def _resolved_context(structure: dict, joints: dict) -> SimpleNamespace:
         PHW=structure["members"]["posts"]["actual_width_in"] / 24.0, PHD=structure["members"]["posts"]["actual_depth_in"] / 24.0,
         BHW=structure["members"]["beams"]["actual_width_in"] / 24.0, BHD=structure["members"]["beams"]["actual_depth_in"] / 24.0,
         RHW=structure["roof"]["primary_rafters"]["actual_width_in"] / 24.0, RHD=structure["roof"]["primary_rafters"]["actual_depth_in"] / 24.0,
-        KHW=structure["bracing"]["brace"]["actual_width_in"] / 24.0, KHD=structure["bracing"]["brace"]["actual_depth_in"] / 24.0,
+        KHW=(structure.get("bracing", {}).get("brace", {}).get("actual_width_in") or 3.5) / 24.0, KHD=(structure.get("bracing", {}).get("brace", {}).get("actual_depth_in") or 3.5) / 24.0,
         UP=(0.0, 0.0, 1.0),
         planes_map={p["id"]: p for p in structure["cad_constraints"]["reference_planes"]},
         zp=zp, pxy=joints["layout"]["post_xy"], Z_BEAM_TOP=zp["Z_BEAM_TOP"],
@@ -203,35 +203,21 @@ def _add_posts_and_footings(ctx: SimpleNamespace) -> None:
 
 
 def _add_beams(ctx: SimpleNamespace) -> None:
-    """Beams: perimeter ring for polygons, the fixed 6-beam layout for the 6-post rectangle."""
+    """Beams: perimeter ring from beam_segments or falling back to polygon ring."""
     structure, qty, BHW, BHD, UP, zp, pxy = ctx.structure, ctx.qty, ctx.BHW, ctx.BHD, ctx.UP, ctx.zp, ctx.pxy
     add_prism = partial(_add_prism, ctx.resolved)
-    shape = structure.get("layout", {}).get("shape", structure.get("structure", {}).get("shape", "polygon"))
-    if shape == "rectangle" and qty == 6:
-        # Standard post-and-beam rectangular pergola:
-        # 3 Transverse Beams (spanning across width at X = +hx, 0, -hx):
-        # B1: (P1 to P2), B2: (P6 to P3), B3: (P5 to P4)
-        # 2 Longitudinal Beams / Headers (spanning along length at Y = -hy and Y = +hy):
-        # B4: (P5 to P1 along Y=-hy), B5: (P4 to P2 along Y=+hy)
-        # Plus optional middle ties
-        beam_connections = [
-            ("B1", 0, 1), # Transverse right: P1(+hx,-hy) to P2(+hx,+hy)
-            ("B2", 5, 2), # Transverse middle: P6(0,-hy) to P3(0,+hy)
-            ("B3", 4, 3), # Transverse left: P5(-hx,-hy) to P4(-hx,+hy)
-            ("B4", 4, 0), # Longitudinal front: P5(-hx,-hy) to P1(+hx,-hy)
-            ("B5", 3, 1), # Longitudinal back: P4(-hx,+hy) to P2(+hx,+hy)
-            ("B6", 5, 2), # Center carrier/ridge tie
-        ]
-        for bid, i1, i2 in beam_connections:
-            p1 = pxy[i1]
-            p2 = pxy[i2]
+    beam_segments = ctx.joints.get("layout", {}).get("beam_segments")
+    if beam_segments:
+        for seg in beam_segments:
+            bid = seg["id"]
+            p1 = pxy[seg["i0"]]
+            p2 = pxy[seg["i1"]]
             p0 = (p1[0], p1[1], zp["Z_BEAM_CENTER"])
             pt_end = (p2[0], p2[1], zp["Z_BEAM_CENTER"])
             beam_len = vdist(p0, pt_end)
             cs = {"start_on_post": True, "end_on_post": True}
             add_prism(p0, pt_end, BHW, BHD, UP, "beam", bid, beam_len, 0.0, cs)
     else:
-        # Beams around polygon perimeter
         for i in range(qty):
             beam_id = f"B{i+1}"
             p1 = pxy[i]
@@ -513,14 +499,24 @@ def _joints_roof_geometry(c: SimpleNamespace) -> None:
 def _joints_hub(c: SimpleNamespace) -> None:
     """Hub joint: type, radius, height and one face plane (H1..HN) per side."""
     structure, hub_r, qty, beam_d_ft, Z_APEX, joints = c.structure, c.hub_r, c.qty, c.beam_d_ft, c.Z_APEX, c.joints
-    joints["hub"] = {
-        "type": structure["hub"]["type"],
-        "radius_ft": round(hub_r, 4),
-        "height_ft": round(beam_d_ft * 1.2, 3),
-        "face_planes": {
-            "planes": [{"id": f"H{i+1}", "point": (hub_r*math.cos(2*math.pi*i/qty), hub_r*math.sin(2*math.pi*i/qty), Z_APEX), "normal": (math.cos(2*math.pi*i/qty), math.sin(2*math.pi*i/qty), 0.0)} for i in range(qty)]
+    hub_type = structure.get("hub", {}).get("type")
+    has_hub = hub_type not in ("none", "", None)
+    if has_hub:
+        joints["hub"] = {
+            "type": hub_type,
+            "radius_ft": round(hub_r, 4),
+            "height_ft": round(beam_d_ft * 1.2, 3),
+            "face_planes": {
+                "planes": [{"id": f"H{i+1}", "point": (hub_r*math.cos(2*math.pi*i/qty), hub_r*math.sin(2*math.pi*i/qty), Z_APEX), "normal": (math.cos(2*math.pi*i/qty), math.sin(2*math.pi*i/qty), 0.0)} for i in range(qty)]
+            }
         }
-    }
+    else:
+        joints["hub"] = {
+            "type": "none",
+            "radius_ft": 0.0,
+            "height_ft": 0.0,
+            "face_planes": {"planes": []}
+        }
 
 
 def _joints_primary_rafters(c: SimpleNamespace) -> None:
@@ -636,17 +632,20 @@ def compute_from_structure(path: str):
     
     # Invariant checks
     rafter_count = s["roof"]["primary_rafters"]["count"]
-    if rafter_count != qty:
-        s["geometry"] = {"_sealed": False, "warnings": [f"INVARIANT_VIOLATION: rafter count {rafter_count} != post count {qty}"]}
-        save_structure(s, path)
-        sys.exit(1)
+    family = s.get("meta", {}).get("topology_family")
+    shape = s.get("layout", {}).get("shape", s.get("structure", {}).get("shape", "polygon"))
+    if family != "OrthogonalGridTopology" and shape != "rectangle":
+        if rafter_count != qty:
+            s["geometry"] = {"_sealed": False, "warnings": [f"INVARIANT_VIOLATION: rafter count {rafter_count} != post count {qty}"]}
+            save_structure(s, path)
+            sys.exit(1)
         
     # Translate to constraints if not already present
     if "cad_constraints" not in s:
         from cad_language_translator import translate_to_constraints
         translate_to_constraints(s)
         
-    cuts = {"miter_deg": 28.71, "bevel_deg": 9.1}; rl = rafter_length(span, pr, rr, oh); rise = {"rise_ft": round(span*(pr/rr), 3)}; height = total_height(post_ft, beam_in, span, pr, rr); hr = max(s["hub"]["radius_min_ft"], 0.75); lay = svg_layout(height["total_height_ft"], span, qty); sc = lay["scale_px_per_ft"]; g = lay["grade_y"]; svg = {**lay, "post_top_y": round(g-post_ft*sc), "beam_top_y": round(g-(post_ft+beam_in/12.0)*sc), "hub_apex_y": round(g-height["total_height_ft"]*sc)}; s["geometry"] = {"_sealed": True, "compound_cut": cuts, "beam_ring": beam_ring_miter(qty), "rafter": rl, "roof_rise": rise, "total_height": height, "hub_radius_ft": round(hr, 4), "svg_coordinates": svg, "joints": compute_joints(s, cuts, rl, rise, height, hr, svg)}; s["meta"]["lifecycle"] = "GEOMETRY_SEALED"; save_structure(s, path); return s
+    cuts = {"miter_deg": 28.71, "bevel_deg": 9.1}; rl = rafter_length(span, pr, rr, oh); rise = {"rise_ft": round(span*(pr/rr), 3)}; height = total_height(post_ft, beam_in, span, pr, rr); hr = max(s["hub"]["radius_min_ft"], 0.75) if s.get("hub", {}).get("type") not in ("none", "", None) else 0.0; lay = svg_layout(height["total_height_ft"], span, qty); sc = lay["scale_px_per_ft"]; g = lay["grade_y"]; svg = {**lay, "post_top_y": round(g-post_ft*sc), "beam_top_y": round(g-(post_ft+beam_in/12.0)*sc), "hub_apex_y": round(g-height["total_height_ft"]*sc)}; s["geometry"] = {"_sealed": True, "compound_cut": cuts, "beam_ring": beam_ring_miter(qty), "rafter": rl, "roof_rise": rise, "total_height": height, "hub_radius_ft": round(hr, 4), "svg_coordinates": svg, "joints": compute_joints(s, cuts, rl, rise, height, hr, svg)}; s["meta"]["lifecycle"] = "GEOMETRY_SEALED"; save_structure(s, path); return s
 
 def main():
     """CLI: compute geometry for a structure.json that has a meta block."""

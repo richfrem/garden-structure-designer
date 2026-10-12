@@ -262,9 +262,12 @@ def _view_annotations(structure: dict, view_type: str, coords: dict, scale: floa
     """Static dimension/leader annotations for the sheet type."""
     out: list[str] = []
     r_ft = structure["layout"]["inscribed_radius_ft"]
+    shape = structure.get("layout", {}).get("shape", structure.get("structure", {}).get("shape", "polygon"))
+    span_ft = float(structure["layout"].get("length_ft") or (r_ft * 2.0)) if shape == "rectangle" else r_ft * 2.0
+    half_span = span_ft / 2.0
     zp = (structure.get("geometry", {}).get("joints", {}).get("z_planes") or {})
     if "plan" in view_type:
-        draw_dimension(out, cx-r_ft*scale, cy+r_ft*scale+50, cx+r_ft*scale, cy+r_ft*scale+50, f"MAX SPAN: {r_ft*2} FT", is_blueprint=is_blueprint)
+        draw_dimension(out, cx-half_span*scale, cy+half_span*scale+50, cx+half_span*scale, cy+half_span*scale+50, f"MAX SPAN: {span_ft:g} FT", is_blueprint=is_blueprint)
         return out
     ph = zp.get("Z_POST_TOP") or structure["members"]["posts"]["cut_length_ft"]
     if "elevation" in view_type:
@@ -272,8 +275,8 @@ def _view_annotations(structure: dict, view_type: str, coords: dict, scale: floa
         out.append(f'  <line x1="100" y1="{cy}" x2="{coords["width_px"]-100}" y2="{cy}" stroke="{palette["outline"]}" stroke-width="{LW_GROUND_LINE}" />')
     else:
         # 3D views: add minimal dimensions to satisfy validator
-        draw_dimension(out, cx-r_ft*scale, cy+r_ft*scale, cx+r_ft*scale, cy+r_ft*scale, f"OVERALL SPAN: {r_ft*2} FT", is_blueprint=is_blueprint)
-        draw_leader(out, cx-r_ft*scale, cy, cx-r_ft*scale-100, cy-100, f"POST HT: {ph} FT", is_blueprint=is_blueprint)
+        draw_dimension(out, cx-half_span*scale, cy+half_span*scale, cx+half_span*scale, cy+half_span*scale, f"OVERALL SPAN: {span_ft:g} FT", is_blueprint=is_blueprint)
+        draw_leader(out, cx-half_span*scale, cy, cx-half_span*scale-100, cy-100, f"POST HT: {ph} FT", is_blueprint=is_blueprint)
     return out
 
 

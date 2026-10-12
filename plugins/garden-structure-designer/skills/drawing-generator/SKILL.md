@@ -41,15 +41,17 @@ metadata:
 ## Quick start
 ```bash
 python3 scripts/render_drawings.py [structure.json]
-python3 scripts/export_cad.py --structure structure.json --output-dir outputs/cad [--writer auto|cadcraft|ezdxf]
+python3 scripts/export_cad.py --structure structure.json --output-dir outputs/cad [--writer auto|cadcraft|ezdxf] [--open]
 python3 scripts/cross_artifact_validator.py [staging_dir] [outputs_dir]
+python3 scripts/open_in_cadcraft.py outputs/cad/SB01-structure.dxf
 ```
 Run commands from the skill root. `scripts/` entries are file-level symlinks to the plugin's canonical `scripts/` (dereferenced on install); never edit them through the symlink.
 
 ## Workflow
 1. **Input**: sealed structure.json (Stage 2 topology valid).
 2. **Execution**: `render_drawings.py` -> 8 SVGs; `export_cad.py` -> `outputs/cad/SB01-structure.dxf` (3D framing) and `SB02-plan.dxf` (XY plan, Z = 0), both in millimetres (`$INSUNITS = 4`).
-3. **Gate**: `svg_validator.py` + `drawing_content_validator.py` per sheet; `cross_artifact_validator.py` for the DXFs (zero auditor errors, member-id parity with structure.json, SVG/DXF dimension cross-checks).
+3. **Inspection / Viewing**: Open in Cadcraft desktop app via `python3 scripts/open_in_cadcraft.py outputs/cad/SB01-structure.dxf` or `cargo run --manifest-path vendor/cadcraft/Cargo.toml -p cadcraft -- outputs/cad/SB01-structure.dxf`.
+4. **Gate**: `svg_validator.py` + `drawing_content_validator.py` per sheet; `cross_artifact_validator.py` for the DXFs (zero auditor errors, member-id parity with structure.json, SVG/DXF dimension cross-checks).
 
 ## Verification
 - `pytest tests/test_dxf_export_pipeline.py tests/test_cross_artifact_c4_gates.py tests/test_render_drawings_alignment.py tests/test_svg_validator_tags.py` (development checkout, run from the plugin root).

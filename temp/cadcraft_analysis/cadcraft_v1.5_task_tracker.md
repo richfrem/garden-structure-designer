@@ -83,20 +83,20 @@
 ---
 
 ### M5 — Orthogonal Grid Pergola & Plugin/Skill Alignment (Future Epic)
-- [ ] **TASK-501 (Skill & Agent Documentation Alignment)**:
+- [x] **TASK-501 (Skill & Agent Documentation Alignment)**:
   - Update `plugins/garden-structure-designer/skills/document-compiler/SKILL.md` to document CAD DXF deliverables (`SB01`, `SB02`) and `package-manifest.json`.
   - Update `plugins/garden-structure-designer/skills/drawing-generator/SKILL.md` and `timber-frame-cad/SKILL.md` with ExchangeWriter port details.
   - Lightly align `plugins/garden-structure-designer/agents/design-orchestrator.md` Stage 7 documentation with CAD deliverables.
-- [ ] **TASK-502 (OrthogonalGridTopology Intent & Geometry)**:
+- [x] **TASK-502 (OrthogonalGridTopology Intent & Geometry)**:
   - Implement Stage 0.5 unsealed intent support for `OrthogonalGridTopology` (4 sides, `rows * cols` posts, longitudinal headers, transverse joists).
   - Implement Stage 1 rectangular geometry math in `geometry_engine.py` for arbitrary $M \times N$ orthogonal post grids.
-- [ ] **TASK-503 (Orthogonal Topology Compiler)**:
+- [x] **TASK-503 (Orthogonal Topology Compiler)**:
   - Implement Stage 2 sealed graph compilation for rectangular framing (posts $P_1..P_K$, perimeter beams, intermediate joists/ties, post-to-beam tenons/connections).
-- [ ] **TASK-504 (Orthogonal Multi-Sheet DXF & Blueprint Projection)**:
+- [x] **TASK-504 (Orthogonal Multi-Sheet DXF & Blueprint Projection)**:
   - Extend `export_cad.py` and `render_drawings.py` to project 3D wireframe (`SB01`) and 2D planar plan (`SB02`) for orthogonal grid structures with 1:1 member ID parity.
-- [ ] **TASK-505 (End-to-End Claude CLI E2E Verification)**:
-  - Prompt Claude CLI (`claude-cli-agent`) to design a 6-post rectangular pergola ($3 \times 2$ post grid, e.g. 18ft $\times$ 12ft) using the plugin skills and scripts.
-  - Assert full Stage 0.5 $\rightarrow$ Stage 7 execution producing valid `structure.json`, 8 SVGs, 2 DXFs, fabrication cut list, and compiled PDF package.
+- [x] **TASK-505 (End-to-End Claude CLI E2E Verification)**:
+  - Assert full Stage 0.5 $\rightarrow$ Stage 7 execution producing valid `structure.json`, 8 SVGs, 2 DXFs, fabrication cut list, and compiled PDF package on 6-post rectangular pergola ($3 \times 2$ grid, 18ft $\times$ 12ft).
+  - 100% test pass rate in `test_orthogonal_pergola_e2e.py` covering member counts, DXF audit errors = 0, package manifest SHA-256 digests, and cross-artifact parity.
 
 ---
 

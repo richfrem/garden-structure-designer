@@ -30,6 +30,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+sys.path.insert(0, str(Path(__file__).parent))
 from cad_scene import (
     build_structure_scene,
     validate_scene_geometry,
@@ -284,14 +285,16 @@ def test_isometric_has_expected_semantic_counts():
             ids = {i for i in ids if i.startswith("R")}
         return len(ids)
 
-    qty = 6
-    assert count_unique("post")   == qty, f"Expected {qty} posts, got {count_unique('post')}"
-    assert count_unique("beam")   == qty, f"Expected {qty} beams, got {count_unique('beam')}"
-    assert count_unique("rafter") == qty, f"Expected {qty} primary rafters, got {count_unique('rafter')}"
-
-    # Hub appears as one logical member if structure has a hub
     import json
     struct_data = json.loads(model_path.read_text())
+    expected_posts = int(struct_data.get("layout", {}).get("post_count") or 6)
+    beam_segments = struct_data.get("geometry", {}).get("joints", {}).get("layout", {}).get("beam_segments")
+    expected_beams = len(beam_segments) if beam_segments else expected_posts
+    expected_rafters = int(((struct_data.get("roof") or {}).get("primary_rafters") or {}).get("count") or 6)
+
+    assert count_unique("post")   == expected_posts, f"Expected {expected_posts} posts, got {count_unique('post')}"
+    assert count_unique("beam")   == expected_beams, f"Expected {expected_beams} beams, got {count_unique('beam')}"
+    assert count_unique("rafter") == expected_rafters, f"Expected {expected_rafters} primary rafters, got {count_unique('rafter')}"
     has_hub = struct_data.get("hub", {}).get("type") not in ("none", "", None)
     if has_hub:
         hub_count = svg.count('data-role="hub"')

@@ -145,6 +145,7 @@ def _build_members(joints: dict, bracing: dict) -> list[dict[str, Any]]:
 def _build_connections(
     joints: dict,
     members: list[dict[str, Any]],
+    family: str = "RadialHubTopology",
 ) -> list[dict[str, Any]]:
     """Derive flat connection list from sealed joints data."""
     connections: list[dict[str, Any]] = []
@@ -169,18 +170,30 @@ def _build_connections(
             "to":   beam["id"],
         })
 
-    # --- Rafter → Hub (each hip rafter terminates at a hub face) ---
-    hub_face_planes = joints.get("hub", {}).get("face_planes", {}).get("planes", [])
-    rafter_members = [m for m in members if m["type"] == "rafter"]
-    for i, rafter in enumerate(rafter_members):
-        hub_face_id = hub_face_planes[i]["id"] if i < len(hub_face_planes) else None
-        connections.append({
-            "id":       f"J-{rafter['id']}-HUB",
-            "type":     "rafter_face_to_hub",
-            "from":     rafter["id"],
-            "to":       "HUB",
-            "hub_face": hub_face_id,
-        })
+    # --- Rafter connections ---
+    if family == "RadialHubTopology":
+        hub_face_planes = joints.get("hub", {}).get("face_planes", {}).get("planes", [])
+        rafter_members = [m for m in members if m["type"] == "rafter"]
+        for i, rafter in enumerate(rafter_members):
+            hub_face_id = hub_face_planes[i]["id"] if i < len(hub_face_planes) else None
+            connections.append({
+                "id":       f"J-{rafter['id']}-HUB",
+                "type":     "rafter_face_to_hub",
+                "from":     rafter["id"],
+                "to":       "HUB",
+                "hub_face": hub_face_id,
+            })
+    else:
+        rafter_members = [m for m in members if m["type"] == "rafter"]
+        beam_members = [m for m in members if m["type"] == "beam"]
+        for rafter in rafter_members:
+            for beam in beam_members:
+                connections.append({
+                    "id":   f"J-{rafter['id']}-{beam['id']}",
+                    "type": "rafter_seat_to_beam_top",
+                    "from": rafter["id"],
+                    "to":   beam["id"],
+                })
 
     # --- Brace → Post (lower foot) and Brace → Beam (upper head) ---
     layout = joints.get("layout", {})
@@ -225,9 +238,10 @@ def compile_topology(structure: dict) -> dict:
     """
     joints  = structure.get("geometry", {}).get("joints", {})
     bracing = joints.get("braces", {})
+    family  = (structure.get("meta") or {}).get("topology_family", "RadialHubTopology")
 
     members     = _build_members(joints, bracing)
-    connections = _build_connections(joints, members)
+    connections = _build_connections(joints, members, family)
 
     return {
         "schema_version": "1.0",
@@ -296,13 +310,26 @@ def _check_cardinality(structure: dict, layout: dict) -> Optional[dict]:
     if not _is_int(sides):
         return _failure(
             TopologyErrorCode.GEOMETRY_INVALID,
-            f"RadialHubTopology requires integer structure.sides, got {sides!r}.",
+            f"Integer structure.sides is required, got {sides!r}.",
         )
-    if len(post_xy) != sides:
-        return _failure(
-            TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
-            f"len(layout.post_xy) ({len(post_xy)}) must equal structure.sides ({sides}).",
-        )
+    family = (structure.get("meta") or {}).get("topology_family")
+    if family == "OrthogonalGridTopology":
+        if sides != 4:
+            return _failure(
+                TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
+                f"OrthogonalGridTopology requires structure.sides == 4, got {sides}.",
+            )
+        if len(post_xy) < 4:
+            return _failure(
+                TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
+                f"OrthogonalGridTopology requires at least 4 posts, got {len(post_xy)}.",
+            )
+    else:
+        if len(post_xy) != sides:
+            return _failure(
+                TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
+                f"len(layout.post_xy) ({len(post_xy)}) must equal structure.sides ({sides}).",
+            )
 
     cached_count = layout.get("post_count")
     if cached_count != len(post_xy):
@@ -357,7 +384,7 @@ def _check_connection_endpoints(
     return None
 
 
-def _check_polygon(post_xy: list) -> Optional[dict]:
+def _check_polygon(post_xy: list, family: str = "RadialHubTopology") -> Optional[dict]:
     """Posts must be finite, distinct, equally distant from the centroid and equally spaced counter-clockwise."""
     try:
         points = [(float(x), float(y)) for x, y in post_xy]
@@ -366,6 +393,12 @@ def _check_polygon(post_xy: list) -> Optional[dict]:
     if not all(math.isfinite(c) for p in points for c in p):
         return _failure(TopologyErrorCode.GEOMETRY_INVALID, "layout.post_xy contains a non-finite coordinate.")
     count = len(points)
+    for i in range(count):
+        for j in range(i + 1, count):
+            if math.hypot(points[i][0] - points[j][0], points[i][1] - points[j][1]) < 0.001:
+                return _failure(TopologyErrorCode.GEOMETRY_INVALID, f"Duplicate post coordinate at P{i+1} and P{j+1}.")
+    if family == "OrthogonalGridTopology":
+        return None
     cx, cy = sum(p[0] for p in points) / count, sum(p[1] for p in points) / count
     radii = [math.hypot(x - cx, y - cy) for x, y in points]
     if max(radii) - min(radii) > POLYGON_RADIUS_TOL_FT or min(radii) <= POLYGON_RADIUS_TOL_FT:
@@ -387,22 +420,33 @@ def _check_rafter_mirror(joints: dict) -> Optional[dict]:
     return None
 
 
-def _check_member_counts(sides: int, joints: dict, members: list[dict[str, Any]]) -> Optional[dict]:
-    """Beams and primary rafters must each number N; braces 2N when enabled, otherwise none."""
+def _check_member_counts(family: str, sides: int, joints: dict, members: list[dict[str, Any]]) -> Optional[dict]:
+    """Beams and primary rafters must each match expected counts; braces 2N when enabled, otherwise none."""
     braces_enabled = bool((joints.get("braces") or {}).get("enabled"))
-    expected = {"beam": sides, "rafter": sides, "brace": 2 * sides if braces_enabled else 0}
+    if family == "OrthogonalGridTopology":
+        beam_segments = joints.get("layout", {}).get("beam_segments") or []
+        primary_rafters = joints.get("primary_rafters") or []
+        expected_beams = len(beam_segments)
+        expected_rafters = len(primary_rafters)
+        brace_endpoints = (joints.get("braces") or {}).get("endpoints") or []
+        expected_braces = len(brace_endpoints) if braces_enabled else 0
+        expected = {"beam": expected_beams, "rafter": expected_rafters, "brace": expected_braces}
+    else:
+        expected = {"beam": sides, "rafter": sides, "brace": 2 * sides if braces_enabled else 0}
     for kind, want in expected.items():
         have = sum(1 for m in members if m["type"] == kind)
         if have != want:
             return _failure(
                 TopologyErrorCode.TOPOLOGY_CARDINALITY_MISMATCH,
-                f"Expected {want} {kind} member(s) for {sides} sides, found {have}.",
+                f"Expected {want} {kind} member(s), found {have}.",
             )
     return None
 
 
-def _check_rafter_faces(joints: dict, members: list[dict[str, Any]]) -> Optional[dict]:
+def _check_rafter_faces(family: str, joints: dict, members: list[dict[str, Any]]) -> Optional[dict]:
     """Rafter Ri must land on hub face Hi: the face plane has to exist (no implicit fallback)."""
+    if family == "OrthogonalGridTopology" or not any(m["type"] == "hub" for m in members):
+        return None
     if not any(m["type"] == "rafter" for m in members):
         return None
     planes = ((joints.get("hub") or {}).get("face_planes") or {}).get("planes") or []
@@ -417,19 +461,20 @@ def _check_rafter_faces(joints: dict, members: list[dict[str, Any]]) -> Optional
     return None
 
 
-def _validate_graph(joints: dict, layout: dict) -> Optional[dict]:
+def _validate_graph(structure: dict, joints: dict, layout: dict) -> Optional[dict]:
     """Builds members and connections from the solved arrays and checks ids, indices, counts and endpoints."""
+    family = (structure.get("meta") or {}).get("topology_family", "RadialHubTopology")
     try:
         members = _build_members(joints, joints.get("braces") or {})
         failure = (
             _check_unique_member_ids(members)
             or _check_beam_post_indices(members, len(layout["post_xy"]))
-            or _check_member_counts(len(layout["post_xy"]), joints, members)
-            or _check_rafter_faces(joints, members)
+            or _check_member_counts(family, len(layout["post_xy"]), joints, members)
+            or _check_rafter_faces(family, joints, members)
         )
         if failure:
             return failure
-        connections = _build_connections(joints, members)
+        connections = _build_connections(joints, members, family)
     except (KeyError, TypeError, ValueError, ZeroDivisionError) as exc:
         return _failure(
             TopologyErrorCode.GEOMETRY_INVALID,
@@ -453,10 +498,11 @@ def validate_sealed(structure: dict) -> dict:
 
     joints = geometry.get("joints") or {}
     layout = joints.get("layout") or {}
+    family = (structure.get("meta") or {}).get("topology_family", "RadialHubTopology")
     failure = _check_family(structure)
     failure = failure or _check_cardinality(structure, layout)
-    failure = failure or _check_polygon(layout["post_xy"]) or _check_rafter_mirror(joints)
-    failure = failure or _validate_graph(joints, layout)
+    failure = failure or _check_polygon(layout["post_xy"], family) or _check_rafter_mirror(joints)
+    failure = failure or _validate_graph(structure, joints, layout)
     if failure:
         return failure
     return {"valid": True, "topology": compile_topology(structure)}

@@ -103,9 +103,9 @@ DXF_BOUNDS_TOL_MM = 0.01  # C4: max absolute exchange error vs sealed solved geo
 DXF_PLANAR_TOL_MM = 1e-6  # SB02 must be planar (|Z| <= tol)
 DIM_CROSSCHECK_TOL_MM = MM_PER_INCH  # SVG label vs DXF geometry parity (1 in)
 
-# --- Topology family registry (C1): only the radial family is enabled in the initial production release ---
-IMPLEMENTED_FAMILIES: tuple[str, ...] = ("RadialHubTopology",)
-RESERVED_FAMILIES: tuple[str, ...] = ("OrthogonalGridTopology", "HipRidgeTopology")
+# --- Topology family registry (C1): radial family and orthogonal grid family ---
+IMPLEMENTED_FAMILIES: tuple[str, ...] = ("RadialHubTopology", "OrthogonalGridTopology")
+RESERVED_FAMILIES: tuple[str, ...] = ("HipRidgeTopology",)
 
 # --- Footings ---
 FOOTING_STUB_ABOVE_GRADE_FT = 0.33  # declared nowhere in structure.json; planning assumption for the pier stub above grade

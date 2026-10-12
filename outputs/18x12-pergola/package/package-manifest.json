@@ -1,0 +1,119 @@
+{
+  "version": "1.5",
+  "revision_id": "rev-m5-pergola-12x18-001",
+  "revision_hash": "18e0396aa3214949017be33cc97cbf934c8fc46dd2c9c862818a96f790b005af",
+  "schema_version": "2.0",
+  "topology_family": "OrthogonalGridTopology",
+  "artifacts": [
+    {
+      "path": "assembly-guide.md",
+      "sha256": "63a6b6bf1e7da2bdda19bf15fc46e325e9c1e090bfd40718fdfc72ae68c637ba",
+      "size_bytes": 1158
+    },
+    {
+      "path": "blueprint-component-isolation.svg",
+      "sha256": "d29b97ece607c494e7e2dbdb51ee495abf47201364a1452584b95cdc68cd51da",
+      "size_bytes": 7487
+    },
+    {
+      "path": "blueprint-elevation.svg",
+      "sha256": "6b4feefa94ce204a8e0c8f735f059817ada0d506c04e5ee2584904ee5e1da078",
+      "size_bytes": 33699
+    },
+    {
+      "path": "blueprint-isometric.svg",
+      "sha256": "9596c44425f25be6a575f5769aea726cf72d7255631309528dabcc3f4e04065d",
+      "size_bytes": 26888
+    },
+    {
+      "path": "blueprint-plan.svg",
+      "sha256": "17e51eef76d30abe7c24c24cfa5048db9ca98007f165e7476c048ef0e6bada0d",
+      "size_bytes": 31499
+    },
+    {
+      "path": "budget-estimate.md",
+      "sha256": "7b1aa14fe933dd59c469ac4a9ff7e4069a27f51df7e9b08fd9d62c35eba50232",
+      "size_bytes": 768
+    },
+    {
+      "path": "cad/SB01-structure.dxf",
+      "sha256": "c0141d98d0608d4e20d66d27f5a714d39d4321089c0a71337450288e020c3189",
+      "size_bytes": 135127
+    },
+    {
+      "path": "cad/SB01-structure.pdf",
+      "sha256": "2be401d907ff5c8fa6b8c5db8786df2dfc265b3ae923b7b2d2964952be07c0eb",
+      "size_bytes": 3924
+    },
+    {
+      "path": "cad/SB01-structure.png",
+      "sha256": "bc111689ccc2da65900f9730aaa348b64a8b5062e952ff67815c009c6bdb1bab",
+      "size_bytes": 717722
+    },
+    {
+      "path": "cad/SB02-plan.dxf",
+      "sha256": "a8cd1511b7cfa8e7b9cfabb8c59e29740ffef362746d564760f39f4a1a9c9e90",
+      "size_bytes": 129375
+    },
+    {
+      "path": "cad/SB02-plan.pdf",
+      "sha256": "2be401d907ff5c8fa6b8c5db8786df2dfc265b3ae923b7b2d2964952be07c0eb",
+      "size_bytes": 3924
+    },
+    {
+      "path": "cad/SB02-plan.png",
+      "sha256": "bc111689ccc2da65900f9730aaa348b64a8b5062e952ff67815c009c6bdb1bab",
+      "size_bytes": 717722
+    },
+    {
+      "path": "drawing-elevation-view.svg",
+      "sha256": "e06260058fa1567b8f960d6ec76d1ae378d495a6ec67fbf8093b8cd36ba18e9f",
+      "size_bytes": 33702
+    },
+    {
+      "path": "drawing-isometric-view.svg",
+      "sha256": "5dff7a061ffa7925ac427637d8a47585bd2f8f4b30c20d0a12bf6ba9f4fadd40",
+      "size_bytes": 26891
+    },
+    {
+      "path": "drawing-perspective-view.svg",
+      "sha256": "8f4736557fcd231500d1002b3aed12bd95b4858d7ffcc8ecfedf390d26c2e8f2",
+      "size_bytes": 26893
+    },
+    {
+      "path": "drawing-plan-view.svg",
+      "sha256": "e4389ce8da19c5111a269a1bd81358ae6f02ff2c5fb15b14cd69e2a1b1932cb1",
+      "size_bytes": 31502
+    },
+    {
+      "path": "fabrication/cut-list.json",
+      "sha256": "0a5fd98bf0c6126699fc201faf54e02219c90313de91181b960069af119db605",
+      "size_bytes": 45421
+    },
+    {
+      "path": "high-resolution-image/pergola_render_1.png",
+      "sha256": "bc111689ccc2da65900f9730aaa348b64a8b5062e952ff67815c009c6bdb1bab",
+      "size_bytes": 717722
+    },
+    {
+      "path": "lumber-purchase-list.md",
+      "sha256": "e8359d662daa402c31e9125d62d69d5690e7135085fdaae458a46e0cd09234ef",
+      "size_bytes": 834
+    },
+    {
+      "path": "pergola_plan.md",
+      "sha256": "9476095a5db55553d0cca4a2a771a90f82ba761f2b6e66e4b922bd40bea20157",
+      "size_bytes": 789
+    },
+    {
+      "path": "pergola_plan.pdf",
+      "sha256": "d5626aec5db70b4e0b4694e30b8eb70aebbc22a039ff9e286a9f94f3bdb3e9d9",
+      "size_bytes": 583238
+    },
+    {
+      "path": "pergola_plan_embedded.md",
+      "sha256": "1da75a7ad7ef304fe2b452bb29c48cb6b23784e288d2a46779232ed36fa9782d",
+      "size_bytes": 2134111
+    }
+  ]
+}
