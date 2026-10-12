@@ -14,7 +14,7 @@ Purpose:
 Layer: Execution / Document Generation
 
 Key Input Dependencies:
-    - context/staging/structure.json (jurisdiction, structure.sides, members, roof, bracing, geometry angles)
+    - context/staging/structure.json (intent.jurisdiction, structure.sides, members, roof, bracing, footings, geometry angles)
     - outputs/fabrication/cut-list.json (fabrication-cut-list/1.0 members with stock lengths)
     - path_utils.py (default staging/outputs directories), strict_access.py (fail-closed required inputs)
 
@@ -81,6 +81,11 @@ def _section(structure: Dict[str, Any], path: tuple) -> Dict[str, Any]:
     return node
 
 
+def _region(structure: Dict[str, Any]) -> str:
+    """Returns the canonical schema jurisdiction from intent.jurisdiction."""
+    return str(_need(_need(structure, "intent", "structure"), "jurisdiction", "intent"))
+
+
 def build_schedule_groups(structure: Dict[str, Any], cut_list: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Groups cut-list members by role and derives quantity, lengths and net board feet per group."""
     members = _need(cut_list, "members", "cut-list")
@@ -127,10 +132,14 @@ def _group_qty(groups: List[Dict[str, Any]], role: str) -> int:
 
 def generate_lumber_purchase_list(structure: Dict[str, Any], cut_list: Dict[str, Any]) -> str:
     """Generates the formatted markdown lumber purchase and hardware procurement list."""
-    region = _need(_need(structure, "jurisdiction", "structure"), "region", "jurisdiction")
+    region = _region(structure)
     groups = build_schedule_groups(structure, cut_list)
     p_qty, r_qty = _group_qty(groups, "post"), _group_qty(groups, "rafter_primary")
     post_nominal = next(g["nominal"] for g in groups if g["role"] == "post")
+    footings = _need(structure, "footings", "structure")
+    footing_diameter = float(_need(footings, "diameter_in", "footings"))
+    footing_depth = float(_need(footings, "depth_in", "footings"))
+    concrete_grade = _need(footings, "concrete_grade", "footings")
     lines = [
         "# Lumber Purchase & Hardware Procurement List",
         f"**Jurisdiction / Region:** {region}",
@@ -143,14 +152,17 @@ def generate_lumber_purchase_list(structure: Dict[str, Any], cut_list: Dict[str,
         f"- Post Standoff Bases: Heavy-duty {post_nominal} galvanized post bases (Qty: {p_qty})",
         f"- Structural Screws / Lags: 1/2\" x 6\" RSS Heavy Duty Screws (Qty: {p_qty * SCREWS_PER_POST})",
         f"- Rafter Seat Fasteners: Hurricane ties / structural timber screws (Qty: {r_qty * SEAT_FASTENERS_PER_RAFTER})",
-        f"- Concrete Footings: 18\" diameter caissons with J-bolts (Qty: {p_qty})",
+        (
+            f"- Concrete Footings: {footing_diameter:g}\" diameter x {footing_depth:g}\" deep "
+            f"{concrete_grade} sonotubes with J-bolts (Qty: {p_qty})"
+        ),
     ]
     return "\n".join(lines)
 
 
 def generate_budget_estimate(structure: Dict[str, Any], cut_list: Dict[str, Any]) -> str:
     """Generates the estimated material costs breakdown markdown document."""
-    region = _need(_need(structure, "jurisdiction", "structure"), "region", "jurisdiction")
+    region = _region(structure)
     total_bf = total_board_feet(build_schedule_groups(structure, cut_list))
     lumber_cost = total_bf * BUDGET_RATE_PER_BF
     total_materials = lumber_cost + BUDGET_HARDWARE_CAD + BUDGET_ROOFING_CAD + BUDGET_FOUNDATION_CAD
@@ -274,7 +286,7 @@ def generate_builder_docs(
         "stage": "builder-docs-generator",
         "status": "COMPLETE",
         "outputs": [str(o_dir / name) for name in documents],
-        "regional_pricing": structure["jurisdiction"]["region"],
+        "regional_pricing": _region(structure),
         "next_stage": "document-compiler",
     }
 

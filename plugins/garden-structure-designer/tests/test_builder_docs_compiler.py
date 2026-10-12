@@ -19,8 +19,8 @@ from builder_docs_compiler import (  # type: ignore[import]  # noqa: E402
 
 def _structure(sides: int = 6, braces: bool = True) -> dict:
     return {
-        "jurisdiction": {"region": "BC_Vancouver_Island"},
-        "structure": {"sides": sides},
+        "intent": {"jurisdiction": "BC_Vancouver_Island"},
+        "structure": {"type": "pergola", "sides": sides},
         "layout": {"shape": "hexagon" if sides == 6 else "polygon", "post_count": sides},
         "members": {
             "posts": {"nominal_size": "6x6", "actual_width_in": 5.5, "actual_depth_in": 5.5, "cut_length_ft": 8.0},
@@ -28,6 +28,7 @@ def _structure(sides: int = 6, braces: bool = True) -> dict:
         },
         "roof": {"primary_rafters": {"nominal_size": "4x6", "actual_width_in": 3.5, "actual_depth_in": 5.5}},
         "hub": {"type": "hexagonal_prism"},
+        "footings": {"diameter_in": 12, "depth_in": 24, "concrete_grade": "20MPa"},
         "bracing": {
             "enabled": braces,
             "brace": {"nominal_size": "4x4", "actual_width_in": 3.5, "actual_depth_in": 3.5, "count_per_post": 2},
@@ -104,7 +105,7 @@ def test_board_feet_derived_from_section_and_cut_list(workspace):
     [
         (lambda d: d["geometry"].pop("compound_cut"), "geometry.compound_cut"),
         (lambda d: d["geometry"]["beam_ring"].pop("beam_miter_deg"), "geometry.beam_ring.beam_miter_deg"),
-        (lambda d: d["jurisdiction"].pop("region"), "jurisdiction.region"),
+        (lambda d: d["intent"].pop("jurisdiction"), "intent.jurisdiction"),
         (lambda d: d["structure"].pop("sides"), "structure.sides"),
         (lambda d: d["members"]["posts"].pop("nominal_size"), "members.posts.nominal_size"),
         (lambda d: d["roof"]["primary_rafters"].pop("actual_depth_in"), "roof.primary_rafters.actual_depth_in"),
@@ -147,3 +148,10 @@ def test_budget_discloses_rate_assumptions():
 def test_lumber_list_hardware_counts_follow_cut_list():
     text = generate_lumber_purchase_list(_structure(sides=8), _cut_list(sides=8))
     assert "(Qty: 8)" in text
+
+
+def test_lumber_list_uses_schema_jurisdiction_and_declared_footing_size():
+    text = generate_lumber_purchase_list(_structure(), _cut_list())
+    assert "BC_Vancouver_Island" in text
+    assert '12" diameter' in text
+    assert '18" diameter' not in text

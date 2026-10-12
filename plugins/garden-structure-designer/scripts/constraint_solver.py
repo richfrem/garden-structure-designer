@@ -68,7 +68,7 @@ def _geometry_is_sealed(structure: dict) -> ConstraintResult:
 
 
 def _z_plane_ordering(structure: dict) -> ConstraintResult:
-    """Z-planes must be strictly monotone: Z_GRADE < Z_POST_TOP < Z_BEAM_TOP < Z_APEX."""
+    """Z-planes ascend through the beam; a declared 0:12 roof may place its apex at beam top."""
     zp = structure.get("geometry", {}).get("joints", {}).get("z_planes", {})
     needed = ("Z_GRADE", "Z_POST_TOP", "Z_BEAM_TOP", "Z_APEX")
     missing = [k for k in needed if k not in zp]
@@ -82,20 +82,26 @@ def _z_plane_ordering(structure: dict) -> ConstraintResult:
     z_post_top = float(zp["Z_POST_TOP"])
     z_beam_top = float(zp["Z_BEAM_TOP"])
     z_apex = float(zp["Z_APEX"])
-    if not (z_grade < z_post_top < z_beam_top < z_apex):
+    is_flat_roof = (structure.get("roof") or {}).get("pitch") == "0:12"
+    apex_valid = math.isclose(z_apex, z_beam_top, abs_tol=1e-9) if is_flat_roof else z_beam_top < z_apex
+    if not (z_grade < z_post_top < z_beam_top and apex_valid):
         return {
             "name": "z_plane_ordering",
             "status": "FAIL",
             "detail": (
-                f"Z planes are not strictly ascending: "
+                f"Z planes are not strictly ascending (except a declared 0:12 apex equality): "
                 f"Z_GRADE={z_grade}, Z_POST_TOP={z_post_top}, "
                 f"Z_BEAM_TOP={z_beam_top}, Z_APEX={z_apex}"
             ),
         }
+    apex_relation = "=" if is_flat_roof else "<"
     return {
         "name": "z_plane_ordering",
         "status": "PASS",
-        "detail": f"Z_GRADE={z_grade} < Z_POST_TOP={z_post_top} < Z_BEAM_TOP={z_beam_top} < Z_APEX={z_apex}",
+        "detail": (
+            f"Z_GRADE={z_grade} < Z_POST_TOP={z_post_top} < Z_BEAM_TOP={z_beam_top} "
+            f"{apex_relation} Z_APEX={z_apex}"
+        ),
     }
 
 
