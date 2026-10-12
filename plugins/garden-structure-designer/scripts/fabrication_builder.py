@@ -127,7 +127,8 @@ def main() -> None:
         print(f"fabrication_builder: {error}", file=sys.stderr)
         sys.exit(1)
 
-    fab_dir = outputs_dir() / "fabrication"
+    fab_base = Path(sys.argv[2]) if len(sys.argv) > 2 else outputs_dir()
+    fab_dir = fab_base / "fabrication"
     fab_dir.mkdir(parents=True, exist_ok=True)
     out_file = fab_dir / "cut-list.json"
     with open(out_file, "w", encoding="utf-8") as f:

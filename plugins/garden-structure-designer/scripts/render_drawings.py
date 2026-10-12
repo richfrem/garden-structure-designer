@@ -417,10 +417,11 @@ def main():
     """CLI entrypoint: render all eight sheets from structure.json into the outputs directory."""
     struct_path = sys.argv[1] if len(sys.argv) > 1 else str(staging_dir() / "structure.json")
     with open(struct_path) as f: s = json.load(f)
-    out_dir = outputs_dir()
+    out_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else outputs_dir()
     out_dir.mkdir(parents=True, exist_ok=True)
     for f in SVG_SHEET_FILENAMES:
         generate_svg(f, s, str(out_dir / f))
         print(f"  ✓ {f}")
 
 if __name__ == "__main__": main()
+

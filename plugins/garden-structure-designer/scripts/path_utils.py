@@ -41,9 +41,17 @@ def staging_dir(start: str | Path | None = None) -> Path:
     """Staging bus directory: <repo>/context/staging (holds structure.json)."""
     return find_repo_root(start) / "context" / "staging"
 
-def outputs_dir(start: str | Path | None = None) -> Path:
-    """Outputs directory: <repo>/outputs."""
-    return find_repo_root(start) / "outputs"
+def outputs_dir(start: str | Path | None = None, subdir: str | Path | None = None) -> Path:
+    """Outputs directory: <repo>/outputs or a project subfolder <repo>/outputs/<subdir>.
+    
+    If subdir is not explicitly passed, checks the GSD_OUTPUT_SUBDIR environment variable.
+    """
+    base = find_repo_root(start) / "outputs"
+    sub = subdir or os.environ.get("GSD_OUTPUT_SUBDIR")
+    if sub:
+        return base / str(sub).strip()
+    return base
+
 
 def schemas_dir(start: str | Path | None = None) -> Path:
     """Schemas directory inside the plugin."""
