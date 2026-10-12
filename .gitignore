@@ -43,8 +43,12 @@ context/events.jsonl
 context/design-dashboard.md
 context/staging/
 
-# Ephemeral pipeline run outputs
+# Ephemeral pipeline run outputs at outputs root
 outputs/*.svg
 outputs/*.png
 outputs/*.glb
 outputs/*.manifest.json
+outputs/*.md
+outputs/cad/
+outputs/fabrication/
+outputs/visual-smoke/
