@@ -54,10 +54,11 @@ sys.path.insert(0, str(SCRIPT_DIR))
 from constants import CAD_SUBDIR, CUT_LIST_FILENAME, FABRICATION_SUBDIR, SVG_SHEET_FILENAMES
 from cross_artifact_validator import validate_dxf_artifacts
 from package_consistency_validator import check_revision_binding
-from path_utils import staging_dir as _staging_dir
+from path_utils import staging_dir as _staging_dir, outputs_dir as _outputs_dir
 from revision_identity import HASH_ALGORITHM, compute_revision_hash
 
 _STAGING = _staging_dir()
+_OUTPUTS = _outputs_dir()
 SCHEMA = "garden-structure-designer/drawing-red-team-report/1.0"
 STAGING_REPORTS = ("schema-validation-report.json", "physics-validation-report.json", "visual-smoke-report.json")
 
@@ -483,8 +484,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--svg-dir",
-        default="outputs",
-        help="Directory containing generated SVG files (default: outputs).",
+        default=str(_OUTPUTS),
+        help="Directory containing generated SVG files (default: outputs/<project>).",
     )
     parser.add_argument(
         "--model",
@@ -498,7 +499,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--md-dir",
-        default="outputs",
+        default=str(_OUTPUTS),
         help="Directory to write the Markdown red-team report.",
     )
     args = parser.parse_args()

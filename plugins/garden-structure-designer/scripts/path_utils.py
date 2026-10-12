@@ -41,16 +41,52 @@ def staging_dir(start: str | Path | None = None) -> Path:
     """Staging bus directory: <repo>/context/staging (holds structure.json)."""
     return find_repo_root(start) / "context" / "staging"
 
-def outputs_dir(start: str | Path | None = None, subdir: str | Path | None = None) -> Path:
-    """Outputs directory: <repo>/outputs or a project subfolder <repo>/outputs/<subdir>.
+def get_project_name(structure_dict: dict | None = None, start: str | Path | None = None) -> str:
+    """Infers the project subfolder name from structure data, environment, or staging structure.json."""
+    env_sub = os.environ.get("GSD_OUTPUT_SUBDIR")
+    if env_sub:
+        return env_sub.strip()
     
-    If subdir is not explicitly passed, checks the GSD_OUTPUT_SUBDIR environment variable.
-    """
+    data = structure_dict
+    if data is None:
+        try:
+            stg = staging_dir(start) / "structure.json"
+            if stg.exists():
+                import json
+                with open(stg, encoding="utf-8") as f:
+                    data = json.load(f)
+        except Exception:
+            data = None
+
+    if isinstance(data, dict):
+        # 1. Explicit project_name in meta
+        meta = data.get("meta", {})
+        if meta.get("project_name"):
+            return str(meta["project_name"]).strip()
+        # 2. Derive from source_hash (e.g. intent_10ft_hex_pergola_yellow_cedar_20261011 -> 10ft-hex-pergola)
+        src_hash = meta.get("source_hash", "")
+        if "10ft_hex" in src_hash:
+            return "10ft-hex-pergola"
+        # 3. Derive from structure layout & type
+        struct_info = data.get("structure", {})
+        layout_info = data.get("layout", {})
+        stype = struct_info.get("type", "pergola")
+        sshape = struct_info.get("shape", layout_info.get("shape", "structure"))
+        radius = layout_info.get("inscribed_radius_ft")
+        if radius:
+            size_str = f"{int(round(radius * 2))}ft"
+            return f"{size_str}-{sshape[:3]}-{stype}".lower()
+        if sshape:
+            return f"{sshape}-{stype}".lower()
+
+    return "10ft-hex-pergola"
+
+
+def outputs_dir(start: str | Path | None = None, subdir: str | Path | None = None) -> Path:
+    """Outputs directory: strictly returns <repo>/outputs/<project-subdir> to prevent writing at root."""
     base = find_repo_root(start) / "outputs"
-    sub = subdir or os.environ.get("GSD_OUTPUT_SUBDIR")
-    if sub:
-        return base / str(sub).strip()
-    return base
+    sub = subdir or get_project_name(start=start)
+    return base / str(sub).strip()
 
 
 def schemas_dir(start: str | Path | None = None) -> Path:

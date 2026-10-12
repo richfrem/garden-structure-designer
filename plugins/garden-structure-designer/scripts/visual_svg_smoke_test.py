@@ -944,7 +944,7 @@ def _render_markdown(report: dict[str, typing.Any], args: argparse.Namespace) ->
     for fr in report["files"]:
         md += _sheet_markdown(fr)
     md += ["", "## Artifacts Produced", f"- JSON report: `{args.report_json}`",
-           "- This report: `outputs/visual-smoke-report.md`", f"- Screenshots: `{args.out_dir}/<sheet>.png`", ""]
+           f"- This report: `{args.report_md}`", f"- Screenshots: `{args.out_dir}/<sheet>.png`", ""]
     return "\n".join(md)
 
 

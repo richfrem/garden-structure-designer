@@ -1,7 +1,7 @@
 import os
 import json
 
-schemas_dir = "/Users/richardfremmerlid/Projects/garden-structure-designer/plugins/garden-structure-designer/schemas"
+schemas_dir = "/Users/richardfremmerlid/Projects/garden-structure-designer/plugins/garden-structure-designer/assets/schemas"
 os.makedirs(schemas_dir, exist_ok=True)
 
 names = [

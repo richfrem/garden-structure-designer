@@ -14,7 +14,7 @@ Purpose:
 Layer: Execution / Stage 0-3 Schema Gate
 
 Key Input Dependencies:
-    - context/staging/*.json and plugins/garden-structure-designer/schemas/*.schema.json
+    - context/staging/*.json and plugins/garden-structure-designer/assets/schemas/*.schema.json
     - structure.schema.json carries the C1 meta fields (topology_family, revision_id, revision_hash)
     - jsonschema, path_utils.py
 

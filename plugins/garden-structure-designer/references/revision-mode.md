@@ -35,7 +35,7 @@ Before reporting success, always run:
 ```bash
 # 1. Structural & Geometric Compilation
 python3 plugins/garden-structure-designer/scripts/schema_validator.py \
-  context/staging plugins/garden-structure-designer/schemas \
+  context/staging plugins/garden-structure-designer/assets/schemas \
   --strict --json-output context/staging/schema-validation-report.json
 
 python3 plugins/garden-structure-designer/scripts/structural_physics_validator.py \
